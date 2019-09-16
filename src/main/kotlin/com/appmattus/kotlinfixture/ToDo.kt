@@ -26,12 +26,7 @@ object ToDo {
 
     // TODO Set - Set.isAssignableFrom(type) & is interface, the return HashSet
 
-    // TODO Uri builder - Use URL, and then call url.toURI(), catch URISyntaxException
-
-    // TODO URL builder - URL("http://localhost")
-
     // TODO UUID resolver - UUID.randomUUID
-
 
     // TODO Customisations:
     // TODO - instance<T : Any?>(factory: Boolean, () -> T)
