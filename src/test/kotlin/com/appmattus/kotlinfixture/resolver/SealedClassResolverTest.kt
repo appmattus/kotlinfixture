@@ -42,7 +42,6 @@ class SealedClassResolverTest {
         assertEquals(SingleSealedClass.OnlySubclass::class, result)
     }
 
-    @Suppress("unused")
     sealed class MultiSealedClass {
         object SubclassA : MultiSealedClass()
         object SubclassB : MultiSealedClass()

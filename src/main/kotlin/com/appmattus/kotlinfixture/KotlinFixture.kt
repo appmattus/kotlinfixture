@@ -1,6 +1,8 @@
 package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.resolver.ChainResolver
+import com.appmattus.kotlinfixture.resolver.CharResolver
+import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveResolver
@@ -11,8 +13,10 @@ class KotlinFixture {
 
     val resolver = ChainResolver(
         listOf(
+            CharResolver(),
             StringResolver(),
             PrimitiveResolver(),
+            EnumResolver(),
             ObjectResolver(),
             SealedClassResolver(),
             KTypeResolver()
@@ -32,6 +36,6 @@ class KotlinFixture {
     fun create(any: Any): Any {
         val result = resolver.resolve(any, resolver)
         return result?.takeIf { it !is Unresolved }
-            ?: throw UnsupportedOperationException("Unable to handle ${any}")
+            ?: throw UnsupportedOperationException("Unable to handle $any")
     }
 }

@@ -6,8 +6,6 @@ object ToDo {
 
     // TODO Calendars - use Date to prepopulate. GregorianCalendar().apply { setTime(date) }
 
-    // TODO Char - Random.nextInt(26) + 'a' - what about upper case?
-
     // TODO Factory method construction - find static functions that return instance of the class?
 
     // TODO Rename ChainResolver to CompositeResolver?
@@ -15,8 +13,6 @@ object ToDo {
     // TODO Date - Uses a TimeProvider implementation, default is Clock(), and generates a number ± 2 years from date
 
     // TODO Way to create Dates in a given range - past, future, now etc
-
-    // TODO Enums - cache order of values to use? See CircularList
 
     // TODO Iterables - Iterable.isAssignbleFrom(type) & is interface, then return mutable list, with rand no elements
 
