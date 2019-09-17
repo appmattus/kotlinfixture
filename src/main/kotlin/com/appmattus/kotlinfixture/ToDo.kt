@@ -2,17 +2,13 @@ package com.appmattus.kotlinfixture
 
 @Suppress("unused")
 object ToDo {
-    // TODO Array<Object> both Kotlin and Java?
-
     // TODO Factory method construction - find static functions that return instance of the class?
 
-    // TODO Rename ChainResolver to CompositeResolver?
+    // TODO Iterables - Iterable.isAssignableFrom(type) & is interface, then return mutable list, with rand no elements
 
-    // TODO Iterables - Iterable.isAssignbleFrom(type) & is interface, then return mutable list, with rand no elements
+    // TODO Maps - Map.isAssignableFrom(type) & is interface, then return mutable map, with rand no elements
 
-    // TODO Maps - Map.isAssignbleFrom(type) & is interface, then return mutable map, with rand no elements
-
-    // TODO Queue - Queue.isAssignableFrom(tyoe) & is interface, then return ArrayDeque
+    // TODO Queue - Queue.isAssignableFrom(type) & is interface, then return ArrayDeque
 
     // TODO Seeded requests - basically a way to ensure consistent execution
 

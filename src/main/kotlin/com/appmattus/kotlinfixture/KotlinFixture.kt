@@ -2,7 +2,7 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
 import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
-import com.appmattus.kotlinfixture.resolver.ChainResolver
+import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
@@ -16,7 +16,7 @@ import com.appmattus.kotlinfixture.resolver.UuidResolver
 
 class KotlinFixture {
 
-    val resolver = ChainResolver(
+    val resolver = CompositeResolver(
         listOf(
             CharResolver(),
             StringResolver(),

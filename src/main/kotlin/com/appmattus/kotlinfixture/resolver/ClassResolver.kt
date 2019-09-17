@@ -68,7 +68,7 @@ data class TestClass(val myValue: String = "bob", val another: String, val numbe
 fun main() {
     val function = TestClass::class.constructors.toList()[0]
 
-    val chain = ChainResolver(listOf(KFunctionResolver(), KTypeResolver(), StringResolver(), PrimitiveResolver()))
+    val chain = CompositeResolver(listOf(KFunctionResolver(), KTypeResolver(), StringResolver(), PrimitiveResolver()))
 
     println(ClassResolver().resolve(TestClass::class, chain))
 }

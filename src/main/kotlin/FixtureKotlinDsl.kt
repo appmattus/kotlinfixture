@@ -1,5 +1,5 @@
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.resolver.ChainResolver
+import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
 import com.appmattus.kotlinfixture.resolver.Resolver
@@ -140,7 +140,7 @@ data class NullsAllowed(val nullable: List<B>)
 
 fun main() {
 
-    val resolver = ChainResolver(
+    val resolver = CompositeResolver(
         listOf(
             IterableResolver(),
             ObjectResolver(),

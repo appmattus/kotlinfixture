@@ -2,7 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
 
-class ChainResolver(private val resolvers: List<Resolver>) : Resolver {
+class CompositeResolver(private val resolvers: List<Resolver>) : Resolver {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         println("Resolving: $obj")
