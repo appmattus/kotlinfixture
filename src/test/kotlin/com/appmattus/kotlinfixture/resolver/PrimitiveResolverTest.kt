@@ -32,7 +32,7 @@ class PrimitiveResolverTest {
     }
 
     @Test
-    fun `Byte class returns boolean`() {
+    fun `Byte class returns byte`() {
         val result = resolver.resolve(Byte::class, resolver)
 
         assertNotNull(result)
@@ -47,7 +47,7 @@ class PrimitiveResolverTest {
     }
 
     @Test
-    fun `Double class returns boolean`() {
+    fun `Double class returns double`() {
         val result = resolver.resolve(Double::class, resolver)
 
         assertNotNull(result)
@@ -62,7 +62,7 @@ class PrimitiveResolverTest {
     }
 
     @Test
-    fun `Float class returns boolean`() {
+    fun `Float class returns float`() {
         val result = resolver.resolve(Float::class, resolver)
 
         assertNotNull(result)
@@ -77,7 +77,7 @@ class PrimitiveResolverTest {
     }
 
     @Test
-    fun `Int class returns boolean`() {
+    fun `Int class returns int`() {
         val result = resolver.resolve(Int::class, resolver)
 
         assertNotNull(result)
@@ -92,7 +92,7 @@ class PrimitiveResolverTest {
     }
 
     @Test
-    fun `Long class returns boolean`() {
+    fun `Long class returns long`() {
         val result = resolver.resolve(Long::class, resolver)
 
         assertNotNull(result)
@@ -108,7 +108,7 @@ class PrimitiveResolverTest {
 
 
     @Test
-    fun `Short class returns boolean`() {
+    fun `Short class returns short`() {
         val result = resolver.resolve(Short::class, resolver)
 
         assertNotNull(result)
@@ -124,7 +124,7 @@ class PrimitiveResolverTest {
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
-    fun `UByte class returns boolean`() {
+    fun `UByte class returns ubyte`() {
         val result = resolver.resolve(UByte::class, resolver)
 
         assertNotNull(result)
@@ -141,7 +141,7 @@ class PrimitiveResolverTest {
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
-    fun `UInt class returns boolean`() {
+    fun `UInt class returns uint`() {
         val result = resolver.resolve(UInt::class, resolver)
 
         assertNotNull(result)
@@ -158,7 +158,7 @@ class PrimitiveResolverTest {
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
-    fun `ULong class returns boolean`() {
+    fun `ULong class returns ulong`() {
         val result = resolver.resolve(ULong::class, resolver)
 
         assertNotNull(result)
@@ -175,7 +175,7 @@ class PrimitiveResolverTest {
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
-    fun `UShort class returns boolean`() {
+    fun `UShort class returns ushort`() {
         val result = resolver.resolve(UShort::class, resolver)
 
         assertNotNull(result)

@@ -2,7 +2,7 @@ package com.appmattus.kotlinfixture
 
 @Suppress("unused")
 object ToDo {
-    // TODO Arrays
+    // TODO Array<Object> both Kotlin and Java?
 
     // TODO Factory method construction - find static functions that return instance of the class?
 

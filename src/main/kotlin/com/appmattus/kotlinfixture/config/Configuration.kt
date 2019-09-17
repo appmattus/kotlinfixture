@@ -7,5 +7,6 @@ data class Configuration(
     val dateSpecification: DateSpecification = DateSpecification.Between(
         Date(Date().time - TimeUnit.DAYS.toMillis(365)),
         Date(Date().time + TimeUnit.DAYS.toMillis(365))
-    )
+    ),
+    val repeatCount: () -> Int = { 5 }
 )
