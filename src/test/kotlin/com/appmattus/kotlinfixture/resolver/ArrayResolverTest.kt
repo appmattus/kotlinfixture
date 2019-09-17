@@ -8,18 +8,33 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class ArrayResolverTest {
-    private val resolver = ArrayResolver(Configuration())
+    private val resolver = ChainResolver(listOf(ArrayResolver(Configuration()), StringResolver(), PrimitiveResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, StringResolver())
+        val result = resolver.resolve(Number::class, resolver)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
+    fun `Primitive array class returns Unresolved`() {
+        val result = resolver.resolve(IntArray::class, resolver)
+
+        assertEquals(Unresolved, result)
+    }
+
+    @Test
+    fun `Array-Int class returns int class array`() {
+        val result = resolver.resolve(Array<Int>::class, resolver)
+
+        assertNotNull(result)
+        assertEquals(Array<Int>::class, result::class)
+    }
+
+    @Test
     fun `Array-String class returns string array`() {
-        val result = resolver.resolve(Array<String>::class, StringResolver())
+        val result = resolver.resolve(Array<String>::class, resolver)
 
         assertNotNull(result)
         assertEquals(Array<String>::class, result::class)
@@ -28,7 +43,7 @@ class ArrayResolverTest {
     @Test
     fun `Random values returned`() {
         assertIsRandom {
-            resolver.resolve(Array<String>::class, StringResolver())
+            resolver.resolve(Array<String>::class, resolver)
         }
     }
 

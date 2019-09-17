@@ -8,7 +8,7 @@ class ArrayResolver(private val configuration: Configuration) : Resolver {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
 
-        if (obj is KClass<*> && obj.java.isArray) {
+        if (obj is KClass<*> && obj.java.isArray && !obj.java.componentType.isPrimitive) {
             val size = configuration.repeatCount()
 
             val array: Any? = java.lang.reflect.Array.newInstance(obj.java.componentType, size)
