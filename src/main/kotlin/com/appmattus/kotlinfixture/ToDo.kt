@@ -4,15 +4,9 @@ package com.appmattus.kotlinfixture
 object ToDo {
     // TODO Arrays
 
-    // TODO Calendars - use Date to prepopulate. GregorianCalendar().apply { setTime(date) }
-
     // TODO Factory method construction - find static functions that return instance of the class?
 
     // TODO Rename ChainResolver to CompositeResolver?
-
-    // TODO Date - Uses a TimeProvider implementation, default is Clock(), and generates a number ± 2 years from date
-
-    // TODO Way to create Dates in a given range - past, future, now etc
 
     // TODO Iterables - Iterable.isAssignbleFrom(type) & is interface, then return mutable list, with rand no elements
 
