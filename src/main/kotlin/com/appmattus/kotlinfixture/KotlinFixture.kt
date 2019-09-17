@@ -1,5 +1,7 @@
 package com.appmattus.kotlinfixture
 
+import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
+import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
 import com.appmattus.kotlinfixture.resolver.ChainResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
@@ -8,6 +10,9 @@ import com.appmattus.kotlinfixture.resolver.ObjectResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveResolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
+import com.appmattus.kotlinfixture.resolver.UriResolver
+import com.appmattus.kotlinfixture.resolver.UrlResolver
+import com.appmattus.kotlinfixture.resolver.UuidResolver
 
 class KotlinFixture {
 
@@ -16,6 +21,11 @@ class KotlinFixture {
             CharResolver(),
             StringResolver(),
             PrimitiveResolver(),
+            UrlResolver(),
+            UriResolver(),
+            BigDecimalResolver(),
+            BigIntegerResolver(),
+            UuidResolver(),
             EnumResolver(),
             ObjectResolver(),
             SealedClassResolver(),

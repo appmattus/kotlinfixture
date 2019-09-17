@@ -18,15 +18,11 @@ object ToDo {
 
     // TODO Maps - Map.isAssignbleFrom(type) & is interface, then return mutable map, with rand no elements
 
-    // TODO BigDecimal, BigInteger
-
     // TODO Queue - Queue.isAssignableFrom(tyoe) & is interface, then return ArrayDeque
 
     // TODO Seeded requests - basically a way to ensure consistent execution
 
     // TODO Set - Set.isAssignableFrom(type) & is interface, the return HashSet
-
-    // TODO UUID resolver - UUID.randomUUID
 
     // TODO Customisations:
     // TODO - instance<T : Any?>(factory: Boolean, () -> T)
