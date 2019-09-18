@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class ArrayResolverTest {
-    private val resolver = CompositeResolver(listOf(ArrayResolver(Configuration()), StringResolver(), PrimitiveResolver()))
+    private val resolver = CompositeResolver(ArrayResolver(Configuration()), StringResolver(), PrimitiveResolver())
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -73,7 +73,7 @@ class ArrayResolverTest {
 
     @Test
     fun `Array of arrays`() {
-        val resolver = CompositeResolver(listOf(ArrayResolver(Configuration(repeatCount = { 3 })), StringResolver()))
+        val resolver = CompositeResolver(ArrayResolver(Configuration(repeatCount = { 3 })), StringResolver())
 
         val result = resolver.resolve(Array<Array<String>>::class, resolver)
 

@@ -2,8 +2,8 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
 import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
-import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
+import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
@@ -17,20 +17,18 @@ import com.appmattus.kotlinfixture.resolver.UuidResolver
 class KotlinFixture {
 
     val resolver = CompositeResolver(
-        listOf(
-            CharResolver(),
-            StringResolver(),
-            PrimitiveResolver(),
-            UrlResolver(),
-            UriResolver(),
-            BigDecimalResolver(),
-            BigIntegerResolver(),
-            UuidResolver(),
-            EnumResolver(),
-            ObjectResolver(),
-            SealedClassResolver(),
-            KTypeResolver()
-        )
+        CharResolver(),
+        StringResolver(),
+        PrimitiveResolver(),
+        UrlResolver(),
+        UriResolver(),
+        BigDecimalResolver(),
+        BigIntegerResolver(),
+        UuidResolver(),
+        EnumResolver(),
+        ObjectResolver(),
+        SealedClassResolver(),
+        KTypeResolver()
     )
 
     inline operator fun <reified T : Any?> invoke(range: Iterable<T> = emptyList()): T {

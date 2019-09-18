@@ -2,7 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
 
-class CompositeResolver(private val resolvers: List<Resolver>) : Resolver {
+class CompositeResolver(private vararg val resolvers: Resolver) : Resolver, Iterable<Resolver> {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         println("Resolving: $obj")
@@ -17,4 +17,6 @@ class CompositeResolver(private val resolvers: List<Resolver>) : Resolver {
 
         return Unresolved
     }
+
+    override fun iterator() = resolvers.iterator()
 }

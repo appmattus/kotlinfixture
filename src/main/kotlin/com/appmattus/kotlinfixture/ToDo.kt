@@ -5,6 +5,11 @@ object ToDo {
     // TODO Factory method construction - find static functions that return instance of the class?
 
     // TODO Iterables - Iterable.isAssignableFrom(type) & is interface, then return mutable list, with rand no elements
+    // ArrayList<E> = java.util.ArrayList<E>
+    // LinkedHashMap<K, V> = java.util.LinkedHashMap<K, V>
+    // HashMap<K, V> = java.util.HashMap<K, V>
+    // LinkedHashSet<E> = java.util.LinkedHashSet<E>
+    // HashSet<E> = java.util.HashSet<E>
 
     // TODO Maps - Map.isAssignableFrom(type) & is interface, then return mutable map, with rand no elements
 

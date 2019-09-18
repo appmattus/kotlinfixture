@@ -141,12 +141,10 @@ data class NullsAllowed(val nullable: List<B>)
 fun main() {
 
     val resolver = CompositeResolver(
-        listOf(
-            IterableResolver(),
-            ObjectResolver(),
-            SealedClassResolver(),
-            KTypeResolver()
-        )
+        IterableResolver(),
+        ObjectResolver(),
+        SealedClassResolver(),
+        KTypeResolver()
     )
 
     println(resolver.resolve(None::class, resolver))

@@ -1,25 +1,41 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
-import kotlin.random.Random
+import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.reflect.KClass
-import kotlin.reflect.KFunction
-import kotlin.reflect.jvm.isAccessible
+import kotlin.reflect.KMutableProperty
+import kotlin.reflect.full.memberProperties
 
-class ClassResolver : Resolver {
+class ClassResolver(private val configuration: Configuration) : Resolver {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         if (obj is KClass<*>) {
-            val constructors = obj.constructors.shuffled()
-
-            constructors.forEach {
+            obj.constructors.shuffled().forEach { constructor ->
                 try {
-                    val result = resolver.resolve(it, resolver)
+                    val result = resolver.resolve(KFunctionRequest(obj, constructor), resolver)
                     if (result != Unresolved) {
 
-                        // Call any public setters as appropriate that aren't included in the constructor?
-                        // Especially important if this class had a default constructor
+                        val constructorParameterNames = constructor.parameters.map { it.name }
 
+                        val mutableProperties = obj.memberProperties
+                            .filterIsInstance<KMutableProperty<*>>()
+                            .filter {
+                                !constructorParameterNames.contains(it.name)
+                            }
+
+                        val overrides = configuration.properties.getOrDefault(obj, emptyMap())
+
+                        mutableProperties.forEach { property ->
+                            val propertyResult = overrides.getOrElse(property.name) {
+                                resolver.resolve(property.returnType, resolver)
+                            }
+
+                            if (propertyResult == Unresolved) {
+                                return Unresolved
+                            }
+
+                            property.setter.call(result, propertyResult)
+                        }
 
                         return result
                     }
@@ -33,42 +49,32 @@ class ClassResolver : Resolver {
     }
 }
 
-class KFunctionResolver : Resolver {
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
-        if (obj is KFunction<*>) {
-            return try {
-                obj.isAccessible = true
+data class TestClass(val myValue: String = "bob", val another: String, var number: Int) {
+    constructor(name: String) : this(another = "name-$name", number = 5)
+    constructor(number: Int) : this(another = "number-$number", number = 5)
 
-                // Context is useful in here for being able to pre-define values as you need to know the class of this
-                // function
+    val immutable: Int = 5
 
-                val parameters = obj.parameters.associateWith {
-                    resolver.resolve(it.type, resolver)
-                }.filterKeys { !it.isOptional || Random.nextBoolean() }
+    var mutable: Int = 6
 
-                if (parameters.all { it.value != Unresolved }) {
-                    obj.callBy(parameters)
-                } else {
-                    Unresolved
-                }
-            } catch (expected: Exception) {
-                Unresolved
-            }
-        }
+    private val privateMutable: Int = 7
 
-        return Unresolved
-    }
-}
+    lateinit var lateInitMutable: String
 
-data class TestClass(val myValue: String = "bob", val another: String, val number: Int) {
-    constructor(name: String) : this(another = "hi-$name", number = 5)
-    constructor(number: Number) : this(another = "hi-$number", number = 5)
+    var nullableMutable: String? = null
 }
 
 fun main() {
-    val function = TestClass::class.constructors.toList()[0]
+    val config = Configuration(
+        properties = mapOf(
+            TestClass::class to mapOf(
+                "myValue" to "Hey hey",
+                "nullableMutable" to "not nullable"
+            )
+        )
+    )
 
-    val chain = CompositeResolver(listOf(KFunctionResolver(), KTypeResolver(), StringResolver(), PrimitiveResolver()))
+    val chain = CompositeResolver(KFunctionResolver(config), KTypeResolver(), StringResolver(), PrimitiveResolver())
 
-    println(ClassResolver().resolve(TestClass::class, chain))
+    println(ClassResolver(config).resolve(TestClass::class, chain))
 }
