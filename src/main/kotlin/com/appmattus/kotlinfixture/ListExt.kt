@@ -1,6 +1,6 @@
 package com.appmattus.kotlinfixture
 
-fun <T> List<T>.circularIterator() = object : Iterator<T> {
+internal fun <T> List<T>.circularIterator() = object : Iterator<T> {
     private var position = 0
 
     override fun hasNext() = isNotEmpty()

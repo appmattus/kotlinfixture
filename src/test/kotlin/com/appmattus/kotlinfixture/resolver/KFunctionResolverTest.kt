@@ -9,7 +9,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
-import kotlin.test.fail
 
 class KFunctionResolverTest {
     private val resolver = KFunctionResolver(Configuration())
@@ -82,26 +81,13 @@ class KFunctionResolverTest {
 
     @Test
     fun `Constructor with optional parameter is sometimes null`() {
-
         val constructor = OptionalClass::class.primaryConstructor!!
         val request = KFunctionRequest(OptionalClass::class, constructor)
 
-        var hasBeenNull = false
-        var hasBeenNotNull = false
-
-        repeat(100) {
+        assertIsRandom {
             val result = resolver.resolve(request, testResolver) as OptionalClass
-
-            if (result.value == null) {
-                hasBeenNull = true
-            } else {
-                hasBeenNotNull = true
-            }
-
-            if (hasBeenNull && hasBeenNotNull) return
+            result.value == null
         }
-
-        fail()
     }
 
     @Test
@@ -124,6 +110,7 @@ class KFunctionResolverTest {
     data class MultiParamsClass(val value1: String, val value2: Int)
 
     object SimpleObject {
+        @Suppress("MemberVisibilityCanBePrivate")
         lateinit var value: String
 
         val isInitialised: Boolean

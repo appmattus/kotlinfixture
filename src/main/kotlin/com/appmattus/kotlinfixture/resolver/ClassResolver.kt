@@ -10,32 +10,32 @@ class ClassResolver(private val configuration: Configuration) : Resolver {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         if (obj is KClass<*>) {
+
+            val constructorParameterNames = obj.constructors.flatMap { constructor ->
+                constructor.parameters.map { it.name }
+            }.toSet()
+
+            val overrides = configuration.properties.getOrDefault(obj, emptyMap())
+
             obj.constructors.shuffled().forEach { constructor ->
                 try {
                     val result = resolver.resolve(KFunctionRequest(obj, constructor), resolver)
                     if (result != Unresolved) {
 
-                        val constructorParameterNames = constructor.parameters.map { it.name }
-
-                        val mutableProperties = obj.memberProperties
+                        obj.memberProperties
                             .filterIsInstance<KMutableProperty<*>>()
-                            .filter {
-                                !constructorParameterNames.contains(it.name)
+                            .filterNot { constructorParameterNames.contains(it.name) }
+                            .forEach { property ->
+                                val propertyResult = overrides.getOrElse(property.name) {
+                                    resolver.resolve(property.returnType, resolver)
+                                }
+
+                                if (propertyResult == Unresolved) {
+                                    return Unresolved
+                                }
+
+                                property.setter.call(result, propertyResult)
                             }
-
-                        val overrides = configuration.properties.getOrDefault(obj, emptyMap())
-
-                        mutableProperties.forEach { property ->
-                            val propertyResult = overrides.getOrElse(property.name) {
-                                resolver.resolve(property.returnType, resolver)
-                            }
-
-                            if (propertyResult == Unresolved) {
-                                return Unresolved
-                            }
-
-                            property.setter.call(result, propertyResult)
-                        }
 
                         return result
                     }
@@ -49,6 +49,7 @@ class ClassResolver(private val configuration: Configuration) : Resolver {
     }
 }
 
+@Suppress("unused")
 data class TestClass(val myValue: String = "bob", val another: String, var number: Int) {
     constructor(name: String) : this(another = "name-$name", number = 5)
     constructor(number: Int) : this(another = "number-$number", number = 5)

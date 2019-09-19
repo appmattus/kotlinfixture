@@ -9,11 +9,9 @@ class CalendarResolver : Resolver {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         if (obj == Calendar::class) {
-            val date = resolver.resolve(Date::class, resolver)
-            if (date is Date) {
-                return GregorianCalendar().apply {
-                    time = date
-                }
+            val date = resolver.resolve(Date::class, resolver) as Date
+            return GregorianCalendar().apply {
+                time = date
             }
         }
 
