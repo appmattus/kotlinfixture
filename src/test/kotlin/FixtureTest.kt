@@ -15,11 +15,8 @@ class FixtureTest {
 
     @Test
     fun `can create nullable int`() {
-        val value = fixture<Int?>()
-
         assertIsRandom {
-            val value = fixture<Int?>()
-            value == null
+            fixture<Int?>() == null
         }
 
         assertIsRandom {
