@@ -32,7 +32,7 @@ class IterableKTypeResolverTest {
 
 
     // other hierarchies
-    // RandomAccess <- Vector, ArrayList, CopyOnWriteArrayList
+    // CopyOnWriteArrayList
     // Map <- HashTable, HashMap, SortedMap, TreeMap
     // CopyOnWriteArraySet, EnumSet
     // ConcurrentSkipListSet
@@ -54,7 +54,6 @@ class IterableKTypeResolverTest {
     }
 
     object Object {
-        lateinit var nested: Iterable<Iterable<Iterable<String>>>
 
         // Interfaces
         lateinit var iterable: Iterable<String>

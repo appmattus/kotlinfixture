@@ -1,2 +1,0 @@
-@DslMarker
-annotation class KotlinFixtureMarker
