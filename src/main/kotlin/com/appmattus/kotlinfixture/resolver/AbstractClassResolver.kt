@@ -1,6 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
-import classGraph
+import com.appmattus.kotlinfixture.Classes
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KClass
 
@@ -8,7 +8,7 @@ class AbstractClassResolver : Resolver {
 
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         if ((obj as? KClass<*>)?.isAbstract == true) {
-            val classInfo = classGraph.getClassInfo(obj.java.name)
+            val classInfo = Classes.classGraph.getClassInfo(obj.java.name)
 
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
