@@ -16,6 +16,7 @@ import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
 import com.appmattus.kotlinfixture.resolver.UrlResolver
 import com.appmattus.kotlinfixture.resolver.UuidResolver
+import kotlin.reflect.typeOf
 
 class KotlinFixture {
 
@@ -43,14 +44,9 @@ class KotlinFixture {
         return if (rangeShuffled.isNotEmpty()) {
             rangeShuffled.first()
         } else {
-            val result = resolver.resolve(getKType<T>(), resolver)
+            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
+            val result = resolver.resolve(typeOf<T>(), resolver)
             (result as? T) ?: throw UnsupportedOperationException("Unable to handle ${T::class}")
         }
-    }
-
-    fun create(any: Any): Any {
-        val result = resolver.resolve(any, resolver)
-        return result?.takeIf { it !is Unresolved }
-            ?: throw UnsupportedOperationException("Unable to handle $any")
     }
 }
