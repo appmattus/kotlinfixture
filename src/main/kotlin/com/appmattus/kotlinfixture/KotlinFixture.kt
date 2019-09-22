@@ -46,7 +46,11 @@ class KotlinFixture {
         } else {
             @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             val result = resolver.resolve(typeOf<T>(), resolver)
-            (result as? T) ?: throw UnsupportedOperationException("Unable to handle ${T::class}")
+            if (result is T) {
+                result
+            } else {
+                throw UnsupportedOperationException("Unable to handle ${T::class}")
+            }
         }
     }
 }

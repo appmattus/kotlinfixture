@@ -2,6 +2,8 @@ package com.appmattus.kotlinfixture
 
 import kotlin.reflect.typeOf
 import kotlin.test.Test
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class GetKTypeKtTest {
     @Test
@@ -9,7 +11,8 @@ class GetKTypeKtTest {
     fun test() {
         val type = typeOf<List<String>>()
 
-        println(type)
+        assertFalse { type.isMarkedNullable }
+        assertFalse { type.arguments.first().type!!.isMarkedNullable }
     }
 
     @Test
@@ -17,7 +20,8 @@ class GetKTypeKtTest {
     fun test2() {
         val type = typeOf<List<String?>>()
 
-        println(type)
+        assertFalse { type.isMarkedNullable }
+        assertTrue { type.arguments.first().type!!.isMarkedNullable }
     }
 
     @Test
@@ -25,7 +29,8 @@ class GetKTypeKtTest {
     fun test3() {
         val type = typeOf<List<String>?>()
 
-        println(type)
+        assertTrue { type.isMarkedNullable }
+        assertFalse { type.arguments.first().type!!.isMarkedNullable }
     }
 
     @Test
@@ -33,6 +38,7 @@ class GetKTypeKtTest {
     fun test4() {
         val type = typeOf<List<String?>?>()
 
-        println(type)
+        assertTrue { type.isMarkedNullable }
+        assertTrue { type.arguments.first().type!!.isMarkedNullable }
     }
 }

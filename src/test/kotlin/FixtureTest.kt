@@ -1,4 +1,5 @@
 import com.appmattus.kotlinfixture.KotlinFixture
+import com.appmattus.kotlinfixture.assertIsRandom
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -10,6 +11,20 @@ class FixtureTest {
     fun `can create int`() {
         val int = fixture<Int>()
         assertEquals(Int::class, int::class)
+    }
+
+    @Test
+    fun `can create nullable int`() {
+        val value = fixture<Int?>()
+
+        assertIsRandom {
+            val value = fixture<Int?>()
+            value == null
+        }
+
+        assertIsRandom {
+            fixture<Int?>()
+        }
     }
 
     @Test
@@ -27,8 +42,8 @@ class FixtureTest {
 
     @Test
     fun `can create array of Strings`() {
-        val list = fixture<Array<String>>()
+        val array = fixture<Array<String>>()
 
-        println(list)
+        println(array)
     }
 }
