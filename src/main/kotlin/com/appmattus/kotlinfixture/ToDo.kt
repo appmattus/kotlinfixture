@@ -8,12 +8,9 @@ object ToDo {
     // TODO SynchronousQueue - adding elements to this makes little sense
     // TODO ArrayBlockingQueue - needs a fixed capacity
 
-    // TODO Any::class - return random class
+    // TODO EnumMap - requires special handling
 
-    // TODO Maps - Map.isAssignableFrom(type) & is interface, then return mutable map, with rand no elements
-    // LinkedHashMap<K, V> = java.util.LinkedHashMap<K, V>
-    // HashMap<K, V> = java.util.HashMap<K, V>
-    // Map <- HashTable, HashMap, SortedMap, TreeMap
+    // TODO Any::class - return random class
 
     // TODO Seeded requests - basically a way to ensure consistent execution
 
