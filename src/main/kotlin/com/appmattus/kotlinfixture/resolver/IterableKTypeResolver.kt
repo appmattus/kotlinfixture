@@ -14,15 +14,30 @@ import java.util.SortedSet
 import java.util.Stack
 import java.util.TreeSet
 import java.util.Vector
+import java.util.concurrent.BlockingDeque
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.DelayQueue
+import java.util.concurrent.Delayed
+import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.LinkedTransferQueue
+import java.util.concurrent.PriorityBlockingQueue
+import java.util.concurrent.TransferQueue
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
 class IterableKTypeResolver(private val configuration: Configuration) : Resolver {
     override fun resolve(obj: Any?, resolver: Resolver): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            /*if (obj.isMarkedNullable && Random.nextBoolean()) {
-                null
-            } else {*/
+            if (obj.isMarkedNullable && Random.nextBoolean()) {
+                return null
+            }
 
             val repeatCount = configuration.repeatCount()
 
@@ -34,6 +49,7 @@ class IterableKTypeResolver(private val configuration: Configuration) : Resolver
                 ArrayList::class -> ArrayList()
 
                 java.util.AbstractCollection::class,
+                java.util.AbstractList::class,
                 AbstractList::class,
                 AbstractSequentialList::class,
                 LinkedList::class -> LinkedList()
@@ -57,6 +73,22 @@ class IterableKTypeResolver(private val configuration: Configuration) : Resolver
 
                 HashSet::class,
                 LinkedHashSet::class -> LinkedHashSet()
+
+                BlockingQueue::class,
+                TransferQueue::class,
+                LinkedTransferQueue::class -> LinkedTransferQueue()
+
+                BlockingDeque::class,
+                LinkedBlockingDeque::class -> LinkedBlockingDeque()
+
+                ConcurrentLinkedDeque::class -> ConcurrentLinkedDeque()
+                ConcurrentSkipListSet::class -> ConcurrentSkipListSet()
+                CopyOnWriteArraySet::class -> CopyOnWriteArraySet()
+                CopyOnWriteArrayList::class -> CopyOnWriteArrayList()
+                ConcurrentLinkedQueue::class -> ConcurrentLinkedQueue()
+                DelayQueue::class -> DelayQueue<Delayed>() as MutableCollection<Any?>
+                LinkedBlockingQueue::class -> LinkedBlockingQueue()
+                PriorityBlockingQueue::class -> PriorityBlockingQueue()
 
                 else -> {
                     @Suppress("USELESS_CAST")

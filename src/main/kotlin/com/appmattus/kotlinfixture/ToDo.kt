@@ -4,19 +4,18 @@ package com.appmattus.kotlinfixture
 object ToDo {
     // TODO Factory method construction - find static functions that return instance of the class?
 
-    // TODO Iterables - Iterable.isAssignableFrom(type) & is interface, then return mutable list, with rand no elements
-    // LinkedHashMap<K, V> = java.util.LinkedHashMap<K, V>
-    // HashMap<K, V> = java.util.HashMap<K, V>
+    // TODO EnumSet - requires special handling
+    // TODO SynchronousQueue - adding elements to this makes little sense
+    // TODO ArrayBlockingQueue - needs a fixed capacity
 
     // TODO Any::class - return random class
 
     // TODO Maps - Map.isAssignableFrom(type) & is interface, then return mutable map, with rand no elements
-
-    // TODO Queue - Queue.isAssignableFrom(type) & is interface, then return ArrayDeque
+    // LinkedHashMap<K, V> = java.util.LinkedHashMap<K, V>
+    // HashMap<K, V> = java.util.HashMap<K, V>
+    // Map <- HashTable, HashMap, SortedMap, TreeMap
 
     // TODO Seeded requests - basically a way to ensure consistent execution
-
-    // TODO Set - Set.isAssignableFrom(type) & is interface, the return HashSet
 
     // TODO Customisations:
     // TODO - instance<T : Any?>(factory: Boolean, () -> T)
@@ -28,13 +27,10 @@ object ToDo {
 
     // TODO handle unresolvable, throw exception or return null. See noResolutionBehaviour
 
-
     // TODO Check out competition projects
+    // - https://github.com/FlexTradeUKLtd/kfixture
     // - https://github.com/marcellogalhardo/kotlin-fixture/tree/develop
-
-    // TODO Add nullable support to getKType
-    // - https://github.com/papsign/Ktor-OpenAPI-Generator/blob/2cb2d2eb8286e6ec459e7d63de9695fef31714c8/src/main/kotlin/com/papsign/kotlin/reflection/Reflection.kt
-    //
+    // - https://blog.kotlin-academy.com/creating-a-random-instance-of-any-class-in-kotlin-b6168655b64a
 
     /*
         inline fun <reified T> instance(factory: Boolean = false, crossinline func: () -> T) {

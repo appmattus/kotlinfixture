@@ -15,8 +15,24 @@ import java.util.SortedSet
 import java.util.Stack
 import java.util.TreeSet
 import java.util.Vector
+import java.util.concurrent.BlockingDeque
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.ConcurrentLinkedDeque
+import java.util.concurrent.ConcurrentLinkedQueue
+import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.DelayQueue
+import java.util.concurrent.Delayed
+import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.LinkedTransferQueue
+import java.util.concurrent.PriorityBlockingQueue
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TransferQueue
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
+import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
@@ -27,15 +43,10 @@ class IterableKTypeResolverTest {
             IterableKTypeResolver(Configuration()),
             StringResolver(),
             PrimitiveResolver(),
-            KTypeResolver()
+            KTypeResolver(),
+            KFunctionResolver(Configuration()),
+            ClassResolver(Configuration())
         )
-
-
-    // other hierarchies
-    // CopyOnWriteArrayList
-    // Map <- HashTable, HashMap, SortedMap, TreeMap
-    // CopyOnWriteArraySet, EnumSet
-    // ConcurrentSkipListSet
 
     @Parameterized.Parameter(0)
     lateinit var type: KType
@@ -53,63 +64,61 @@ class IterableKTypeResolverTest {
         }
     }
 
-    object Object {
+    class TestDelayed : Delayed {
+        override fun compareTo(other: Delayed?): Int = 0
 
-        // Interfaces
-        lateinit var iterable: Iterable<String>
-        lateinit var collection: Collection<String>
-        lateinit var list: List<String>
-        lateinit var mutableList: MutableList<String>
-        lateinit var queue: Queue<String>
-        lateinit var deque: Deque<String>
-        lateinit var set: Set<String>
-        lateinit var sortedSet: SortedSet<String>
-        lateinit var navigableSet: NavigableSet<String>
-
-        // Abstract
-        lateinit var abstractCollection: java.util.AbstractCollection<String>
-        lateinit var abstractSequentialList: AbstractSequentialList<String>
-        lateinit var abstractQueue: AbstractQueue<String>
-        lateinit var abstractSet: java.util.AbstractSet<String>
-
-        // Concrete
-        lateinit var arrayList: ArrayList<String>
-        lateinit var linkedList: LinkedList<String>
-        lateinit var vector: Vector<String>
-        lateinit var stack: Stack<String>
-        lateinit var priorityQueue: PriorityQueue<String>
-        lateinit var arrayDeque: ArrayDeque<String>
-        lateinit var hashSet: HashSet<String>
-        lateinit var linkedHashSet: LinkedHashSet<String>
-        lateinit var treeSet: TreeSet<String>
+        override fun getDelay(unit: TimeUnit): Long = 0
     }
 
     companion object {
         @JvmStatic
+        @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
         @Parameterized.Parameters(name = "{1}")
         fun data() = arrayOf(
-            arrayOf(Object::iterable.returnType, Iterable::class),
-            arrayOf(Object::collection.returnType, Collection::class),
-            arrayOf(Object::list.returnType, List::class),
-            arrayOf(Object::mutableList.returnType, MutableList::class),
-            arrayOf(Object::queue.returnType, Queue::class),
-            arrayOf(Object::deque.returnType, Deque::class),
-            arrayOf(Object::set.returnType, Set::class),
-            arrayOf(Object::sortedSet.returnType, SortedSet::class),
-            arrayOf(Object::arrayList.returnType, ArrayList::class),
-            arrayOf(Object::linkedList.returnType, LinkedList::class),
-            arrayOf(Object::vector.returnType, Vector::class),
-            arrayOf(Object::stack.returnType, Stack::class),
-            arrayOf(Object::priorityQueue.returnType, PriorityQueue::class),
-            arrayOf(Object::arrayDeque.returnType, ArrayDeque::class),
-            arrayOf(Object::hashSet.returnType, HashSet::class),
-            arrayOf(Object::linkedHashSet.returnType, LinkedHashSet::class),
-            arrayOf(Object::treeSet.returnType, TreeSet::class),
-            arrayOf(Object::navigableSet.returnType, NavigableSet::class),
-            arrayOf(Object::abstractCollection.returnType, java.util.AbstractCollection::class),
-            arrayOf(Object::abstractSequentialList.returnType, AbstractSequentialList::class),
-            arrayOf(Object::abstractQueue.returnType, AbstractQueue::class),
-            arrayOf(Object::abstractSet.returnType, java.util.AbstractSet::class)
+            arrayOf(typeOf<Iterable<String>>(), Iterable::class),
+            arrayOf(typeOf<Collection<String>>(), Collection::class),
+            arrayOf(typeOf<java.util.AbstractCollection<String>>(), java.util.AbstractCollection::class),
+
+            // Set
+            arrayOf(typeOf<Set<String>>(), Set::class),
+            arrayOf(typeOf<java.util.AbstractSet<String>>(), java.util.AbstractSet::class),
+            arrayOf(typeOf<SortedSet<String>>(), SortedSet::class),
+            arrayOf(typeOf<NavigableSet<String>>(), NavigableSet::class),
+            arrayOf(typeOf<HashSet<String>>(), HashSet::class),
+            arrayOf(typeOf<LinkedHashSet<String>>(), LinkedHashSet::class),
+            arrayOf(typeOf<TreeSet<String>>(), TreeSet::class),
+            arrayOf(typeOf<ConcurrentSkipListSet<String>>(), ConcurrentSkipListSet::class),
+            arrayOf(typeOf<CopyOnWriteArraySet<String>>(), CopyOnWriteArraySet::class),
+
+            // List
+            arrayOf(typeOf<List<String>>(), List::class),
+            arrayOf(typeOf<MutableList<String>>(), MutableList::class),
+            arrayOf(typeOf<java.util.AbstractList<String>>(), java.util.AbstractList::class),
+            arrayOf(typeOf<ArrayList<String>>(), ArrayList::class),
+            arrayOf(typeOf<AbstractSequentialList<String>>(), AbstractSequentialList::class),
+            arrayOf(typeOf<LinkedList<String>>(), LinkedList::class),
+            arrayOf(typeOf<Vector<String>>(), Vector::class),
+            arrayOf(typeOf<Stack<String>>(), Stack::class),
+            arrayOf(typeOf<CopyOnWriteArrayList<String>>(), CopyOnWriteArrayList::class),
+
+            // Queue
+            arrayOf(typeOf<Queue<String>>(), Queue::class),
+            arrayOf(typeOf<AbstractQueue<String>>(), AbstractQueue::class),
+            arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class),
+            arrayOf(typeOf<PriorityQueue<String>>(), PriorityQueue::class),
+            arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class),
+            arrayOf(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class),
+            arrayOf(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class),
+            arrayOf(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class),
+            arrayOf(typeOf<BlockingQueue<String>>(), BlockingQueue::class),
+            arrayOf(typeOf<TransferQueue<String>>(), TransferQueue::class),
+
+            // Deque
+            arrayOf(typeOf<Deque<String>>(), Deque::class),
+            arrayOf(typeOf<ArrayDeque<String>>(), ArrayDeque::class),
+            arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), ConcurrentLinkedDeque::class),
+            arrayOf(typeOf<BlockingDeque<String>>(), BlockingDeque::class),
+            arrayOf(typeOf<LinkedBlockingDeque<String>>(), LinkedBlockingDeque::class)
         )
     }
 }
