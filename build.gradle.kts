@@ -13,7 +13,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("com.flextrade.jfixture:jfixture:2.7.2")
     implementation("io.github.classgraph:classgraph:4.8.47")
     implementation(kotlin("reflect"))
 
