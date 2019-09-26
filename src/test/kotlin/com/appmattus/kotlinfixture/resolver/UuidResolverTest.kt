@@ -9,10 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class UuidResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = UuidResolver()
-    }
+    private val context = TestContext(Configuration(), UuidResolver())
 
     @Test
     fun `Unknown class returns Unresolved`() {

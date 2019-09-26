@@ -4,7 +4,7 @@ import com.appmattus.kotlinfixture.config.Configuration
 
 interface Context {
     val configuration: Configuration
-    val rootResolver: Resolver
+    val resolver: Resolver
 
-    fun resolve(obj: Any?) = rootResolver.resolve(this, obj)
+    fun resolve(obj: Any?) = resolver.resolve(this, obj)
 }

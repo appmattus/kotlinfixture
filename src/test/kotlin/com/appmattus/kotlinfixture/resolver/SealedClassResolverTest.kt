@@ -9,15 +9,9 @@ import kotlin.test.assertTrue
 
 class SealedClassResolverTest {
 
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = SealedClassResolver()
-    }
+    private val context = TestContext(Configuration(), SealedClassResolver())
 
-    private val contextWithTestResolver = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(SealedClassResolver(), TestResolver())
-    }
+    private val contextWithTestResolver = context.copy(resolver = CompositeResolver(context.resolver, TestResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {

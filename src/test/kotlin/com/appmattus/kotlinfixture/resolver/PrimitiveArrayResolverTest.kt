@@ -8,10 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class PrimitiveArrayResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver())
-    }
+    private val context = TestContext(Configuration(), CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -195,10 +192,7 @@ class PrimitiveArrayResolverTest {
 
     @Test
     fun `Length of array matches configuration value of 3`() {
-        val context = object : Context {
-            override val configuration = Configuration(repeatCount = { 3 })
-            override val rootResolver = context.rootResolver
-        }
+        val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
         val result = context.resolve(IntArray::class)
 
@@ -209,10 +203,7 @@ class PrimitiveArrayResolverTest {
 
     @Test
     fun `Length of array matches configuration value of 7`() {
-        val context = object : Context {
-            override val configuration = Configuration(repeatCount = { 7 })
-            override val rootResolver = context.rootResolver
-        }
+        val context = context.copy(configuration = Configuration(repeatCount = { 7 }))
 
         val result = context.resolve(IntArray::class)
 

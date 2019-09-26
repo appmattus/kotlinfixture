@@ -14,10 +14,10 @@ import kotlin.test.assertTrue
 class CalendarResolverTest {
     private val now = Date()
 
-    private val context = object : Context {
-        override val configuration = Configuration(DateSpecification.Before(now))
-        override val rootResolver = CompositeResolver(CalendarResolver(), DateResolver())
-    }
+    private val context = TestContext(
+        Configuration(DateSpecification.Before(now)),
+        CompositeResolver(CalendarResolver(), DateResolver())
+    )
 
     @Test
     fun `Unknown class returns Unresolved`() {

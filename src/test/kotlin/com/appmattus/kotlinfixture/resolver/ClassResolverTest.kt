@@ -9,16 +9,10 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 
 class ClassResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(
-            PrimitiveResolver(),
-            StringResolver(),
-            KTypeResolver(),
-            ClassResolver(),
-            KFunctionResolver()
-        )
-    }
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(PrimitiveResolver(), StringResolver(), KTypeResolver(), ClassResolver(), KFunctionResolver())
+    )
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -53,12 +47,11 @@ class ClassResolverTest {
 
     @Test
     fun `Mutable parameter can be overridden`() {
-        val context = object : Context {
-            override val configuration = Configuration(
+        val context = context.copy(
+            configuration = Configuration(
                 properties = mapOf(MutableParameter::class to mapOf("parameter" to "custom"))
             )
-            override val rootResolver = context.rootResolver
-        }
+        )
 
         val result = context.resolve(MutableParameter::class) as MutableParameter
         assertEquals("custom", result.parameter)

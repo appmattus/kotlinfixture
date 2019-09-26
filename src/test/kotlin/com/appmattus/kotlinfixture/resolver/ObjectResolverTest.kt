@@ -6,10 +6,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ObjectResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = ObjectResolver()
-    }
+    private val context = TestContext(Configuration(), ObjectResolver())
 
     object TestObject
 

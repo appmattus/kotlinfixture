@@ -9,10 +9,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CharResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(CharResolver(), DateResolver())
-    }
+    private val context = TestContext(Configuration(), CompositeResolver(CharResolver(), DateResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {

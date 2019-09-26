@@ -11,15 +11,10 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class KFunctionResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(
-            PrimitiveResolver(),
-            StringResolver(),
-            KTypeResolver(),
-            KFunctionResolver()
-        )
-    }
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(PrimitiveResolver(), StringResolver(), KTypeResolver(), KFunctionResolver())
+    )
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -62,12 +57,9 @@ class KFunctionResolverTest {
 
     @Test
     fun `Constructor creates instance with provided parameter`() {
-
-        val context = object : Context {
-            override val configuration =
-                Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to "custom")))
-            override val rootResolver = context.rootResolver
-        }
+        val context = context.copy(
+            configuration = Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to "custom")))
+        )
 
         val constructor = SimpleClass::class.primaryConstructor!!
         val request = KFunctionRequest(SimpleClass::class, constructor)

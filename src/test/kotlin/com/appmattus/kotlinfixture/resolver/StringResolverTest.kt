@@ -8,10 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class StringResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = StringResolver()
-    }
+    private val context = TestContext(Configuration(), StringResolver())
 
     @Test
     fun `Unknown class returns Unresolved`() {

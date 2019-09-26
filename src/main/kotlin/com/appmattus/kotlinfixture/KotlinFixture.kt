@@ -21,31 +21,9 @@ import com.appmattus.kotlinfixture.resolver.UuidResolver
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
-class KotlinFixture(private val engine: Engine) {
+class Fixture(private val baseConfiguration: Configuration) {
 
-    inline operator fun <reified T : Any?> invoke(range: Iterable<T> = emptyList()): T {
-        val rangeShuffled = range.shuffled()
-        return if (rangeShuffled.isNotEmpty()) {
-            rangeShuffled.first()
-        } else {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
-            val result = create(typeOf<T>())
-            if (result is T) {
-                result
-            } else {
-                throw UnsupportedOperationException("Unable to handle ${T::class}")
-            }
-        }
-    }
-
-    fun create(type: KType): Any? {
-        return engine.resolve(type, Configuration())
-    }
-}
-
-class Engine(private val masterConfiguration: Configuration) {
-
-    private val resolver = CompositeResolver(
+    private val baseResolver = CompositeResolver(
         CharResolver(),
         StringResolver(),
         PrimitiveResolver(),
@@ -61,22 +39,6 @@ class Engine(private val masterConfiguration: Configuration) {
         KTypeResolver(),
         ArrayResolver()
     )
-
-    fun resolve(obj: Any?, configuration: Configuration): Any? {
-
-        val combinedConfiguration = masterConfiguration + configuration
-
-        val context = object : Context {
-            override val configuration = combinedConfiguration
-            override val rootResolver = resolver
-        }
-
-        return resolver.resolve(context, obj)
-    }
-}
-
-
-class Fixture(private val engine: Engine) {
 
     inline operator fun <reified T : Any?> invoke(
         range: Iterable<T> = emptyList(),
@@ -97,12 +59,15 @@ class Fixture(private val engine: Engine) {
     }
 
     fun create(type: KType, configuration: Configuration): Any? {
-        return engine.resolve(type, configuration)
+        val context = object : Context {
+            override val configuration = baseConfiguration + configuration
+            override val resolver = baseResolver
+        }
+        return context.resolve(type)
     }
 }
 
-fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) =
-    Fixture(Engine(ConfigurationBuilder().apply(init).build()))
+fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) = Fixture(ConfigurationBuilder().apply(init).build())
 
 class TestClass(val bob: String)
 
@@ -111,7 +76,7 @@ class TestClass2 {
 }
 
 class TestClass3 {
-    fun setBob(bob: String) {
+    fun setBob(@Suppress("UNUSED_PARAMETER") bob: String) {
 
     }
 }

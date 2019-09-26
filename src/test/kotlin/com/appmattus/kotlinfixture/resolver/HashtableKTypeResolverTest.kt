@@ -13,15 +13,10 @@ import kotlin.test.assertTrue
 
 @RunWith(Parameterized::class)
 class HashtableKTypeResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(
-            HashtableKTypeResolver(),
-            StringResolver(),
-            PrimitiveResolver(),
-            KTypeResolver()
-        )
-    }
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(HashtableKTypeResolver(), StringResolver(), PrimitiveResolver(), KTypeResolver())
+    )
 
     @Parameterized.Parameter(0)
     lateinit var type: KType

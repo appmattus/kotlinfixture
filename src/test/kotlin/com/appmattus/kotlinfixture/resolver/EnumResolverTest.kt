@@ -8,15 +8,9 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class EnumResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = EnumResolver()
-    }
+    private val context = TestContext(Configuration(), EnumResolver())
 
-    private val contextWithTestResolver = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(EnumResolver(), TestResolver())
-    }
+    private val contextWithTestResolver = context.copy(resolver = CompositeResolver(context.resolver, TestResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {

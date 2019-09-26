@@ -8,10 +8,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class ArrayResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
-    }
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
+    )
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -53,10 +53,7 @@ class ArrayResolverTest {
 
     @Test
     fun `Length of array matches configuration value of 3`() {
-        val context = object : Context {
-            override val configuration = Configuration(repeatCount = { 3 })
-            override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
-        }
+        val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
         val result = context.resolve(Array<String>::class)
 
@@ -67,10 +64,7 @@ class ArrayResolverTest {
 
     @Test
     fun `Length of array matches configuration value of 7`() {
-        val context = object : Context {
-            override val configuration = Configuration(repeatCount = { 7 })
-            override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
-        }
+        val context = context.copy(configuration = Configuration(repeatCount = { 7 }))
 
         val result = context.resolve(Array<String>::class)
 
@@ -79,13 +73,9 @@ class ArrayResolverTest {
         assertEquals(7, result.size)
     }
 
-
     @Test
     fun `Array of arrays`() {
-        val context = object : Context {
-            override val configuration = Configuration(repeatCount = { 3 })
-            override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
-        }
+        val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
         val result = context.resolve(Array<Array<String>>::class)
 

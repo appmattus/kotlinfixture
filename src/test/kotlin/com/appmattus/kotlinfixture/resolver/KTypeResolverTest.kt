@@ -9,10 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class KTypeResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(PrimitiveResolver(), KTypeResolver())
-    }
+    private val context = TestContext(Configuration(), CompositeResolver(PrimitiveResolver(), KTypeResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {

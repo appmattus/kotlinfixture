@@ -20,17 +20,16 @@ import kotlin.test.assertTrue
 
 @RunWith(Parameterized::class)
 class MapKTypeResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(
             MapKTypeResolver(),
             StringResolver(),
             PrimitiveResolver(),
             KTypeResolver(),
             KFunctionResolver(),
-            ClassResolver()
-        )
-    }
+            ClassResolver())
+    )
 
     @Parameterized.Parameter(0)
     lateinit var type: KType

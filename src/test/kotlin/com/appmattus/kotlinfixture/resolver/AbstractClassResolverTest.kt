@@ -9,15 +9,9 @@ import kotlin.test.assertTrue
 
 class AbstractClassResolverTest {
 
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = AbstractClassResolver()
-    }
+    private val context = TestContext(Configuration(), AbstractClassResolver())
 
-    private val contextWithTestResolver = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(AbstractClassResolver(), TestResolver())
-    }
+    private val contextWithTestResolver = context.copy(resolver = CompositeResolver(context.resolver, TestResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {

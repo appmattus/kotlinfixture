@@ -14,10 +14,7 @@ import kotlin.test.assertTrue
 class DateResolverTest {
     private val now = Date()
 
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = DateResolver()
-    }
+    private val context = TestContext(Configuration(), DateResolver())
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -36,10 +33,7 @@ class DateResolverTest {
 
     @Test
     fun `After specification gives date in the future`() {
-        val context = object : Context {
-            override val configuration = Configuration(dateSpecification = DateSpecification.After(now))
-            override val rootResolver = context.rootResolver
-        }
+        val context = context.copy(configuration = Configuration(dateSpecification = DateSpecification.After(now)))
 
         repeat(100) {
             val result = context.resolve(Date::class) as Date
@@ -52,10 +46,7 @@ class DateResolverTest {
 
     @Test
     fun `Before specification gives date in the past`() {
-        val context = object : Context {
-            override val configuration = Configuration(dateSpecification = DateSpecification.Before(now))
-            override val rootResolver = context.rootResolver
-        }
+        val context = context.copy(configuration = Configuration(dateSpecification = DateSpecification.Before(now)))
 
         repeat(100) {
             val result = context.resolve(Date::class) as Date
@@ -70,11 +61,9 @@ class DateResolverTest {
     fun `Between specification gives date between two dates`() {
         val minTime = now.time - TimeUnit.HOURS.toMillis(1)
 
-        val context = object : Context {
-            override val configuration =
-                Configuration(dateSpecification = DateSpecification.Between(Date(minTime), now))
-            override val rootResolver = context.rootResolver
-        }
+        val context = context.copy(
+            configuration = Configuration(dateSpecification = DateSpecification.Between(Date(minTime), now))
+        )
 
         repeat(100) {
             val result = context.resolve(Date::class) as Date

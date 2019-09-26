@@ -8,10 +8,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class UriResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = CompositeResolver(UriResolver(), UrlResolver())
-    }
+    private val context = TestContext(Configuration(), CompositeResolver(UriResolver(), UrlResolver()))
 
     @Test
     fun `Unknown class returns Unresolved`() {

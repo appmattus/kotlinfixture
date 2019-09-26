@@ -9,10 +9,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class BigIntegerResolverTest {
-    private val context = object : Context {
-        override val configuration = Configuration()
-        override val rootResolver = BigIntegerResolver()
-    }
+    private val context = TestContext(Configuration(), BigIntegerResolver())
 
     @Test
     fun `Unknown class returns Unresolved`() {
