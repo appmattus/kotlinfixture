@@ -1,23 +1,22 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.random.Random
 import kotlin.reflect.jvm.isAccessible
 
-class KFunctionResolver(private val configuration: Configuration) : Resolver {
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+class KFunctionResolver : Resolver {
+    override fun resolve(context: Context, obj: Any?): Any? {
         if (obj is KFunctionRequest) {
             return try {
                 obj.function.isAccessible = true
 
-                val overrides = configuration.properties.getOrDefault(obj.containingClass, emptyMap())
+                val overrides = context.configuration.properties.getOrDefault(obj.containingClass, emptyMap())
 
                 val parameters = obj.function.parameters.associateWith {
                     if (overrides.containsKey(it.name)) {
                         overrides[it.name]
                     } else {
-                        resolver.resolve(it.type, resolver)
+                        context.resolve(it.type)
                     }
                 }.filterKeys {
                     // Keep if the parameter has an override, is mandatory, or if optional at random

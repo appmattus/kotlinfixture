@@ -1,24 +1,28 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.config.Configuration
 import java.net.URL
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class UrlResolverTest {
-    private val resolver = UrlResolver()
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = UrlResolver()
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `URL class returns url`() {
-        val result = resolver.resolve(URL::class, resolver)
+        val result = context.resolve(URL::class)
 
         assertNotNull(result)
         assertEquals(URL::class, result::class)

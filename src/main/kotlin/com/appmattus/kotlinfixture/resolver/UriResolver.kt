@@ -6,6 +6,6 @@ import java.net.URL
 
 class UriResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? =
-        if (obj == URI::class) (resolver.resolve(URL::class, resolver) as URL).toURI() else Unresolved
+    override fun resolve(context: Context, obj: Any?): Any? =
+        if (obj == URI::class) (context.resolve(URL::class) as URL).toURI() else Unresolved
 }

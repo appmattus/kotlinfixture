@@ -1,32 +1,31 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.Configuration
 
-class PrimitiveArrayResolver(private val configuration: Configuration) : Resolver {
+class PrimitiveArrayResolver : Resolver {
 
     @Suppress("EXPERIMENTAL_API_USAGE")
-    override fun resolve(obj: Any?, resolver: Resolver): Any? = when (obj) {
-        BooleanArray::class -> resolver.resolve(::BooleanArray)
+    override fun resolve(context: Context, obj: Any?): Any? = when (obj) {
+        BooleanArray::class -> context.resolveConstructor(::BooleanArray)
 
-        ByteArray::class -> resolver.resolve(::ByteArray)
-        DoubleArray::class -> resolver.resolve(::DoubleArray)
-        FloatArray::class -> resolver.resolve(::FloatArray)
-        IntArray::class -> resolver.resolve(::IntArray)
-        LongArray::class -> resolver.resolve(::LongArray)
-        ShortArray::class -> resolver.resolve(::ShortArray)
+        ByteArray::class -> context.resolveConstructor(::ByteArray)
+        DoubleArray::class -> context.resolveConstructor(::DoubleArray)
+        FloatArray::class -> context.resolveConstructor(::FloatArray)
+        IntArray::class -> context.resolveConstructor(::IntArray)
+        LongArray::class -> context.resolveConstructor(::LongArray)
+        ShortArray::class -> context.resolveConstructor(::ShortArray)
 
-        UByteArray::class -> resolver.resolve(::UByteArray)
-        UIntArray::class -> resolver.resolve(::UIntArray)
-        ULongArray::class -> resolver.resolve(::ULongArray)
-        UShortArray::class -> resolver.resolve(::UShortArray)
+        UByteArray::class -> context.resolveConstructor(::UByteArray)
+        UIntArray::class -> context.resolveConstructor(::UIntArray)
+        ULongArray::class -> context.resolveConstructor(::ULongArray)
+        UShortArray::class -> context.resolveConstructor(::UShortArray)
 
         else -> Unresolved
     }
 
-    private inline fun <A, reified T> Resolver.resolve(param: (size: Int, init: (Int) -> T) -> A): A {
+    private inline fun <A, reified T> Context.resolveConstructor(param: (size: Int, init: (Int) -> T) -> A): A {
         return param(configuration.repeatCount()) {
-            resolve(T::class, this) as T
+            resolve(T::class) as T
         }
     }
 }

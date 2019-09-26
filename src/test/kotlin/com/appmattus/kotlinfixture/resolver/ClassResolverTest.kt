@@ -9,25 +9,27 @@ import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 
 class ClassResolverTest {
-    private val configuration = Configuration()
-    private val resolver = ClassResolver(configuration)
-    private val testResolver = CompositeResolver(
-        KFunctionResolver(configuration),
-        PrimitiveResolver(),
-        StringResolver(),
-        KTypeResolver()
-    )
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(
+            PrimitiveResolver(),
+            StringResolver(),
+            KTypeResolver(),
+            ClassResolver(),
+            KFunctionResolver()
+        )
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `Class with single constructor creates instance`() {
-        val result = resolver.resolve(SingleConstructor::class, testResolver)
+        val result = context.resolve(SingleConstructor::class)
 
         assertNotNull(result)
         assertEquals(SingleConstructor::class, result::class)
@@ -36,7 +38,7 @@ class ClassResolverTest {
     @Test
     fun `Class with multiple constructors picks one at random`() {
         assertIsRandom {
-            val result = resolver.resolve(MultipleConstructors::class, testResolver) as MultipleConstructors
+            val result = context.resolve(MultipleConstructors::class) as MultipleConstructors
             result.constructorCalled
         }
     }
@@ -44,23 +46,27 @@ class ClassResolverTest {
     @Test
     fun `Class with mutable parameter is set at random`() {
         assertIsRandom {
-            val result = resolver.resolve(MutableParameter::class, testResolver) as MutableParameter
+            val result = context.resolve(MutableParameter::class) as MutableParameter
             result.parameter
         }
     }
 
     @Test
     fun `Mutable parameter can be overridden`() {
-        val configuration = Configuration(properties = mapOf(MutableParameter::class to mapOf("parameter" to "custom")))
-        val resolver = ClassResolver(configuration)
+        val context = object : Context {
+            override val configuration = Configuration(
+                properties = mapOf(MutableParameter::class to mapOf("parameter" to "custom"))
+            )
+            override val rootResolver = context.rootResolver
+        }
 
-        val result = resolver.resolve(MutableParameter::class, testResolver) as MutableParameter
+        val result = context.resolve(MutableParameter::class) as MutableParameter
         assertEquals("custom", result.parameter)
     }
 
     @Test
     fun `Parameter unset if name matches constructor property name`() {
-        val result = resolver.resolve(MatchingNames::class, testResolver) as MatchingNames
+        val result = context.resolve(MatchingNames::class) as MatchingNames
         assertFalse(result.isInitialised)
     }
 

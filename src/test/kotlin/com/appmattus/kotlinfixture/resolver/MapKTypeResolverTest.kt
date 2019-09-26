@@ -20,15 +20,17 @@ import kotlin.test.assertTrue
 
 @RunWith(Parameterized::class)
 class MapKTypeResolverTest {
-    private val resolver =
-        CompositeResolver(
-            MapKTypeResolver(Configuration()),
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(
+            MapKTypeResolver(),
             StringResolver(),
             PrimitiveResolver(),
             KTypeResolver(),
-            KFunctionResolver(Configuration()),
-            ClassResolver(Configuration())
+            KFunctionResolver(),
+            ClassResolver()
         )
+    }
 
     @Parameterized.Parameter(0)
     lateinit var type: KType
@@ -36,10 +38,9 @@ class MapKTypeResolverTest {
     @Parameterized.Parameter(1)
     lateinit var resultClass: KClass<*>
 
-
     @Test
     fun `creates instance`() {
-        val result = resolver.resolve(type, resolver)
+        val result = context.resolve(type)
 
         assertTrue {
             resultClass.isInstance(result)

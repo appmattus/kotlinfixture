@@ -11,12 +11,19 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class KFunctionResolverTest {
-    private val resolver = KFunctionResolver(Configuration())
-    private val testResolver = CompositeResolver(PrimitiveResolver(), StringResolver(), KTypeResolver())
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(
+            PrimitiveResolver(),
+            StringResolver(),
+            KTypeResolver(),
+            KFunctionResolver()
+        )
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
@@ -26,7 +33,7 @@ class KFunctionResolverTest {
         val constructor = SimpleClass::class.primaryConstructor!!
         val request = KFunctionRequest(SimpleClass::class, constructor)
 
-        val result = resolver.resolve(request, testResolver)
+        val result = context.resolve(request)
 
         assertNotNull(result)
         assertEquals(SimpleClass::class, result::class)
@@ -38,7 +45,7 @@ class KFunctionResolverTest {
 
         assertFalse(SimpleObject.isInitialised)
 
-        resolver.resolve(request, testResolver)
+        context.resolve(request)
 
         assertTrue(SimpleObject.isInitialised)
     }
@@ -48,7 +55,7 @@ class KFunctionResolverTest {
         val request = KFunctionRequest(SimpleClass::class, SimpleClass::class.primaryConstructor!!)
 
         assertIsRandom {
-            val result = resolver.resolve(request, testResolver) as SimpleClass
+            val result = context.resolve(request) as SimpleClass
             result.value
         }
     }
@@ -56,14 +63,16 @@ class KFunctionResolverTest {
     @Test
     fun `Constructor creates instance with provided parameter`() {
 
-        val resolver = KFunctionResolver(
-            Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to "custom")))
-        )
+        val context = object : Context {
+            override val configuration =
+                Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to "custom")))
+            override val rootResolver = context.rootResolver
+        }
 
         val constructor = SimpleClass::class.primaryConstructor!!
         val request = KFunctionRequest(SimpleClass::class, constructor)
 
-        val result = resolver.resolve(request, testResolver) as SimpleClass
+        val result = context.resolve(request) as SimpleClass
 
         assertEquals("custom", result.value)
     }
@@ -74,7 +83,7 @@ class KFunctionResolverTest {
         val constructor = UnresolvableClass::class.primaryConstructor!!
         val request = KFunctionRequest(UnresolvableClass::class, constructor)
 
-        val result = resolver.resolve(request, testResolver)
+        val result = context.resolve(request)
 
         assertEquals(Unresolved, result)
     }
@@ -85,7 +94,7 @@ class KFunctionResolverTest {
         val request = KFunctionRequest(OptionalClass::class, constructor)
 
         assertIsRandom {
-            val result = resolver.resolve(request, testResolver) as OptionalClass
+            val result = context.resolve(request) as OptionalClass
             result.value == null
         }
     }
@@ -95,7 +104,7 @@ class KFunctionResolverTest {
         val constructor = MultiParamsClass::class.primaryConstructor!!
         val request = KFunctionRequest(MultiParamsClass::class, constructor)
 
-        val result = resolver.resolve(request, testResolver)
+        val result = context.resolve(request)
 
         assertNotNull(result)
         assertEquals(MultiParamsClass::class, result::class)

@@ -2,24 +2,28 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
+import com.appmattus.kotlinfixture.config.Configuration
 import java.util.UUID
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class UuidResolverTest {
-    private val resolver = UuidResolver()
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = UuidResolver()
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `UUID class returns uuid`() {
-        val result = resolver.resolve(UUID::class, resolver)
+        val result = context.resolve(UUID::class)
 
         assertNotNull(result)
         assertEquals(UUID::class, result::class)
@@ -28,7 +32,7 @@ class UuidResolverTest {
     @Test
     fun `Random values returned`() {
         assertIsRandom {
-            resolver.resolve(UUID::class, resolver)
+            context.resolve(UUID::class)
         }
     }
 }

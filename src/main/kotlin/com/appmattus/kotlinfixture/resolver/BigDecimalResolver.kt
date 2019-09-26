@@ -8,7 +8,7 @@ import kotlin.random.asJavaRandom
 
 class BigDecimalResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+    override fun resolve(context: Context, obj: Any?): Any? {
         return if (obj == BigDecimal::class) {
             BigDecimal(BigInteger(64, Random.asJavaRandom())).divide(BigDecimal.TEN)
         } else {

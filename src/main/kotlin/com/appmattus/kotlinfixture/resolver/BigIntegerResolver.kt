@@ -7,6 +7,6 @@ import kotlin.random.asJavaRandom
 
 class BigIntegerResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? =
+    override fun resolve(context: Context, obj: Any?): Any? =
         if (obj == BigInteger::class) BigInteger(64, Random.asJavaRandom()) else Unresolved
 }

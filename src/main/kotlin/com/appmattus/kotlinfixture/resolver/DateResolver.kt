@@ -1,15 +1,19 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.Configuration
 import java.util.Date
 import kotlin.random.Random
 
-class DateResolver(private val configuration: Configuration) : Resolver {
+class DateResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+    override fun resolve(context: Context, obj: Any?): Any? {
         return if (obj == Date::class) {
-            return Date(Random.nextLong(configuration.dateSpecification.min, configuration.dateSpecification.max))
+            return Date(
+                Random.nextLong(
+                    context.configuration.dateSpecification.min,
+                    context.configuration.dateSpecification.max
+                )
+            )
         } else {
             Unresolved
         }

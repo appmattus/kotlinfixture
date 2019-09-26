@@ -38,15 +38,17 @@ import kotlin.test.assertTrue
 
 @RunWith(Parameterized::class)
 class IterableKTypeResolverTest {
-    private val resolver =
-        CompositeResolver(
-            IterableKTypeResolver(Configuration()),
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(
+            IterableKTypeResolver(),
             StringResolver(),
             PrimitiveResolver(),
             KTypeResolver(),
-            KFunctionResolver(Configuration()),
-            ClassResolver(Configuration())
+            KFunctionResolver(),
+            ClassResolver()
         )
+    }
 
     @Parameterized.Parameter(0)
     lateinit var type: KType
@@ -57,7 +59,7 @@ class IterableKTypeResolverTest {
 
     @Test
     fun `creates instance`() {
-        val result = resolver.resolve(type, resolver)
+        val result = context.resolve(type)
 
         assertTrue {
             resultClass.isInstance(result)

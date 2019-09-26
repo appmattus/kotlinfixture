@@ -28,22 +28,4 @@ object ToDo {
     // - https://github.com/FlexTradeUKLtd/kfixture
     // - https://github.com/marcellogalhardo/kotlin-fixture/tree/develop
     // - https://blog.kotlin-academy.com/creating-a-random-instance-of-any-class-in-kotlin-b6168655b64a
-
-    /*
-        inline fun <reified T> instance(factory: Boolean = false, crossinline func: () -> T) {
-        if (!factory) {
-            fixture.customise().sameInstance(T::class.java, func())
-        } else {
-            fixture.customise().lazyInstance(T::class.java) { func() }
-        }
-    }
-
-    inline fun <reified T, reified U : T> subType() =
-        fixture.customise().useSubType(T::class.java, U::class.java)
-
-    inline fun <reified T> propertyOf(name: String, value: Any) =
-        fixture.customise().propertyOf(T::class.java, name, value)
-
-    fun repeatCount(count: Int) = fixture.customise().repeatCount(count)
-     */
 }

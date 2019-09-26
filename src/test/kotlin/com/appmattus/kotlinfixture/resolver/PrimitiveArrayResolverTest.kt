@@ -8,18 +8,21 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class PrimitiveArrayResolverTest {
-    private val resolver = PrimitiveArrayResolver(Configuration())
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver())
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, PrimitiveResolver())
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `BooleanArray class returns boolean array`() {
-        val result = resolver.resolve(BooleanArray::class, PrimitiveResolver())
+        val result = context.resolve(BooleanArray::class)
 
         assertNotNull(result)
         assertEquals(BooleanArray::class, result::class)
@@ -28,13 +31,13 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random BooleanArray values returned`() {
         assertIsRandom {
-            resolver.resolve(BooleanArray::class, PrimitiveResolver())
+            context.resolve(BooleanArray::class)
         }
     }
 
     @Test
     fun `ByteArray class returns byte array`() {
-        val result = resolver.resolve(ByteArray::class, PrimitiveResolver())
+        val result = context.resolve(ByteArray::class)
 
         assertNotNull(result)
         assertEquals(ByteArray::class, result::class)
@@ -43,13 +46,13 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random ByteArray values returned`() {
         assertIsRandom {
-            resolver.resolve(ByteArray::class, PrimitiveResolver())
+            context.resolve(ByteArray::class)
         }
     }
 
     @Test
     fun `DoubleArray class returns double array`() {
-        val result = resolver.resolve(DoubleArray::class, PrimitiveResolver())
+        val result = context.resolve(DoubleArray::class)
 
         assertNotNull(result)
         assertEquals(DoubleArray::class, result::class)
@@ -58,13 +61,13 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random DoubleArray values returned`() {
         assertIsRandom {
-            resolver.resolve(DoubleArray::class, PrimitiveResolver())
+            context.resolve(DoubleArray::class)
         }
     }
 
     @Test
     fun `FloatArray class returns float array`() {
-        val result = resolver.resolve(FloatArray::class, PrimitiveResolver())
+        val result = context.resolve(FloatArray::class)
 
         assertNotNull(result)
         assertEquals(FloatArray::class, result::class)
@@ -73,13 +76,13 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random FloatArray values returned`() {
         assertIsRandom {
-            resolver.resolve(FloatArray::class, PrimitiveResolver())
+            context.resolve(FloatArray::class)
         }
     }
 
     @Test
     fun `IntArray class returns int array`() {
-        val result = resolver.resolve(IntArray::class, PrimitiveResolver())
+        val result = context.resolve(IntArray::class)
 
         assertNotNull(result)
         assertEquals(IntArray::class, result::class)
@@ -88,13 +91,13 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random IntArray values returned`() {
         assertIsRandom {
-            resolver.resolve(IntArray::class, PrimitiveResolver())
+            context.resolve(IntArray::class)
         }
     }
 
     @Test
     fun `LongArray class returns long array`() {
-        val result = resolver.resolve(LongArray::class, PrimitiveResolver())
+        val result = context.resolve(LongArray::class)
 
         assertNotNull(result)
         assertEquals(LongArray::class, result::class)
@@ -103,13 +106,13 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random LongArray values returned`() {
         assertIsRandom {
-            resolver.resolve(LongArray::class, PrimitiveResolver())
+            context.resolve(LongArray::class)
         }
     }
 
     @Test
     fun `ShortArray class returns short array`() {
-        val result = resolver.resolve(ShortArray::class, PrimitiveResolver())
+        val result = context.resolve(ShortArray::class)
 
         assertNotNull(result)
         assertEquals(ShortArray::class, result::class)
@@ -118,14 +121,14 @@ class PrimitiveArrayResolverTest {
     @Test
     fun `Random ShortArray values returned`() {
         assertIsRandom {
-            resolver.resolve(ShortArray::class, PrimitiveResolver())
+            context.resolve(ShortArray::class)
         }
     }
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `UByteArray class returns ubyte array`() {
-        val result = resolver.resolve(UByteArray::class, PrimitiveResolver())
+        val result = context.resolve(UByteArray::class)
 
         assertNotNull(result)
         assertEquals(UByteArray::class, result::class)
@@ -135,14 +138,14 @@ class PrimitiveArrayResolverTest {
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `Random UByteArray values returned`() {
         assertIsRandom {
-            resolver.resolve(UByteArray::class, PrimitiveResolver())
+            context.resolve(UByteArray::class)
         }
     }
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `UIntArray class returns unit array`() {
-        val result = resolver.resolve(UIntArray::class, PrimitiveResolver())
+        val result = context.resolve(UIntArray::class)
 
         assertNotNull(result)
         assertEquals(UIntArray::class, result::class)
@@ -152,14 +155,14 @@ class PrimitiveArrayResolverTest {
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `Random UIntArray values returned`() {
         assertIsRandom {
-            resolver.resolve(UIntArray::class, PrimitiveResolver())
+            context.resolve(UIntArray::class)
         }
     }
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `ULongArray class returns ulong array`() {
-        val result = resolver.resolve(ULongArray::class, PrimitiveResolver())
+        val result = context.resolve(ULongArray::class)
 
         assertNotNull(result)
         assertEquals(ULongArray::class, result::class)
@@ -169,14 +172,14 @@ class PrimitiveArrayResolverTest {
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `Random ULongArray values returned`() {
         assertIsRandom {
-            resolver.resolve(ULongArray::class, PrimitiveResolver())
+            context.resolve(ULongArray::class)
         }
     }
 
     @Test
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `UShortArray class returns ushort array`() {
-        val result = resolver.resolve(UShortArray::class, PrimitiveResolver())
+        val result = context.resolve(UShortArray::class)
 
         assertNotNull(result)
         assertEquals(UShortArray::class, result::class)
@@ -186,15 +189,18 @@ class PrimitiveArrayResolverTest {
     @Suppress("EXPERIMENTAL_API_USAGE")
     fun `Random UShortArray values returned`() {
         assertIsRandom {
-            resolver.resolve(UShortArray::class, PrimitiveResolver())
+            context.resolve(UShortArray::class)
         }
     }
 
     @Test
     fun `Length of array matches configuration value of 3`() {
-        val resolver = PrimitiveArrayResolver(Configuration(repeatCount = { 3 }))
+        val context = object : Context {
+            override val configuration = Configuration(repeatCount = { 3 })
+            override val rootResolver = context.rootResolver
+        }
 
-        val result = resolver.resolve(IntArray::class, PrimitiveResolver())
+        val result = context.resolve(IntArray::class)
 
         result as IntArray
 
@@ -203,9 +209,12 @@ class PrimitiveArrayResolverTest {
 
     @Test
     fun `Length of array matches configuration value of 7`() {
-        val resolver = PrimitiveArrayResolver(Configuration(repeatCount = { 7 }))
+        val context = object : Context {
+            override val configuration = Configuration(repeatCount = { 7 })
+            override val rootResolver = context.rootResolver
+        }
 
-        val result = resolver.resolve(IntArray::class, PrimitiveResolver())
+        val result = context.resolve(IntArray::class)
 
         result as IntArray
 

@@ -14,20 +14,21 @@ import kotlin.test.assertTrue
 class CalendarResolverTest {
     private val now = Date()
 
-    private val dateResolver = DateResolver(Configuration(DateSpecification.Before(now)))
-
-    private val resolver = CalendarResolver()
+    private val context = object : Context {
+        override val configuration = Configuration(DateSpecification.Before(now))
+        override val rootResolver = CompositeResolver(CalendarResolver(), DateResolver())
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, dateResolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `Calendar class returns date`() {
-        val result = resolver.resolve(Calendar::class, dateResolver)
+        val result = context.resolve(Calendar::class)
 
         assertNotNull(result)
         assertTrue {
@@ -38,7 +39,7 @@ class CalendarResolverTest {
     @Test
     fun `Before specification gives date in the past`() {
         repeat(100) {
-            val result = resolver.resolve(Calendar::class, dateResolver) as Calendar
+            val result = context.resolve(Calendar::class) as Calendar
 
             assertTrue {
                 result.time.time <= now.time
@@ -49,7 +50,7 @@ class CalendarResolverTest {
     @Test
     fun `Random values returned`() {
         assertIsRandom {
-            resolver.resolve(Calendar::class, dateResolver)
+            context.resolve(Calendar::class)
         }
     }
 }

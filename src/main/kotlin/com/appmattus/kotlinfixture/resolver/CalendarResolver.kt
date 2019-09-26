@@ -7,9 +7,9 @@ import java.util.GregorianCalendar
 
 class CalendarResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+    override fun resolve(context: Context, obj: Any?): Any? {
         if (obj == Calendar::class) {
-            val date = resolver.resolve(Date::class, resolver) as Date
+            val date = context.resolve(Date::class) as Date
             return GregorianCalendar().apply {
                 time = date
             }

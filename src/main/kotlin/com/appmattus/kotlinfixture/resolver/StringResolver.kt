@@ -5,6 +5,6 @@ import java.util.UUID
 
 class StringResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? =
+    override fun resolve(context: Context, obj: Any?): Any? =
         if (obj == String::class) UUID.randomUUID().toString() else Unresolved
 }

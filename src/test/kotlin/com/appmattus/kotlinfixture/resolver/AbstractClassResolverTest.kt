@@ -2,16 +2,26 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
+import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class AbstractClassResolverTest {
-    private val resolver = AbstractClassResolver()
+
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = AbstractClassResolver()
+    }
+
+    private val contextWithTestResolver = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(AbstractClassResolver(), TestResolver())
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
@@ -20,7 +30,7 @@ class AbstractClassResolverTest {
 
     @Test
     fun `Abstract class with no subclasses returns Unresolved`() {
-        val result = resolver.resolve(EmptyAbstractClass::class, resolver)
+        val result = context.resolve(EmptyAbstractClass::class)
 
         assertEquals(Unresolved, result)
     }
@@ -31,13 +41,7 @@ class AbstractClassResolverTest {
 
     @Test
     fun `Abstract class with one subclass returns OnlySubclass`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
-        val result = resolver.resolve(SingleAbstractClass::class, testResolver)
+        val result = contextWithTestResolver.resolve(SingleAbstractClass::class)
 
         assertEquals(SingleAbstractClass.OnlySubclass::class, result)
     }
@@ -50,26 +54,14 @@ class AbstractClassResolverTest {
 
     @Test
     fun `Abstract class with multiple subclass returns random value`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
         assertIsRandom {
-            resolver.resolve(MultiAbstractClass::class, testResolver)
+            contextWithTestResolver.resolve(MultiAbstractClass::class)
         }
     }
 
     @Test
     fun `Abstract class with multiple subclass returns one of the subclasses`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
-        val result = resolver.resolve(MultiAbstractClass::class, testResolver)
+        val result = contextWithTestResolver.resolve(MultiAbstractClass::class)
 
         assertTrue {
             result == MultiAbstractClass.SubclassA::class || result == MultiAbstractClass.SubclassB::class
@@ -80,7 +72,7 @@ class AbstractClassResolverTest {
 
     @Test
     fun `Interface with no subclasses returns Unresolved`() {
-        val result = resolver.resolve(EmptyInterfaceClass::class, resolver)
+        val result = context.resolve(EmptyInterfaceClass::class)
 
         assertEquals(Unresolved, result)
     }
@@ -91,13 +83,7 @@ class AbstractClassResolverTest {
 
     @Test
     fun `Interface with one subclass returns OnlySubclass`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
-        val result = resolver.resolve(SingleInterfaceClass::class, testResolver)
+        val result = contextWithTestResolver.resolve(SingleInterfaceClass::class)
 
         assertEquals(SingleInterfaceClass.OnlySubclass::class, result)
     }
@@ -110,26 +96,14 @@ class AbstractClassResolverTest {
 
     @Test
     fun `Interface with multiple subclass returns random value`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
         assertIsRandom {
-            resolver.resolve(MultiInterfaceClass::class, testResolver)
+            contextWithTestResolver.resolve(MultiInterfaceClass::class)
         }
     }
 
     @Test
     fun `Interface with multiple subclass returns one of the subclasses`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
-        val result = resolver.resolve(MultiInterfaceClass::class, testResolver)
+        val result = contextWithTestResolver.resolve(MultiInterfaceClass::class)
 
         assertTrue {
             result == MultiInterfaceClass.SubclassA::class || result == MultiInterfaceClass.SubclassB::class

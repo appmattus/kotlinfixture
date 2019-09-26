@@ -5,6 +5,6 @@ import java.net.URL
 
 class UrlResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? =
+    override fun resolve(context: Context, obj: Any?): Any? =
         if (obj == URL::class) URL("http://localhost") else Unresolved
 }

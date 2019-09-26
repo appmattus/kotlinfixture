@@ -8,25 +8,28 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class ArrayResolverTest {
-    private val resolver = CompositeResolver(ArrayResolver(Configuration()), StringResolver(), PrimitiveResolver())
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `Primitive array class returns Unresolved`() {
-        val result = resolver.resolve(IntArray::class, resolver)
+        val result = context.resolve(IntArray::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `Array-Int class returns int class array`() {
-        val result = resolver.resolve(Array<Int>::class, resolver)
+        val result = context.resolve(Array<Int>::class)
 
         assertNotNull(result)
         assertEquals(Array<Int>::class, result::class)
@@ -34,7 +37,7 @@ class ArrayResolverTest {
 
     @Test
     fun `Array-String class returns string array`() {
-        val result = resolver.resolve(Array<String>::class, resolver)
+        val result = context.resolve(Array<String>::class)
 
         assertNotNull(result)
         assertEquals(Array<String>::class, result::class)
@@ -43,16 +46,19 @@ class ArrayResolverTest {
     @Test
     fun `Random values returned`() {
         assertIsRandom {
-            resolver.resolve(Array<String>::class, resolver)
+            context.resolve(Array<String>::class)
         }
     }
 
 
     @Test
     fun `Length of array matches configuration value of 3`() {
-        val resolver = ArrayResolver(Configuration(repeatCount = { 3 }))
+        val context = object : Context {
+            override val configuration = Configuration(repeatCount = { 3 })
+            override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
+        }
 
-        val result = resolver.resolve(Array<String>::class, StringResolver())
+        val result = context.resolve(Array<String>::class)
 
         result as Array<*>
 
@@ -61,9 +67,12 @@ class ArrayResolverTest {
 
     @Test
     fun `Length of array matches configuration value of 7`() {
-        val resolver = ArrayResolver(Configuration(repeatCount = { 7 }))
+        val context = object : Context {
+            override val configuration = Configuration(repeatCount = { 7 })
+            override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
+        }
 
-        val result = resolver.resolve(Array<String>::class, StringResolver())
+        val result = context.resolve(Array<String>::class)
 
         result as Array<*>
 
@@ -73,9 +82,12 @@ class ArrayResolverTest {
 
     @Test
     fun `Array of arrays`() {
-        val resolver = CompositeResolver(ArrayResolver(Configuration(repeatCount = { 3 })), StringResolver())
+        val context = object : Context {
+            override val configuration = Configuration(repeatCount = { 3 })
+            override val rootResolver = CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
+        }
 
-        val result = resolver.resolve(Array<Array<String>>::class, resolver)
+        val result = context.resolve(Array<Array<String>>::class)
 
         @Suppress("UNCHECKED_CAST")
         result as Array<Array<String>>

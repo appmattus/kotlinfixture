@@ -6,14 +6,14 @@ import kotlin.reflect.KClass
 
 class AbstractClassResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+    override fun resolve(context: Context, obj: Any?): Any? {
         if ((obj as? KClass<*>)?.isAbstract == true) {
             val classInfo = Classes.classGraph.getClassInfo(obj.java.name)
 
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
             classes.shuffled().forEach { subclass ->
-                val result = resolver.resolve(subclass.loadClass().kotlin, resolver)
+                val result = context.resolve(subclass.loadClass().kotlin)
                 if (result != Unresolved) {
                     return result
                 }

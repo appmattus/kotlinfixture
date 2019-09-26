@@ -5,10 +5,10 @@ import kotlin.reflect.KClass
 
 class SealedClassResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+    override fun resolve(context: Context, obj: Any?): Any? {
         if ((obj as? KClass<*>)?.isSealed == true) {
             obj.sealedSubclasses.shuffled().forEach { subclass ->
-                val result = resolver.resolve(subclass, resolver)
+                val result = context.resolve(subclass)
                 if (result != Unresolved) {
                     return result
                 }

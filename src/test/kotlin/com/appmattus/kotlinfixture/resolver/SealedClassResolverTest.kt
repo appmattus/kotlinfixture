@@ -2,16 +2,26 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
+import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class SealedClassResolverTest {
-    private val resolver = SealedClassResolver()
+
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = SealedClassResolver()
+    }
+
+    private val contextWithTestResolver = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = CompositeResolver(SealedClassResolver(), TestResolver())
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
@@ -20,7 +30,7 @@ class SealedClassResolverTest {
 
     @Test
     fun `Sealed class with no subclasses returns Unresolved`() {
-        val result = resolver.resolve(EmptySealedClass::class, resolver)
+        val result = context.resolve(EmptySealedClass::class)
 
         assertEquals(Unresolved, result)
     }
@@ -31,13 +41,7 @@ class SealedClassResolverTest {
 
     @Test
     fun `Sealed class with one subclass returns OnlySubclass`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
-        val result = resolver.resolve(SingleSealedClass::class, testResolver)
+        val result = contextWithTestResolver.resolve(SingleSealedClass::class)
 
         assertEquals(SingleSealedClass.OnlySubclass::class, result)
     }
@@ -49,26 +53,14 @@ class SealedClassResolverTest {
 
     @Test
     fun `Sealed class with multiple subclass returns random value`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
         assertIsRandom {
-            resolver.resolve(MultiSealedClass::class, testResolver)
+            contextWithTestResolver.resolve(MultiSealedClass::class)
         }
     }
 
     @Test
     fun `Sealed class with multiple subclass returns one of the subclasses`() {
-        val testResolver = object : Resolver {
-            override fun resolve(obj: Any?, resolver: Resolver): Any? {
-                return obj
-            }
-        }
-
-        val result = resolver.resolve(MultiSealedClass::class, testResolver)
+        val result = contextWithTestResolver.resolve(MultiSealedClass::class)
 
         assertTrue {
             result == MultiSealedClass.SubclassA::class || result == MultiSealedClass.SubclassB::class

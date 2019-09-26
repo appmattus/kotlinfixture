@@ -1,7 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.Configuration
 import java.util.AbstractQueue
 import java.util.AbstractSequentialList
 import java.util.ArrayDeque
@@ -32,14 +31,14 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-class IterableKTypeResolver(private val configuration: Configuration) : Resolver {
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+class IterableKTypeResolver : Resolver {
+    override fun resolve(context: Context, obj: Any?): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.isMarkedNullable && Random.nextBoolean()) {
                 return null
             }
 
-            val repeatCount = configuration.repeatCount()
+            val repeatCount = context.configuration.repeatCount()
 
             val collection = when (obj.classifier as KClass<*>) {
 
@@ -100,7 +99,7 @@ class IterableKTypeResolver(private val configuration: Configuration) : Resolver
                 val argType = obj.arguments.first().type
 
                 repeat(repeatCount) {
-                    collection.add(resolver.resolve(argType, resolver))
+                    collection.add(context.resolve(argType))
                 }
 
                 println(collection::class)

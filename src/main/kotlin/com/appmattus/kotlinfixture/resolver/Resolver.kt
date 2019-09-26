@@ -1,5 +1,5 @@
 package com.appmattus.kotlinfixture.resolver
 
 interface Resolver {
-    fun resolve(obj: Any?, resolver: Resolver): Any?
+    fun resolve(context: Context, obj: Any?): Any?
 }

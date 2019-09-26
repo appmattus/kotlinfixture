@@ -1,30 +1,29 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.reflect.KClass
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 
-class ClassResolver(private val configuration: Configuration) : Resolver {
+class ClassResolver : Resolver {
 
-    override fun resolve(obj: Any?, resolver: Resolver): Any? {
+    override fun resolve(context: Context, obj: Any?): Any? {
         if (obj is KClass<*>) {
 
             val constructorParameterNames = obj.constructorParameterNames()
 
-            val overrides = configuration.properties.getOrDefault(obj, emptyMap())
+            val overrides = context.configuration.properties.getOrDefault(obj, emptyMap())
 
             obj.constructors.shuffled().forEach { constructor ->
-                val result = resolver.resolve(KFunctionRequest(obj, constructor), resolver)
+                val result = context.resolve(KFunctionRequest(obj, constructor))
                 if (result != Unresolved) {
 
                     obj.settableMutableProperties()
                         .filterNot { constructorParameterNames.contains(it.name) }
                         .forEach { property ->
                             val propertyResult = overrides.getOrElse(property.name) {
-                                resolver.resolve(property.returnType, resolver)
+                                context.resolve(property.returnType)
                             }
 
                             if (propertyResult == Unresolved) {

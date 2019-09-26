@@ -14,18 +14,21 @@ import kotlin.test.assertTrue
 class DateResolverTest {
     private val now = Date()
 
-    private val resolver = DateResolver(Configuration())
+    private val context = object : Context {
+        override val configuration = Configuration()
+        override val rootResolver = DateResolver()
+    }
 
     @Test
     fun `Unknown class returns Unresolved`() {
-        val result = resolver.resolve(Number::class, resolver)
+        val result = context.resolve(Number::class)
 
         assertEquals(Unresolved, result)
     }
 
     @Test
     fun `Date class returns date`() {
-        val result = resolver.resolve(Date::class, resolver)
+        val result = context.resolve(Date::class)
 
         assertNotNull(result)
         assertEquals(Date::class, result::class)
@@ -33,10 +36,13 @@ class DateResolverTest {
 
     @Test
     fun `After specification gives date in the future`() {
-        val futureResolver = DateResolver(Configuration(DateSpecification.After(now)))
+        val context = object : Context {
+            override val configuration = Configuration(dateSpecification = DateSpecification.After(now))
+            override val rootResolver = context.rootResolver
+        }
 
         repeat(100) {
-            val result = futureResolver.resolve(Date::class, resolver) as Date
+            val result = context.resolve(Date::class) as Date
 
             assertTrue {
                 result.time >= now.time
@@ -46,10 +52,13 @@ class DateResolverTest {
 
     @Test
     fun `Before specification gives date in the past`() {
-        val futureResolver = DateResolver(Configuration(DateSpecification.Before(now)))
+        val context = object : Context {
+            override val configuration = Configuration(dateSpecification = DateSpecification.Before(now))
+            override val rootResolver = context.rootResolver
+        }
 
         repeat(100) {
-            val result = futureResolver.resolve(Date::class, resolver) as Date
+            val result = context.resolve(Date::class) as Date
 
             assertTrue {
                 result.time <= now.time
@@ -61,10 +70,14 @@ class DateResolverTest {
     fun `Between specification gives date between two dates`() {
         val minTime = now.time - TimeUnit.HOURS.toMillis(1)
 
-        val futureResolver = DateResolver(Configuration(DateSpecification.Between(Date(minTime), now)))
+        val context = object : Context {
+            override val configuration =
+                Configuration(dateSpecification = DateSpecification.Between(Date(minTime), now))
+            override val rootResolver = context.rootResolver
+        }
 
         repeat(100) {
-            val result = futureResolver.resolve(Date::class, resolver) as Date
+            val result = context.resolve(Date::class) as Date
 
             assertTrue {
                 result.time >= minTime
@@ -76,7 +89,7 @@ class DateResolverTest {
     @Test
     fun `Random values returned`() {
         assertIsRandom {
-            resolver.resolve(Date::class, resolver)
+            context.resolve(Date::class)
         }
     }
 }
