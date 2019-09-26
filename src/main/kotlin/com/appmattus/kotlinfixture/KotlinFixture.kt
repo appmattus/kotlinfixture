@@ -2,16 +2,24 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
 import com.appmattus.kotlinfixture.resolver.ArrayResolver
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
 import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
+import com.appmattus.kotlinfixture.resolver.CalendarResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
+import com.appmattus.kotlinfixture.resolver.ClassResolver
 import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.Context
+import com.appmattus.kotlinfixture.resolver.DateResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
+import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
+import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
+import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
+import com.appmattus.kotlinfixture.resolver.PrimitiveArrayResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveResolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
@@ -33,11 +41,24 @@ class Fixture(private val baseConfiguration: Configuration) {
         BigIntegerResolver(),
         UuidResolver(),
         EnumResolver(),
+        CalendarResolver(),
+        DateResolver(),
+
         ObjectResolver(),
         SealedClassResolver(),
+
+        ArrayResolver(),
+
+        PrimitiveArrayResolver(),
+        HashtableKTypeResolver(),
         IterableKTypeResolver(),
+        MapKTypeResolver(),
         KTypeResolver(),
-        ArrayResolver()
+        KFunctionResolver(),
+
+        AbstractClassResolver(),
+
+        ClassResolver()
     )
 
     inline operator fun <reified T : Any?> invoke(
