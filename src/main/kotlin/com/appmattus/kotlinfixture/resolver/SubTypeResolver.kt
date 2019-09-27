@@ -10,7 +10,6 @@ class SubTypeResolver : Resolver {
 
         if (obj is KClass<*>) {
             context.configuration.subTypes[obj]?.let {
-                println(it)
                 return context.resolve(it)
             }
         }

@@ -31,9 +31,6 @@ class ConfigurationBuilder {
         propertyOf(T::class, name.name, generator)
 
     fun propertyOf(clazz: KClass<*>, name: String, generator: () -> Any?) {
-
-        println("propertyOf: clazz=$clazz, name=$name, value=${generator()}")
-
         val classProperties = configuration.properties.getOrElse(clazz) { emptyMap() }
 
         val allProperties = configuration.properties.toMutableMap().apply {

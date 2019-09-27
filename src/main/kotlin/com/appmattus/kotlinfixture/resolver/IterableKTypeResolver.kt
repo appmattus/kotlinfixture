@@ -86,7 +86,7 @@ class IterableKTypeResolver : Resolver {
                 CopyOnWriteArraySet::class -> CopyOnWriteArraySet()
                 CopyOnWriteArrayList::class -> CopyOnWriteArrayList()
                 ConcurrentLinkedQueue::class -> ConcurrentLinkedQueue()
-                DelayQueue::class -> DelayQueue<Delayed>() as MutableCollection<Any?>
+                DelayQueue::class -> @Suppress("UNCHECKED_CAST") (DelayQueue<Delayed>() as MutableCollection<Any?>)
                 LinkedBlockingQueue::class -> LinkedBlockingQueue()
                 PriorityBlockingQueue::class -> PriorityBlockingQueue()
 
@@ -102,9 +102,6 @@ class IterableKTypeResolver : Resolver {
                 repeat(repeatCount) {
                     collection.add(context.resolve(argType))
                 }
-
-                println(collection::class)
-                println(collection)
 
                 return collection
             }

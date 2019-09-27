@@ -22,8 +22,6 @@ class UriResolverTest {
     fun `URI class returns uri`() {
         val result = context.resolve(URI::class)
 
-        println(result)
-
         assertNotNull(result)
         assertEquals(URI::class, result::class)
     }
