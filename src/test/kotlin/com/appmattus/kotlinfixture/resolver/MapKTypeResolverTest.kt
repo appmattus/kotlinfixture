@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.config.Configuration
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -28,7 +29,8 @@ class MapKTypeResolverTest {
             PrimitiveResolver(),
             KTypeResolver(),
             KFunctionResolver(),
-            ClassResolver())
+            ClassResolver()
+        )
     )
 
     @Parameterized.Parameter(0)

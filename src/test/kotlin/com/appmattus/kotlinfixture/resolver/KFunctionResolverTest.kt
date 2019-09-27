@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
@@ -81,12 +82,12 @@ class KFunctionResolverTest {
     }
 
     @Test
-    fun `Constructor with optional parameter is sometimes null`() {
-        val constructor = OptionalClass::class.primaryConstructor!!
-        val request = KFunctionRequest(OptionalClass::class, constructor)
+    fun `Constructor with nullable parameter is sometimes null`() {
+        val constructor = NullableClass::class.primaryConstructor!!
+        val request = KFunctionRequest(NullableClass::class, constructor)
 
         assertIsRandom {
-            val result = context.resolve(request) as OptionalClass
+            val result = context.resolve(request) as NullableClass
             result.value == null
         }
     }
@@ -102,7 +103,7 @@ class KFunctionResolverTest {
         assertEquals(MultiParamsClass::class, result::class)
     }
 
-    data class OptionalClass(val value: String?)
+    data class NullableClass(val value: String?)
 
     data class UnresolvableClass(val value: Number)
 

@@ -1,12 +1,11 @@
-import com.appmattus.kotlinfixture.Fixture
-import com.appmattus.kotlinfixture.assertIsRandom
-import com.appmattus.kotlinfixture.config.Configuration
+package com.appmattus.kotlinfixture
+
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class FixtureTest {
+class FixtureInvokeTypeTest {
 
-    val fixture = Fixture(Configuration())
+    val fixture = kotlinFixture()
 
     @Test
     fun `can create int`() {

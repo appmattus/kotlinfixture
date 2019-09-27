@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 
 class CompositeResolver(private vararg val resolvers: Resolver) : Resolver, Iterable<Resolver> {

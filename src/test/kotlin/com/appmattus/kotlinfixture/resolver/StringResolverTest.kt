@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
@@ -18,7 +19,7 @@ class StringResolverTest {
     }
 
     @Test
-    fun `String class returns int`() {
+    fun `String class returns string`() {
         val result = context.resolve(String::class)
 
         assertNotNull(result)

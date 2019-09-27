@@ -1,6 +1,7 @@
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.resolver.Resolver
 
 interface Context {
     val configuration: Configuration

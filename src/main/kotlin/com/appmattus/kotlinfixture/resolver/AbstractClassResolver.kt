@@ -1,6 +1,7 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Classes
+import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KClass
 

@@ -28,4 +28,23 @@ object ToDo {
     // - https://github.com/FlexTradeUKLtd/kfixture
     // - https://github.com/marcellogalhardo/kotlin-fixture/tree/develop
     // - https://blog.kotlin-academy.com/creating-a-random-instance-of-any-class-in-kotlin-b6168655b64a
+
+    // TODO Make everything internal that should be internal
+
+    // TODO Add tests:
+    // TODO - CompositeResolver
+    // TODO - Add tests for HashtableKTypeResolver, IterableKTypeResolver, MapKTypeResolver
+    // TODO   - Verify repeatCount matches array length
+    // TODO   - Verify unknown class returns Unresolved
+    // TODO   - Verify unknown type parameter returns Unresolved
+    // TODO - Test configuration overloading in Configuration
+    // TODO - Test ConfigurationBuilder
+    // TODO - Test DateSpecification
+    // TODO - Parameterize PrimitiveResolverTest
+
+    // TODO Write readme/documentation
+    // TODO Setup CI
+    // TODO Setup jcenter publishing
+
+    // TODO Move this list to github issues?
 }

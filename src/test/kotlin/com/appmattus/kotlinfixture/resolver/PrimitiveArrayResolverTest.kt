@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
@@ -194,9 +195,7 @@ class PrimitiveArrayResolverTest {
     fun `Length of array matches configuration value of 3`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
-        val result = context.resolve(IntArray::class)
-
-        result as IntArray
+        val result = context.resolve(IntArray::class) as IntArray
 
         assertEquals(3, result.size)
     }
@@ -205,9 +204,7 @@ class PrimitiveArrayResolverTest {
     fun `Length of array matches configuration value of 7`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 7 }))
 
-        val result = context.resolve(IntArray::class)
-
-        result as IntArray
+        val result = context.resolve(IntArray::class) as IntArray
 
         assertEquals(7, result.size)
     }

@@ -10,7 +10,6 @@ import com.appmattus.kotlinfixture.resolver.CalendarResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
 import com.appmattus.kotlinfixture.resolver.ClassResolver
 import com.appmattus.kotlinfixture.resolver.CompositeResolver
-import com.appmattus.kotlinfixture.resolver.Context
 import com.appmattus.kotlinfixture.resolver.DateResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
@@ -26,6 +25,7 @@ import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
 import com.appmattus.kotlinfixture.resolver.UrlResolver
 import com.appmattus.kotlinfixture.resolver.UuidResolver
+import kotlin.random.Random
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
@@ -90,15 +90,19 @@ class Fixture(private val baseConfiguration: Configuration) {
 
 fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) = Fixture(ConfigurationBuilder().apply(init).build())
 
-class TestClass(val bob: String)
+class TestClass(val bob: String) {
+    override fun toString() = "TestClass [bob=$bob]"
+}
 
 class TestClass2 {
     lateinit var bob: String
+
+    override fun toString() = "TestClass2 [bob=$bob]"
 }
 
 class TestClass3 {
     fun setBob(@Suppress("UNUSED_PARAMETER") bob: String) {
-
+        println("TestClass3 [bob=$bob]")
     }
 }
 
@@ -109,9 +113,9 @@ fun main() {
 
         subType<Number, Int>()
 
-        propertyOf<TestClass>("bob", "hello")
-        propertyOf(TestClass::bob, "hello")
-        propertyOf(TestClass2::bob, "hello")
+        propertyOf<TestClass>("bob") { "hello" + Random.nextInt(1, 5) }
+        property(TestClass::bob) { "hi" }
+        property(TestClass2::bob) { "hello" }
 
         instance { TestClass3().apply { setBob("hi") } }
     }
@@ -124,6 +128,12 @@ fun main() {
     })
 
     println(fixture(listOf(1, 2, 3)))
+
+
+    println(fixture<TestClass>())
+    println(fixture<TestClass2>())
+    println(fixture<TestClass3>())
+
 
     /*println(fixture<Number>())
     println(fixture<Number> {

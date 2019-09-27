@@ -24,18 +24,20 @@ class ConfigurationBuilder {
     }
 
 
-    inline fun <reified T> propertyOf(name: String, value: Any?) = propertyOf(T::class, name, value)
+    inline fun <reified T> propertyOf(name: String, noinline generator: () -> Any?) =
+        propertyOf(T::class, name, generator)
 
-    inline fun <reified T, U> propertyOf(name: KProperty1<T, U>, value: U) = propertyOf(T::class, name.name, value)
+    inline fun <reified T, U> property(name: KProperty1<T, U>, noinline generator: () -> U) =
+        propertyOf(T::class, name.name, generator)
 
-    fun propertyOf(clazz: KClass<*>, name: String, value: Any?) {
+    fun propertyOf(clazz: KClass<*>, name: String, generator: () -> Any?) {
 
-        println("propertyOf: clazz=$clazz, name=$name, value=$value")
+        println("propertyOf: clazz=$clazz, name=$name, value=${generator()}")
 
         val classProperties = configuration.properties.getOrElse(clazz) { emptyMap() }
 
         val allProperties = configuration.properties.toMutableMap().apply {
-            put(clazz, classProperties + (name to value))
+            put(clazz, classProperties + (name to generator()))
         }
 
         configuration = configuration.copy(properties = allProperties)

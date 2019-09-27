@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
@@ -55,9 +56,7 @@ class ArrayResolverTest {
     fun `Length of array matches configuration value of 3`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
-        val result = context.resolve(Array<String>::class)
-
-        result as Array<*>
+        val result = context.resolve(Array<String>::class) as Array<*>
 
         assertEquals(3, result.size)
     }
@@ -66,9 +65,7 @@ class ArrayResolverTest {
     fun `Length of array matches configuration value of 7`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 7 }))
 
-        val result = context.resolve(Array<String>::class)
-
-        result as Array<*>
+        val result = context.resolve(Array<String>::class) as Array<*>
 
         assertEquals(7, result.size)
     }
@@ -77,10 +74,8 @@ class ArrayResolverTest {
     fun `Array of arrays`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
-        val result = context.resolve(Array<Array<String>>::class)
-
         @Suppress("UNCHECKED_CAST")
-        result as Array<Array<String>>
+        val result = context.resolve(Array<Array<String>>::class) as Array<Array<String>>
 
         assertEquals(3, result.size)
         result.forEach {

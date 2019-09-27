@@ -1,6 +1,5 @@
 package com.appmattus.kotlinfixture
 
-import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.Resolver
 import kotlin.reflect.full.memberProperties
@@ -13,11 +12,7 @@ class FixtureTest {
     @Test
     fun containsAllResolvers() {
 
-        val fixture = Fixture(Configuration())
-        val property = Fixture::class.memberProperties.first { it.name == "baseResolver" }.apply {
-            isAccessible = true
-        }
-        val actualResolvers = (property.call(fixture) as CompositeResolver)
+        val actualResolvers = kotlinFixture().baseResolver
             .toList()
             .map { it::class.java.simpleName }
             .sorted()
@@ -34,4 +29,13 @@ class FixtureTest {
             missingResolvers.isEmpty()
         }
     }
+
+    private val Fixture.baseResolver: CompositeResolver
+        get() {
+            val property = Fixture::class.memberProperties.first { it.name == "baseResolver" }.apply {
+                isAccessible = true
+            }
+
+            return property.get(this) as CompositeResolver
+        }
 }
