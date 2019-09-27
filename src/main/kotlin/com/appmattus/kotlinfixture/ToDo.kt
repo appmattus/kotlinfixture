@@ -32,7 +32,6 @@ object ToDo {
     // TODO Make everything internal that should be internal
 
     // TODO Add tests:
-    // TODO - CompositeResolver
     // TODO - Add tests for HashtableKTypeResolver, IterableKTypeResolver, MapKTypeResolver
     // TODO   - Verify repeatCount matches array length
     // TODO   - Verify unknown class returns Unresolved
@@ -45,6 +44,8 @@ object ToDo {
     // TODO Write readme/documentation
     // TODO Setup CI
     // TODO Setup jcenter publishing
+
+    // TODO Remove println statements
 
     // TODO Move this list to github issues?
 }

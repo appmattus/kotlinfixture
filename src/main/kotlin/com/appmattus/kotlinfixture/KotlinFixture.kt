@@ -22,6 +22,7 @@ import com.appmattus.kotlinfixture.resolver.PrimitiveArrayResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveResolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
+import com.appmattus.kotlinfixture.resolver.SubTypeResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
 import com.appmattus.kotlinfixture.resolver.UrlResolver
 import com.appmattus.kotlinfixture.resolver.UuidResolver
@@ -55,6 +56,8 @@ class Fixture(private val baseConfiguration: Configuration) {
         MapKTypeResolver(),
         KTypeResolver(),
         KFunctionResolver(),
+
+        SubTypeResolver(),
 
         AbstractClassResolver(),
 
@@ -111,7 +114,7 @@ fun main() {
     val fixture = kotlinFixture {
         repeatCount { 5 }
 
-        subType<Number, Int>()
+        subType<Number, Double>()
 
         propertyOf<TestClass>("bob") { "hello" + Random.nextInt(1, 5) }
         property(TestClass::bob) { "hi" }
@@ -135,8 +138,8 @@ fun main() {
     println(fixture<TestClass3>())
 
 
-    /*println(fixture<Number>())
+    println(fixture<Number>())
     println(fixture<Number> {
         subType<Number, Int>()
-    })*/
+    })
 }
