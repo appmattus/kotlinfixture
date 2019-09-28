@@ -4,6 +4,7 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import kotlin.reflect.KClass
@@ -11,10 +12,12 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-open class PrimitiveArrayResolverTest {
-    val context = TestContext(Configuration(), CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver()))
+@RunWith(Enclosed::class)
+class PrimitiveArrayResolverTest {
 
-    class Single : PrimitiveArrayResolverTest() {
+    class Single {
+        val context = TestContext(Configuration(), CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver()))
+
         @Test
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
@@ -42,7 +45,9 @@ open class PrimitiveArrayResolverTest {
     }
 
     @RunWith(Parameterized::class)
-    class Parameterised : PrimitiveArrayResolverTest() {
+    class Parameterised {
+        val context = TestContext(Configuration(), CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver()))
+
         @Parameterized.Parameter(0)
         lateinit var clazz: KClass<*>
 
@@ -60,25 +65,25 @@ open class PrimitiveArrayResolverTest {
                 context.resolve(clazz)
             }
         }
-    }
 
-    companion object {
-        @JvmStatic
-        @Suppress("EXPERIMENTAL_API_USAGE")
-        @Parameterized.Parameters(name = "{0}")
-        fun data() = arrayOf(
-            arrayOf(BooleanArray::class),
-            arrayOf(ByteArray::class),
-            arrayOf(DoubleArray::class),
-            arrayOf(FloatArray::class),
-            arrayOf(IntArray::class),
-            arrayOf(LongArray::class),
-            arrayOf(ShortArray::class),
+        companion object {
+            @JvmStatic
+            @Suppress("EXPERIMENTAL_API_USAGE")
+            @Parameterized.Parameters(name = "{0}")
+            fun data() = arrayOf(
+                arrayOf(BooleanArray::class),
+                arrayOf(ByteArray::class),
+                arrayOf(DoubleArray::class),
+                arrayOf(FloatArray::class),
+                arrayOf(IntArray::class),
+                arrayOf(LongArray::class),
+                arrayOf(ShortArray::class),
 
-            arrayOf(UByteArray::class),
-            arrayOf(UIntArray::class),
-            arrayOf(ULongArray::class),
-            arrayOf(UShortArray::class)
-        )
+                arrayOf(UByteArray::class),
+                arrayOf(UIntArray::class),
+                arrayOf(ULongArray::class),
+                arrayOf(UShortArray::class)
+            )
+        }
     }
 }
