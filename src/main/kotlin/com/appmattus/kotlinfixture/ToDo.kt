@@ -39,7 +39,6 @@ object ToDo {
     // TODO - Test configuration overloading in Configuration
     // TODO - Test ConfigurationBuilder
     // TODO - Test DateSpecification
-    // TODO - Parameterize PrimitiveResolverTest
 
     // TODO Write readme/documentation
     // TODO Setup CI
@@ -49,4 +48,6 @@ object ToDo {
     // TODO Remove println statements
 
     // TODO Move this list to github issues?
+
+    // TODO Rename library? fikstür or fiksture
 }
