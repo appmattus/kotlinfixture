@@ -7,7 +7,7 @@ import kotlin.reflect.KClass
 
 class AbstractClassResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.isAbstract == true) {
             val classInfo = Classes.classGraph.getClassInfo(obj.java.name)
 

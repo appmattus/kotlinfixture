@@ -8,12 +8,12 @@ import kotlin.reflect.KType
 
 class KTypeResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         return if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.isMarkedNullable && Random.nextBoolean()) {
                 null
             } else {
-                context.resolve(obj.classifier)
+                context.resolve(obj.classifier!!)
             }
         } else {
             Unresolved

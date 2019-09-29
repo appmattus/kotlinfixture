@@ -7,7 +7,7 @@ import kotlin.random.Random
 
 class DateResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         return if (obj == Date::class) {
             return Date(
                 Random.nextLong(

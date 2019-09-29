@@ -1,5 +1,8 @@
 package com.appmattus.kotlinfixture
 
+import com.appmattus.kotlinfixture.behaviour.Behaviour
+import com.appmattus.kotlinfixture.behaviour.recursion.RecursionBehaviour
+import com.appmattus.kotlinfixture.behaviour.recursion.ThrowingRecursionHandler
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
@@ -20,6 +23,7 @@ import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveArrayResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveResolver
+import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.resolver.SubTypeResolver
@@ -64,6 +68,8 @@ class Fixture(private val baseConfiguration: Configuration) {
         ClassResolver()
     )
 
+    private val behaviours: List<Behaviour> = listOf(RecursionBehaviour(ThrowingRecursionHandler()))
+
     inline operator fun <reified T : Any?> invoke(
         range: Iterable<T> = emptyList(),
         noinline configuration: ConfigurationBuilder.() -> Unit = {}
@@ -77,15 +83,21 @@ class Fixture(private val baseConfiguration: Configuration) {
             if (result is T) {
                 result
             } else {
+                println(result)
                 throw UnsupportedOperationException("Unable to handle ${T::class}")
             }
         }
     }
 
     fun create(type: KType, configuration: Configuration): Any? {
+
+        var resolver: Resolver = baseResolver
+
+        behaviours.forEach { resolver = it.transform(resolver) }
+
         val context = object : Context {
             override val configuration = baseConfiguration + configuration
-            override val resolver = baseResolver
+            override val resolver = resolver
         }
         return context.resolve(type)
     }
@@ -142,4 +154,23 @@ fun main() {
     println(fixture<Number> {
         subType<Number, Int>()
     })
+
+
+    println(fixture<A>())
+}
+
+class A {
+    lateinit var b: B
+
+    override fun toString(): String {
+        return "A[${if (::b.isInitialized) b.toString() else "uninit"}]"
+    }
+}
+
+class B {
+    lateinit var a: A
+
+    override fun toString(): String {
+        return "B[${if (::a.isInitialized) a.toString() else "uninit"}]"
+    }
 }

@@ -9,7 +9,7 @@ import kotlin.reflect.full.memberProperties
 
 class ClassResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
 
             val constructorParameterNames = obj.constructorParameterNames()

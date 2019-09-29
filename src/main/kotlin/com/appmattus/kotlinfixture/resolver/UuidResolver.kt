@@ -6,6 +6,6 @@ import java.util.UUID
 
 class UuidResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? =
+    override fun resolve(context: Context, obj: Any): Any? =
         if (obj == UUID::class) UUID.randomUUID() else Unresolved
 }

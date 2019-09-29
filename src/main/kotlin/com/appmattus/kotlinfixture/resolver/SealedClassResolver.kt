@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 class SealedClassResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.isSealed == true) {
             obj.sealedSubclasses.shuffled().forEach { subclass ->
                 val result = context.resolve(subclass)

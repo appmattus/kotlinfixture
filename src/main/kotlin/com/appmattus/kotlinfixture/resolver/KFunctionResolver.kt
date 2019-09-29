@@ -1,12 +1,13 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.random.Random
 import kotlin.reflect.jvm.isAccessible
 
 class KFunctionResolver : Resolver {
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KFunctionRequest) {
             return try {
                 obj.function.isAccessible = true
@@ -29,6 +30,8 @@ class KFunctionResolver : Resolver {
                 } else {
                     Unresolved
                 }
+            } catch (expected: FixtureException) {
+                throw expected
             } catch (expected: Exception) {
                 Unresolved
             }

@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
 class HashtableKTypeResolver : Resolver {
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.isMarkedNullable && Random.nextBoolean()) {
                 return null
@@ -29,8 +29,8 @@ class HashtableKTypeResolver : Resolver {
             }
 
             if (collection != null) {
-                val keyType = obj.arguments[0].type
-                val valueType = obj.arguments[1].type
+                val keyType = obj.arguments[0].type!!
+                val valueType = obj.arguments[1].type!!
 
                 repeat(repeatCount) {
                     collection.put(context.resolve(keyType), context.resolve(valueType))

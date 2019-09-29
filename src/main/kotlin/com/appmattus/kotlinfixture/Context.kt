@@ -7,5 +7,5 @@ interface Context {
     val configuration: Configuration
     val resolver: Resolver
 
-    fun resolve(obj: Any?) = resolver.resolve(this, obj)
+    fun resolve(obj: Any) = resolver.resolve(this, obj)
 }

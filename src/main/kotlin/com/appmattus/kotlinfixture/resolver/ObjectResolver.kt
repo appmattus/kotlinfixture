@@ -6,5 +6,5 @@ import kotlin.reflect.KClass
 
 class ObjectResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? = (obj as? KClass<*>)?.objectInstance ?: Unresolved
+    override fun resolve(context: Context, obj: Any): Any? = (obj as? KClass<*>)?.objectInstance ?: Unresolved
 }

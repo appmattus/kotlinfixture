@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 class SubTypeResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
 
         if (obj is KClass<*>) {
             context.configuration.subTypes[obj]?.let {

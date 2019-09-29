@@ -33,7 +33,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
 class IterableKTypeResolver : Resolver {
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.isMarkedNullable && Random.nextBoolean()) {
                 return null
@@ -97,7 +97,7 @@ class IterableKTypeResolver : Resolver {
             }
 
             if (collection != null) {
-                val argType = obj.arguments.first().type
+                val argType = obj.arguments.first().type!!
 
                 repeat(repeatCount) {
                     collection.add(context.resolve(argType))

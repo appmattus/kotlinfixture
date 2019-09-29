@@ -9,7 +9,7 @@ import kotlin.random.nextULong
 class PrimitiveResolver : Resolver {
 
     @Suppress("EXPERIMENTAL_API_USAGE")
-    override fun resolve(context: Context, obj: Any?): Any? = when (obj) {
+    override fun resolve(context: Context, obj: Any): Any? = when (obj) {
         Boolean::class -> Random.nextBoolean()
 
         Byte::class -> Random.nextInt().toByte()

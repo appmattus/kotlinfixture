@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 class ArrayResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
 
         if (obj is KClass<*> && obj.java.isArray && !obj.java.componentType.isPrimitive) {
             val size = context.configuration.repeatCount()

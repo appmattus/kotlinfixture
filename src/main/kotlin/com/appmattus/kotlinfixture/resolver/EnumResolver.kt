@@ -9,7 +9,7 @@ class EnumResolver : Resolver {
 
     private val cache = mutableMapOf<KClass<*>, Iterator<*>>()
 
-    override fun resolve(context: Context, obj: Any?): Any? {
+    override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.java?.isEnum == true && obj.java.enumConstants.isNotEmpty()) {
             return cache.computeIfAbsent(obj) {
                 obj.java.enumConstants.toList().shuffled().circularIterator()
