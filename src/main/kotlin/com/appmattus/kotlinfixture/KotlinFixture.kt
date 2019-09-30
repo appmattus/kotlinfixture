@@ -1,10 +1,12 @@
 package com.appmattus.kotlinfixture
 
-import com.appmattus.kotlinfixture.behaviour.Behaviour
-import com.appmattus.kotlinfixture.behaviour.recursion.RecursionBehaviour
-import com.appmattus.kotlinfixture.behaviour.recursion.ThrowingRecursionHandler
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
+import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
+import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
+import com.appmattus.kotlinfixture.decorator.recursion.ThrowingRecursionStrategy
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
 import com.appmattus.kotlinfixture.resolver.ArrayResolver
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
@@ -68,7 +70,10 @@ class Fixture(private val baseConfiguration: Configuration) {
         ClassResolver()
     )
 
-    private val behaviours: List<Behaviour> = listOf(RecursionBehaviour(ThrowingRecursionHandler()))
+    private val decorators: List<Decorator> = listOf(
+        LoggingDecorator(SysOutLoggingStrategy()),
+        RecursionDecorator(ThrowingRecursionStrategy())
+    )
 
     inline operator fun <reified T : Any?> invoke(
         range: Iterable<T> = emptyList(),
@@ -93,7 +98,7 @@ class Fixture(private val baseConfiguration: Configuration) {
 
         var resolver: Resolver = baseResolver
 
-        behaviours.forEach { resolver = it.transform(resolver) }
+        decorators.forEach { resolver = it.decorate(resolver) }
 
         val context = object : Context {
             override val configuration = baseConfiguration + configuration
@@ -112,7 +117,7 @@ class TestClass(val bob: String) {
 class TestClass2 {
     lateinit var bob: String
 
-    override fun toString() = "TestClass2 [bob=$bob]"
+    override fun toString() = "TestClass2 [bob=${if (::bob.isInitialized) bob else "uninit"}]"
 }
 
 class TestClass3 {

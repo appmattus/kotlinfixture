@@ -6,8 +6,6 @@ import com.appmattus.kotlinfixture.Unresolved
 class CompositeResolver(private vararg val resolvers: Resolver) : Resolver, Iterable<Resolver> {
 
     override fun resolve(context: Context, obj: Any): Any? {
-        println("Resolving: $obj")
-
         resolvers.forEach {
             val result = it.resolve(context, obj)
 

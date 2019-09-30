@@ -1,20 +1,20 @@
-package com.appmattus.kotlinfixture.behaviour.recursion
+package com.appmattus.kotlinfixture.decorator.recursion
 
 import com.appmattus.kotlinfixture.Context
-import com.appmattus.kotlinfixture.behaviour.Behaviour
+import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import java.util.Stack
 import kotlin.reflect.KType
 
-internal class RecursionBehaviour(
-    private val recursionHandler: RecursionHandler
-) : Behaviour {
+class RecursionDecorator(
+    private val strategy: RecursionStrategy
+) : Decorator {
 
-    override fun transform(resolver: Resolver): Resolver = RecursionResolver(resolver, recursionHandler)
+    override fun decorate(resolver: Resolver): Resolver = RecursionResolver(resolver, strategy)
 
     private class RecursionResolver(
         private val resolver: Resolver,
-        private val recursionHandler: RecursionHandler
+        private val recursionStrategy: RecursionStrategy
     ) : Resolver {
 
         private val stack = Stack<KType>()
@@ -22,7 +22,7 @@ internal class RecursionBehaviour(
         override fun resolve(context: Context, obj: Any): Any? {
             if (obj is KType) {
                 if (stack.contains(obj)) {
-                    return recursionHandler.handleRecursion(obj, stack)
+                    return recursionStrategy.handleRecursion(obj, stack)
                 }
 
                 stack.push(obj)

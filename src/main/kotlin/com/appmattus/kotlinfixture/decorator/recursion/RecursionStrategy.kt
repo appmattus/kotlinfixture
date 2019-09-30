@@ -1,7 +1,7 @@
-package com.appmattus.kotlinfixture.behaviour.recursion
+package com.appmattus.kotlinfixture.decorator.recursion
 
 import kotlin.reflect.KType
 
-internal interface RecursionHandler {
+interface RecursionStrategy {
     fun handleRecursion(type: KType, stack: Collection<KType>): Any?
 }
