@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.config
 
+import com.appmattus.kotlinfixture.decorator.Decorator
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
@@ -10,7 +11,9 @@ data class Configuration(
     val repeatCount: () -> Int = defaultRepeatCount,
     val properties: Map<KClass<*>, Map<String, Any?>> = emptyMap(),
     val instances: Map<KType, () -> Any?> = emptyMap(),
-    val subTypes: Map<KClass<*>, KClass<*>> = emptyMap()
+    val subTypes: Map<KClass<*>, KClass<*>> = emptyMap(),
+    internal val decoratorsAtStart: List<Decorator> = emptyList(),
+    internal val decoratorsAtEnd: List<Decorator> = emptyList()
 ) {
     operator fun plus(other: Configuration): Configuration {
         val newDateSpecification = if (other.dateSpecification !== defaultDateSpecification) {

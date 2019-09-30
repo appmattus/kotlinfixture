@@ -5,6 +5,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
+import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import com.appmattus.kotlinfixture.decorator.recursion.ThrowingRecursionStrategy
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
@@ -70,8 +71,7 @@ class Fixture(private val baseConfiguration: Configuration) {
         ClassResolver()
     )
 
-    private val decorators: List<Decorator> = listOf(
-        LoggingDecorator(SysOutLoggingStrategy()),
+    private val baseDecorators: List<Decorator> = listOf(
         RecursionDecorator(ThrowingRecursionStrategy())
     )
 
@@ -95,16 +95,30 @@ class Fixture(private val baseConfiguration: Configuration) {
     }
 
     fun create(type: KType, configuration: Configuration): Any? {
-
-        var resolver: Resolver = baseResolver
-
-        decorators.forEach { resolver = it.decorate(resolver) }
+        val resolver = combineDecorators(configuration).fold(baseResolver as Resolver) { resolver, decorator ->
+            decorator.decorate(resolver)
+        }
 
         val context = object : Context {
             override val configuration = baseConfiguration + configuration
             override val resolver = resolver
         }
         return context.resolve(type)
+    }
+
+    private fun combineDecorators(configuration: Configuration): List<Decorator> {
+        val base = baseDecorators.filterClassNotIn(baseConfiguration).filterClassNotIn(configuration)
+        val baseConfigStart = baseConfiguration.decoratorsAtStart.filterClassNotIn(configuration)
+        val baseConfigEnd = baseConfiguration.decoratorsAtEnd.filterClassNotIn(configuration)
+
+        return configuration.decoratorsAtStart + baseConfigStart + base + baseConfigEnd + configuration.decoratorsAtEnd
+    }
+
+    private fun List<Decorator>.filterClassNotIn(configuration: Configuration): List<Decorator> {
+        return this.filterNot { decorator ->
+            configuration.decoratorsAtStart.map { it::class }.contains(decorator::class)
+                    || configuration.decoratorsAtEnd.map { it::class }.contains(decorator::class)
+        }
     }
 }
 
@@ -142,10 +156,11 @@ fun main() {
 
     println(fixture<List<String>>())
 
-
-    println(fixture<List<String>> {
+    fixture<List<String>> {
         repeatCount { 2 }
-    })
+
+        addDecorator(LoggingDecorator(SysOutLoggingStrategy()))
+    }
 
     println(fixture(listOf(1, 2, 3)))
 
@@ -161,7 +176,9 @@ fun main() {
     })
 
 
-    println(fixture<A>())
+    println(fixture<A> {
+        addDecorator(RecursionDecorator(NullRecursionStrategy()))
+    })
 }
 
 class A {

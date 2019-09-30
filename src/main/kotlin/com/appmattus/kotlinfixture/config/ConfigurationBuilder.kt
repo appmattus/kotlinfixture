@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.config
 
+import com.appmattus.kotlinfixture.decorator.Decorator
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
@@ -45,6 +46,13 @@ class ConfigurationBuilder {
         configuration = configuration.copy(repeatCount = generator)
     }
 
+
+    fun addDecorator(decorator: Decorator, position: Position = Position.First) {
+        configuration = when (position) {
+            Position.First -> configuration.copy(decoratorsAtStart = configuration.decoratorsAtStart + decorator)
+            Position.Last -> configuration.copy(decoratorsAtEnd = configuration.decoratorsAtEnd + decorator)
+        }
+    }
 
     fun build() = configuration
 }
