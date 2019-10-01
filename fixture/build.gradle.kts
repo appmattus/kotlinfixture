@@ -4,8 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
 }
 
-//group 'com.appmattus.fixturekotlin'
-//version '1.0.0'
+apply(from = "$rootDir/bintray.gradle.kts")
 
 repositories {
     mavenCentral()
@@ -24,4 +23,13 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+// Fix lack of source code when publishing pure Kotlin projects
+// See https://github.com/novoda/bintray-release/issues/262
+tasks.whenTaskAdded {
+    if (name == "generateSourcesJarForMavenPublication") {
+        this as Jar
+        from(sourceSets.main.get().allSource)
+    }
 }

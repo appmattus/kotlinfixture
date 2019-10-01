@@ -1,6 +1,6 @@
 # Fixture for Kotlin
 
-## Getting started
+## Getting started [![Download](https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg) ](https://bintray.com/appmattus/maven/fixture/_latestVersion)
 
 Include the following dependencies in your build.gradle.kts file:
 

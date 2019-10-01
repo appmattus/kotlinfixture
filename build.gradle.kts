@@ -7,9 +7,6 @@ plugins {
     id("com.github.kt3k.coveralls") version "2.8.4" apply false
 }
 
-//group 'com.appmattus.fixturekotlin'
-//version '1.0.0'
-
 allprojects {
     repositories {
         jcenter()
