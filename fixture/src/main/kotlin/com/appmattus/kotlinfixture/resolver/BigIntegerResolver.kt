@@ -9,5 +9,9 @@ import kotlin.random.asJavaRandom
 class BigIntegerResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == BigInteger::class) BigInteger(64, Random.asJavaRandom()) else Unresolved
+        if (obj == BigInteger::class) BigInteger(NUM_BITS, Random.asJavaRandom()) else Unresolved
+
+    companion object {
+        private const val NUM_BITS = 64
+    }
 }

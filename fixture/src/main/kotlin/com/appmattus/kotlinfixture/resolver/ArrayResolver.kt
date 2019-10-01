@@ -6,6 +6,7 @@ import kotlin.reflect.KClass
 
 class ArrayResolver : Resolver {
 
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
 
         if (obj is KClass<*> && obj.java.isArray && !obj.java.componentType.isPrimitive) {

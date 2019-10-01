@@ -9,6 +9,8 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
 class HashtableKTypeResolver : Resolver {
+
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.isMarkedNullable && Random.nextBoolean()) {
