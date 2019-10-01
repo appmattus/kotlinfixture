@@ -9,6 +9,7 @@ import kotlin.reflect.full.memberProperties
 
 class ClassResolver : Resolver {
 
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
 
@@ -55,9 +56,9 @@ class ClassResolver : Resolver {
         }.toSet()
     }
 
-    private fun KMutableProperty.Setter<*>.safeCall(vararg args: Any?) {
+    private fun KMutableProperty.Setter<*>.safeCall(obj: Any?, value: Any?) {
         try {
-            call(*args)
+            call(obj, value)
         } catch (expected: Exception) {
 
         }

@@ -5,7 +5,7 @@ import com.appmattus.kotlinfixture.Unresolved
 
 class PrimitiveArrayResolver : Resolver {
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
+    @Suppress("EXPERIMENTAL_API_USAGE", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? = when (obj) {
         BooleanArray::class -> context.resolveConstructor(::BooleanArray)
 

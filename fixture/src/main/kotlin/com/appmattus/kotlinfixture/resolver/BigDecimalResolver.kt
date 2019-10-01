@@ -11,9 +11,13 @@ class BigDecimalResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return if (obj == BigDecimal::class) {
-            BigDecimal(BigInteger(64, Random.asJavaRandom())).divide(BigDecimal.TEN)
+            BigDecimal(BigInteger(NUM_BITS, Random.asJavaRandom())).divide(BigDecimal.TEN)
         } else {
             Unresolved
         }
+    }
+
+    companion object {
+        private const val NUM_BITS = 64
     }
 }

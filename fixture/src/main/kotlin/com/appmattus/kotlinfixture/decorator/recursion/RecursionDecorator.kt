@@ -19,6 +19,7 @@ class RecursionDecorator(
 
         private val stack = Stack<KType>()
 
+        @Suppress("ReturnCount")
         override fun resolve(context: Context, obj: Any): Any? {
             if (obj is KType) {
                 if (stack.contains(obj)) {
