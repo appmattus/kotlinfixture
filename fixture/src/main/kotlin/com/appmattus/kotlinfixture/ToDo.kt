@@ -31,10 +31,6 @@ object ToDo {
     // TODO Make everything internal that should be internal
 
     // TODO Add tests:
-    // TODO - Add tests for HashtableKTypeResolver, IterableKTypeResolver, MapKTypeResolver
-    // TODO   - Verify repeatCount matches array length
-    // TODO   - Verify unknown class returns Unresolved
-    // TODO   - Verify unknown type parameter returns Unresolved
     // TODO - Test configuration overloading in Configuration
     // TODO - Test ConfigurationBuilder
     // TODO - Test DateSpecification

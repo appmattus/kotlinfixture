@@ -102,7 +102,12 @@ class IterableKTypeResolver : Resolver {
                 val argType = obj.arguments.first().type!!
 
                 repeat(repeatCount) {
-                    collection.add(context.resolve(argType))
+                    val value = context.resolve(argType)
+                    if (value == Unresolved) {
+                        return Unresolved
+                    }
+
+                    collection.add(value)
                 }
 
                 return collection

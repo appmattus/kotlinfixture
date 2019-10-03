@@ -57,7 +57,14 @@ class MapKTypeResolver : Resolver {
                 val valueType = obj.arguments[1].type!!
 
                 repeat(repeatCount) {
-                    collection[context.resolve(keyType)] = context.resolve(valueType)
+                    val key = context.resolve(keyType)
+                    val value = context.resolve(valueType)
+
+                    if (key == Unresolved || value == Unresolved) {
+                        return Unresolved
+                    }
+
+                    collection[key] = value
                 }
 
                 return collection
