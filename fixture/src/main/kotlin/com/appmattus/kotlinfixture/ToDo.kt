@@ -4,7 +4,6 @@ package com.appmattus.kotlinfixture
 object ToDo {
     // TODO Factory method construction - find static functions that return instance of the class?
 
-    // TODO EnumSet - requires special handling
     // TODO SynchronousQueue - adding elements to this makes little sense
     // TODO ArrayBlockingQueue - needs a fixed capacity
 

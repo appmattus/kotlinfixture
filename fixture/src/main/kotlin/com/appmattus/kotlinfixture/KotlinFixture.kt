@@ -18,6 +18,7 @@ import com.appmattus.kotlinfixture.resolver.ClassResolver
 import com.appmattus.kotlinfixture.resolver.CompositeResolver
 import com.appmattus.kotlinfixture.resolver.DateResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
+import com.appmattus.kotlinfixture.resolver.EnumSetResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
@@ -60,6 +61,7 @@ class Fixture(private val baseConfiguration: Configuration) {
         PrimitiveArrayResolver(),
         HashtableKTypeResolver(),
         IterableKTypeResolver(),
+        EnumSetResolver(),
         MapKTypeResolver(),
         KTypeResolver(),
         KFunctionResolver(),
