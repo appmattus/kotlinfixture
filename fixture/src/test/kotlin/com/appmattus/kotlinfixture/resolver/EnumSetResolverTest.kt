@@ -43,6 +43,14 @@ class EnumSetResolverTest {
     }
 
     @Test
+    fun `randomly returns null for nullable type`() {
+        assertIsRandom {
+            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
+            context.resolve(typeOf<EnumSet<SingleEnumClass>?>()) == null
+        }
+    }
+
+    @Test
     fun `Enum with one value returns random length set`() {
         assertIsRandom {
             @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
