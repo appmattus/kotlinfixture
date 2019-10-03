@@ -51,7 +51,6 @@ class ArrayResolverTest {
         }
     }
 
-
     @Test
     fun `Length of array matches configuration value of 3`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 3 }))

@@ -60,7 +60,7 @@ class ClassResolver : Resolver {
         try {
             call(obj, value)
         } catch (expected: Exception) {
-
+            // ignored
         }
     }
 }

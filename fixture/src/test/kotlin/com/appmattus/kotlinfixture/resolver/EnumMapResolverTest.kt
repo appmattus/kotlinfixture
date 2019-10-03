@@ -44,7 +44,6 @@ class EnumMapResolverTest {
         }
     }
 
-
     enum class EmptyEnumClass
 
     @Test
@@ -77,5 +76,4 @@ class EnumMapResolverTest {
             (context.resolve(typeOf<EnumMap<MultiEnumClass, String>>()) as EnumMap<*, *>).isEmpty()
         }
     }
-
 }

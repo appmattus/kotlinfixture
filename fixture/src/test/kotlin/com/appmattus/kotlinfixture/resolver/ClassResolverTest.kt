@@ -72,7 +72,6 @@ class ClassResolverTest {
             get() = ::number.isInitialized
     }
 
-
     data class SingleConstructor(val value: String)
 
     @Suppress("unused", "UNUSED_PARAMETER")

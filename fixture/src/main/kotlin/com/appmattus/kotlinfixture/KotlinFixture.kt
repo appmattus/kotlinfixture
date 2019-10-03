@@ -120,8 +120,8 @@ class Fixture(private val baseConfiguration: Configuration) {
 
     private fun List<Decorator>.filterClassNotIn(configuration: Configuration): List<Decorator> {
         return this.filterNot { decorator ->
-            configuration.decoratorsAtStart.map { it::class }.contains(decorator::class)
-                    || configuration.decoratorsAtEnd.map { it::class }.contains(decorator::class)
+            configuration.decoratorsAtStart.map { it::class }.contains(decorator::class) ||
+                    configuration.decoratorsAtEnd.map { it::class }.contains(decorator::class)
         }
     }
 }
@@ -168,17 +168,14 @@ fun main() {
 
     println(fixture(listOf(1, 2, 3)))
 
-
     println(fixture<TestClass>())
     println(fixture<TestClass2>())
     println(fixture<TestClass3>())
-
 
     println(fixture<Number>())
     println(fixture<Number> {
         subType<Number, Int>()
     })
-
 
     println(fixture<A> {
         addDecorator(RecursionDecorator(NullRecursionStrategy()))

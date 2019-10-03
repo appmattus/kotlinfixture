@@ -7,8 +7,8 @@ import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
 class ConfigurationBuilder {
-    private var configuration = Configuration()
 
+    private var configuration = Configuration()
 
     @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
     inline fun <reified T> instance(noinline generator: () -> T) = instance(typeOf<T>(), generator)
@@ -17,13 +17,11 @@ class ConfigurationBuilder {
         configuration = configuration.copy(instances = configuration.instances + (type to generator))
     }
 
-
     inline fun <reified T, reified U : T> subType() = subType(T::class, U::class)
 
     fun subType(superType: KClass<*>, subType: KClass<*>) {
         configuration = configuration.copy(subTypes = configuration.subTypes + (superType to subType))
     }
-
 
     inline fun <reified T> propertyOf(name: String, noinline generator: () -> Any?) =
         propertyOf(T::class, name, generator)
@@ -41,11 +39,9 @@ class ConfigurationBuilder {
         configuration = configuration.copy(properties = allProperties)
     }
 
-
     fun repeatCount(generator: () -> Int) {
         configuration = configuration.copy(repeatCount = generator)
     }
-
 
     fun addDecorator(decorator: Decorator, position: Position = Position.First) {
         configuration = when (position) {

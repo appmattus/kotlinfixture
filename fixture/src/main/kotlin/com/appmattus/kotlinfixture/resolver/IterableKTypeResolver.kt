@@ -34,7 +34,7 @@ import kotlin.reflect.KType
 
 class IterableKTypeResolver : Resolver {
 
-    @Suppress("ReturnCount", "ComplexMethod")
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.isMarkedNullable && Random.nextBoolean()) {
@@ -43,60 +43,7 @@ class IterableKTypeResolver : Resolver {
 
             val repeatCount = context.configuration.repeatCount()
 
-            val collection = when (obj.classifier as KClass<*>) {
-
-                Iterable::class,
-                Collection::class,
-                List::class,
-                ArrayList::class -> ArrayList()
-
-                java.util.AbstractCollection::class,
-                java.util.AbstractList::class,
-                AbstractList::class,
-                AbstractSequentialList::class,
-                LinkedList::class -> LinkedList()
-
-                Vector::class -> Vector()
-
-                Stack::class -> Stack()
-
-                Queue::class,
-                Deque::class,
-                ArrayDeque::class -> ArrayDeque()
-
-                AbstractQueue::class,
-                PriorityQueue::class -> PriorityQueue()
-
-                java.util.AbstractSet::class,
-                Set::class,
-                SortedSet::class,
-                NavigableSet::class,
-                TreeSet::class -> TreeSet()
-
-                HashSet::class,
-                LinkedHashSet::class -> LinkedHashSet()
-
-                BlockingQueue::class,
-                TransferQueue::class,
-                LinkedTransferQueue::class -> LinkedTransferQueue()
-
-                BlockingDeque::class,
-                LinkedBlockingDeque::class -> LinkedBlockingDeque()
-
-                ConcurrentLinkedDeque::class -> ConcurrentLinkedDeque()
-                ConcurrentSkipListSet::class -> ConcurrentSkipListSet()
-                CopyOnWriteArraySet::class -> CopyOnWriteArraySet()
-                CopyOnWriteArrayList::class -> CopyOnWriteArrayList()
-                ConcurrentLinkedQueue::class -> ConcurrentLinkedQueue()
-                DelayQueue::class -> @Suppress("UNCHECKED_CAST") (DelayQueue<Delayed>() as MutableCollection<Any?>)
-                LinkedBlockingQueue::class -> LinkedBlockingQueue()
-                PriorityBlockingQueue::class -> PriorityBlockingQueue()
-
-                else -> {
-                    @Suppress("USELESS_CAST")
-                    null as MutableCollection<Any?>?
-                }
-            }
+            val collection = createCollection(obj)
 
             if (collection != null) {
                 val argType = obj.arguments.first().type!!
@@ -115,5 +62,61 @@ class IterableKTypeResolver : Resolver {
         }
 
         return Unresolved
+    }
+
+    @Suppress("ComplexMethod")
+    private fun createCollection(obj: KType) = when (obj.classifier as KClass<*>) {
+
+        Iterable::class,
+        Collection::class,
+        List::class,
+        ArrayList::class -> ArrayList()
+
+        java.util.AbstractCollection::class,
+        java.util.AbstractList::class,
+        AbstractList::class,
+        AbstractSequentialList::class,
+        LinkedList::class -> LinkedList()
+
+        Vector::class -> Vector()
+
+        Stack::class -> Stack()
+
+        Queue::class,
+        Deque::class,
+        ArrayDeque::class -> ArrayDeque()
+
+        AbstractQueue::class,
+        PriorityQueue::class -> PriorityQueue()
+
+        java.util.AbstractSet::class,
+        Set::class,
+        SortedSet::class,
+        NavigableSet::class,
+        TreeSet::class -> TreeSet()
+
+        HashSet::class,
+        LinkedHashSet::class -> LinkedHashSet()
+
+        BlockingQueue::class,
+        TransferQueue::class,
+        LinkedTransferQueue::class -> LinkedTransferQueue()
+
+        BlockingDeque::class,
+        LinkedBlockingDeque::class -> LinkedBlockingDeque()
+
+        ConcurrentLinkedDeque::class -> ConcurrentLinkedDeque()
+        ConcurrentSkipListSet::class -> ConcurrentSkipListSet()
+        CopyOnWriteArraySet::class -> CopyOnWriteArraySet()
+        CopyOnWriteArrayList::class -> CopyOnWriteArrayList()
+        ConcurrentLinkedQueue::class -> ConcurrentLinkedQueue()
+        DelayQueue::class -> @Suppress("UNCHECKED_CAST") (DelayQueue<Delayed>() as MutableCollection<Any?>)
+        LinkedBlockingQueue::class -> LinkedBlockingQueue()
+        PriorityBlockingQueue::class -> PriorityBlockingQueue()
+
+        else -> {
+            @Suppress("USELESS_CAST")
+            null as MutableCollection<Any?>?
+        }
     }
 }

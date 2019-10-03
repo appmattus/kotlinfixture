@@ -106,7 +106,6 @@ class IterableKTypeResolverTest {
         @Parameterized.Parameter(1)
         lateinit var resultClass: KClass<*>
 
-
         @Test
         fun `creates instance`() {
             val result = context.resolve(type)
