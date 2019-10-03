@@ -7,8 +7,6 @@ object ToDo {
     // TODO SynchronousQueue - adding elements to this makes little sense
     // TODO ArrayBlockingQueue - needs a fixed capacity
 
-    // TODO EnumMap - requires special handling
-
     // TODO Any::class - return random class
 
     // TODO Seeded requests - basically a way to ensure consistent execution
@@ -19,7 +17,7 @@ object ToDo {
     // TODO - propertyOf<Order>("fieldName", 123)
     // TODO - repeatCount = 5
 
-    // TODO handle & detect circular dependencies, A has property B, B has property A etc. See circularDependencyBehaviour
+    // TODO handle & detect circular dependencies. See circularDependencyBehaviour
 
     // TODO handle unresolvable, throw exception or return null. See noResolutionBehaviour
 
