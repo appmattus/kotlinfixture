@@ -1,4 +1,4 @@
-# Fixture for Kotlin
+# Fixture for Kotlin [![CI status](https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg)](https://github.com/appmattus/kotlinfixture/actions)
 
 ## Getting started [![Download](https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg) ](https://bintray.com/appmattus/maven/fixture/_latestVersion)
 
