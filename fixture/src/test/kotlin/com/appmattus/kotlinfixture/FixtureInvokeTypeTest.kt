@@ -18,10 +18,6 @@ class FixtureInvokeTypeTest {
         assertIsRandom {
             fixture<Int?>() == null
         }
-
-        assertIsRandom {
-            fixture<Int?>()
-        }
     }
 
     @Test

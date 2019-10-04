@@ -5,7 +5,7 @@ import kotlin.test.fail
 fun assertIsRandom(block: () -> Any?) {
     val initial = block()
 
-    repeat(100) {
+    repeat(1000) {
         if (initial != block()) return
     }
 
