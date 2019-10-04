@@ -6,7 +6,7 @@ import com.appmattus.kotlinfixture.Unresolved
 import kotlin.random.Random
 import kotlin.reflect.jvm.isAccessible
 
-class KFunctionResolver : Resolver {
+internal class KFunctionResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KFunctionRequest) {
             return try {

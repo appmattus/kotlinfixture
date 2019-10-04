@@ -6,7 +6,7 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-class KTypeResolver : Resolver {
+internal class KTypeResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return if (obj is KType && obj.classifier is KClass<*>) {

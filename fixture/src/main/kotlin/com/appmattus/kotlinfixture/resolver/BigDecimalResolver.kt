@@ -7,7 +7,7 @@ import java.math.BigInteger
 import kotlin.random.Random
 import kotlin.random.asJavaRandom
 
-class BigDecimalResolver : Resolver {
+internal class BigDecimalResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return if (obj == BigDecimal::class) {

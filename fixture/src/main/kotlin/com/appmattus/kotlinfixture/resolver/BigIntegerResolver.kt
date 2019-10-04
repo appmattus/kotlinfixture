@@ -6,7 +6,7 @@ import java.math.BigInteger
 import kotlin.random.Random
 import kotlin.random.asJavaRandom
 
-class BigIntegerResolver : Resolver {
+internal class BigIntegerResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
         if (obj == BigInteger::class) BigInteger(NUM_BITS, Random.asJavaRandom()) else Unresolved
