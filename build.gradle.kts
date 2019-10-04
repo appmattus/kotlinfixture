@@ -7,6 +7,8 @@ plugins {
     id("com.github.kt3k.coveralls") version "2.8.4" apply false
 }
 
+apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+
 allprojects {
     repositories {
         jcenter()

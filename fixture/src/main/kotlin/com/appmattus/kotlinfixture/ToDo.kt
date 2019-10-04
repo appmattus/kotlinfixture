@@ -34,9 +34,6 @@ object ToDo {
     // TODO - Test DateSpecification
 
     // TODO Write readme/documentation
-    // TODO Setup CI
-    // TODO Setup jcenter publishing
-    // TODO Setup detekt, ktlint, owasp dependency checker
 
     // TODO Remove println statements
 
