@@ -6,7 +6,7 @@ import kotlin.random.Random
 import kotlin.random.nextUInt
 import kotlin.random.nextULong
 
-class PrimitiveResolver : Resolver {
+internal class PrimitiveResolver : Resolver {
 
     @Suppress("EXPERIMENTAL_API_USAGE", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? = when (obj) {

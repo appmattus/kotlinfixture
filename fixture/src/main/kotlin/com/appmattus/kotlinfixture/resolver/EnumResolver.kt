@@ -5,7 +5,7 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.circularIterator
 import kotlin.reflect.KClass
 
-class EnumResolver : Resolver {
+internal class EnumResolver : Resolver {
 
     private val cache = mutableMapOf<KClass<*>, Iterator<*>>()
 

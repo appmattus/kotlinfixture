@@ -3,7 +3,7 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 
-class PrimitiveArrayResolver : Resolver {
+internal class PrimitiveArrayResolver : Resolver {
 
     @Suppress("EXPERIMENTAL_API_USAGE", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? = when (obj) {

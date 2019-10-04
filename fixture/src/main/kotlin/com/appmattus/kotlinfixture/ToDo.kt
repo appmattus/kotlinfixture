@@ -1,7 +1,7 @@
 package com.appmattus.kotlinfixture
 
 @Suppress("unused")
-object ToDo {
+private object ToDo {
     // TODO Factory method construction - find static functions that return instance of the class?
 
     // TODO SynchronousQueue - adding elements to this makes little sense
@@ -25,8 +25,6 @@ object ToDo {
     // - https://github.com/FlexTradeUKLtd/kfixture
     // - https://github.com/marcellogalhardo/kotlin-fixture/tree/develop
     // - https://blog.kotlin-academy.com/creating-a-random-instance-of-any-class-in-kotlin-b6168655b64a
-
-    // TODO Make everything internal that should be internal
 
     // TODO Add tests:
     // TODO - Test configuration overloading in Configuration

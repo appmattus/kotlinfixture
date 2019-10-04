@@ -5,7 +5,7 @@ import com.appmattus.kotlinfixture.Unresolved
 import java.util.Date
 import kotlin.random.Random
 
-class DateResolver : Resolver {
+internal class DateResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return if (obj == Date::class) {

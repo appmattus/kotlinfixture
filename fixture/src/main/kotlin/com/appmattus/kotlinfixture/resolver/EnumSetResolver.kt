@@ -7,7 +7,7 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-class EnumSetResolver : Resolver {
+internal class EnumSetResolver : Resolver {
 
     private val enumSetOf by lazy {
         EnumSet::class.members.first { it.name == "of" && it.parameters.size == 2 && it.parameters[1].isVararg }

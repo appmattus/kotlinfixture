@@ -8,7 +8,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
 
-class EnumMapResolver : Resolver {
+internal class EnumMapResolver : Resolver {
 
     private val enumMapConstructor by lazy {
         EnumMap::class.constructors.first {

@@ -6,7 +6,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 
-class CalendarResolver : Resolver {
+internal class CalendarResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj == Calendar::class) {

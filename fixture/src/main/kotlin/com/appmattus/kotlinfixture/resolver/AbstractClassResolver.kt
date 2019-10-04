@@ -5,7 +5,7 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KClass
 
-class AbstractClassResolver : Resolver {
+internal class AbstractClassResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.isAbstract == true) {

@@ -7,7 +7,7 @@ import kotlin.reflect.KMutableProperty
 import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberProperties
 
-class ClassResolver : Resolver {
+internal class ClassResolver : Resolver {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {

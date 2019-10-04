@@ -15,7 +15,7 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-class MapKTypeResolver : Resolver {
+internal class MapKTypeResolver : Resolver {
 
     @Suppress("ReturnCount", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {

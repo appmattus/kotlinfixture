@@ -32,7 +32,7 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-class IterableKTypeResolver : Resolver {
+internal class IterableKTypeResolver : Resolver {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {

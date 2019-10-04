@@ -4,7 +4,7 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KClass
 
-class ArrayResolver : Resolver {
+internal class ArrayResolver : Resolver {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
