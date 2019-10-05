@@ -15,8 +15,8 @@ internal class KFunctionResolver : Resolver {
                 val overrides = context.configuration.properties.getOrDefault(obj.containingClass, emptyMap())
 
                 val parameters = obj.function.parameters.associateWith {
-                    if (overrides.containsKey(it.name)) {
-                        overrides[it.name]
+                    if (it.name in overrides) {
+                        overrides[it.name]?.invoke()
                     } else {
                         context.resolve(it.type)
                     }

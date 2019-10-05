@@ -5,6 +5,8 @@ import com.appmattus.kotlinfixture.Unresolved
 
 internal class CompositeResolver(private vararg val resolvers: Resolver) : Resolver, Iterable<Resolver> {
 
+    constructor(resolvers: Collection<Resolver>) : this(*resolvers.toTypedArray())
+
     override fun resolve(context: Context, obj: Any): Any? {
         resolvers.forEach {
             val result = it.resolve(context, obj)

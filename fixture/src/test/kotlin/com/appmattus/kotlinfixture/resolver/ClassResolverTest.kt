@@ -50,7 +50,7 @@ class ClassResolverTest {
     fun `Mutable parameter can be overridden`() {
         val context = context.copy(
             configuration = Configuration(
-                properties = mapOf(MutableParameter::class to mapOf("parameter" to "custom"))
+                properties = mapOf(MutableParameter::class to mapOf("parameter" to { "custom" }))
             )
         )
 

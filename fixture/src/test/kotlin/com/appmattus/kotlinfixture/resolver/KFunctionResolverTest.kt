@@ -59,7 +59,7 @@ class KFunctionResolverTest {
     @Test
     fun `Constructor creates instance with provided parameter`() {
         val context = context.copy(
-            configuration = Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to "custom")))
+            configuration = Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to { "custom" })))
         )
 
         val constructor = SimpleClass::class.primaryConstructor!!

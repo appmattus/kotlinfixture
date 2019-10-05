@@ -2,82 +2,17 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
-import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
-import com.appmattus.kotlinfixture.decorator.recursion.ThrowingRecursionStrategy
-import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
-import com.appmattus.kotlinfixture.resolver.ArrayResolver
-import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
-import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
-import com.appmattus.kotlinfixture.resolver.CalendarResolver
-import com.appmattus.kotlinfixture.resolver.CharResolver
-import com.appmattus.kotlinfixture.resolver.ClassResolver
 import com.appmattus.kotlinfixture.resolver.CompositeResolver
-import com.appmattus.kotlinfixture.resolver.DateResolver
-import com.appmattus.kotlinfixture.resolver.EnumMapResolver
-import com.appmattus.kotlinfixture.resolver.EnumResolver
-import com.appmattus.kotlinfixture.resolver.EnumSetResolver
-import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
-import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
-import com.appmattus.kotlinfixture.resolver.KFunctionResolver
-import com.appmattus.kotlinfixture.resolver.KTypeResolver
-import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
-import com.appmattus.kotlinfixture.resolver.ObjectResolver
-import com.appmattus.kotlinfixture.resolver.PrimitiveArrayResolver
-import com.appmattus.kotlinfixture.resolver.PrimitiveResolver
 import com.appmattus.kotlinfixture.resolver.Resolver
-import com.appmattus.kotlinfixture.resolver.SealedClassResolver
-import com.appmattus.kotlinfixture.resolver.StringResolver
-import com.appmattus.kotlinfixture.resolver.SubTypeResolver
-import com.appmattus.kotlinfixture.resolver.UriResolver
-import com.appmattus.kotlinfixture.resolver.UrlResolver
-import com.appmattus.kotlinfixture.resolver.UuidResolver
 import kotlin.random.Random
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
 
-class Fixture(private val baseConfiguration: Configuration) {
-
-    private val baseResolver = CompositeResolver(
-        CharResolver(),
-        StringResolver(),
-        PrimitiveResolver(),
-        UrlResolver(),
-        UriResolver(),
-        BigDecimalResolver(),
-        BigIntegerResolver(),
-        UuidResolver(),
-        EnumResolver(),
-        CalendarResolver(),
-        DateResolver(),
-
-        ObjectResolver(),
-        SealedClassResolver(),
-
-        ArrayResolver(),
-
-        PrimitiveArrayResolver(),
-        HashtableKTypeResolver(),
-        IterableKTypeResolver(),
-        EnumSetResolver(),
-        EnumMapResolver(),
-        MapKTypeResolver(),
-        KTypeResolver(),
-        KFunctionResolver(),
-
-        SubTypeResolver(),
-
-        AbstractClassResolver(),
-
-        ClassResolver()
-    )
-
-    private val baseDecorators: List<Decorator> = listOf(
-        RecursionDecorator(ThrowingRecursionStrategy())
-    )
+class Fixture(val fixtureConfiguration: Configuration) {
 
     inline operator fun <reified T : Any?> invoke(
         range: Iterable<T> = emptyList(),
@@ -88,7 +23,7 @@ class Fixture(private val baseConfiguration: Configuration) {
             rangeShuffled.first()
         } else {
             @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
-            val result = create(typeOf<T>(), ConfigurationBuilder().apply(configuration).build())
+            val result = create(typeOf<T>(), ConfigurationBuilder(fixtureConfiguration).apply(configuration).build())
             if (result is T) {
                 result
             } else {
@@ -99,34 +34,22 @@ class Fixture(private val baseConfiguration: Configuration) {
     }
 
     fun create(type: KType, configuration: Configuration): Any? {
-        val resolver = combineDecorators(configuration).fold(baseResolver as Resolver) { resolver, decorator ->
+        val baseResolver = CompositeResolver(configuration.resolvers) as Resolver
+
+        val resolver = configuration.decorators.fold(baseResolver) { resolver, decorator ->
             decorator.decorate(resolver)
         }
 
         val context = object : Context {
-            override val configuration = baseConfiguration + configuration
+            override val configuration = configuration
             override val resolver = resolver
         }
         return context.resolve(type)
     }
-
-    private fun combineDecorators(configuration: Configuration): List<Decorator> {
-        val base = baseDecorators.filterClassNotIn(baseConfiguration).filterClassNotIn(configuration)
-        val baseConfigStart = baseConfiguration.decoratorsAtStart.filterClassNotIn(configuration)
-        val baseConfigEnd = baseConfiguration.decoratorsAtEnd.filterClassNotIn(configuration)
-
-        return configuration.decoratorsAtStart + baseConfigStart + base + baseConfigEnd + configuration.decoratorsAtEnd
-    }
-
-    private fun List<Decorator>.filterClassNotIn(configuration: Configuration): List<Decorator> {
-        return this.filterNot { decorator ->
-            configuration.decoratorsAtStart.map { it::class }.contains(decorator::class) ||
-                    configuration.decoratorsAtEnd.map { it::class }.contains(decorator::class)
-        }
-    }
 }
 
-fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) = Fixture(ConfigurationBuilder().apply(init).build())
+fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) =
+    Fixture(ConfigurationBuilder().apply(init).build())
 
 class TestClass(val bob: String) {
     override fun toString() = "TestClass [bob=$bob]"
@@ -163,7 +86,7 @@ fun main() {
     fixture<List<String>> {
         repeatCount { 2 }
 
-        addDecorator(LoggingDecorator(SysOutLoggingStrategy()))
+        decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
     }
 
     println(fixture(listOf(1, 2, 3)))
@@ -178,7 +101,9 @@ fun main() {
     })
 
     println(fixture<A> {
-        addDecorator(RecursionDecorator(NullRecursionStrategy()))
+        decorators.removeIf { it is RecursionDecorator }
+        decorators.add(RecursionDecorator(NullRecursionStrategy()))
+        decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
     })
 }
 
