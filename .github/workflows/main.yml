@@ -12,6 +12,7 @@ on:
 
 env:
   CI: "true"
+  CI_NAME: github
 
 jobs:
   build:
@@ -26,11 +27,21 @@ jobs:
       with:
         java-version: 1.8
 
+    - name: Set branch
+      run: echo ::set-env name=CI_BRANCH::$(echo ${GITHUB_REF})
+    - name: Set build number
+      run: echo ::set-env name=CI_BUILD_NUMBER::$(echo ${GITHUB_SHA})
+
+    - name: Set pr number
+      run: echo ::set-env name=CI_PULL_REQUEST::$(echo ${GITHUB_REF:10})
+      if: startsWith(github.ref, 'refs/pull/')
+
+
     - name: Build with Gradle
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        CI_BRANCH: ${{ github.ref }}
-        CI_PULL_REQUEST: ${{ github.pull_request.number }}
+        #CI_BRANCH: ${{ github.ref }}
+        #CI_PULL_REQUEST: ${{ github.pull_request.number }}
       run: ./gradlew assemble check --stacktrace
 
     - name: Set tag version
