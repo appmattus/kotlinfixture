@@ -29,8 +29,6 @@ private object ToDo {
     // TODO Add tests:
     // TODO - Test DateSpecification
 
-    // TODO Code coverage; Add badge to readme
-
     // TODO Write readme/documentation
 
     // TODO Remove println statements
