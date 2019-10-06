@@ -28,7 +28,7 @@ jobs:
         java-version: 1.8
 
     - name: Set url
-      run: echo ::set-env name=CI_BUILD_URL::$(echo https://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}/checks)
+      run: echo ::set-env name=CI_BUILD_URL::$(echo ${GITHUB_REPOSITORY})
 
     - name: Set branch
       run: echo ::set-env name=CI_BRANCH::$(echo ${GITHUB_REF})
