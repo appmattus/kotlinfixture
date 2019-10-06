@@ -4,8 +4,8 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.typeOf
 import java.util.EnumSet
-import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -23,7 +23,6 @@ class EnumSetResolverTest {
 
     @Test
     fun `Enum with no values returns empty EnumSet`() {
-        @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
         val result = context.resolve(typeOf<EnumSet<EmptyEnumClass>>())
 
         assertEquals(EnumSet.noneOf(EmptyEnumClass::class.java), result)
@@ -37,7 +36,6 @@ class EnumSetResolverTest {
     @Test
     fun `Enum with one value returns either empty set or set with one value`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             context.resolve(typeOf<EnumSet<SingleEnumClass>>())
         }
     }
@@ -45,7 +43,6 @@ class EnumSetResolverTest {
     @Test
     fun `randomly returns null for nullable type`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             context.resolve(typeOf<EnumSet<SingleEnumClass>?>()) == null
         }
     }
@@ -53,7 +50,6 @@ class EnumSetResolverTest {
     @Test
     fun `Enum with one value returns random length set`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             (context.resolve(typeOf<EnumSet<SingleEnumClass>>()) as EnumSet<*>).size
         }
     }
@@ -68,7 +64,6 @@ class EnumSetResolverTest {
     @Test
     fun `Enum with multiple values returns random value`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             context.resolve(typeOf<EnumSet<MultiEnumClass>>())
         }
     }

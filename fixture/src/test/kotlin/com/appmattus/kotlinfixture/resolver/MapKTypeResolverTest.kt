@@ -3,6 +3,7 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.typeOf
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -17,7 +18,6 @@ import java.util.concurrent.ConcurrentNavigableMap
 import java.util.concurrent.ConcurrentSkipListMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
-import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -40,7 +40,6 @@ class MapKTypeResolverTest {
 
         @Test
         fun `Unknown key type parameter returns Unresolved`() {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             val result = context.resolve(typeOf<Map<Number, String>>())
 
             assertEquals(Unresolved, result)
@@ -48,7 +47,6 @@ class MapKTypeResolverTest {
 
         @Test
         fun `Unknown value type parameter returns Unresolved`() {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             val result = context.resolve(typeOf<Map<String, Number>>())
 
             assertEquals(Unresolved, result)
@@ -58,7 +56,7 @@ class MapKTypeResolverTest {
         fun `Length matches configuration value of 3`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR", "UNCHECKED_CAST")
+            @Suppress("UNCHECKED_CAST")
             val result = context.resolve(typeOf<Map<String, String>>()) as Map<String, String>
 
             assertEquals(3, result.size)
@@ -68,7 +66,7 @@ class MapKTypeResolverTest {
         fun `Length matches configuration value of 7`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 7 }))
 
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR", "UNCHECKED_CAST")
+            @Suppress("UNCHECKED_CAST")
             val result = context.resolve(typeOf<Map<String, String>>()) as Map<String, String>
 
             assertEquals(7, result.size)
@@ -107,7 +105,6 @@ class MapKTypeResolverTest {
 
         companion object {
             @JvmStatic
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             @Parameterized.Parameters(name = "{1}")
             fun data() = arrayOf(
                 arrayOf(typeOf<Map<String, String>>(), Map::class),

@@ -4,8 +4,8 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.typeOf
 import java.util.EnumMap
-import kotlin.reflect.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -30,7 +30,6 @@ class EnumMapResolverTest {
 
     @Test
     fun `Unknown value type parameter returns Unresolved`() {
-        @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
         val result = context.resolve(typeOf<EnumMap<SingleEnumClass, Number>>())
 
         assertEquals(Unresolved, result)
@@ -39,7 +38,7 @@ class EnumMapResolverTest {
     @Test
     fun `Length is random`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR", "UNCHECKED_CAST")
+            @Suppress("UNCHECKED_CAST")
             (context.resolve(typeOf<EnumMap<SingleEnumClass, String>>()) as EnumMap<SingleEnumClass, String>).size
         }
     }
@@ -48,7 +47,6 @@ class EnumMapResolverTest {
 
     @Test
     fun `Enum with no values returns empty EnumMap`() {
-        @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
         val result = context.resolve(typeOf<EnumMap<EmptyEnumClass, String>>())
 
         assertEquals(EnumMap<EmptyEnumClass, String>(EmptyEnumClass::class.java), result)
@@ -64,7 +62,6 @@ class EnumMapResolverTest {
     @Test
     fun `Enum with multiple values returns random value`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             context.resolve(typeOf<EnumMap<MultiEnumClass, String>>())
         }
     }
@@ -72,7 +69,6 @@ class EnumMapResolverTest {
     @Test
     fun `Enum with multiple values is randomly empty`() {
         assertIsRandom {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             (context.resolve(typeOf<EnumMap<MultiEnumClass, String>>()) as EnumMap<*, *>).isEmpty()
         }
     }

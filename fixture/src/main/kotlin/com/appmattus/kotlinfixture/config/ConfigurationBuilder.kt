@@ -4,10 +4,10 @@ import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
+import com.appmattus.kotlinfixture.typeOf
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
-import kotlin.reflect.typeOf
 
 class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
@@ -21,7 +21,6 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private val instances: MutableMap<KType, () -> Any?> = configuration.instances.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
-    @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
     inline fun <reified T> instance(noinline generator: () -> T) = instance(typeOf<T>(), generator)
 
     fun instance(type: KType, generator: () -> Any?) {

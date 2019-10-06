@@ -8,7 +8,6 @@ import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import kotlin.random.Random
 import kotlin.reflect.KType
-import kotlin.reflect.typeOf
 
 class Fixture(val fixtureConfiguration: Configuration) {
 
@@ -20,7 +19,6 @@ class Fixture(val fixtureConfiguration: Configuration) {
         return if (rangeShuffled.isNotEmpty()) {
             rangeShuffled.first()
         } else {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
             val result = create(typeOf<T>(), ConfigurationBuilder(fixtureConfiguration).apply(configuration).build())
             if (result is T) {
                 result
