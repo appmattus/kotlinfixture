@@ -31,11 +31,9 @@ jobs:
       run: echo ::set-env name=CI_BRANCH::$(echo ${GITHUB_REF})
     - name: Set build number
       run: echo ::set-env name=CI_BUILD_NUMBER::$(echo ${GITHUB_SHA})
-
     - name: Set pr number
-      run: echo ::set-env name=CI_PULL_REQUEST::$(echo ${GITHUB_REF:10})
+      run: echo ::set-env name=CI_PULL_REQUEST::$(echo ${GITHUB_REF//[^0-9]/})
       if: startsWith(github.ref, 'refs/pull/')
-
 
     - name: Build with Gradle
       env:
