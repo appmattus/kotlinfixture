@@ -24,7 +24,9 @@ internal class ClassResolver : Resolver {
                     obj.settableMutableProperties()
                         .filterNot { constructorParameterNames.contains(it.name) }
                         .forEach { property ->
-                            val propertyResult = overrides.getOrElse(property.name) {
+                            val propertyResult = if (property.name in overrides) {
+                                overrides[property.name]?.invoke()
+                            } else {
                                 context.resolve(property.returnType)
                             }
 

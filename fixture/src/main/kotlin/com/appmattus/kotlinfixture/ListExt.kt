@@ -1,5 +1,7 @@
 package com.appmattus.kotlinfixture
 
+import java.util.Collections
+
 internal fun <T> List<T>.circularIterator() = object : Iterator<T> {
     private var position = 0
 
@@ -12,3 +14,7 @@ internal fun <T> List<T>.circularIterator() = object : Iterator<T> {
         }
     }
 }
+
+fun <K, V> Map<K, V>.toUnmodifiableMap(): Map<K, V> = Collections.unmodifiableMap(this)
+
+fun <T> List<T>.toUnmodifiableList(): List<T> = Collections.unmodifiableList(this)

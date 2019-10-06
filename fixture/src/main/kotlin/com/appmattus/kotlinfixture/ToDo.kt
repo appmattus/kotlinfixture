@@ -27,9 +27,9 @@ private object ToDo {
     // - https://blog.kotlin-academy.com/creating-a-random-instance-of-any-class-in-kotlin-b6168655b64a
 
     // TODO Add tests:
-    // TODO - Test configuration overloading in Configuration
-    // TODO - Test ConfigurationBuilder
     // TODO - Test DateSpecification
+
+    // TODO Code coverage; Add badge to readme
 
     // TODO Write readme/documentation
 
