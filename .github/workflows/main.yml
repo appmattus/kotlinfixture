@@ -10,6 +10,9 @@ on:
     branches:
     - master
 
+env:
+  CI: "true"
+
 jobs:
   build:
 
@@ -24,6 +27,8 @@ jobs:
         java-version: 1.8
 
     - name: Build with Gradle
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       run: ./gradlew assemble check --stacktrace
 
     - name: Set tag version

@@ -1,4 +1,4 @@
-# Fixture for Kotlin [![CI status](https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg)](https://github.com/appmattus/kotlinfixture/actions)
+# Fixture for Kotlin [![CI status](https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg)](https://github.com/appmattus/kotlinfixture/actions) [![Coverage Status](https://coveralls.io/repos/github/appmattus/kotlinfixture/badge.svg?branch=master)](https://coveralls.io/github/appmattus/kotlinfixture?branch=master)
 
 ## Getting started [![Download](https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg) ](https://bintray.com/appmattus/maven/fixture/_latestVersion)
 

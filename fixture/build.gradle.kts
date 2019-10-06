@@ -5,6 +5,7 @@ plugins {
 }
 
 apply(from = "$rootDir/bintray.gradle.kts")
+apply(from = "$rootDir/codecoverage.gradle.kts")
 
 repositories {
     mavenCentral()
