@@ -48,14 +48,17 @@ detekt {
     // config = files("detekt-config.yml")
 }
 
-println(System.getenv("GITHUB_WORKFLOW"))
-println(System.getenv("GITHUB_ACTION"))
-println(System.getenv("GITHUB_ACTOR"))
-println(System.getenv("GITHUB_REPOSITORY"))
-println(System.getenv("GITHUB_EVENT_NAME"))
-println(System.getenv("GITHUB_EVENT_PATH"))
-println(System.getenv("GITHUB_WORKSPACE"))
-println(System.getenv("GITHUB_SHA"))
-println(System.getenv("GITHUB_REF"))
-println(System.getenv("GITHUB_HEAD_REF"))
-println(System.getenv("GITHUB_BASE_REF"))
+// push
+println(System.getenv("GITHUB_WORKFLOW")) // CI
+println(System.getenv("GITHUB_ACTION")) // run1
+println(System.getenv("GITHUB_ACTOR")) // ***
+println(System.getenv("GITHUB_REPOSITORY")) // appmattus/kotlinfixture
+println(System.getenv("GITHUB_EVENT_NAME")) // push
+println(System.getenv("GITHUB_EVENT_PATH")) // /home/runner/work/_temp/_github_workflow/event.json
+println(System.getenv("GITHUB_WORKSPACE")) // /home/runner/work/kotlinfixture/kotlinfixture
+println(System.getenv("GITHUB_SHA")) // 283a30f046672e7df9ef67885ef29b66b8b12ade
+println(System.getenv("GITHUB_REF")) // refs/heads/master
+println(System.getenv("GITHUB_HEAD_REF")) // ?
+println(System.getenv("GITHUB_BASE_REF")) // ?
+println(System.getenv("CI_BRANCH")) // ?
+println(System.getenv("CI_PULL_REQUEST")) // ?
