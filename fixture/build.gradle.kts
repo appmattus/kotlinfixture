@@ -2,11 +2,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
-    id("jacoco")
-    id("com.github.kt3k.coveralls")
 }
 
 apply(from = "$rootDir/bintray.gradle.kts")
+apply(from = "$rootDir/codecoverage.gradle.kts")
 
 repositories {
     mavenCentral()
@@ -35,21 +34,3 @@ tasks.whenTaskAdded {
         from(sourceSets.main.get().allSource)
     }
 }
-
-tasks.getByName("test").finalizedBy(tasks.getByName("jacocoTestReport"))
-
-tasks.withType<JacocoReport> {
-    reports {
-        xml.isEnabled = true
-        html.isEnabled = true
-    }
-}
-
-coveralls {
-    sourceDirs = sourceSets.main.get().allSource.srcDirs.map { it.path }
-    jacocoReportPath = "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
-}
-
-tasks.getByName("jacocoTestReport").finalizedBy(tasks.getByName("coveralls"))
-
-tasks.getByName("coveralls").onlyIf { System.getenv("CI")?.isNotEmpty() == true }
