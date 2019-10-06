@@ -29,6 +29,8 @@ import com.appmattus.kotlinfixture.resolver.SubTypeResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
 import com.appmattus.kotlinfixture.resolver.UrlResolver
 import com.appmattus.kotlinfixture.resolver.UuidResolver
+import com.appmattus.kotlinfixture.toUnmodifiableList
+import com.appmattus.kotlinfixture.toUnmodifiableMap
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
@@ -37,14 +39,15 @@ import kotlin.reflect.KType
 data class Configuration(
     val dateSpecification: DateSpecification = defaultDateSpecification,
     val repeatCount: () -> Int = defaultRepeatCount,
-    val properties: Map<KClass<*>, Map<String, () -> Any?>> = emptyMap(),
-    val instances: Map<KType, () -> Any?> = emptyMap(),
-    val subTypes: Map<KClass<*>, KClass<*>> = emptyMap(),
-    val decorators: List<Decorator> = defaultDecorators,
-    val resolvers: List<Resolver> = defaultResolvers
+    val properties: Map<KClass<*>, Map<String, () -> Any?>> =
+        emptyMap<KClass<*>, Map<String, () -> Any?>>().toUnmodifiableMap(),
+    val instances: Map<KType, () -> Any?> = emptyMap<KType, () -> Any?>().toUnmodifiableMap(),
+    val subTypes: Map<KClass<*>, KClass<*>> = emptyMap<KClass<*>, KClass<*>>().toUnmodifiableMap(),
+    val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
+    val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList()
 ) {
 
-    companion object {
+    private companion object {
         private val defaultRepeatCount: () -> Int = { 5 }
 
         private val defaultDateSpecification: DateSpecification = DateSpecification.Between(

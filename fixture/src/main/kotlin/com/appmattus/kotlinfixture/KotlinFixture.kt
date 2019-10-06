@@ -6,8 +6,6 @@ import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
-import com.appmattus.kotlinfixture.resolver.CompositeResolver
-import com.appmattus.kotlinfixture.resolver.Resolver
 import kotlin.random.Random
 import kotlin.reflect.KType
 import kotlin.reflect.typeOf
@@ -34,17 +32,7 @@ class Fixture(val fixtureConfiguration: Configuration) {
     }
 
     fun create(type: KType, configuration: Configuration): Any? {
-        val baseResolver = CompositeResolver(configuration.resolvers) as Resolver
-
-        val resolver = configuration.decorators.fold(baseResolver) { resolver, decorator ->
-            decorator.decorate(resolver)
-        }
-
-        val context = object : Context {
-            override val configuration = configuration
-            override val resolver = resolver
-        }
-        return context.resolve(type)
+        return ContextImpl(configuration).resolve(type)
     }
 }
 
