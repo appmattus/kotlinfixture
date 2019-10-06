@@ -29,6 +29,7 @@ jobs:
     - name: Build with Gradle
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+        CI_BRANCH: ${{ github.ref }}
       run: ./gradlew assemble check --stacktrace
 
     - name: Set tag version
