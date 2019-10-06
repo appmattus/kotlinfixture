@@ -48,51 +48,15 @@ detekt {
     // config = files("detekt-config.yml")
 }
 
-// push
-println(System.getenv("GITHUB_WORKFLOW")) // CI
-  // CI
-println(System.getenv("GITHUB_ACTION")) // run1
-  // run1
-println(System.getenv("GITHUB_ACTOR")) // ***
-  // ***
 println(System.getenv("GITHUB_REPOSITORY")) // appmattus/kotlinfixture
   // appmattus/kotlinfixture
 println(System.getenv("GITHUB_EVENT_NAME")) // push
   // pull_request
-println(System.getenv("GITHUB_EVENT_PATH")) // /home/runner/work/_temp/_github_workflow/event.json
-  // /home/runner/work/_temp/_github_workflow/event.json
-println(System.getenv("GITHUB_WORKSPACE")) // /home/runner/work/kotlinfixture/kotlinfixture
-  // /home/runner/work/kotlinfixture/kotlinfixture
 println(System.getenv("GITHUB_SHA")) // 283a30f046672e7df9ef67885ef29b66b8b12ade
   // 59888119b32c8b239c6ee411fa2388d249676ddf
 println(System.getenv("GITHUB_REF")) // refs/heads/master
   // refs/pull/9/merge
-println(System.getenv("GITHUB_HEAD_REF")) // ?
-  // ci_env
-println(System.getenv("GITHUB_BASE_REF")) // ?
-  // master
 println(System.getenv("CI_BRANCH")) // ?    on a PR CI_BRANCH: refs/pull/9/merge
   // refs/pull/9/merge
 println(System.getenv("CI_PULL_REQUEST")) // ?   blank on a PR
   // ?
-
-if (System.getenv("GITHUB_REF")?.startsWith("refs/heads") == true) {
-    println(System.getenv("GITHUB_REF").substring(11))
-} else if (System.getenv("GITHUB_REF")?.startsWith("refs/pull") == true) {
-    println("refs/pull/([0-9]+)/merge".toRegex().find(System.getenv("GITHUB_REF"))?.groupValues?.get(1))
-}
-
-tasks.withType<JavaExec> {
-    if (System.getenv("GITHUB_REF")?.startsWith("refs/pull") == true) {
-        val prNumber = "refs/pull/([0-9]+)/merge".toRegex().find(System.getenv("GITHUB_REF"))?.groupValues?.get(1)
-        environment("CI_PULL_REQUEST" to prNumber)
-    }
-
-    if (System.getenv("GITHUB_REF")?.startsWith("refs/heads") == true) {
-        val branchName = System.getenv("GITHUB_REF").substring(11)
-        environment("CI_BRANCH" to branchName)
-    }
-
-    println(System.getenv("CI_BRANCH"))
-    println(System.getenv("CI_PULL_REQUEST"))
-}
