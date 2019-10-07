@@ -6,7 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.0.1"
 }
 
-apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+//apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
 
 allprojects {
     repositories {
