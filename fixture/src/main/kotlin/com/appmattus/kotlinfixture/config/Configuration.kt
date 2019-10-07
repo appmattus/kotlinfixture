@@ -85,6 +85,7 @@ data class Configuration(
             EnumSetResolver(),
             EnumMapResolver(),
             MapKTypeResolver(),
+
             KTypeResolver(),
             KFunctionResolver(),
 

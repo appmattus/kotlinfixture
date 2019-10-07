@@ -24,11 +24,11 @@ internal class EnumMapResolver : Resolver {
     @Suppress("ReturnCount", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            if (obj.isMarkedNullable && Random.nextBoolean()) {
-                return null
-            }
-
             if (obj.classifier == EnumMap::class) {
+                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                    return null
+                }
+
                 val argType = obj.arguments.first().type!!
                 val enumClass = argType.classifier as KClass<*>
                 val valueClass = obj.arguments[1].type?.classifier as KClass<*>

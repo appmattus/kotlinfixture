@@ -37,18 +37,16 @@ internal class IterableKTypeResolver : Resolver {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            if (obj.isMarkedNullable && Random.nextBoolean()) {
-                return null
-            }
-
-            val repeatCount = context.configuration.repeatCount()
-
             val collection = createCollection(obj)
 
             if (collection != null) {
+                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                    return null
+                }
+
                 val argType = obj.arguments.first().type!!
 
-                repeat(repeatCount) {
+                repeat(context.configuration.repeatCount()) {
                     val value = context.resolve(argType)
                     if (value == Unresolved) {
                         return Unresolved

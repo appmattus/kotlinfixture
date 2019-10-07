@@ -17,46 +17,20 @@ import kotlin.reflect.KType
 
 internal class MapKTypeResolver : Resolver {
 
-    @Suppress("ReturnCount", "ComplexMethod")
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            if (obj.isMarkedNullable && Random.nextBoolean()) {
-                return null
-            }
-
-            val repeatCount = context.configuration.repeatCount()
-
-            val collection = when (obj.classifier as KClass<*>) {
-
-                Map::class,
-                java.util.AbstractMap::class,
-                HashMap::class -> HashMap()
-
-                SortedMap::class,
-                NavigableMap::class,
-                TreeMap::class -> TreeMap()
-
-                ConcurrentMap::class,
-                ConcurrentHashMap::class -> ConcurrentHashMap()
-
-                ConcurrentNavigableMap::class,
-                ConcurrentSkipListMap::class -> ConcurrentSkipListMap()
-
-                LinkedHashMap::class -> LinkedHashMap()
-                IdentityHashMap::class -> IdentityHashMap()
-                WeakHashMap::class -> WeakHashMap()
-
-                else -> {
-                    @Suppress("USELESS_CAST")
-                    null as MutableMap<Any?, Any?>?
-                }
-            }
+            val collection = createCollection(obj)
 
             if (collection != null) {
+                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                    return null
+                }
+
                 val keyType = obj.arguments[0].type!!
                 val valueType = obj.arguments[1].type!!
 
-                repeat(repeatCount) {
+                repeat(context.configuration.repeatCount()) {
                     val key = context.resolve(keyType)
                     val value = context.resolve(valueType)
 
@@ -72,5 +46,31 @@ internal class MapKTypeResolver : Resolver {
         }
 
         return Unresolved
+    }
+
+    private fun createCollection(obj: KType) = when (obj.classifier as KClass<*>) {
+
+        Map::class,
+        java.util.AbstractMap::class,
+        HashMap::class -> HashMap()
+
+        SortedMap::class,
+        NavigableMap::class,
+        TreeMap::class -> TreeMap()
+
+        ConcurrentMap::class,
+        ConcurrentHashMap::class -> ConcurrentHashMap()
+
+        ConcurrentNavigableMap::class,
+        ConcurrentSkipListMap::class -> ConcurrentSkipListMap()
+
+        LinkedHashMap::class -> LinkedHashMap()
+        IdentityHashMap::class -> IdentityHashMap()
+        WeakHashMap::class -> WeakHashMap()
+
+        else -> {
+            @Suppress("USELESS_CAST")
+            null as MutableMap<Any?, Any?>?
+        }
     }
 }

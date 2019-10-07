@@ -20,11 +20,11 @@ internal class EnumSetResolver : Resolver {
     @Suppress("ReturnCount", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            if (obj.isMarkedNullable && Random.nextBoolean()) {
-                return null
-            }
-
             if (obj.classifier == EnumSet::class) {
+                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                    return null
+                }
+
                 val argType = obj.arguments.first().type!!
                 val enumClass = argType.classifier as KClass<*>
 
