@@ -54,7 +54,10 @@ jobs:
       run: ./gradlew assemble check --stacktrace
 
     - name: after
-      run: ./cc-test-reporter after-build --coverage-input-type=jacoco
+      run: JACOCO_SOURCE_PATH=./fixture/src/main/kotlin ./cc-test-reporter format-coverage ./fixture/build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
+      #run: ./cc-test-reporter after-build --coverage-input-type=jacoco
+    - name: after2
+      run: ./cc-test-reporter upload-coverage
 
     - name: Set tag version
       run: echo ::set-env name=CIRCLE_TAG::$(echo ${GITHUB_REF:10})
