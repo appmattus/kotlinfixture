@@ -54,7 +54,7 @@ jobs:
       run: ./gradlew assemble check --stacktrace
 
     - name: after
-      run: ./cc-test-reporter after-build
+      run: ./cc-test-reporter after-build --coverage-input-type=jacoco
 
     - name: Set tag version
       run: echo ::set-env name=CIRCLE_TAG::$(echo ${GITHUB_REF:10})
