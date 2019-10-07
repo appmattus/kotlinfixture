@@ -38,12 +38,22 @@ jobs:
     #  run: echo ::set-env name=CI_PULL_REQUEST::$(echo ${GITHUB_REF//[^0-9]/})
     #  if: startsWith(github.ref, 'refs/pull/')
 
+    - name: CodeClimate
+      run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - name: CodeClimate2
+      run: chmod +x ./cc-test-reporter
+    - name: before
+      run: ./cc-test-reporter before-build
+
     - name: Build with Gradle
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
         #CI_BRANCH: ${{ github.ref }}
         #CI_PULL_REQUEST: ${{ github.pull_request.number }}
       run: ./gradlew assemble check --stacktrace
+
+    - name: after
+      run: ./cc-test-reporter after-build
 
     - name: Set tag version
       run: echo ::set-env name=CIRCLE_TAG::$(echo ${GITHUB_REF:10})
@@ -61,8 +71,10 @@ jobs:
       with:
         token: ${{secrets.CODECOV_TOKEN}}
 
-    - name: Coveralls
-      uses: coverallsapp/github-action@v1.0.1
-      with:
-        github-token: ${{ secrets.github_token }}
-        path-to-lcov: ./fixture/build/reports/jacoco/test/jacocoTestReport.xml
+
+    #- name: Coveralls
+    #  uses: coverallsapp/github-action@v1.0.1
+    #  with:
+    #    github-token: ${{ secrets.github_token }}
+    #    path-to-lcov: ./fixture/build/reports/jacoco/test/jacocoTestReport.xml
+
