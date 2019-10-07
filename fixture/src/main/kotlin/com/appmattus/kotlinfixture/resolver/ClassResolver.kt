@@ -12,7 +12,6 @@ internal class ClassResolver : Resolver {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
-
             val constructorParameterNames = obj.constructorParameterNames()
 
             val overrides = context.configuration.properties.getOrDefault(obj, emptyMap())
@@ -21,22 +20,27 @@ internal class ClassResolver : Resolver {
                 val result = context.resolve(KFunctionRequest(obj, constructor))
                 if (result != Unresolved) {
 
-                    obj.settableMutableProperties()
-                        .filterNot { constructorParameterNames.contains(it.name) }
-                        .forEach { property ->
-                            val propertyResult = if (property.name in overrides) {
-                                overrides[property.name]?.invoke()
-                            } else {
-                                context.resolve(property.returnType)
-                            }
+                    try {
+                        obj.settableMutableProperties()
+                            .filterNot { constructorParameterNames.contains(it.name) }
+                            .forEach { property ->
+                                val propertyResult = if (property.name in overrides) {
+                                    overrides[property.name]?.invoke()
+                                } else {
+                                    context.resolve(property.returnType)
+                                }
 
-                            if (propertyResult == Unresolved) {
-                                return Unresolved
-                            }
+                                if (propertyResult == Unresolved) {
+                                    return Unresolved
+                                }
 
-                            // Property might not be visible
-                            property.setter.safeCall(result, propertyResult)
-                        }
+                                // Property might not be visible
+                                property.setter.safeCall(result, propertyResult)
+                            }
+                    } catch (expected: Error) {
+                        // If retrieving setters fails we fail regardless of constructor used
+                        return Unresolved
+                    }
 
                     return result
                 }

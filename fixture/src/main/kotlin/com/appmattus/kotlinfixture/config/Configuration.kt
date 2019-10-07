@@ -15,6 +15,7 @@ import com.appmattus.kotlinfixture.resolver.EnumMapResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.EnumSetResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
+import com.appmattus.kotlinfixture.resolver.InstanceResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
@@ -70,6 +71,9 @@ data class Configuration(
             CalendarResolver(),
             DateResolver(),
 
+            InstanceResolver(),
+            SubTypeResolver(),
+
             ObjectResolver(),
             SealedClassResolver(),
 
@@ -83,8 +87,6 @@ data class Configuration(
             MapKTypeResolver(),
             KTypeResolver(),
             KFunctionResolver(),
-
-            SubTypeResolver(),
 
             AbstractClassResolver(),
 
