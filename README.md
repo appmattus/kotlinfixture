@@ -1,6 +1,6 @@
-# Fixture for Kotlin [![CI status](https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg)](https://github.com/appmattus/kotlinfixture/actions) [![Coverage Status](https://coveralls.io/repos/github/appmattus/kotlinfixture/badge.svg?branch=master)](https://coveralls.io/github/appmattus/kotlinfixture?branch=master)
+# Fixture for Kotlin [![CI status](https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg)](https://github.com/appmattus/kotlinfixture/actions) [![Coverage status](https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg)](https://codecov.io/gh/appmattus/kotlinfixture)
 
-## Getting started [![Download](https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg) ](https://bintray.com/appmattus/maven/fixture/_latestVersion)
+## Getting started [![Download](https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg)](https://bintray.com/appmattus/maven/fixture/_latestVersion)
 
 Include the following dependencies in your build.gradle.kts file:
 

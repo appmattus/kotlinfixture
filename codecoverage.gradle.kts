@@ -14,21 +14,7 @@
  * limitations under the License.
  */
 
-import org.kt3k.gradle.plugin.CoverallsPlugin
-import org.kt3k.gradle.plugin.CoverallsPluginExtension
-
-buildscript {
-    repositories {
-        maven { setUrl("https://plugins.gradle.org/m2/") }
-        jcenter()
-    }
-    dependencies {
-        classpath("gradle.plugin.com.github.kt3k.coveralls:coveralls-gradle-plugin:2.8.4")
-    }
-}
-
 apply<JacocoPlugin>()
-apply<CoverallsPlugin>()
 
 tasks.getByName("test").finalizedBy(tasks.getByName("jacocoTestReport"))
 
@@ -38,12 +24,3 @@ tasks.withType<JacocoReport> {
         html.isEnabled = true
     }
 }
-
-configure<CoverallsPluginExtension> {
-    sourceDirs = the<SourceSetContainer>()["main"].allSource.srcDirs.map { it.path }
-    jacocoReportPath = "$buildDir/reports/jacoco/test/jacocoTestReport.xml"
-}
-
-tasks.getByName("jacocoTestReport").finalizedBy(tasks.getByName("coveralls"))
-
-tasks.getByName("coveralls").onlyIf { System.getenv("CI")?.isNotEmpty() == true }

@@ -12,10 +12,7 @@ private object ToDo {
     // TODO Seeded requests - basically a way to ensure consistent execution
 
     // TODO Customisations:
-    // TODO - instance<T : Any?>(factory: Boolean, () -> T)
-    // TODO - fixed subtype - useSubType<Iterable, LinkedList>()
     // TODO - propertyOf<Order>("fieldName", 123)
-    // TODO - repeatCount = 5
 
     // TODO handle & detect circular dependencies. See circularDependencyBehaviour
 

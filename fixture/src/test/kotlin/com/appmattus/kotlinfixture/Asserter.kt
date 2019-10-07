@@ -9,5 +9,5 @@ fun assertIsRandom(block: () -> Any?) {
         if (initial != block()) return
     }
 
-    fail()
+    fail("Value always equal to $initial")
 }
