@@ -6,7 +6,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.0.1"
 }
 
-//apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
 
 allprojects {
     repositories {
@@ -47,16 +47,3 @@ detekt {
     // To override MaxLineLength:excludeCommentStatements
     // config = files("detekt-config.yml")
 }
-
-println(System.getenv("GITHUB_REPOSITORY")) // appmattus/kotlinfixture
-  // appmattus/kotlinfixture
-println(System.getenv("GITHUB_EVENT_NAME")) // push
-  // pull_request
-println(System.getenv("GITHUB_SHA")) // 283a30f046672e7df9ef67885ef29b66b8b12ade
-  // 59888119b32c8b239c6ee411fa2388d249676ddf
-println(System.getenv("GITHUB_REF")) // refs/heads/master
-  // refs/pull/9/merge
-println(System.getenv("CI_BRANCH")) // ?    on a PR CI_BRANCH: refs/pull/9/merge
-  // refs/pull/9/merge
-println(System.getenv("CI_PULL_REQUEST")) // ?   blank on a PR
-  // ?
