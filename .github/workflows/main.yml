@@ -12,6 +12,8 @@ on:
 
 env:
   CI: "true"
+  #CI_NAME: github
+  CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
 jobs:
   build:
@@ -26,11 +28,36 @@ jobs:
       with:
         java-version: 1.8
 
+    #- name: Set url
+    #  run: echo ::set-env name=CI_BUILD_URL::$(echo ${GITHUB_REPOSITORY})
+
+    #- name: Set branch
+    #  run: echo ::set-env name=CI_BRANCH::$(echo ${GITHUB_REF})
+    #- name: Set build number
+    #  run: echo ::set-env name=CI_BUILD_NUMBER::$(echo ${GITHUB_SHA})
+    #- name: Set pr number
+    #  run: echo ::set-env name=CI_PULL_REQUEST::$(echo ${GITHUB_REF//[^0-9]/})
+    #  if: startsWith(github.ref, 'refs/pull/')
+
+    - name: CodeClimate
+      run: curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+    - name: CodeClimate2
+      run: chmod +x ./cc-test-reporter
+    - name: before
+      run: ./cc-test-reporter before-build
+
     - name: Build with Gradle
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-        CI_BRANCH: ${{ github.ref }}
+        #CI_BRANCH: ${{ github.ref }}
+        #CI_PULL_REQUEST: ${{ github.pull_request.number }}
       run: ./gradlew assemble check --stacktrace
+
+    - name: after
+      run: JACOCO_SOURCE_PATH=./fixture/src/main/kotlin ./cc-test-reporter format-coverage ./fixture/build/reports/jacoco/test/jacocoTestReport.xml --input-type jacoco
+      #run: ./cc-test-reporter after-build --coverage-input-type=jacoco
+    - name: after2
+      run: ./cc-test-reporter upload-coverage
 
     - name: Set tag version
       run: echo ::set-env name=CIRCLE_TAG::$(echo ${GITHUB_REF:10})
@@ -42,3 +69,16 @@ jobs:
         BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
       run: ./gradlew bintrayUpload
       if: startsWith(github.ref, 'refs/tags/')
+
+    - name: Upload coverage to Codecov  
+      uses: codecov/codecov-action@v1.0.2
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+
+
+    #- name: Coveralls
+    #  uses: coverallsapp/github-action@v1.0.1
+    #  with:
+    #    github-token: ${{ secrets.github_token }}
+    #    path-to-lcov: ./fixture/build/reports/jacoco/test/jacocoTestReport.xml
+

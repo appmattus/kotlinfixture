@@ -47,15 +47,3 @@ detekt {
     // To override MaxLineLength:excludeCommentStatements
     // config = files("detekt-config.yml")
 }
-
-println(System.getenv("GITHUB_WORKFLOW"))
-println(System.getenv("GITHUB_ACTION"))
-println(System.getenv("GITHUB_ACTOR"))
-println(System.getenv("GITHUB_REPOSITORY"))
-println(System.getenv("GITHUB_EVENT_NAME"))
-println(System.getenv("GITHUB_EVENT_PATH"))
-println(System.getenv("GITHUB_WORKSPACE"))
-println(System.getenv("GITHUB_SHA"))
-println(System.getenv("GITHUB_REF"))
-println(System.getenv("GITHUB_HEAD_REF"))
-println(System.getenv("GITHUB_BASE_REF"))
