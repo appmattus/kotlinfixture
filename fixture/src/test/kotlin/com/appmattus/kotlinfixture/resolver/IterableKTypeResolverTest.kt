@@ -65,6 +65,13 @@ class IterableKTypeResolverTest {
         }
 
         @Test
+        fun `Random nullability returned`() {
+            assertIsRandom {
+                context.resolve(typeOf<Collection<String>?>()) == null
+            }
+        }
+
+        @Test
         fun `Length matches configuration value of 3`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 

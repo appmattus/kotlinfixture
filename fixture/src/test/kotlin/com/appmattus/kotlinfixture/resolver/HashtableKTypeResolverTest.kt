@@ -47,6 +47,13 @@ class HashtableKTypeResolverTest {
         }
 
         @Test
+        fun `Random nullability returned`() {
+            assertIsRandom {
+                context.resolve(typeOf<Hashtable<String, String>?>()) == null
+            }
+        }
+
+        @Test
         fun `Length matches configuration value of 3`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 

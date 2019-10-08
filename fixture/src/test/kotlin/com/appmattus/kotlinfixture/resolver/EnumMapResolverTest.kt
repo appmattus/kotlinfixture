@@ -67,6 +67,13 @@ class EnumMapResolverTest {
     }
 
     @Test
+    fun `Random nullability returned`() {
+        assertIsRandom {
+            context.resolve(typeOf<EnumMap<MultiEnumClass, String>?>()) == null
+        }
+    }
+
+    @Test
     fun `Uses seeded random`() {
         val value1 = context.seedRandom().resolve(typeOf<EnumMap<MultiEnumClass, String>>()) as EnumMap<*, *>
         val value2 = context.seedRandom().resolve(typeOf<EnumMap<MultiEnumClass, String>>()) as EnumMap<*, *>

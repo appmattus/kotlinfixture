@@ -54,6 +54,13 @@ class MapKTypeResolverTest {
         }
 
         @Test
+        fun `Random nullability returned`() {
+            assertIsRandom {
+                context.resolve(typeOf<Map<String, String>?>()) == null
+            }
+        }
+
+        @Test
         fun `Length matches configuration value of 3`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
@@ -110,6 +117,7 @@ class MapKTypeResolverTest {
                 (context.resolve(type) as MutableMap<*, *>)
             }
         }
+
 
         @Test
         fun `Uses seeded random`() {
