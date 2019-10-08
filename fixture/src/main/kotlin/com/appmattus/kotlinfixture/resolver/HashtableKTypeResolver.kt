@@ -4,7 +4,6 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.util.Dictionary
 import java.util.Hashtable
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -16,7 +15,7 @@ internal class HashtableKTypeResolver : Resolver {
             val collection = createCollection(obj)
 
             if (collection != null) {
-                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                if (obj.isMarkedNullable && context.random.nextBoolean()) {
                     return null
                 }
 

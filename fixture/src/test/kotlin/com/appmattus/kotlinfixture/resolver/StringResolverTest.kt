@@ -32,4 +32,12 @@ class StringResolverTest {
             context.resolve(String::class)
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(String::class) as String
+        val value2 = context.seedRandom().resolve(String::class) as String
+
+        assertEquals(value1, value2)
+    }
 }

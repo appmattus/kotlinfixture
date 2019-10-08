@@ -141,6 +141,25 @@ val futureDate = fixture<Date> {
 }
 ```
 
+#### random
+
+By default a Random class is used that will generate unique values
+between runs. If you want repeatability you can specify a seeded Random
+instance.
+
+```kotlin
+val fixture = kotlinFixture {
+    random = Random(seed = 10)
+}
+
+val alwaysTheSame = fixture<Int>()
+
+// Can be specified on creation, but makes the result static
+val aStaticValue = fixture<Int>() {
+    random = Random(seed = 5)
+}
+```
+
 ## Contributing
 
 Please fork this repository and contribute back using

@@ -5,6 +5,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
 import com.appmattus.kotlinfixture.typeOf
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
@@ -14,6 +15,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     var dateSpecification: DateSpecification = configuration.dateSpecification
     var decorators: MutableList<Decorator> = configuration.decorators.toMutableList()
     var resolvers: MutableList<Resolver> = configuration.resolvers.toMutableList()
+    var random: Random = configuration.random
 
     private var repeatCount: () -> Int = configuration.repeatCount
     private val properties: MutableMap<KClass<*>, MutableMap<String, () -> Any?>> =
@@ -56,6 +58,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
         instances = instances.toUnmodifiableMap(),
         subTypes = subTypes.toUnmodifiableMap(),
+        random = random,
         decorators = decorators.toUnmodifiableList(),
         resolvers = resolvers.toUnmodifiableList()
     )

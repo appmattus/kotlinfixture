@@ -2,6 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.typeOf
 import org.junit.experimental.runners.Enclosed
@@ -64,6 +65,13 @@ class IterableKTypeResolverTest {
         }
 
         @Test
+        fun `Random nullability returned`() {
+            assertIsRandom {
+                context.resolve(typeOf<Collection<String>?>()) == null
+            }
+        }
+
+        @Test
         fun `Length matches configuration value of 3`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
@@ -114,7 +122,22 @@ class IterableKTypeResolverTest {
             }
         }
 
-        class TestDelayed : Delayed {
+        @Test
+        fun `Random values returned`() {
+            assertIsRandom {
+                (context.resolve(type) as MutableCollection<*>).toList()
+            }
+        }
+
+        @Test
+        fun `Uses seeded random`() {
+            val value1 = (context.seedRandom().resolve(type) as MutableCollection<*>).toList()
+            val value2 = (context.seedRandom().resolve(type) as MutableCollection<*>).toList()
+
+            assertEquals(value1, value2)
+        }
+
+        data class TestDelayed(val value: Int) : Delayed {
             override fun compareTo(other: Delayed?): Int = 0
 
             override fun getDelay(unit: TimeUnit): Long = 0

@@ -2,6 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.typeOf
 import org.junit.experimental.runners.Enclosed
@@ -53,6 +54,13 @@ class MapKTypeResolverTest {
         }
 
         @Test
+        fun `Random nullability returned`() {
+            assertIsRandom {
+                context.resolve(typeOf<Map<String, String>?>()) == null
+            }
+        }
+
+        @Test
         fun `Length matches configuration value of 3`() {
             val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
@@ -101,6 +109,22 @@ class MapKTypeResolverTest {
             assertTrue {
                 resultClass.isInstance(result)
             }
+        }
+
+        @Test
+        fun `Random values returned`() {
+            assertIsRandom {
+                (context.resolve(type) as MutableMap<*, *>)
+            }
+        }
+
+
+        @Test
+        fun `Uses seeded random`() {
+            val value1 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()
+            val value2 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()
+
+            assertEquals(value1, value2)
         }
 
         companion object {

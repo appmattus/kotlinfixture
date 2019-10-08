@@ -1,8 +1,6 @@
 package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
-import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
-import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
 import com.appmattus.kotlinfixture.resolver.Resolver
 import kotlin.random.Random
 import kotlin.test.Test
@@ -82,7 +80,7 @@ class FixtureTest {
     fun `repeatCount can be overridden in fixture creation`() {
         val fixture = kotlinFixture()
 
-        val list = fixture<List<String>>() {
+        val list = fixture<List<String>> {
             repeatCount { 2 }
         }
         assertEquals(2, list.size)
@@ -94,7 +92,7 @@ class FixtureTest {
             repeatCount { 1 }
         }
 
-        val list = fixture<List<String>>() {
+        val list = fixture<List<String>> {
             repeatCount { 2 }
         }
         assertEquals(2, list.size)
@@ -176,12 +174,10 @@ class FixtureTest {
     fun `can override instance in creation`() {
         val fixture = kotlinFixture()
 
-        repeat(100) {
-            val result = fixture<Number> {
-                instance<Number> { 20 }
-            }
-            assertEquals(20, result)
+        val result = fixture<Number> {
+            instance<Number> { 20 }
         }
+        assertEquals(20, result)
     }
 
     @Test
@@ -201,14 +197,11 @@ class FixtureTest {
     fun `can override instance in creation when overridden in initialisation`() {
         val fixture = kotlinFixture {
             instance<Number> { 10 }
-            decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
         }
 
-        repeat(100) {
-            val result = fixture<Number> {
-                instance<Number> { 30 }
-            }
-            assertEquals(30, result)
+        val result = fixture<Number> {
+            instance<Number> { 30 }
         }
+        assertEquals(30, result)
     }
 }

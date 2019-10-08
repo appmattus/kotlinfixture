@@ -10,7 +10,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class CharResolverTest {
-    private val context = TestContext(Configuration(), CompositeResolver(CharResolver(), DateResolver()))
+    private val context = TestContext(Configuration(), CharResolver())
 
     @Test
     fun `Unknown class returns Unresolved`() {
@@ -43,5 +43,13 @@ class CharResolverTest {
         assertIsRandom {
             context.resolve(Char::class)
         }
+    }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(Char::class) as Char
+        val value2 = context.seedRandom().resolve(Char::class) as Char
+
+        assertEquals(value1, value2)
     }
 }

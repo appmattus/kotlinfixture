@@ -33,4 +33,19 @@ class KTypeResolverTest {
             context.resolve(Int::class.createType(nullable = true)) == null
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val context1 = context.seedRandom()
+        val value1 = List(5) {
+            context1.resolve(Int::class.createType(nullable = true))
+        }
+
+        val context2 = context.seedRandom()
+        val value2 = List(5) {
+            context2.resolve(Int::class.createType(nullable = true))
+        }
+
+        assertEquals(value1, value2)
+    }
 }

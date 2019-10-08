@@ -57,6 +57,16 @@ class KFunctionResolverTest {
     }
 
     @Test
+    fun `Uses seeded random`() {
+        val request = KFunctionRequest(SimpleClass::class, SimpleClass::class.primaryConstructor!!)
+
+        val value1 = context.seedRandom().resolve(request) as SimpleClass
+        val value2 = context.seedRandom().resolve(request) as SimpleClass
+
+        assertEquals(value1, value2)
+    }
+
+    @Test
     fun `Constructor creates instance with provided parameter`() {
         val context = context.copy(
             configuration = Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to { "custom" })))

@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentNavigableMap
 import java.util.concurrent.ConcurrentSkipListMap
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -23,7 +22,7 @@ internal class MapKTypeResolver : Resolver {
             val collection = createCollection(obj)
 
             if (collection != null) {
-                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                if (obj.isMarkedNullable && context.random.nextBoolean()) {
                     return null
                 }
 

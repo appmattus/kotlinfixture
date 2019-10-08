@@ -34,6 +34,7 @@ import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -44,6 +45,7 @@ data class Configuration(
         emptyMap<KClass<*>, Map<String, () -> Any?>>().toUnmodifiableMap(),
     val instances: Map<KType, () -> Any?> = emptyMap<KType, () -> Any?>().toUnmodifiableMap(),
     val subTypes: Map<KClass<*>, KClass<*>> = emptyMap<KClass<*>, KClass<*>>().toUnmodifiableMap(),
+    val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
     val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList()
 ) {
@@ -55,6 +57,8 @@ data class Configuration(
             Date(Date().time - TimeUnit.DAYS.toMillis(365)),
             Date(Date().time + TimeUnit.DAYS.toMillis(365))
         )
+
+        private val defaultRandom = Random
 
         private val defaultDecorators = listOf(RecursionDecorator(ThrowingRecursionStrategy()))
 

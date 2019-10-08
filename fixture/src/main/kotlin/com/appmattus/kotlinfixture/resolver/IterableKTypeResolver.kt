@@ -28,7 +28,6 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.LinkedTransferQueue
 import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.TransferQueue
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -40,7 +39,7 @@ internal class IterableKTypeResolver : Resolver {
             val collection = createCollection(obj)
 
             if (collection != null) {
-                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                if (obj.isMarkedNullable && context.random.nextBoolean()) {
                     return null
                 }
 

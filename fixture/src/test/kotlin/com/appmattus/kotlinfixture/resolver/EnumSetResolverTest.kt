@@ -67,4 +67,19 @@ class EnumSetResolverTest {
             context.resolve(typeOf<EnumSet<MultiEnumClass>>())
         }
     }
+
+    @Test
+    fun `Random nullability returned`() {
+        assertIsRandom {
+            context.resolve(typeOf<EnumSet<MultiEnumClass>?>()) == null
+        }
+    }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(typeOf<EnumSet<MultiEnumClass>>()) as EnumSet<*>
+        val value2 = context.seedRandom().resolve(typeOf<EnumSet<MultiEnumClass>>()) as EnumSet<*>
+
+        assertEquals(value1, value2)
+    }
 }
