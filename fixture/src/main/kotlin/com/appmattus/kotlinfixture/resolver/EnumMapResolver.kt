@@ -3,7 +3,6 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.util.EnumMap
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
@@ -25,7 +24,7 @@ internal class EnumMapResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.classifier == EnumMap::class) {
-                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                if (obj.isMarkedNullable && context.random.nextBoolean()) {
                     return null
                 }
 
@@ -42,8 +41,8 @@ internal class EnumMapResolver : Resolver {
                     return Unresolved
                 }
 
-                repeat(Random.nextInt(allValues.size + 1)) {
-                    val index = Random.nextInt(allValues.size)
+                repeat(context.random.nextInt(allValues.size + 1)) {
+                    val index = context.random.nextInt(allValues.size)
 
                     val key = allValues.removeAt(index)
                     val value = context.resolve(valueClass)

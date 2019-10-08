@@ -4,6 +4,7 @@ import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
 import java.util.Date
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
@@ -30,6 +31,16 @@ class ConfigurationBuilderTest {
         }.build()
 
         assertEquals(3, configuration.repeatCount())
+    }
+
+    @Test
+    fun `can override random`() {
+        val newRandom = Random(10)
+        val configuration = ConfigurationBuilder(Configuration(random = Random(1))).apply {
+            random = newRandom
+        }.build()
+
+        assertEquals(newRandom, configuration.random)
     }
 
     data class Properties(val property: String)
@@ -109,7 +120,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
         assertFailsWith<UnsupportedOperationException> {
-            @Suppress("UNCHECKED_CAST")
+            @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
             (configuration.instances as MutableMap<KType, () -> Any?>).put(Properties::class.starProjectedType) {
                 Properties(
                     "1"
@@ -145,7 +156,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
         assertFailsWith<UnsupportedOperationException> {
-            @Suppress("UNCHECKED_CAST")
+            @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
             (configuration.subTypes as MutableMap<KClass<*>, KClass<*>>).put(Number::class, Double::class)
         }
     }

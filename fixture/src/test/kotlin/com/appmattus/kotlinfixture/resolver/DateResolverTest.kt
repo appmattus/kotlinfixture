@@ -82,4 +82,12 @@ class DateResolverTest {
             context.resolve(Date::class)
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(Date::class) as Date
+        val value2 = context.seedRandom().resolve(Date::class) as Date
+
+        assertEquals(value1, value2)
+    }
 }

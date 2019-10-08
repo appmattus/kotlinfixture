@@ -33,4 +33,12 @@ class UuidResolverTest {
             context.resolve(UUID::class)
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = (context.seedRandom().resolve(UUID::class) as UUID).toString()
+        val value2 = (context.seedRandom().resolve(UUID::class) as UUID).toString()
+
+        assertEquals(value1, value2)
+    }
 }

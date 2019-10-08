@@ -4,14 +4,13 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.math.BigDecimal
 import java.math.BigInteger
-import kotlin.random.Random
 import kotlin.random.asJavaRandom
 
 internal class BigDecimalResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return if (obj == BigDecimal::class) {
-            BigDecimal(BigInteger(NUM_BITS, Random.asJavaRandom())).divide(BigDecimal.TEN)
+            BigDecimal(BigInteger(NUM_BITS, context.random.asJavaRandom())).divide(BigDecimal.TEN)
         } else {
             Unresolved
         }

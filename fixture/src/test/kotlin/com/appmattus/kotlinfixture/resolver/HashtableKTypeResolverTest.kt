@@ -2,6 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.typeOf
 import org.junit.experimental.runners.Enclosed
@@ -87,6 +88,21 @@ class HashtableKTypeResolverTest {
             assertTrue {
                 resultClass.isInstance(result)
             }
+        }
+
+        @Test
+        fun `Random values returned`() {
+            assertIsRandom {
+                context.resolve(type) as Dictionary<*, *>
+            }
+        }
+
+        @Test
+        fun `Uses seeded random`() {
+            val value1 = context.seedRandom().resolve(type) as Dictionary<*, *>
+            val value2 = context.seedRandom().resolve(type) as Dictionary<*, *>
+
+            assertEquals(value1, value2)
         }
 
         companion object {

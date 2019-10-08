@@ -33,4 +33,12 @@ class BigDecimalResolverTest {
             context.resolve(BigDecimal::class)
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(BigDecimal::class) as BigDecimal
+        val value2 = context.seedRandom().resolve(BigDecimal::class) as BigDecimal
+
+        assertEquals(value1, value2)
+    }
 }

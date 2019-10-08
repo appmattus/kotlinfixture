@@ -9,8 +9,6 @@ private object ToDo {
 
     // TODO Any::class - return random class
 
-    // TODO Seeded requests - basically a way to ensure consistent execution
-
     // TODO Customisations:
     // TODO - propertyOf<Order>("fieldName", 123)
 

@@ -67,4 +67,12 @@ class EnumSetResolverTest {
             context.resolve(typeOf<EnumSet<MultiEnumClass>>())
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(typeOf<EnumSet<MultiEnumClass>>()) as EnumSet<*>
+        val value2 = context.seedRandom().resolve(typeOf<EnumSet<MultiEnumClass>>()) as EnumSet<*>
+
+        assertEquals(value1, value2)
+    }
 }

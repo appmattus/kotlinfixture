@@ -48,6 +48,14 @@ class PrimitiveResolverTest {
             }
         }
 
+        @Test
+        fun `Uses seeded random`() {
+            val value1 = context.seedRandom().resolve(clazz)
+            val value2 = context.seedRandom().resolve(clazz)
+
+            assertEquals(value1, value2)
+        }
+
         companion object {
             @JvmStatic
             @Suppress("EXPERIMENTAL_API_USAGE")

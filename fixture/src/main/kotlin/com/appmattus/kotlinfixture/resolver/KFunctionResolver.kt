@@ -3,7 +3,6 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
-import kotlin.random.Random
 import kotlin.reflect.jvm.isAccessible
 
 internal class KFunctionResolver : Resolver {
@@ -22,7 +21,7 @@ internal class KFunctionResolver : Resolver {
                     }
                 }.filterKeys {
                     // Keep if the parameter has an override, is mandatory, or if optional at random
-                    overrides.containsKey(it.name) || !it.isOptional || Random.nextBoolean()
+                    overrides.containsKey(it.name) || !it.isOptional || context.random.nextBoolean()
                 }
 
                 if (parameters.all { it.value != Unresolved }) {

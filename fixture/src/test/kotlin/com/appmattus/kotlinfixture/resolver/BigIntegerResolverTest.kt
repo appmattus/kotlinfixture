@@ -33,4 +33,12 @@ class BigIntegerResolverTest {
             context.resolve(BigInteger::class)
         }
     }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(BigInteger::class) as BigInteger
+        val value2 = context.seedRandom().resolve(BigInteger::class) as BigInteger
+
+        assertEquals(value1, value2)
+    }
 }

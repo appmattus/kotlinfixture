@@ -3,7 +3,6 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.util.EnumSet
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
@@ -21,7 +20,7 @@ internal class EnumSetResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.classifier == EnumSet::class) {
-                if (obj.isMarkedNullable && Random.nextBoolean()) {
+                if (obj.isMarkedNullable && context.random.nextBoolean()) {
                     return null
                 }
 
@@ -32,8 +31,8 @@ internal class EnumSetResolver : Resolver {
 
                 val selected = mutableListOf<Any>()
 
-                repeat(Random.nextInt(allValues.size + 1)) {
-                    val index = Random.nextInt(allValues.size)
+                repeat(context.random.nextInt(allValues.size + 1)) {
+                    val index = context.random.nextInt(allValues.size)
                     selected.add(allValues.removeAt(index) as Any)
                 }
 
