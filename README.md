@@ -117,6 +117,60 @@ instance<Number> {
 }
 ```
 
+### property
+
+Used to override constructor parameters or mutable properties when
+generating instances of generic classes.
+
+Given the following Kotlin class:
+
+```kotlin
+class KotlinClass(val readOnly: String, private var private: String) {
+    var member: String? = null
+}
+```
+
+We can override creating an instance of `KotlinClass` as follows:
+
+```kotlin
+val fixture = kotlinFixture {
+    // Public constructor parameters overridden by reference:
+    property(KotlinClass::readOnly) { "a" }
+    
+    // Private constructor parameters are overridden by name:
+    property<KotlinClass>("private") { "b" }
+
+    // Public member properties overridden by reference:
+    property(KotlinClass::member) { "c" }
+}
+```
+
+Given the following Java class:
+
+```java
+public class JavaClass {
+    private final String constructor;
+    private String mutable;
+
+    public JavaClass(String constructor) { this.constructor = constructor; }
+
+    public void setMutable(String mutable) { this.mutable = mutable; }
+}
+```
+
+We can override creating an instance of `JavaClass` as follows:
+
+```kotlin
+val fixture = kotlinFixture {
+    // Setter overridden by reference:
+    property(JavaClass::setMutable) { "d" }
+
+    // Constructor parameters don't typically retain names and so are
+    // overridden by a positional 'arg' names:
+    property<JavaClass>("arg0") { "e" }
+}
+```
+
 #### dateSpecification
 
 By default Date and Calendar instances pick a date within one year

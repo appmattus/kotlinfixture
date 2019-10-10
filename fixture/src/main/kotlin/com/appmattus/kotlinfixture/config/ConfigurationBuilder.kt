@@ -7,6 +7,9 @@ import com.appmattus.kotlinfixture.toUnmodifiableMap
 import com.appmattus.kotlinfixture.typeOf
 import kotlin.random.Random
 import kotlin.reflect.KClass
+import kotlin.reflect.KFunction
+import kotlin.reflect.KMutableProperty1
+import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
@@ -35,15 +38,30 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         subTypes[superType] = subType
     }
 
-    inline fun <reified T> propertyOf(name: String, noinline generator: () -> Any?) =
-        propertyOf(T::class, name, generator)
+    inline fun <reified T> property(propertyName: String, noinline generator: () -> Any?) =
+        property(T::class, propertyName, generator)
 
-    inline fun <reified T, U> property(name: KProperty1<T, U>, noinline generator: () -> U) =
-        propertyOf(T::class, name.name, generator)
+    inline fun <reified T, U> property(property: KProperty1<T, U>, noinline generator: () -> U) {
+        // Only allow read only properties in constructor(s)
+        if (property !is KMutableProperty1) {
+            val constructorParams = T::class.constructors.flatMap {
+                it.parameters.map(KParameter::name)
+            }
 
-    fun propertyOf(clazz: KClass<*>, name: String, generator: () -> Any?) {
+            check(constructorParams.contains(property.name)) {
+                "No setter available for ${T::class.qualifiedName}.${property.name}"
+            }
+        }
+
+        return property(T::class, property.name, generator)
+    }
+
+    inline fun <reified U> property(function: KFunction<Unit>, noinline generator: () -> U) =
+        property(function.parameters[0].type.classifier as KClass<*>, function.name, generator)
+
+    fun property(clazz: KClass<*>, propertyName: String, generator: () -> Any?) {
         val classProperties = properties.getOrElse(clazz) { mutableMapOf() }
-        classProperties[name] = generator
+        classProperties[propertyName] = generator
 
         properties[clazz] = classProperties
     }

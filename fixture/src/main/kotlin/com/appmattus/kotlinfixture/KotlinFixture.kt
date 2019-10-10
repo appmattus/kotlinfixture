@@ -6,7 +6,6 @@ import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
-import kotlin.random.Random
 import kotlin.reflect.KType
 
 class Fixture(val fixtureConfiguration: Configuration) {
@@ -37,30 +36,13 @@ class Fixture(val fixtureConfiguration: Configuration) {
 fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) =
     Fixture(ConfigurationBuilder().apply(init).build())
 
-class TestClass(val bob: String) {
-    override fun toString() = "TestClass [bob=$bob]"
-}
-
-class TestClass2 {
-    lateinit var bob: String
-
-    override fun toString() = "TestClass2 [bob=${if (::bob.isInitialized) bob else "uninit"}]"
-}
-
 fun main() {
 
-    val fixture = kotlinFixture {
-        propertyOf<TestClass>("bob") { "hello" + Random.nextInt(1, 5) }
-        property(TestClass::bob) { "hi" }
-        property(TestClass2::bob) { "hello" }
-    }
+    val fixture = kotlinFixture()
 
     fixture<List<String>> {
         decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
     }
-
-    println(fixture<TestClass>())
-    println(fixture<TestClass2>())
 
     println(fixture<A> {
         decorators.removeIf { it is RecursionDecorator }

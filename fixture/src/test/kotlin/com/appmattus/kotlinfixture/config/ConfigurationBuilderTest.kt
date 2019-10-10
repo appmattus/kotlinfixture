@@ -50,7 +50,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(
             Configuration(properties = mapOf(Properties::class to mapOf("property" to { 2 })))
         ).apply {
-            propertyOf<Properties>("property") { 1 }
+            property<Properties>("property") { 1 }
         }.build()
 
         assertEquals(1, (configuration.properties[Properties::class]?.get("property"))?.invoke())
@@ -61,7 +61,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(
             Configuration(properties = mapOf(Properties::class to mapOf("property" to { 2 })))
         ).apply {
-            propertyOf(Properties::class, "property") { 1 }
+            property(Properties::class, "property") { 1 }
         }.build()
 
         assertEquals(1, (configuration.properties[Properties::class]?.get("property"))?.invoke())
