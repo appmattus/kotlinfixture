@@ -2,6 +2,7 @@ package com.appmattus.kotlinfixture
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class FixtureInvokeTypeTest {
 
@@ -30,13 +31,21 @@ class FixtureInvokeTypeTest {
     fun `can create list of Strings`() {
         val list = fixture<List<String>>()
 
-        println(list)
+        assertTrue(List::class.isInstance(list))
+
+        list.forEach {
+            assertEquals(String::class, it::class)
+        }
     }
 
     @Test
     fun `can create array of Strings`() {
         val array = fixture<Array<String>>()
 
-        println(array)
+        assertTrue(Array<String>::class.isInstance(array))
+
+        array.forEach {
+            assertEquals(String::class, it::class)
+        }
     }
 }
