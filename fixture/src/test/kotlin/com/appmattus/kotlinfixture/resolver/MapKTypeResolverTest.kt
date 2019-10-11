@@ -118,7 +118,6 @@ class MapKTypeResolverTest {
             }
         }
 
-
         @Test
         fun `Uses seeded random`() {
             val value1 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()

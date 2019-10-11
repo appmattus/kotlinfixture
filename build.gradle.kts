@@ -44,6 +44,5 @@ detekt {
 
     buildUponDefaultConfig = true
 
-    // To override MaxLineLength:excludeCommentStatements
-    // config = files("detekt-config.yml")
+    config = files("detekt-config.yml")
 }

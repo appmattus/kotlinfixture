@@ -1,5 +1,6 @@
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.FixtureTestJavaClass
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
@@ -23,11 +24,42 @@ class ClassResolverTest {
     }
 
     @Test
+    fun `Class returns Unresolved when not able to resolve constructor`() {
+        val context = TestContext(
+            Configuration(),
+            ClassResolver()
+        )
+
+        val result = context.resolve(SingleConstructor::class)
+
+        assertEquals(Unresolved, result)
+    }
+
+    @Test
     fun `Class with single constructor creates instance`() {
         val result = context.resolve(SingleConstructor::class)
 
         assertNotNull(result)
         assertEquals(SingleConstructor::class, result::class)
+    }
+
+    @Test
+    fun `Class with single constructor generates random content`() {
+        assertIsRandom {
+            (context.resolve(SingleConstructor::class) as SingleConstructor).value
+        }
+    }
+
+    @Test
+    fun `Constructor parameter can be overridden`() {
+        val context = context.copy(
+            configuration = Configuration(
+                properties = mapOf(SingleConstructor::class to mapOf("value" to { "custom" }))
+            )
+        )
+
+        val result = context.resolve(SingleConstructor::class) as SingleConstructor
+        assertEquals("custom", result.value)
     }
 
     @Test
@@ -62,6 +94,44 @@ class ClassResolverTest {
     fun `Parameter unset if name matches constructor property name`() {
         val result = context.resolve(MatchingNames::class) as MatchingNames
         assertFalse(result.isInitialised)
+    }
+
+    @Test
+    fun `Constructs Java class with random constructor value`() {
+        assertIsRandom {
+            (context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass).constructor
+        }
+    }
+
+    @Test
+    fun `Constructs Java class with random setter value`() {
+        assertIsRandom {
+            (context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass).mutable
+        }
+    }
+
+    @Test
+    fun `Can override Java constructor arg`() {
+        val context = context.copy(
+            configuration = Configuration(
+                properties = mapOf(FixtureTestJavaClass::class to mapOf("arg0" to { "custom" }))
+            )
+        )
+
+        val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
+        assertEquals("custom", result.constructor)
+    }
+
+    @Test
+    fun `Can override Java setter`() {
+        val context = context.copy(
+            configuration = Configuration(
+                properties = mapOf(FixtureTestJavaClass::class to mapOf("setMutable" to { "custom" }))
+            )
+        )
+
+        val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
+        assertEquals("custom", result.mutable)
     }
 
     @Suppress("UNUSED_PARAMETER")
