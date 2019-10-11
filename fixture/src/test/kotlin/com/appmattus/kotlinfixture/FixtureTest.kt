@@ -5,6 +5,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
@@ -203,5 +204,192 @@ class FixtureTest {
             instance<Number> { 30 }
         }
         assertEquals(30, result)
+    }
+
+
+    data class KotlinClass(val readOnly: String, private var private: String) {
+        var member: String? = null
+        val alsoReadOnly: String? = null
+        fun getPrivate(): String = private
+    }
+
+    @Test
+    fun `constructor property can be set in fixture initialisation`() {
+        val fixture = kotlinFixture {
+            property(KotlinClass::readOnly) { "a" }
+        }
+
+        val instance = fixture<KotlinClass>()
+        assertEquals("a", instance.readOnly)
+    }
+
+    @Test
+    fun `constructor property can be overridden in fixture creation`() {
+        val fixture = kotlinFixture()
+
+        val instance = fixture<KotlinClass> {
+            property(KotlinClass::readOnly) { "b" }
+        }
+        assertEquals("b", instance.readOnly)
+    }
+
+    @Test
+    fun `constructor property can be overridden in fixture creation when already overridden in initialisation`() {
+        val fixture = kotlinFixture {
+            property(KotlinClass::readOnly) { "a" }
+        }
+
+        val instance = fixture<KotlinClass> {
+            property(KotlinClass::readOnly) { "b" }
+        }
+        assertEquals("b", instance.readOnly)
+    }
+
+    @Test
+    fun `private constructor property can be set in fixture initialisation`() {
+        val fixture = kotlinFixture {
+            property<KotlinClass>("private") { "a" }
+        }
+
+        val instance = fixture<KotlinClass>()
+        assertEquals("a", instance.getPrivate())
+    }
+
+    @Test
+    fun `private constructor property can be overridden in fixture creation`() {
+        val fixture = kotlinFixture()
+
+        val instance = fixture<KotlinClass> {
+            property<KotlinClass>("private") { "b" }
+        }
+        assertEquals("b", instance.getPrivate())
+    }
+
+    @Test
+    fun `private constructor property can be overridden in fixture creation when already overridden in initialisation`() {
+        val fixture = kotlinFixture {
+            property<KotlinClass>("private") { "a" }
+        }
+
+        val instance = fixture<KotlinClass> {
+            property<KotlinClass>("private") { "b" }
+        }
+        assertEquals("b", instance.getPrivate())
+    }
+
+    @Test
+    fun `member property can be set in fixture initialisation`() {
+        val fixture = kotlinFixture {
+            property(KotlinClass::member) { "a" }
+        }
+
+        val instance = fixture<KotlinClass>()
+        assertEquals("a", instance.member)
+    }
+
+    @Test
+    fun `member property can be overridden in fixture creation`() {
+        val fixture = kotlinFixture()
+
+        val instance = fixture<KotlinClass> {
+            property(KotlinClass::member) { "b" }
+        }
+        assertEquals("b", instance.member)
+    }
+
+    @Test
+    fun `member property can be overridden in fixture creation when already overridden in initialisation`() {
+        val fixture = kotlinFixture {
+            property(KotlinClass::member) { "a" }
+        }
+
+        val instance = fixture<KotlinClass> {
+            property(KotlinClass::member) { "b" }
+        }
+        assertEquals("b", instance.member)
+    }
+
+    @Test
+    fun `read only property cannot be set in fixture initialisation`() {
+        assertFailsWith<IllegalStateException> {
+            kotlinFixture {
+                property(KotlinClass::alsoReadOnly) { "a" }
+            }
+        }
+    }
+
+    @Test
+    fun `read only property cannot be overridden in fixture creation`() {
+        assertFailsWith<IllegalStateException> {
+            val fixture = kotlinFixture()
+
+            fixture<KotlinClass> {
+                property(KotlinClass::alsoReadOnly) { "b" }
+            }
+        }
+    }
+
+    @Test
+    fun `java constructor property can be set in fixture initialisation`() {
+        val fixture = kotlinFixture {
+            property<FixtureTestJavaClass>("arg0") { "a" }
+        }
+
+        val instance = fixture<FixtureTestJavaClass>()
+        assertEquals("a", instance.constructor)
+    }
+
+    @Test
+    fun `java constructor property can be overridden in fixture creation`() {
+        val fixture = kotlinFixture()
+
+        val instance = fixture<FixtureTestJavaClass> {
+            property<FixtureTestJavaClass>("arg0") { "b" }
+        }
+        assertEquals("b", instance.constructor)
+    }
+
+    @Test
+    fun `java constructor property can be overridden in fixture creation when already overridden in initialisation`() {
+        val fixture = kotlinFixture {
+            property<FixtureTestJavaClass>("arg0") { "a" }
+        }
+
+        val instance = fixture<FixtureTestJavaClass> {
+            property<FixtureTestJavaClass>("arg0") { "b" }
+        }
+        assertEquals("b", instance.constructor)
+    }
+
+    @Test
+    fun `java member property can be set in fixture initialisation`() {
+        val fixture = kotlinFixture {
+            property(FixtureTestJavaClass::setMutable) { "a" }
+        }
+
+        val instance = fixture<FixtureTestJavaClass>()
+        assertEquals("a", instance.mutable)
+    }
+
+    @Test
+    fun `java member property can be overridden in fixture creation`() {
+        val fixture = kotlinFixture()
+
+        val instance = fixture<FixtureTestJavaClass> {
+            property(FixtureTestJavaClass::setMutable) { "b" }
+        }
+        assertEquals("b", instance.mutable)
+    }
+
+    @Test
+    fun `java member property can be overridden in fixture creation when already overridden in initialisation`() {
+        val fixture = kotlinFixture {
+            property(FixtureTestJavaClass::setMutable) { "a" }
+        }
+
+        val instance = fixture<FixtureTestJavaClass> {
+            property(FixtureTestJavaClass::setMutable) { "b" }
+        }
+        assertEquals("b", instance.mutable)
     }
 }
