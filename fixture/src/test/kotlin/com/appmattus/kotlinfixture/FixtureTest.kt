@@ -206,7 +206,6 @@ class FixtureTest {
         assertEquals(30, result)
     }
 
-
     data class KotlinClass(val readOnly: String, private var private: String) {
         var member: String? = null
         val alsoReadOnly: String? = null
@@ -266,7 +265,7 @@ class FixtureTest {
     }
 
     @Test
-    fun `private constructor property can be overridden in fixture creation when already overridden in initialisation`() {
+    fun `private constructor property can be overridden in fixture creation when already overridden`() {
         val fixture = kotlinFixture {
             property<KotlinClass>("private") { "a" }
         }
