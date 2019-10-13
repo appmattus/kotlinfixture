@@ -2,15 +2,10 @@ package com.appmattus.kotlinfixture
 
 @Suppress("unused")
 private object ToDo {
-    // TODO Factory method construction - find static functions that return instance of the class?
-
     // TODO SynchronousQueue - adding elements to this makes little sense
     // TODO ArrayBlockingQueue - needs a fixed capacity
 
     // TODO Any::class - return random class
-
-    // TODO Customisations:
-    // TODO - propertyOf<Order>("fieldName", 123)
 
     // TODO handle & detect circular dependencies. See circularDependencyBehaviour
 

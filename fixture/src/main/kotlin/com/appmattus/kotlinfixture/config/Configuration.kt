@@ -14,6 +14,7 @@ import com.appmattus.kotlinfixture.resolver.DateResolver
 import com.appmattus.kotlinfixture.resolver.EnumMapResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.EnumSetResolver
+import com.appmattus.kotlinfixture.resolver.FactoryMethodResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.InstanceResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
@@ -95,7 +96,8 @@ data class Configuration(
 
             AbstractClassResolver(),
 
-            ClassResolver()
+            ClassResolver(),
+            FactoryMethodResolver()
         )
     }
 }

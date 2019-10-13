@@ -7,6 +7,7 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.jvm.isAccessible
 
+@Suppress("ComplexMethod")
 internal class KFunctionResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KFunctionRequest) {
