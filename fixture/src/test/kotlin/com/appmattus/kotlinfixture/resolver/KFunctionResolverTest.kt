@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import kotlin.reflect.full.functions
 import kotlin.reflect.full.primaryConstructor
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -129,6 +130,25 @@ class KFunctionResolverTest {
         assertEquals(MultiParamsClass::class, result::class)
     }
 
+    @Test
+    fun `Can create class with no params factory method`() {
+        val constructor = FactoryClass.Companion::class.functions.first { it.name == "noParams" }
+        val request = KFunctionRequest(FactoryClass::class, constructor)
+
+        val result = context.resolve(request) as FactoryClass
+        assertEquals("default", result.value)
+    }
+
+    @Test
+    fun `Can create class with random value using params factory method`() {
+        val constructor = FactoryClass.Companion::class.functions.first { it.name == "oneParam" }
+        val request = KFunctionRequest(FactoryClass::class, constructor)
+
+        assertIsRandom {
+            (context.resolve(request) as FactoryClass).value
+        }
+    }
+
     data class NullableClass(val value: String?)
 
     data class UnresolvableClass(val value: Number)
@@ -136,6 +156,14 @@ class KFunctionResolverTest {
     data class SimpleClass(val value: String)
 
     data class MultiParamsClass(val value1: String, val value2: Int)
+
+    class FactoryClass private constructor(val value: String) {
+
+        companion object {
+            fun noParams() = FactoryClass("default")
+            fun oneParam(value: String) = FactoryClass(value)
+        }
+    }
 
     object SimpleObject {
         @Suppress("MemberVisibilityCanBePrivate")

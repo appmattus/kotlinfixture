@@ -38,7 +38,6 @@ class Fixture(val fixtureConfiguration: Configuration) {
             if (result is T) {
                 result
             } else {
-                println(result)
                 throw UnsupportedOperationException("Unable to handle ${T::class}")
             }
         }

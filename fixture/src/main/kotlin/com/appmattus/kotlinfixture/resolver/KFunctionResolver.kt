@@ -19,8 +19,11 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
+import kotlin.reflect.KParameter
+import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.jvm.isAccessible
 
+@Suppress("ComplexMethod")
 internal class KFunctionResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KFunctionRequest) {
@@ -30,10 +33,16 @@ internal class KFunctionResolver : Resolver {
                 val overrides = context.configuration.properties.getOrDefault(obj.containingClass, emptyMap())
 
                 val parameters = obj.function.parameters.associateWith {
-                    if (it.name in overrides) {
-                        overrides[it.name]?.invoke()
+                    if (it.kind == KParameter.Kind.VALUE) {
+                        if (it.name in overrides) {
+                            overrides[it.name]?.invoke()
+                        } else {
+                            context.resolve(it.type)
+                        }
+                    } else if (it.kind == KParameter.Kind.INSTANCE) {
+                        obj.containingClass.companionObjectInstance
                     } else {
-                        context.resolve(it.type)
+                        throw IllegalStateException("Unsupported parameter type: $it")
                     }
                 }.filterKeys {
                     // Keep if the parameter has an override, is mandatory, or if optional at random
