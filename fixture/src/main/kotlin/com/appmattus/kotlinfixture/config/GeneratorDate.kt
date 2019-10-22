@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture
+package com.appmattus.kotlinfixture.config
 
-import kotlin.test.fail
+import java.util.Date
 
-fun assertIsRandom(block: () -> Any?) {
-    val initial = block()
+fun Generator<Date>.before(before: Date) = Date(random.nextLong(0L, before.time))
 
-    repeat(1000) {
-        if (initial != block()) return
-    }
+fun Generator<Date>.after(after: Date) = Date(random.nextLong(after.time, Long.MAX_VALUE))
 
-    fail("Value always equal to $initial")
-}
+fun Generator<Date>.between(start: Date, end: Date) = Date(random.nextLong(start.time, end.time))

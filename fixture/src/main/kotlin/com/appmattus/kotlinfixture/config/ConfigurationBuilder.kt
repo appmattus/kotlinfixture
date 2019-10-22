@@ -1,3 +1,19 @@
+/*
+ * Copyright 2019 Appmattus Limited
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
@@ -15,7 +31,6 @@ import kotlin.reflect.KType
 
 class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
-    var dateSpecification: DateSpecification = configuration.dateSpecification
     var decorators: MutableList<Decorator> = configuration.decorators.toMutableList()
     var resolvers: MutableList<Resolver> = configuration.resolvers.toMutableList()
     var random: Random = configuration.random
@@ -23,12 +38,14 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private var repeatCount: () -> Int = configuration.repeatCount
     private val properties: MutableMap<KClass<*>, MutableMap<String, () -> Any?>> =
         configuration.properties.mapValues { it.value.toMutableMap() }.toMutableMap()
-    private val instances: MutableMap<KType, () -> Any?> = configuration.instances.toMutableMap()
+    private val instances: MutableMap<KType, Generator<Any?>.() -> Any?> = configuration.instances.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
-    inline fun <reified T> instance(noinline generator: () -> T) = instance(typeOf<T>(), generator)
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T> instance(noinline generator: Generator<T>.() -> T) =
+        instance(typeOf<T>(), generator as Generator<Any?>.() -> Any?)
 
-    fun instance(type: KType, generator: () -> Any?) {
+    fun instance(type: KType, generator: Generator<Any?>.() -> Any?) {
         instances[type] = generator
     }
 
@@ -71,7 +88,6 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     }
 
     fun build() = Configuration(
-        dateSpecification = dateSpecification,
         repeatCount = repeatCount,
         properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
         instances = instances.toUnmodifiableMap(),

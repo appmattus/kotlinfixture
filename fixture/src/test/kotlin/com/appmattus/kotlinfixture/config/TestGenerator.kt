@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture
+package com.appmattus.kotlinfixture.config
 
-import kotlin.test.fail
+import kotlin.random.Random
 
-fun assertIsRandom(block: () -> Any?) {
-    val initial = block()
-
-    repeat(1000) {
-        if (initial != block()) return
-    }
-
-    fail("Value always equal to $initial")
+object TestGenerator : Generator<Any?> {
+    override val random = Random
 }
