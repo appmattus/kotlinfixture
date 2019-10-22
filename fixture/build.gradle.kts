@@ -13,7 +13,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.47")
+    implementation("io.github.classgraph:classgraph:4.8.52")
     implementation(kotlin("reflect"))
 
     testImplementation("junit:junit:4.12")
