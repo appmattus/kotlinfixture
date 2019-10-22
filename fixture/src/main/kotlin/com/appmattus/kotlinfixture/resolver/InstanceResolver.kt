@@ -2,6 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.config.Generator
 import kotlin.reflect.KType
 
 internal class InstanceResolver : Resolver {
@@ -10,10 +11,14 @@ internal class InstanceResolver : Resolver {
 
         if (obj is KType) {
             context.configuration.instances[obj]?.let {
-                return it()
+                return with(InstanceGenerator(context)) { it() }
             }
         }
 
         return Unresolved
+    }
+
+    private class InstanceGenerator(context: Context) : Generator<Any?> {
+        override val random = context.random
     }
 }

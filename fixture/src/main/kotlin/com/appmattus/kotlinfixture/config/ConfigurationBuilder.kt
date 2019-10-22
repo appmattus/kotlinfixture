@@ -15,7 +15,6 @@ import kotlin.reflect.KType
 
 class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
-    var dateSpecification: DateSpecification = configuration.dateSpecification
     var decorators: MutableList<Decorator> = configuration.decorators.toMutableList()
     var resolvers: MutableList<Resolver> = configuration.resolvers.toMutableList()
     var random: Random = configuration.random
@@ -23,12 +22,14 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private var repeatCount: () -> Int = configuration.repeatCount
     private val properties: MutableMap<KClass<*>, MutableMap<String, () -> Any?>> =
         configuration.properties.mapValues { it.value.toMutableMap() }.toMutableMap()
-    private val instances: MutableMap<KType, () -> Any?> = configuration.instances.toMutableMap()
+    private val instances: MutableMap<KType, Generator<Any?>.() -> Any?> = configuration.instances.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
-    inline fun <reified T> instance(noinline generator: () -> T) = instance(typeOf<T>(), generator)
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T> instance(noinline generator: Generator<T>.() -> T) =
+        instance(typeOf<T>(), generator as Generator<Any?>.() -> Any?)
 
-    fun instance(type: KType, generator: () -> Any?) {
+    fun instance(type: KType, generator: Generator<Any?>.() -> Any?) {
         instances[type] = generator
     }
 
@@ -71,7 +72,6 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     }
 
     fun build() = Configuration(
-        dateSpecification = dateSpecification,
         repeatCount = repeatCount,
         properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
         instances = instances.toUnmodifiableMap(),

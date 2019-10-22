@@ -2,6 +2,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.typeOf
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -10,7 +11,7 @@ internal class CalendarResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj == Calendar::class) {
-            val date = context.resolve(Date::class) as Date
+            val date = context.resolve(typeOf<Date>()) as Date
             return GregorianCalendar().apply {
                 time = date
             }

@@ -32,18 +32,16 @@ import com.appmattus.kotlinfixture.resolver.UrlResolver
 import com.appmattus.kotlinfixture.resolver.UuidResolver
 import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
-import java.util.Date
-import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
 data class Configuration(
-    val dateSpecification: DateSpecification = defaultDateSpecification,
     val repeatCount: () -> Int = defaultRepeatCount,
     val properties: Map<KClass<*>, Map<String, () -> Any?>> =
         emptyMap<KClass<*>, Map<String, () -> Any?>>().toUnmodifiableMap(),
-    val instances: Map<KType, () -> Any?> = emptyMap<KType, () -> Any?>().toUnmodifiableMap(),
+    val instances: Map<KType, Generator<Any?>.() -> Any?> =
+        emptyMap<KType, Generator<Any?>.() -> Any?>().toUnmodifiableMap(),
     val subTypes: Map<KClass<*>, KClass<*>> = emptyMap<KClass<*>, KClass<*>>().toUnmodifiableMap(),
     val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
@@ -52,11 +50,6 @@ data class Configuration(
 
     private companion object {
         private val defaultRepeatCount: () -> Int = { 5 }
-
-        private val defaultDateSpecification: DateSpecification = DateSpecification.Between(
-            Date(Date().time - TimeUnit.DAYS.toMillis(365)),
-            Date(Date().time + TimeUnit.DAYS.toMillis(365))
-        )
 
         private val defaultRandom = Random
 
