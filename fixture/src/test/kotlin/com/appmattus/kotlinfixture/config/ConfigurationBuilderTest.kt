@@ -3,7 +3,6 @@ package com.appmattus.kotlinfixture.config
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
-import java.util.Date
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -13,16 +12,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class ConfigurationBuilderTest {
-
-    @Test
-    fun `can override dateSpecification`() {
-        val configuration =
-            ConfigurationBuilder(Configuration(dateSpecification = DateSpecification.Before(Date()))).apply {
-                dateSpecification = DateSpecification.After(Date())
-            }.build()
-
-        assertEquals(DateSpecification.After::class, configuration.dateSpecification::class)
-    }
 
     @Test
     fun `can override repeatCount`() {
@@ -91,28 +80,44 @@ class ConfigurationBuilderTest {
 
     @Test
     fun `can override instances using instance()`() {
-        val original = Properties("2")
+        val original: Generator<Properties>.() -> Properties = { Properties("2") }
 
+        @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
-            Configuration(instances = mapOf(Properties::class.starProjectedType to { original }))
+            Configuration(
+                instances = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
+            )
         ).apply {
-            instance { Properties("1") }
+            instance<Properties> { Properties("1") }
         }.build()
 
-        assertEquals(Properties("1"), configuration.instances[Properties::class.starProjectedType]?.invoke())
+        with(TestGenerator) {
+            assertEquals(
+                Properties("1"),
+                (configuration.instances.getValue(Properties::class.starProjectedType))()
+            )
+        }
     }
 
     @Test
     fun `can override instances using instance(KType)`() {
-        val original = Properties("2")
+        val original: Generator<Properties>.() -> Properties = { Properties("2") }
 
+        @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
-            Configuration(instances = mapOf(Properties::class.starProjectedType to { original }))
+            Configuration(
+                instances = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
+            )
         ).apply {
             instance(Properties::class.starProjectedType) { Properties("1") }
         }.build()
 
-        assertEquals(Properties("1"), configuration.instances[Properties::class.starProjectedType]?.invoke())
+        with(TestGenerator) {
+            assertEquals(
+                Properties("1"),
+                (configuration.instances.getValue(Properties::class.starProjectedType))()
+            )
+        }
     }
 
     @Test

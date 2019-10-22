@@ -117,6 +117,32 @@ instance<Number> {
 }
 ```
 
+##### Date and Calendar instances
+
+By default Date and Calendar instances pick a date within one year
+either side of now.
+
+This can be overridden using `instance` which has some built in constructs:
+
+```kotlin
+val fixture = kotlinFixture {
+    // Generate between two dates
+    instance<Date> { between(startDate, endDate) }
+}
+
+val betweenTwoDates = fixture<Date>()
+
+// You can also override at instance creation
+
+val pastDate = fixture<Date> {
+    instance<Date> { before(Date()) }
+}
+
+val futureDate = fixture<Date> {
+    instance<Date> { after(Date()) }
+}
+```
+
 ### property
 
 Used to override constructor parameters or mutable properties when
@@ -168,30 +194,6 @@ val fixture = kotlinFixture {
     // Constructor parameters don't typically retain names and so are
     // overridden by a positional 'arg' names:
     property<JavaClass>("arg0") { "e" }
-}
-```
-
-#### dateSpecification
-
-By default Date and Calendar instances pick a date within one year
-either side of now.
-
-```kotlin
-val fixture = kotlinFixture {
-    // Generate between two dates
-    dateSpecification = DateSpecification.Between(startDate, endDate)
-}
-
-val betweenTwoDates = fixture<Date>()
-
-// You can also override at instance creation
-
-val pastDate = fixture<Date> {
-    dateSpecification = DateSpecification.Before(Date())
-}
-
-val futureDate = fixture<Date> {
-    dateSpecification = DateSpecification.After(Date())
 }
 ```
 
