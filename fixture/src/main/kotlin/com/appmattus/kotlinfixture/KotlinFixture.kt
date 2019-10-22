@@ -18,10 +18,10 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
-import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
+import com.appmattus.kotlinfixture.decorator.logging.loggingStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
-import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
+import com.appmattus.kotlinfixture.decorator.recursion.recursionStrategy
 import kotlin.reflect.KType
 
 class Fixture(val fixtureConfiguration: Configuration) {
@@ -56,13 +56,12 @@ fun main() {
     val fixture = kotlinFixture()
 
     fixture<List<String>> {
-        decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
+        loggingStrategy(SysOutLoggingStrategy)
     }
 
     println(fixture<A> {
-        decorators.removeIf { it is RecursionDecorator }
-        decorators.add(RecursionDecorator(NullRecursionStrategy()))
-        decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
+        recursionStrategy(NullRecursionStrategy)
+        loggingStrategy(SysOutLoggingStrategy)
     })
 }
 

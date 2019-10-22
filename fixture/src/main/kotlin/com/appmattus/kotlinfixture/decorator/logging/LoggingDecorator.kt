@@ -17,19 +17,22 @@
 package com.appmattus.kotlinfixture.decorator.logging
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
+import com.appmattus.kotlinfixture.strategyOrDefault
 
-class LoggingDecorator(private val strategy: LoggingStrategy) : Decorator {
+class LoggingDecorator : Decorator {
 
-    override fun decorate(resolver: Resolver): Resolver = LoggingResolver(resolver, strategy)
+    override fun decorate(resolver: Resolver): Resolver = LoggingResolver(resolver)
 
     private class LoggingResolver(
-        private val resolver: Resolver,
-        private val strategy: LoggingStrategy
+        private val resolver: Resolver
     ) : Resolver {
 
         override fun resolve(context: Context, obj: Any): Any? {
+            val strategy = context.strategyOrDefault<LoggingStrategy>(NoLoggingStrategy)
+
             strategy.request(obj)
 
             try {
@@ -42,4 +45,8 @@ class LoggingDecorator(private val strategy: LoggingStrategy) : Decorator {
             }
         }
     }
+}
+
+fun ConfigurationBuilder.loggingStrategy(strategy: LoggingStrategy) {
+    strategies[LoggingStrategy::class] = strategy
 }

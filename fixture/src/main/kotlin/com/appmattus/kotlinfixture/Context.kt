@@ -29,3 +29,5 @@ interface Context {
 
     fun resolve(obj: Any) = resolver.resolve(this, obj)
 }
+
+inline fun <reified T> Context.strategyOrDefault(default: T): T = configuration.strategies[T::class] as? T ?: default
