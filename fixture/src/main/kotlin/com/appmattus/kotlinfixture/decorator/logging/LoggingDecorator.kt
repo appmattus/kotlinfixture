@@ -22,7 +22,7 @@ import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.strategyOrDefault
 
-class LoggingDecorator : Decorator {
+internal class LoggingDecorator : Decorator {
 
     override fun decorate(resolver: Resolver): Resolver = LoggingResolver(resolver)
 

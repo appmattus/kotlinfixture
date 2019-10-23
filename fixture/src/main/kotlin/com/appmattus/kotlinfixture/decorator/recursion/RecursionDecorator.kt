@@ -24,7 +24,7 @@ import com.appmattus.kotlinfixture.strategyOrDefault
 import java.util.Stack
 import kotlin.reflect.KType
 
-class RecursionDecorator : Decorator {
+internal class RecursionDecorator : Decorator {
 
     override fun decorate(resolver: Resolver): Resolver = RecursionResolver(resolver)
 

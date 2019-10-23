@@ -17,6 +17,7 @@
 package com.appmattus.kotlinfixture.decorator.logging
 
 import java.util.Stack
+import kotlin.reflect.KType
 
 object SysOutLoggingStrategy : LoggingStrategy {
     private val stack = Stack<Any>()
@@ -25,7 +26,12 @@ object SysOutLoggingStrategy : LoggingStrategy {
         stack.push(obj)
 
         val indent = "    ".repeat(stack.size - 1)
-        println("$indent$obj → ")
+
+        val prefix = when (obj) {
+            is KType -> "ktype "
+            else -> ""
+        }
+        println("$indent$prefix$obj → ")
     }
 
     override fun response(obj: Any, result: Result<Any?>) {

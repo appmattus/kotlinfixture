@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import com.appmattus.kotlinfixture.decorator.logging.NoLoggingStrategy
 import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
 import com.appmattus.kotlinfixture.decorator.logging.loggingStrategy
 import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
@@ -61,7 +62,7 @@ fun main() {
 
     println(fixture<A> {
         recursionStrategy(NullRecursionStrategy)
-        loggingStrategy(SysOutLoggingStrategy)
+        loggingStrategy(NoLoggingStrategy)
     })
 }
 
