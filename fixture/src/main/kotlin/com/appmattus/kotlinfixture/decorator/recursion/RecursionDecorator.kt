@@ -17,7 +17,6 @@
 package com.appmattus.kotlinfixture.decorator.recursion
 
 import com.appmattus.kotlinfixture.Context
-import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.strategyOrDefault
@@ -53,8 +52,4 @@ internal class RecursionDecorator : Decorator {
             return resolver.resolve(context, obj)
         }
     }
-}
-
-fun ConfigurationBuilder.recursionStrategy(strategy: RecursionStrategy) {
-    strategies[RecursionStrategy::class] = strategy
 }

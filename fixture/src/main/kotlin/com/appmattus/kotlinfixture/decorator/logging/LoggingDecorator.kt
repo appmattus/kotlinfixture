@@ -46,7 +46,3 @@ internal class LoggingDecorator : Decorator {
         }
     }
 }
-
-fun ConfigurationBuilder.loggingStrategy(strategy: LoggingStrategy) {
-    strategies[LoggingStrategy::class] = strategy
-}
