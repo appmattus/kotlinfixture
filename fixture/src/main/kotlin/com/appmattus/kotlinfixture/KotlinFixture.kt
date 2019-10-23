@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("MatchingDeclarationName")
+
 package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration

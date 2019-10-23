@@ -17,7 +17,6 @@
 package com.appmattus.kotlinfixture.decorator.logging
 
 import com.appmattus.kotlinfixture.Context
-import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.strategyOrDefault
