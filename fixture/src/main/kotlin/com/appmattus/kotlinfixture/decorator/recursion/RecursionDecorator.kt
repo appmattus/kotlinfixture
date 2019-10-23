@@ -37,7 +37,7 @@ internal class RecursionDecorator : Decorator {
 
             if (obj is KType) {
                 if (stack.contains(obj)) {
-                    return strategy.handleRecursion(obj, stack)
+                    return strategy.handleRecursion(obj, stack.toList())
                 }
 
                 stack.push(obj)
