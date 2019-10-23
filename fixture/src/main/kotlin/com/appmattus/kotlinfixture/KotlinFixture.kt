@@ -18,11 +18,6 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
-import com.appmattus.kotlinfixture.decorator.logging.NoLoggingStrategy
-import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
-import com.appmattus.kotlinfixture.decorator.logging.loggingStrategy
-import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
-import com.appmattus.kotlinfixture.decorator.recursion.recursionStrategy
 import kotlin.reflect.KType
 
 class Fixture(val fixtureConfiguration: Configuration) {
@@ -51,33 +46,3 @@ class Fixture(val fixtureConfiguration: Configuration) {
 
 fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) =
     Fixture(ConfigurationBuilder().apply(init).build())
-
-fun main() {
-
-    val fixture = kotlinFixture()
-
-    fixture<List<String>> {
-        loggingStrategy(SysOutLoggingStrategy)
-    }
-
-    println(fixture<A> {
-        recursionStrategy(NullRecursionStrategy)
-        loggingStrategy(NoLoggingStrategy)
-    })
-}
-
-class A {
-    lateinit var b: B
-
-    override fun toString(): String {
-        return "A[${if (::b.isInitialized) b.toString() else "uninit"}]"
-    }
-}
-
-class B {
-    lateinit var a: A
-
-    override fun toString(): String {
-        return "B[${if (::a.isInitialized) a.toString() else "uninit"}]"
-    }
-}
