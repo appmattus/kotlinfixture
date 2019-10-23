@@ -20,5 +20,9 @@ import kotlin.reflect.KType
 
 object NullRecursionStrategy : RecursionStrategy {
 
-    override fun handleRecursion(type: KType, stack: Collection<KType>): Any? = null
+    override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
+        check(stack.isNotEmpty()) { "Stack must be populated" }
+
+        return null
+    }
 }

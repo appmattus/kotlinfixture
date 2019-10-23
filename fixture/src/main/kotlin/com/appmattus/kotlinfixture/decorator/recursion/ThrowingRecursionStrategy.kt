@@ -22,6 +22,8 @@ import kotlin.reflect.KType
 object ThrowingRecursionStrategy : RecursionStrategy {
 
     override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
+        check(stack.isNotEmpty()) { "Stack must be populated" }
+
         val errorMessage = "Unable to create ${stack.first()} with circular reference: ${stack.toStackString(type)}"
         throw FixtureException(errorMessage)
     }
