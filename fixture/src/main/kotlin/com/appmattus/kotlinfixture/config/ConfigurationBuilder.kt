@@ -41,6 +41,8 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private val instances: MutableMap<KType, Generator<Any?>.() -> Any?> = configuration.instances.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
+    internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
+
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> instance(noinline generator: Generator<T>.() -> T) =
         instance(typeOf<T>(), generator as Generator<Any?>.() -> Any?)
@@ -94,6 +96,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         subTypes = subTypes.toUnmodifiableMap(),
         random = random,
         decorators = decorators.toUnmodifiableList(),
-        resolvers = resolvers.toUnmodifiableList()
+        resolvers = resolvers.toUnmodifiableList(),
+        strategies = strategies.toUnmodifiableMap()
     )
 }

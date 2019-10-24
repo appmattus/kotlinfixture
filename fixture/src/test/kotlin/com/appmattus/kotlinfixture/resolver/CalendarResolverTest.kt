@@ -22,8 +22,6 @@ import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.Generator
 import com.appmattus.kotlinfixture.config.before
-import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
-import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
 import com.appmattus.kotlinfixture.typeOf
 import java.util.Calendar
 import java.util.Date
@@ -42,8 +40,7 @@ class CalendarResolverTest {
     @Suppress("UNCHECKED_CAST")
     private val context = TestContext(
         Configuration(
-            instances = mapOf(typeOf<Date>() to beforeNowGenerator as Generator<Any?>.() -> Any?),
-            decorators = listOf(LoggingDecorator(SysOutLoggingStrategy()))
+            instances = mapOf(typeOf<Date>() to beforeNowGenerator as Generator<Any?>.() -> Any?)
         ),
         CompositeResolver(CalendarResolver(), InstanceResolver())
     )

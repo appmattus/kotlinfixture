@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
+@file:Suppress("MatchingDeclarationName")
+
 package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
-import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
-import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
-import com.appmattus.kotlinfixture.decorator.recursion.NullRecursionStrategy
-import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import kotlin.reflect.KType
 
 class Fixture(val fixtureConfiguration: Configuration) {
@@ -50,34 +48,3 @@ class Fixture(val fixtureConfiguration: Configuration) {
 
 fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) =
     Fixture(ConfigurationBuilder().apply(init).build())
-
-fun main() {
-
-    val fixture = kotlinFixture()
-
-    fixture<List<String>> {
-        decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
-    }
-
-    println(fixture<A> {
-        decorators.removeIf { it is RecursionDecorator }
-        decorators.add(RecursionDecorator(NullRecursionStrategy()))
-        decorators.add(LoggingDecorator(SysOutLoggingStrategy()))
-    })
-}
-
-class A {
-    lateinit var b: B
-
-    override fun toString(): String {
-        return "A[${if (::b.isInitialized) b.toString() else "uninit"}]"
-    }
-}
-
-class B {
-    lateinit var a: A
-
-    override fun toString(): String {
-        return "B[${if (::a.isInitialized) a.toString() else "uninit"}]"
-    }
-}

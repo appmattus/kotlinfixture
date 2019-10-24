@@ -36,7 +36,7 @@ class FixtureTest {
 
         val missingResolvers = Classes.classGraph.getClassInfo(Resolver::class.java.name).classesImplementing
             .map { it.simpleName }
-            .filterNot { it == "TestResolver" || it == "CompositeResolver" }
+            .filterNot { it.endsWith("TestResolver") || it == "CompositeResolver" }
             .sorted()
             .toMutableList().apply {
                 removeAll(actualResolvers)

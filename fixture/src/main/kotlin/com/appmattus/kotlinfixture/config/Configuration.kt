@@ -17,8 +17,8 @@
 package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
-import com.appmattus.kotlinfixture.decorator.recursion.ThrowingRecursionStrategy
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
 import com.appmattus.kotlinfixture.resolver.ArrayResolver
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
@@ -62,7 +62,8 @@ data class Configuration(
     val subTypes: Map<KClass<*>, KClass<*>> = emptyMap<KClass<*>, KClass<*>>().toUnmodifiableMap(),
     val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
-    val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList()
+    val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList(),
+    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap()
 ) {
 
     private companion object {
@@ -70,7 +71,7 @@ data class Configuration(
 
         private val defaultRandom = Random
 
-        private val defaultDecorators = listOf(RecursionDecorator(ThrowingRecursionStrategy()))
+        private val defaultDecorators = listOf(RecursionDecorator(), LoggingDecorator())
 
         private val defaultResolvers = listOf(
             CharResolver(),

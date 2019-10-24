@@ -50,3 +50,5 @@ tasks.whenTaskAdded {
         from(sourceSets.main.get().allSource)
     }
 }
+
+tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("detekt"))

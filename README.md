@@ -143,7 +143,7 @@ val futureDate = fixture<Date> {
 }
 ```
 
-### property
+#### property
 
 Used to override constructor parameters or mutable properties when
 generating instances of generic classes.
@@ -214,6 +214,55 @@ val alwaysTheSame = fixture<Int>()
 val aStaticValue = fixture<Int>() {
     random = Random(seed = 5)
 }
+```
+
+### recursionStrategy
+
+When recursion is detected the library will, by default, throw a
+`FixtureException` with the details of the circular reference. This strategy
+can be changed to instead return `null` for the reference, however, if this
+results in an invalid object an exception will still be thrown as the object
+requested couldn't be resolved.
+
+```kotlin
+val fixture = kotlinFixture {
+    recursionStrategy(NullRecursionStrategy)
+}
+
+// You can also override at instance creation
+
+fixture<AnObject> {
+    recursionStrategy(NullRecursionStrategy)
+}
+```
+
+It is also possible to define and implement your own recursion strategy by
+implementing `RecursionStrategy` and applying it as above.
+
+### loggingStrategy
+
+A basic logger can be applied using the built in `SysOutLoggingStrategy`. It is
+also possible to define and implement your own logging strategy by implementing
+`LoggingStrategy` and applying it as below.
+
+```kotlin
+val fixture = kotlinFixture {
+    loggingStrategy(SysOutLoggingStrategy)
+}
+
+fixture<String>() {
+    // You can also override at instance creation
+    loggingStrategy(SysOutLoggingStrategy)
+}
+```
+
+This outputs:
+
+```text
+ktype kotlin.String → 
+    class kotlin.String → 
+        Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
+    Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
 ```
 
 ## Contributing

@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture
+package com.appmattus.kotlinfixture.decorator.logging
 
-import com.appmattus.kotlinfixture.config.Configuration
-import com.appmattus.kotlinfixture.resolver.Resolver
-import kotlin.random.Random
+object NoLoggingStrategy : LoggingStrategy {
+    override fun request(obj: Any) = Unit
 
-interface Context {
-    val configuration: Configuration
-    val resolver: Resolver
-
-    val random: Random
-        get() = configuration.random
-
-    fun resolve(obj: Any) = resolver.resolve(this, obj)
+    override fun response(obj: Any, result: Result<Any?>) = Unit
 }
-
-inline fun <reified T> Context.strategyOrDefault(default: T): T = configuration.strategies[T::class] as? T ?: default
