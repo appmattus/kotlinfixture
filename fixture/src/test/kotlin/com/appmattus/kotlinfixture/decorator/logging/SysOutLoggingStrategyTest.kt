@@ -5,7 +5,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-
 class SysOutLoggingStrategyTest {
     @Test
     fun `single request logs value`() {

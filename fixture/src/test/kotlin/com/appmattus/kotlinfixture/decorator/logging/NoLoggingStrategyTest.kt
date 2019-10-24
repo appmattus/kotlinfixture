@@ -27,5 +27,4 @@ class NoLoggingStrategyTest {
         assertFalse { output.contains(response1) }
         assertFalse { output.contains(response2) }
     }
-
 }
