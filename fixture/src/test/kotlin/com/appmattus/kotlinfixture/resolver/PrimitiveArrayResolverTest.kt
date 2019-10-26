@@ -94,6 +94,7 @@ class PrimitiveArrayResolverTest {
                 arrayOf(IntArray::class),
                 arrayOf(LongArray::class),
                 arrayOf(ShortArray::class),
+                arrayOf(CharArray::class),
 
                 arrayOf(UByteArray::class),
                 arrayOf(UIntArray::class),

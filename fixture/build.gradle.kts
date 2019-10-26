@@ -25,6 +25,8 @@ apply(from = "$rootDir/codecoverage.gradle.kts")
 
 repositories {
     mavenCentral()
+    jcenter()
+    maven { setUrl("https://jitpack.io") }
 }
 
 dependencies {
@@ -36,6 +38,10 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+
+    // Used for ComparisonTest
+    testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
+    testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
 }
 
 tasks.withType<KotlinCompile> {
