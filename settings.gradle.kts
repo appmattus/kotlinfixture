@@ -15,5 +15,6 @@
  */
 
 include(
-    "fixture"
+    "fixture",
+    "fixture-kotlintest"
 )
