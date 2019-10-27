@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.INVALID
 import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.NOT_RANDOM
 import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.UNSUPPORTED
 import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.VALID
+import com.appmattus.kotlinfixture.resolver.IterableKTypeResolverTest.Parameterised.TestDelayed
 import com.flextrade.kfixture.KFixture
 import com.marcellogalhardo.fixture.Fixture
 import org.junit.Assume.assumeTrue
@@ -60,6 +61,7 @@ import java.util.concurrent.ConcurrentSkipListMap
 import java.util.concurrent.ConcurrentSkipListSet
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.CopyOnWriteArraySet
+import java.util.concurrent.DelayQueue
 import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.LinkedTransferQueue
@@ -224,7 +226,7 @@ class ComparisonTest {
 
         companion object {
             @JvmStatic
-            @Suppress("EXPERIMENTAL_API_USAGE")
+            @Suppress("EXPERIMENTAL_API_USAGE", "LongMethod")
             @Parameterized.Parameters(name = "{1}")
             fun data() = arrayOf(
                 // Boolean
@@ -256,8 +258,8 @@ class ComparisonTest {
                 arrayOf(typeOf<Calendar>(), Calendar::class, VALID, VALID, UNSUPPORTED),
 
                 // Tuples
-                //arrayOf(typeOf<Pair<String, String>>(), Pair::class, VALID, UNSUPPORTED, VALID),
-                //arrayOf(typeOf<Triple<String, String, String>>(), Triple::class, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Pair<String, String>>(), Pair::class, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Triple<String, String, String>>(), Triple::class, VALID, UNSUPPORTED, VALID),
 
                 // Array
                 arrayOf(typeOf<ByteArray>(), ByteArray::class, VALID, VALID, UNSUPPORTED),
@@ -336,7 +338,7 @@ class ComparisonTest {
                 arrayOf(typeOf<AbstractQueue<String>>(), AbstractQueue::class, VALID, UNSUPPORTED, UNSUPPORTED),
                 arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class, VALID, VALID, VALID),
                 arrayOf(typeOf<PriorityQueue<String>>(), PriorityQueue::class, VALID, VALID, VALID),
-                //arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class, VALID, VALID, VALID),
+                arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class, VALID, VALID, VALID),
                 arrayOf(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class, VALID, VALID, VALID),
                 arrayOf(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class, VALID, VALID, VALID),
                 arrayOf(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class, VALID, VALID, VALID),

@@ -62,7 +62,10 @@ class PrimitiveArrayResolverTest {
 
     @RunWith(Parameterized::class)
     class Parameterised {
-        val context = TestContext(Configuration(), CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver()))
+        val context = TestContext(
+            Configuration(),
+            CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver(), CharResolver())
+        )
 
         @Parameterized.Parameter(0)
         lateinit var clazz: KClass<*>

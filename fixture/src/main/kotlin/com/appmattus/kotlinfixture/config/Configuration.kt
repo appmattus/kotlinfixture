@@ -44,6 +44,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.resolver.SubTypeResolver
+import com.appmattus.kotlinfixture.resolver.TupleKTypeResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
 import com.appmattus.kotlinfixture.resolver.UrlResolver
 import com.appmattus.kotlinfixture.resolver.UuidResolver
@@ -74,6 +75,9 @@ data class Configuration(
         private val defaultDecorators = listOf(RecursionDecorator(), LoggingDecorator())
 
         private val defaultResolvers = listOf(
+            InstanceResolver(),
+            SubTypeResolver(),
+
             CharResolver(),
             StringResolver(),
             PrimitiveResolver(),
@@ -86,11 +90,10 @@ data class Configuration(
             CalendarResolver(),
             DateResolver(),
 
-            InstanceResolver(),
-            SubTypeResolver(),
-
             ObjectResolver(),
             SealedClassResolver(),
+
+            TupleKTypeResolver(),
 
             ArrayResolver(),
 
