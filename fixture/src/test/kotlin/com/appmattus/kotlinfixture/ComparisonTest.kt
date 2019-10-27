@@ -27,6 +27,11 @@ import org.junit.Assume.assumeTrue
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.Period
 import java.util.AbstractCollection
 import java.util.AbstractList
 import java.util.AbstractQueue
@@ -256,6 +261,11 @@ class ComparisonTest {
                 // Date
                 arrayOf(typeOf<Date>(), VALID, VALID, VALID),
                 arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED),
+                arrayOf(typeOf<LocalDateTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<LocalTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Duration>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<Period>(), VALID, UNSUPPORTED, UNSUPPORTED),
 
                 // Tuples
                 arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID),
