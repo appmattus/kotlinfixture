@@ -82,14 +82,14 @@ class ComparisonTest {
         @Parameterized.Parameter(0)
         lateinit var type: KType
 
-        @Parameterized.Parameter(1)
-        lateinit var resultClass: KClass<*>
+        private val resultClass: KClass<*>
+            get() = type.classifier as KClass<*>
 
-        @Parameterized.Parameter(2)
+        @Parameterized.Parameter(1)
         lateinit var appmattusSupports: Result
-        @Parameterized.Parameter(3)
+        @Parameterized.Parameter(2)
         lateinit var flextradeSupports: Result
-        @Parameterized.Parameter(4)
+        @Parameterized.Parameter(3)
         lateinit var marcellogalhardoSupports: Result
 
         private val marcellogalhardo = Fixture()
@@ -227,190 +227,130 @@ class ComparisonTest {
         companion object {
             @JvmStatic
             @Suppress("EXPERIMENTAL_API_USAGE", "LongMethod")
-            @Parameterized.Parameters(name = "{1}")
+            @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
                 // Boolean
-                arrayOf(typeOf<Boolean>(), Boolean::class, VALID, VALID, VALID),
+                arrayOf(typeOf<Boolean>(), VALID, VALID, VALID),
 
                 // Primitives and numbers
-                arrayOf(typeOf<Byte>(), Byte::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<Double>(), Double::class, VALID, VALID, VALID),
-                arrayOf(typeOf<Float>(), Float::class, VALID, VALID, VALID),
-                arrayOf(typeOf<Int>(), Int::class, VALID, VALID, VALID),
-                arrayOf(typeOf<Long>(), Long::class, VALID, VALID, VALID),
-                arrayOf(typeOf<Short>(), Short::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<UByte>(), UByte::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<UInt>(), UInt::class, VALID, VALID, VALID),
-                arrayOf(typeOf<ULong>(), ULong::class, VALID, VALID, VALID),
-                arrayOf(typeOf<UShort>(), UShort::class, VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Byte>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Double>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Float>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Int>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Long>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Short>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<UByte>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<UInt>(), VALID, VALID, VALID),
+                arrayOf(typeOf<ULong>(), VALID, VALID, VALID),
+                arrayOf(typeOf<UShort>(), VALID, VALID, UNSUPPORTED),
 
                 // String
-                arrayOf(typeOf<String>(), String::class, VALID, VALID, VALID),
+                arrayOf(typeOf<String>(), VALID, VALID, VALID),
 
                 // UUID
-                arrayOf(typeOf<UUID>(), UUID::class, VALID, VALID, VALID),
+                arrayOf(typeOf<UUID>(), VALID, VALID, VALID),
 
                 // Character
-                arrayOf(typeOf<Char>(), Char::class, VALID, VALID, VALID),
+                arrayOf(typeOf<Char>(), VALID, VALID, VALID),
 
                 // Date
-                arrayOf(typeOf<Date>(), Date::class, VALID, VALID, VALID),
-                arrayOf(typeOf<Calendar>(), Calendar::class, VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Date>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED),
 
                 // Tuples
-                arrayOf(typeOf<Pair<String, String>>(), Pair::class, VALID, UNSUPPORTED, VALID),
-                arrayOf(typeOf<Triple<String, String, String>>(), Triple::class, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Triple<String, String, String>>(), VALID, UNSUPPORTED, VALID),
 
                 // Array
-                arrayOf(typeOf<ByteArray>(), ByteArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<CharArray>(), CharArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<ShortArray>(), ShortArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<IntArray>(), IntArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<LongArray>(), LongArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<FloatArray>(), FloatArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<DoubleArray>(), DoubleArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<BooleanArray>(), BooleanArray::class, VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<UByteArray>(), UByteArray::class, VALID, VALID, VALID),
-                arrayOf(typeOf<UIntArray>(), UIntArray::class, VALID, VALID, VALID),
-                arrayOf(typeOf<ULongArray>(), ULongArray::class, VALID, VALID, VALID),
-                arrayOf(typeOf<UShortArray>(), UShortArray::class, VALID, VALID, VALID),
-                arrayOf(typeOf<Array<String>>(), Array<String>::class, VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<ByteArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<CharArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<ShortArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<IntArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<LongArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<FloatArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<DoubleArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<BooleanArray>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<UByteArray>(), VALID, VALID, VALID),
+                arrayOf(typeOf<UIntArray>(), VALID, VALID, VALID),
+                arrayOf(typeOf<ULongArray>(), VALID, VALID, VALID),
+                arrayOf(typeOf<UShortArray>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Array<String>>(), VALID, VALID, UNSUPPORTED),
 
                 // Iterable, List
-                arrayOf(typeOf<Iterable<String>>(), Iterable::class, VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<Collection<String>>(), Collection::class, VALID, NOT_RANDOM, VALID),
-                arrayOf(
-                    typeOf<AbstractCollection<String>>(),
-                    java.util.AbstractCollection::class,
-                    VALID,
-                    UNSUPPORTED,
-                    UNSUPPORTED
-                ),
+                arrayOf(typeOf<Iterable<String>>(), VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<Collection<String>>(), VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<AbstractCollection<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
 
                 // Set
-                arrayOf(typeOf<Set<String>>(), Set::class, VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<AbstractSet<String>>(), java.util.AbstractSet::class, VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<SortedSet<String>>(), SortedSet::class, VALID, INVALID, VALID),
-                arrayOf(typeOf<NavigableSet<String>>(), NavigableSet::class, VALID, INVALID, VALID),
-                arrayOf(typeOf<HashSet<String>>(), HashSet::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<LinkedHashSet<String>>(), LinkedHashSet::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<TreeSet<String>>(), TreeSet::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(
-                    typeOf<ConcurrentSkipListSet<String>>(),
-                    ConcurrentSkipListSet::class,
-                    VALID,
-                    NOT_RANDOM,
-                    NOT_RANDOM
-                ),
-                arrayOf(
-                    typeOf<CopyOnWriteArraySet<String>>(),
-                    CopyOnWriteArraySet::class,
-                    VALID,
-                    NOT_RANDOM,
-                    NOT_RANDOM
-                ),
+                arrayOf(typeOf<Set<String>>(), VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<AbstractSet<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<SortedSet<String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<NavigableSet<String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<HashSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<LinkedHashSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<TreeSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentSkipListSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<CopyOnWriteArraySet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
 
                 // List
-                arrayOf(typeOf<List<String>>(), List::class, VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<MutableList<String>>(), MutableList::class, VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<AbstractList<String>>(), java.util.AbstractList::class, VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<ArrayList<String>>(), ArrayList::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(
-                    typeOf<AbstractSequentialList<String>>(),
-                    AbstractSequentialList::class,
-                    VALID,
-                    UNSUPPORTED,
-                    UNSUPPORTED
-                ),
-                arrayOf(typeOf<LinkedList<String>>(), LinkedList::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<Vector<String>>(), Vector::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<Stack<String>>(), Stack::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(
-                    typeOf<CopyOnWriteArrayList<String>>(),
-                    CopyOnWriteArrayList::class,
-                    VALID,
-                    NOT_RANDOM,
-                    NOT_RANDOM
-                ),
+                arrayOf(typeOf<List<String>>(), VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<MutableList<String>>(), VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<AbstractList<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<ArrayList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<AbstractSequentialList<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<LinkedList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<Vector<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<Stack<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<CopyOnWriteArrayList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
 
                 // Queue
-                arrayOf(typeOf<Queue<String>>(), Queue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<AbstractQueue<String>>(), AbstractQueue::class, VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<PriorityQueue<String>>(), PriorityQueue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class, VALID, VALID, VALID),
-                arrayOf(typeOf<BlockingQueue<String>>(), BlockingQueue::class, VALID, INVALID, VALID),
-                arrayOf(typeOf<TransferQueue<String>>(), TransferQueue::class, VALID, INVALID, VALID),
+                arrayOf(typeOf<Queue<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<AbstractQueue<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<PriorityQueue<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<DelayQueue<TestDelayed>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<LinkedBlockingQueue<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<PriorityBlockingQueue<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<LinkedTransferQueue<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<BlockingQueue<String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<TransferQueue<String>>(), VALID, INVALID, VALID),
 
                 // Deque
-                arrayOf(typeOf<Deque<String>>(), Deque::class, VALID, VALID, VALID),
-                arrayOf(typeOf<ArrayDeque<String>>(), ArrayDeque::class, VALID, VALID, VALID),
-                arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), ConcurrentLinkedDeque::class, VALID, VALID, VALID),
-                arrayOf(typeOf<BlockingDeque<String>>(), BlockingDeque::class, VALID, INVALID, VALID),
-                arrayOf(typeOf<LinkedBlockingDeque<String>>(), LinkedBlockingDeque::class, VALID, VALID, VALID),
+                arrayOf(typeOf<Deque<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<ArrayDeque<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<BlockingDeque<String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<LinkedBlockingDeque<String>>(), VALID, VALID, VALID),
 
                 // Map
-                arrayOf(typeOf<Map<String, String>>(), Map::class, VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<SortedMap<String, String>>(), SortedMap::class, VALID, INVALID, VALID),
-                arrayOf(typeOf<NavigableMap<String, String>>(), NavigableMap::class, VALID, INVALID, VALID),
-                arrayOf(typeOf<ConcurrentMap<String, String>>(), ConcurrentMap::class, VALID, INVALID, VALID),
-                arrayOf(
-                    typeOf<ConcurrentNavigableMap<String, String>>(),
-                    ConcurrentNavigableMap::class,
-                    VALID,
-                    INVALID,
-                    VALID
-                ),
-                arrayOf(
-                    typeOf<java.util.AbstractMap<String, String>>(),
-                    java.util.AbstractMap::class,
-                    VALID,
-                    UNSUPPORTED,
-                    UNSUPPORTED
-                ),
-                arrayOf(typeOf<HashMap<String, String>>(), HashMap::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<LinkedHashMap<String, String>>(), LinkedHashMap::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(
-                    typeOf<IdentityHashMap<String, String>>(),
-                    IdentityHashMap::class,
-                    VALID,
-                    NOT_RANDOM,
-                    NOT_RANDOM
-                ),
-                arrayOf(typeOf<WeakHashMap<String, String>>(), WeakHashMap::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<TreeMap<String, String>>(), TreeMap::class, VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(
-                    typeOf<ConcurrentHashMap<String, String>>(),
-                    ConcurrentHashMap::class,
-                    VALID,
-                    NOT_RANDOM,
-                    NOT_RANDOM
-                ),
-                arrayOf(
-                    typeOf<ConcurrentSkipListMap<String, String>>(),
-                    ConcurrentSkipListMap::class,
-                    VALID,
-                    NOT_RANDOM,
-                    NOT_RANDOM
-                ),
+                arrayOf(typeOf<Map<String, String>>(), VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<SortedMap<String, String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<NavigableMap<String, String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<ConcurrentMap<String, String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<ConcurrentNavigableMap<String, String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<java.util.AbstractMap<String, String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<HashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<LinkedHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<IdentityHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<WeakHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<TreeMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
 
                 // Enum
-                arrayOf(typeOf<TestEnumClass>(), TestEnumClass::class, VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED),
 
                 // Class
-                arrayOf(typeOf<TestClass>(), TestClass::class, VALID, VALID, VALID),
+                arrayOf(typeOf<TestClass>(), VALID, VALID, VALID),
 
                 // Object
-                arrayOf(typeOf<TestObject>(), TestObject::class, NOT_RANDOM, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<TestObject>(), NOT_RANDOM, UNSUPPORTED, NOT_RANDOM),
 
                 // Sealed class
-                arrayOf(typeOf<TestSealedClass>(), TestSealedClass::class, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<TestSealedClass>(), VALID, UNSUPPORTED, VALID),
 
                 // Abstract class
-                arrayOf(typeOf<Number>(), Number::class, VALID, UNSUPPORTED, UNSUPPORTED)
+                arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED)
 
                 // Nullability
             )
