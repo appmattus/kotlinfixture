@@ -44,6 +44,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.resolver.SubTypeResolver
+import com.appmattus.kotlinfixture.resolver.TimeResolver
 import com.appmattus.kotlinfixture.resolver.TupleKTypeResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
 import com.appmattus.kotlinfixture.resolver.UrlResolver
@@ -89,6 +90,7 @@ data class Configuration(
             EnumResolver(),
             CalendarResolver(),
             DateResolver(),
+            TimeResolver(),
 
             ObjectResolver(),
             SealedClassResolver(),

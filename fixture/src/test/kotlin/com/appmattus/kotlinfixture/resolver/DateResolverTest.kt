@@ -26,7 +26,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 class DateResolverTest {
-    private val now = Date()
 
     private val context = TestContext(Configuration(), DateResolver())
 
