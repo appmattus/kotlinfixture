@@ -82,6 +82,41 @@ import kotlin.test.assertTrue
 @RunWith(Enclosed::class)
 class ComparisonTest {
 
+    class Single {
+        private val marcellogalhardo = Fixture()
+        private val flextrade = KFixture()
+        private val appmattus = kotlinFixture()
+
+        private val nullableType = typeOf<String?>()
+
+        @Test
+        fun `appmattus nullability supported`() {
+            assertIsRandom {
+                val result = appmattus.create(nullableType, appmattus.fixtureConfiguration)
+
+                result == null
+            }
+        }
+
+        @Test
+        fun `flextrade nullability unsupported`() {
+            assertNone {
+                val result = flextrade.jFixture.create((nullableType.classifier as KClass<*>).java)
+
+                result == null
+            }
+        }
+
+        @Test
+        fun `marcellogalhardo nullability unsupported`() {
+            assertNone {
+                val result = marcellogalhardo.next(nullableType.classifier as KClass<*>, nullableType)
+
+                result == null
+            }
+        }
+    }
+
     @RunWith(Parameterized::class)
     class Parameterised {
         @Parameterized.Parameter(0)
@@ -361,8 +396,6 @@ class ComparisonTest {
 
                 // Abstract class
                 arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED)
-
-                // Nullability
             )
         }
     }
