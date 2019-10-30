@@ -216,7 +216,7 @@ val aStaticValue = fixture<Int>() {
 }
 ```
 
-### recursionStrategy
+#### recursionStrategy
 
 When recursion is detected the library will, by default, throw a
 `FixtureException` with the details of the circular reference. This strategy
@@ -239,7 +239,7 @@ fixture<AnObject> {
 It is also possible to define and implement your own recursion strategy by
 implementing `RecursionStrategy` and applying it as above.
 
-### loggingStrategy
+#### loggingStrategy
 
 A basic logger can be applied using the built in `SysOutLoggingStrategy`. It is
 also possible to define and implement your own logging strategy by implementing

@@ -27,3 +27,9 @@ fun assertIsRandom(block: () -> Any?) {
 
     fail("Value always equal to $initial")
 }
+
+fun assertNone(iterations: Int = 1000, block: () -> Boolean) {
+    repeat(iterations) {
+        if (block()) fail("Value is true")
+    }
+}
