@@ -31,6 +31,7 @@ internal class PrimitiveArrayResolver : Resolver {
         IntArray::class -> context.resolveConstructor(::IntArray)
         LongArray::class -> context.resolveConstructor(::LongArray)
         ShortArray::class -> context.resolveConstructor(::ShortArray)
+        CharArray::class -> context.resolveConstructor(::CharArray)
 
         UByteArray::class -> context.resolveConstructor(::UByteArray)
         UIntArray::class -> context.resolveConstructor(::UIntArray)

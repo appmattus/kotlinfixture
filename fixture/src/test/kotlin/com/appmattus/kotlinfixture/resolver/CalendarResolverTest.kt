@@ -19,10 +19,8 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
-import com.appmattus.kotlinfixture.config.Configuration
-import com.appmattus.kotlinfixture.config.Generator
+import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.config.before
-import com.appmattus.kotlinfixture.typeOf
 import java.util.Calendar
 import java.util.Date
 import kotlin.test.Test
@@ -33,15 +31,8 @@ import kotlin.test.assertTrue
 class CalendarResolverTest {
     private val now = Date()
 
-    private val beforeNowGenerator: Generator<Date>.() -> Date = {
-        before(now)
-    }
-
-    @Suppress("UNCHECKED_CAST")
     private val context = TestContext(
-        Configuration(
-            instances = mapOf(typeOf<Date>() to beforeNowGenerator as Generator<Any?>.() -> Any?)
-        ),
+        ConfigurationBuilder().apply { instance<Date> { before(now) } }.build(),
         CompositeResolver(CalendarResolver(), InstanceResolver())
     )
 
