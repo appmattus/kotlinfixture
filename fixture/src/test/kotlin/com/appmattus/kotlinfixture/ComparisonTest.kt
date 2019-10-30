@@ -27,11 +27,9 @@ import org.junit.Assume.assumeTrue
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.Period
 import java.util.AbstractCollection
 import java.util.AbstractList
 import java.util.AbstractQueue
