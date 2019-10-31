@@ -26,7 +26,7 @@ import io.kotlintest.properties.assertAll
 inline fun <reified A> Fixture.assertAll(
     noinline fn: PropertyContext.(a: A) -> Unit
 ) = assertAll(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>, fn
 )
 
@@ -34,7 +34,7 @@ inline fun <reified A> Fixture.assertAll(
 inline fun <reified A, reified B> Fixture.assertAll(
     noinline fn: PropertyContext.(a: A, b: B) -> Unit
 ) = assertAll(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     fn
@@ -44,7 +44,7 @@ inline fun <reified A, reified B> Fixture.assertAll(
 inline fun <reified A, reified B, reified C> Fixture.assertAll(
     noinline fn: PropertyContext.(a: A, b: B, c: C) -> Unit
 ) = assertAll(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -55,7 +55,7 @@ inline fun <reified A, reified B, reified C> Fixture.assertAll(
 inline fun <reified A, reified B, reified C, reified D> Fixture.assertAll(
     noinline fn: PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
 ) = assertAll(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -67,7 +67,7 @@ inline fun <reified A, reified B, reified C, reified D> Fixture.assertAll(
 inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.assertAll(
     noinline fn: PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
 ) = assertAll(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -80,7 +80,7 @@ inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.asser
 inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.assertAll(
     noinline fn: PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
 ) = assertAll(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -89,3 +89,5 @@ inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fi
     KotlinTestGenerator(this, typeOf<F>()) as Gen<F>,
     fn
 )
+
+const val DEFAULT_ITERATIONS = 1000

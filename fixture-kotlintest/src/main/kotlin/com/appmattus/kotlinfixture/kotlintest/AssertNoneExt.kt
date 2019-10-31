@@ -26,7 +26,7 @@ import io.kotlintest.properties.assertNone
 inline fun <reified A> Fixture.assertNone(
     noinline fn: PropertyContext.(a: A) -> Unit
 ) = assertNone(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>, fn
 )
 
@@ -34,7 +34,7 @@ inline fun <reified A> Fixture.assertNone(
 inline fun <reified A, reified B> Fixture.assertNone(
     noinline fn: PropertyContext.(a: A, b: B) -> Unit
 ) = assertNone(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     fn
@@ -44,7 +44,7 @@ inline fun <reified A, reified B> Fixture.assertNone(
 inline fun <reified A, reified B, reified C> Fixture.assertNone(
     noinline fn: PropertyContext.(a: A, b: B, c: C) -> Unit
 ) = assertNone(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -55,7 +55,7 @@ inline fun <reified A, reified B, reified C> Fixture.assertNone(
 inline fun <reified A, reified B, reified C, reified D> Fixture.assertNone(
     noinline fn: PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
 ) = assertNone(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -67,7 +67,7 @@ inline fun <reified A, reified B, reified C, reified D> Fixture.assertNone(
 inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.assertNone(
     noinline fn: PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
 ) = assertNone(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,
@@ -80,7 +80,7 @@ inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.asser
 inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.assertNone(
     noinline fn: PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
 ) = assertNone(
-    1000,
+    DEFAULT_ITERATIONS,
     KotlinTestGenerator(this, typeOf<A>()) as Gen<A>,
     KotlinTestGenerator(this, typeOf<B>()) as Gen<B>,
     KotlinTestGenerator(this, typeOf<C>()) as Gen<C>,

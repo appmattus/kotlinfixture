@@ -20,16 +20,17 @@ import com.appmattus.kotlinfixture.kotlinFixture
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.fail
 
-class ForNoneExtTest {
+class AssertNoneExtTest {
     private val fixture = kotlinFixture()
 
     @Test
     fun `one param generates all random values`() {
         val generatedData = mutableSetOf<Person>()
-        fixture.forNone(ITERATIONS) { person: Person ->
+        fixture.assertNone { person: Person ->
             generatedData.add(person)
-            false
+            fail()
         }
 
         assertEquals(ITERATIONS, generatedData.size)
@@ -37,23 +38,23 @@ class ForNoneExtTest {
 
     @Test
     fun `one param succeeds when all values false`() {
-        fixture.forNone<Person>(ITERATIONS) { false }
+        fixture.assertNone<Person> { fail() }
     }
 
     @Test
     fun `one param throws when all values true`() {
         assertFailsWith<AssertionError> {
-            fixture.forNone<Person>(ITERATIONS) { true }
+            fixture.assertNone<Person> { }
         }
     }
 
     @Test
     fun `two param generates all random values`() {
         val generatedData = mutableSetOf<Person>()
-        fixture.forNone(ITERATIONS) { person1: Person, person2: Person ->
+        fixture.assertNone { person1: Person, person2: Person ->
             generatedData.add(person1)
             generatedData.add(person2)
-            false
+            fail()
         }
 
         assertEquals(ITERATIONS * 2, generatedData.size)
@@ -61,67 +62,67 @@ class ForNoneExtTest {
 
     @Test
     fun `two params succeeds when all values false`() {
-        fixture.forNone(ITERATIONS) { _: Person, _: Person -> false }
+        fixture.assertNone { _: Person, _: Person -> fail() }
     }
 
     @Test
     fun `two params throws when all values true`() {
         assertFailsWith<AssertionError> {
-            fixture.forNone(ITERATIONS) { _: Person, _: Person -> true }
+            fixture.assertNone { _: Person, _: Person -> }
         }
     }
 
     @Test
     fun `three params succeeds when all values false`() {
-        fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person -> false }
+        fixture.assertNone { _: Person, _: Person, _: Person -> fail() }
     }
 
     @Test
     fun `three params throws when all values true`() {
         assertFailsWith<AssertionError> {
-            fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person -> true }
+            fixture.assertNone { _: Person, _: Person, _: Person -> }
         }
     }
 
     @Test
     fun `four params succeeds when all values false`() {
-        fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person, _: Person -> false }
+        fixture.assertNone { _: Person, _: Person, _: Person, _: Person -> fail() }
     }
 
     @Test
     fun `four params throws when all values true`() {
         assertFailsWith<AssertionError> {
-            fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person, _: Person -> true }
+            fixture.assertNone { _: Person, _: Person, _: Person, _: Person -> }
         }
     }
 
     @Test
     fun `five params succeeds when all values false`() {
-        fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person, _: Person, _: Person -> false }
+        fixture.assertNone { _: Person, _: Person, _: Person, _: Person, _: Person -> fail() }
     }
 
     @Test
     fun `five params throws when all values true`() {
         assertFailsWith<AssertionError> {
-            fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person, _: Person, _: Person -> true }
+            fixture.assertNone { _: Person, _: Person, _: Person, _: Person, _: Person -> }
         }
     }
 
     @Test
     fun `six params succeeds when all values false`() {
-        fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person, _: Person, _: Person, _: Person -> false }
+        fixture.assertNone { _: Person, _: Person, _: Person, _: Person, _: Person, _: Person -> fail() }
     }
 
     @Test
     fun `six params throws when all values true`() {
         assertFailsWith<AssertionError> {
-            fixture.forNone(ITERATIONS) { _: Person, _: Person, _: Person, _: Person, _: Person, _: Person -> true }
+            fixture.assertNone { _: Person, _: Person, _: Person, _: Person, _: Person, _: Person -> }
         }
     }
 
     data class Person(val name: String, val age: Int)
 
     companion object {
-        private const val ITERATIONS = 10
+        private const val ITERATIONS = 1000
     }
 }
