@@ -20,6 +20,9 @@ plugins {
     id("org.jetbrains.kotlin.jvm")
 }
 
+apply(from = "$rootDir/bintray.gradle.kts")
+apply(from = "$rootDir/codecoverage.gradle.kts")
+
 repositories {
     mavenCentral()
     jcenter()
@@ -28,7 +31,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation(project(":fixture"))
+    api(project(":fixture"))
     implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
 
     testImplementation("junit:junit:4.12")
@@ -42,3 +45,14 @@ dependencies {
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
+
+// Fix lack of source code when publishing pure Kotlin projects
+// See https://github.com/novoda/bintray-release/issues/262
+tasks.whenTaskAdded {
+    if (name == "generateSourcesJarForMavenPublication") {
+        this as Jar
+        from(sourceSets.main.get().allSource)
+    }
+}
+
+tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("detekt"))
