@@ -58,3 +58,4 @@ tasks.whenTaskAdded {
 }
 
 tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("detekt"))
+tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("markdownlint"))

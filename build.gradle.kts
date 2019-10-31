@@ -20,6 +20,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.50" apply false
     id("com.github.ben-manes.versions") version "0.27.0"
     id("io.gitlab.arturbosch.detekt") version "1.1.1"
+    id("com.appmattus.markdown") version "0.5.0"
 }
 
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
