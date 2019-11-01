@@ -29,8 +29,8 @@ class TimeResolverTest {
         private val now = Date()
 
         private val context = TestContext(
-            ConfigurationBuilder().apply { instance<Date> { before(now) } }.build(),
-            CompositeResolver(TimeResolver(), InstanceResolver())
+            ConfigurationBuilder().apply { factory<Date> { before(now) } }.build(),
+            CompositeResolver(TimeResolver(), FactoryResolver())
         )
 
         @Test

@@ -21,20 +21,20 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.Generator
 import kotlin.reflect.KType
 
-internal class InstanceResolver : Resolver {
+internal class FactoryResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
 
         if (obj is KType) {
-            context.configuration.instances[obj]?.let {
-                return with(InstanceGenerator(context)) { it() }
+            context.configuration.factories[obj]?.let {
+                return with(FactoryGenerator(context)) { it() }
             }
         }
 
         return Unresolved
     }
 
-    private class InstanceGenerator(context: Context) : Generator<Any?> {
+    private class FactoryGenerator(context: Context) : Generator<Any?> {
         override val random = context.random
     }
 }

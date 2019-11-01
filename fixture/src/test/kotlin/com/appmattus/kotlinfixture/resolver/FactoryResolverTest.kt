@@ -26,31 +26,31 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class InstanceResolverTest {
+class FactoryResolverTest {
 
     @Test
     fun `Unresolved returned when no mapping found`() {
-        val context = TestContext(Configuration(), InstanceResolver())
+        val context = TestContext(Configuration(), FactoryResolver())
 
         assertEquals(Unresolved, context.resolve(typeOf<Number>()))
     }
 
     @Test
-    fun `Instance returned when mapping found`() {
+    fun `Factory returned when mapping found`() {
         val configuration = ConfigurationBuilder().apply {
-            instance<Number> { 12 }
+            factory<Number> { 12 }
         }.build()
-        val context = TestContext(configuration, InstanceResolver())
+        val context = TestContext(configuration, FactoryResolver())
 
         assertEquals(12, context.resolve(typeOf<Number>()))
     }
 
     @Test
-    fun `Instance mapping can return random value`() {
+    fun `Factory mapping can return random value`() {
         val configuration = ConfigurationBuilder().apply {
-            instance<Number> { Random.nextInt(1, 5) }
+            factory<Number> { Random.nextInt(1, 5) }
         }.build()
-        val context = TestContext(configuration, InstanceResolver())
+        val context = TestContext(configuration, FactoryResolver())
 
         repeat(100) {
             assertTrue(context.resolve(typeOf<Number>()) in 1..5)

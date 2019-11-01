@@ -38,17 +38,17 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private var repeatCount: () -> Int = configuration.repeatCount
     private val properties: MutableMap<KClass<*>, MutableMap<String, () -> Any?>> =
         configuration.properties.mapValues { it.value.toMutableMap() }.toMutableMap()
-    private val instances: MutableMap<KType, Generator<Any?>.() -> Any?> = configuration.instances.toMutableMap()
+    private val factories: MutableMap<KType, Generator<Any?>.() -> Any?> = configuration.factories.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
 
     @Suppress("UNCHECKED_CAST")
-    inline fun <reified T> instance(noinline generator: Generator<T>.() -> T) =
-        instance(typeOf<T>(), generator as Generator<Any?>.() -> Any?)
+    inline fun <reified T> factory(noinline generator: Generator<T>.() -> T) =
+        factory(typeOf<T>(), generator as Generator<Any?>.() -> Any?)
 
-    fun instance(type: KType, generator: Generator<Any?>.() -> Any?) {
-        instances[type] = generator
+    fun factory(type: KType, generator: Generator<Any?>.() -> Any?) {
+        factories[type] = generator
     }
 
     inline fun <reified T, reified U : T> subType() = subType(T::class, U::class)
@@ -92,7 +92,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     fun build() = Configuration(
         repeatCount = repeatCount,
         properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
-        instances = instances.toUnmodifiableMap(),
+        factories = factories.toUnmodifiableMap(),
         subTypes = subTypes.toUnmodifiableMap(),
         random = random,
         decorators = decorators.toUnmodifiableList(),

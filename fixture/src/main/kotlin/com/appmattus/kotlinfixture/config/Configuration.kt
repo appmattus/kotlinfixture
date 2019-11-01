@@ -32,7 +32,7 @@ import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.EnumSetResolver
 import com.appmattus.kotlinfixture.resolver.FactoryMethodResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
-import com.appmattus.kotlinfixture.resolver.InstanceResolver
+import com.appmattus.kotlinfixture.resolver.FactoryResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
@@ -59,7 +59,7 @@ data class Configuration(
     val repeatCount: () -> Int = defaultRepeatCount,
     val properties: Map<KClass<*>, Map<String, () -> Any?>> =
         emptyMap<KClass<*>, Map<String, () -> Any?>>().toUnmodifiableMap(),
-    val instances: Map<KType, Generator<Any?>.() -> Any?> =
+    val factories: Map<KType, Generator<Any?>.() -> Any?> =
         emptyMap<KType, Generator<Any?>.() -> Any?>().toUnmodifiableMap(),
     val subTypes: Map<KClass<*>, KClass<*>> = emptyMap<KClass<*>, KClass<*>>().toUnmodifiableMap(),
     val random: Random = defaultRandom,
@@ -76,7 +76,7 @@ data class Configuration(
         private val defaultDecorators = listOf(RecursionDecorator(), LoggingDecorator())
 
         private val defaultResolvers = listOf(
-            InstanceResolver(),
+            FactoryResolver(),
             SubTypeResolver(),
 
             CharResolver(),

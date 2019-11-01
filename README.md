@@ -7,7 +7,7 @@
 
 ## Getting started
 
-Include the following dependencies in your build.gradle.kts file:
+Include the following dependencies in your `build.gradle.kts` file:
 
 ```kotlin
 testImplementation("com.appmattus.fixture:fixture:<latest-version>")
@@ -63,7 +63,7 @@ val listOfSevenItems = fixture<List<String>> {
 }
 ```
 
-repeatCount is a factory method so can be used to return lists and maps of
+`repeatCount` is a factory method so can be used to return lists and maps of
 different lengths each execution:
 
 ```kotlin
@@ -89,13 +89,14 @@ val alwaysFloat = fixture<Number>() {
 }
 ```
 
-#### instance
+#### factory
 
-Used to return the given instance for a particular class.
+Used to return the given instance for a particular class using a factory
+method.
 
 ```kotlin
 val fixture = kotlinFixture {
-    instance<Number> {
+    factory<Number> {
         41
     }
 }
@@ -104,32 +105,32 @@ val alwaysFortyOne = fixture<Number>()
 
 val alwaysOnePointFive = fixture<Number>() {
     // Overrides the parent configuration
-    instance<Number> {
+    factory<Number> {
         1.5
     }
 }
 ```
 
-instance is a factory method so can be used to return different values on every
+As `factory` is a factory method you can return different values on every
 execution:
 
 ```kotlin
-instance<Number> {
+factory<Number> {
     Random.nextInt(10, 50)
 }
 ```
 
 ##### Date and Calendar instances
 
-By default Date and Calendar instances pick a date within one year either side
-of now.
+By default `Date` and `Calendar` instances pick a date within one year either
+side of now.
 
-This can be overridden using `instance` which has some built in constructs:
+This can be overridden using `factory` which has some built in constructs:
 
 ```kotlin
 val fixture = kotlinFixture {
     // Generate between two dates
-    instance<Date> { between(startDate, endDate) }
+    factory<Date> { between(startDate, endDate) }
 }
 
 val betweenTwoDates = fixture<Date>()
@@ -137,11 +138,11 @@ val betweenTwoDates = fixture<Date>()
 // You can also override at instance creation
 
 val pastDate = fixture<Date> {
-    instance<Date> { before(Date()) }
+    factory<Date> { before(Date()) }
 }
 
 val futureDate = fixture<Date> {
-    instance<Date> { after(Date()) }
+    factory<Date> { after(Date()) }
 }
 ```
 
@@ -201,8 +202,8 @@ val fixture = kotlinFixture {
 
 #### random
 
-By default a Random class is used that will generate unique values between runs.
-If you want repeatability you can specify a seeded Random instance.
+By default a `Random` class is used that will generate unique values between
+runs. If you want repeatability you can specify a seeded `Random` instance.
 
 ```kotlin
 val fixture = kotlinFixture {
@@ -277,7 +278,8 @@ provide.
 Including the `fixture-kotlintest` dependency in your project adds extension
 functions `assertAll`, `assertNone`, `forAll` and `forNone` to the fixture.
 These functions wrap the equivalent functions from KotlinTest while providing
-generation of all the classes KotlinFixture supports. For example:
+generation of all the classes [KotlinFixture](https://github.com/appmattus/kotlinfixture)
+supports. For example:
 
 ```kotlin
 data class Person(name: String, age: Int)
