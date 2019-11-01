@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-kotlintest"
-)
+package com.appmattus.kotlinfixture.kotlintest
+
+import com.appmattus.kotlinfixture.Fixture
+import io.kotlintest.properties.Gen
+import kotlin.reflect.KType
+
+class KotlinTestGenerator(private val kotlinFixture: Fixture, private val type: KType) : Gen<Any?> {
+    override fun constants() = emptyList<Any?>()
+    override fun random() = generateSequence {
+        kotlinFixture.create(type, kotlinFixture.fixtureConfiguration)
+    }
+}

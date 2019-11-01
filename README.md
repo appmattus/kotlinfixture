@@ -10,7 +10,10 @@
 Include the following dependencies in your build.gradle.kts file:
 
 ```kotlin
-implementation("com.appmattus.fixture:fixture:<latest-version>")
+testImplementation("com.appmattus.fixture:fixture:<latest-version>")
+
+// Add for KotlinTest integration
+testImplementation("com.appmattus.fixture:fixture-kotlintest:<latest-version>")
 ```
 
 Simply create a fixture and invoke it with the type to be generated:
@@ -40,8 +43,8 @@ val anotherRandomIntFromAList = fixture(1..5)
 
 ### Configuration options
 
-The default configuration can be overridden when creating the fixture
-object or when creating a particular implementation.
+The default configuration can be overridden when creating the fixture object or
+when creating a particular implementation.
 
 #### repeatCount
 
@@ -60,8 +63,8 @@ val listOfSevenItems = fixture<List<String>> {
 }
 ```
 
-repeatCount is a factory method so can be used to return lists and maps
-of different lengths each execution:
+repeatCount is a factory method so can be used to return lists and maps of
+different lengths each execution:
 
 ```kotlin
 repeatCount {
@@ -71,8 +74,7 @@ repeatCount {
 
 #### subType
 
-Used to always return an instance of a particular subclass for a
-superclass.
+Used to always return an instance of a particular subclass for a superclass.
 
 ```kotlin
 val fixture = kotlinFixture {
@@ -108,8 +110,8 @@ val alwaysOnePointFive = fixture<Number>() {
 }
 ```
 
-instance is a factory method so can be used to return different values
-on every execution:
+instance is a factory method so can be used to return different values on every
+execution:
 
 ```kotlin
 instance<Number> {
@@ -119,8 +121,8 @@ instance<Number> {
 
 ##### Date and Calendar instances
 
-By default Date and Calendar instances pick a date within one year
-either side of now.
+By default Date and Calendar instances pick a date within one year either side
+of now.
 
 This can be overridden using `instance` which has some built in constructs:
 
@@ -145,8 +147,8 @@ val futureDate = fixture<Date> {
 
 #### property
 
-Used to override constructor parameters or mutable properties when
-generating instances of generic classes.
+Used to override constructor parameters or mutable properties when generating
+instances of generic classes.
 
 Given the following Kotlin class:
 
@@ -162,7 +164,7 @@ We can override creating an instance of `KotlinClass` as follows:
 val fixture = kotlinFixture {
     // Public constructor parameters overridden by reference:
     property(KotlinClass::readOnly) { "a" }
-    
+
     // Private constructor parameters are overridden by name:
     property<KotlinClass>("private") { "b" }
 
@@ -199,9 +201,8 @@ val fixture = kotlinFixture {
 
 #### random
 
-By default a Random class is used that will generate unique values
-between runs. If you want repeatability you can specify a seeded Random
-instance.
+By default a Random class is used that will generate unique values between runs.
+If you want repeatability you can specify a seeded Random instance.
 
 ```kotlin
 val fixture = kotlinFixture {
@@ -219,10 +220,10 @@ val aStaticValue = fixture<Int>() {
 #### recursionStrategy
 
 When recursion is detected the library will, by default, throw a
-`FixtureException` with the details of the circular reference. This strategy
-can be changed to instead return `null` for the reference, however, if this
-results in an invalid object an exception will still be thrown as the object
-requested couldn't be resolved.
+`FixtureException` with the details of the circular reference. This strategy can
+be changed to instead return `null` for the reference, however, if this results
+in an invalid object an exception will still be thrown as the object requested
+couldn't be resolved.
 
 ```kotlin
 val fixture = kotlinFixture {
@@ -259,10 +260,31 @@ fixture<String>() {
 This outputs:
 
 ```text
-ktype kotlin.String → 
-    class kotlin.String → 
+ktype kotlin.String →
+    class kotlin.String →
         Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
     Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
+```
+
+## KotlinTest support
+
+[KotlinTest](https://github.com/kotlintest/kotlintest/) supports
+[property testing](https://github.com/kotlintest/kotlintest/blob/master/doc/reference.md#property-based),
+but to use it with more than just the few basic types that are built into the
+library requires you to create your own custom generators that you then have to
+provide.
+
+Including the `fixture-kotlintest` dependency in your project adds extension
+functions `assertAll`, `assertNone`, `forAll` and `forNone` to the fixture.
+These functions wrap the equivalent functions from KotlinTest while providing
+generation of all the classes KotlinFixture supports. For example:
+
+```kotlin
+data class Person(name: String, age: Int)
+
+fixture.assertAll { person1: Person, person2: Person ->
+   person1 shouldNotBeSameInstanceAs person2
+}
 ```
 
 ## Contributing

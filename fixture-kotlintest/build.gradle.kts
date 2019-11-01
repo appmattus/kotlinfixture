@@ -31,17 +31,15 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.52")
-    implementation(kotlin("reflect"))
+    api(project(":fixture"))
+    implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
 
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
-    // Used for ComparisonTest
-    testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
-    testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
+    testImplementation(kotlin("reflect"))
 }
 
 tasks.withType<KotlinCompile> {
