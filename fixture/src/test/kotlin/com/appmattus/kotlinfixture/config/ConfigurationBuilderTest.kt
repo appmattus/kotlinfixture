@@ -101,16 +101,16 @@ class ConfigurationBuilderTest {
         @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
             Configuration(
-                instances = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
+                factories = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
             )
         ).apply {
-            instance<Properties> { Properties("1") }
+            factory<Properties> { Properties("1") }
         }.build()
 
         with(TestGenerator) {
             assertEquals(
                 Properties("1"),
-                (configuration.instances.getValue(Properties::class.starProjectedType))()
+                (configuration.factories.getValue(Properties::class.starProjectedType))()
             )
         }
     }
@@ -122,16 +122,16 @@ class ConfigurationBuilderTest {
         @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
             Configuration(
-                instances = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
+                factories = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
             )
         ).apply {
-            instance(Properties::class.starProjectedType) { Properties("1") }
+            factory(Properties::class.starProjectedType) { Properties("1") }
         }.build()
 
         with(TestGenerator) {
             assertEquals(
                 Properties("1"),
-                (configuration.instances.getValue(Properties::class.starProjectedType))()
+                (configuration.factories.getValue(Properties::class.starProjectedType))()
             )
         }
     }
@@ -142,10 +142,8 @@ class ConfigurationBuilderTest {
 
         assertFailsWith<UnsupportedOperationException> {
             @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
-            (configuration.instances as MutableMap<KType, () -> Any?>).put(Properties::class.starProjectedType) {
-                Properties(
-                    "1"
-                )
+            (configuration.factories as MutableMap<KType, () -> Any?>).put(Properties::class.starProjectedType) {
+                Properties("1")
             }
         }
     }

@@ -56,6 +56,6 @@ class DateResolverTest {
         val value1 = context.seedRandom().resolve(Date::class) as Date
         val value2 = context.seedRandom().resolve(Date::class) as Date
 
-        assertEquals(value1, value2)
+        assertEquals(value1.time, value2.time)
     }
 }

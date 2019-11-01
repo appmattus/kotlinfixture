@@ -44,7 +44,7 @@ class GeneratorDateTest {
     fun `After specification gives date in the future`() {
 
         val fixture = kotlinFixture {
-            instance<Date> { after(now) }
+            factory<Date> { after(now) }
         }
 
         repeat(100) {
@@ -60,7 +60,7 @@ class GeneratorDateTest {
     fun `After specification is random`() {
 
         val fixture = kotlinFixture {
-            instance<Date> { after(now) }
+            factory<Date> { after(now) }
         }
 
         assertIsRandom {
@@ -71,7 +71,7 @@ class GeneratorDateTest {
     @Test
     fun `After specification uses seeded random`() {
         val fixture = kotlinFixture {
-            instance<Date> { after(now) }
+            factory<Date> { after(now) }
         }
 
         val value1 = fixture<Date> {
@@ -87,7 +87,7 @@ class GeneratorDateTest {
     @Test
     fun `Before specification gives date in the past`() {
         val fixture = kotlinFixture {
-            instance<Date> { before(now) }
+            factory<Date> { before(now) }
         }
 
         repeat(100) {
@@ -103,7 +103,7 @@ class GeneratorDateTest {
     fun `Before specification is random`() {
 
         val fixture = kotlinFixture {
-            instance<Date> { before(now) }
+            factory<Date> { before(now) }
         }
 
         assertIsRandom {
@@ -114,7 +114,7 @@ class GeneratorDateTest {
     @Test
     fun `Before specification uses seeded random`() {
         val fixture = kotlinFixture {
-            instance<Date> { before(now) }
+            factory<Date> { before(now) }
         }
 
         val value1 = fixture<Date> {
@@ -132,7 +132,7 @@ class GeneratorDateTest {
         val minTime = now.time - TimeUnit.HOURS.toMillis(1)
 
         val fixture = kotlinFixture {
-            instance<Date> { between(Date(minTime), now) }
+            factory<Date> { between(Date(minTime), now) }
         }
 
         repeat(100) {
@@ -150,7 +150,7 @@ class GeneratorDateTest {
         val minTime = now.time - TimeUnit.HOURS.toMillis(1)
 
         val fixture = kotlinFixture {
-            instance<Date> { between(Date(minTime), now) }
+            factory<Date> { between(Date(minTime), now) }
         }
 
         assertIsRandom {
@@ -163,7 +163,7 @@ class GeneratorDateTest {
         val minTime = now.time - TimeUnit.HOURS.toMillis(1)
 
         val fixture = kotlinFixture {
-            instance<Date> { between(Date(minTime), now) }
+            factory<Date> { between(Date(minTime), now) }
         }
 
         val value1 = fixture<Date> {

@@ -32,8 +32,8 @@ class CalendarResolverTest {
     private val now = Date()
 
     private val context = TestContext(
-        ConfigurationBuilder().apply { instance<Date> { before(now) } }.build(),
-        CompositeResolver(CalendarResolver(), InstanceResolver())
+        ConfigurationBuilder().apply { factory<Date> { before(now) } }.build(),
+        CompositeResolver(CalendarResolver(), FactoryResolver())
     )
 
     @Test

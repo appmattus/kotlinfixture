@@ -168,7 +168,7 @@ class FixtureTest {
     @Test
     fun `can override instance in initialisation`() {
         val fixture = kotlinFixture {
-            instance<Number> { 10 }
+            factory<Number> { 10 }
         }
 
         repeat(100) {
@@ -179,7 +179,7 @@ class FixtureTest {
     @Test
     fun `overridden instance in initialisation is random`() {
         val fixture = kotlinFixture {
-            instance<Number> { Random.nextInt(1, 5) }
+            factory<Number> { Random.nextInt(1, 5) }
         }
 
         repeat(100) {
@@ -192,7 +192,7 @@ class FixtureTest {
         val fixture = kotlinFixture()
 
         val result = fixture<Number> {
-            instance<Number> { 20 }
+            factory<Number> { 20 }
         }
         assertEquals(20, result)
     }
@@ -203,7 +203,7 @@ class FixtureTest {
 
         repeat(100) {
             val result = fixture<Number> {
-                instance<Number> { Random.nextInt(6, 10) }
+                factory<Number> { Random.nextInt(6, 10) }
             }
 
             assertTrue { result in 6..10 }
@@ -213,11 +213,11 @@ class FixtureTest {
     @Test
     fun `can override instance in creation when overridden in initialisation`() {
         val fixture = kotlinFixture {
-            instance<Number> { 10 }
+            factory<Number> { 10 }
         }
 
         val result = fixture<Number> {
-            instance<Number> { 30 }
+            factory<Number> { 30 }
         }
         assertEquals(30, result)
     }
