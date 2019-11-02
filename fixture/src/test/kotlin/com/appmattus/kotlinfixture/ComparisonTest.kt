@@ -41,10 +41,12 @@ import java.util.AbstractSequentialList
 import java.util.AbstractSet
 import java.util.ArrayDeque
 import java.util.Calendar
+import java.util.Currency
 import java.util.Date
 import java.util.Deque
 import java.util.IdentityHashMap
 import java.util.LinkedList
+import java.util.Locale
 import java.util.NavigableMap
 import java.util.NavigableSet
 import java.util.PriorityQueue
@@ -390,6 +392,9 @@ class ComparisonTest {
                 arrayOf(typeOf<SimpleDateFormat>(), VALID, UNSUPPORTED, NOT_RANDOM),
                 arrayOf(typeOf<NumberFormat>(), VALID, UNSUPPORTED, UNSUPPORTED),
                 arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM),
+
+                arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<Locale>(), VALID, UNSUPPORTED, VALID),
 
                 // Enum
                 arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED),

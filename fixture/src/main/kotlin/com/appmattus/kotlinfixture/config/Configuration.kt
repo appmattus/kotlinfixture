@@ -26,7 +26,7 @@ import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
 import com.appmattus.kotlinfixture.resolver.CalendarResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
 import com.appmattus.kotlinfixture.resolver.ClassResolver
-import com.appmattus.kotlinfixture.resolver.FormatResolver
+import com.appmattus.kotlinfixture.resolver.CurrencyResolver
 import com.appmattus.kotlinfixture.resolver.DateResolver
 import com.appmattus.kotlinfixture.resolver.EnumMapResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
@@ -34,10 +34,12 @@ import com.appmattus.kotlinfixture.resolver.EnumSetResolver
 import com.appmattus.kotlinfixture.resolver.FactoryMethodResolver
 import com.appmattus.kotlinfixture.resolver.FactoryResolver
 import com.appmattus.kotlinfixture.resolver.FileResolver
+import com.appmattus.kotlinfixture.resolver.FormatResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
+import com.appmattus.kotlinfixture.resolver.LocaleResolver
 import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
 import com.appmattus.kotlinfixture.resolver.PrimitiveArrayResolver
@@ -95,6 +97,8 @@ data class Configuration(
             TimeResolver(),
             FileResolver(),
             FormatResolver(),
+            CurrencyResolver(),
+            LocaleResolver(),
 
             ObjectResolver(),
             SealedClassResolver(),
