@@ -17,6 +17,7 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KClass
 
@@ -33,13 +34,17 @@ internal class ClassResolver : Resolver, PopulateInstance {
             )
 
             obj.constructors.shuffled().forEach { constructor ->
-                val result = context.resolve(KFunctionRequest(obj, constructor))
-                if (result != Unresolved) {
-                    return if (populatePropertiesAndSetters(callContext, result)) {
-                        result
-                    } else {
-                        Unresolved
+                try {
+                    val result = context.resolve(KFunctionRequest(obj, constructor))
+                    if (result != Unresolved) {
+                        return if (populatePropertiesAndSetters(callContext, result)) {
+                            result
+                        } else {
+                            Unresolved
+                        }
                     }
+                } catch (expected: FixtureException) {
+                    // Ignore and move on to the next function, there is a chance here of hiding recursion exceptions
                 }
             }
         }

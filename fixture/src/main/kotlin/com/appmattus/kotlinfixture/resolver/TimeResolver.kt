@@ -19,35 +19,50 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.typeOf
+import java.time.Duration
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.OffsetTime
+import java.time.Period
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import java.util.Date
 
 internal class TimeResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return when (obj) {
+            Instant::class -> context.generateInstant()
             ZonedDateTime::class -> context.generateZonedDateTime()
             LocalDate::class -> context.generateZonedDateTime().toLocalDate()
             LocalTime::class -> context.generateZonedDateTime().toLocalTime()
             LocalDateTime::class -> context.generateZonedDateTime().toLocalDateTime()
             OffsetDateTime::class -> context.generateZonedDateTime().toOffsetDateTime()
             OffsetTime::class -> context.generateZonedDateTime().toOffsetDateTime().toOffsetTime()
+            Period::class -> context.generatePeriod()
+            Duration::class -> context.generateDuration()
             else -> Unresolved
         }
     }
 
-    private fun Context.generateZonedDateTime(): ZonedDateTime =
-        (resolve(typeOf<Date>()) as Date).toInstant().atZone(randomZoneId())
+    private fun Context.generateInstant(): Instant = (resolve(typeOf<Date>()) as Date).toInstant()
 
-    private fun Context.randomZoneId(): ZoneId {
-        val zoneIds = ZoneId.getAvailableZoneIds().toList()
-        val zoneId = zoneIds[random.nextInt(zoneIds.size)]
-        return ZoneId.of(zoneId)
-    }
+    private fun Context.generateZonedDateTime(): ZonedDateTime = generateInstant().atZone(randomZoneId())
+
+    private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
+
+    private fun Context.generatePeriod(): Period = Period.of(
+        random.nextInt(-100, 100),
+        random.nextInt(-11, 11),
+        random.nextInt(-28, 28)
+    )
+
+    private fun Context.generateDuration(): Duration = Duration.of(
+        random.nextLong(-1000, 1000),
+        resolve(ChronoUnit::class) as ChronoUnit
+    )
 }
