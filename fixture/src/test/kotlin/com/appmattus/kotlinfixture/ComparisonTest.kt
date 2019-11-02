@@ -27,6 +27,10 @@ import org.junit.Assume.assumeTrue
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import java.text.DateFormat
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -380,6 +384,12 @@ class ComparisonTest {
                 arrayOf(typeOf<TreeMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
                 arrayOf(typeOf<ConcurrentHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
                 arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+
+                // Format class
+                arrayOf(typeOf<DateFormat>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<SimpleDateFormat>(), VALID, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<NumberFormat>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM),
 
                 // Enum
                 arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED),

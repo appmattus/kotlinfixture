@@ -26,6 +26,7 @@ import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
 import com.appmattus.kotlinfixture.resolver.CalendarResolver
 import com.appmattus.kotlinfixture.resolver.CharResolver
 import com.appmattus.kotlinfixture.resolver.ClassResolver
+import com.appmattus.kotlinfixture.resolver.FormatResolver
 import com.appmattus.kotlinfixture.resolver.DateResolver
 import com.appmattus.kotlinfixture.resolver.EnumMapResolver
 import com.appmattus.kotlinfixture.resolver.EnumResolver
@@ -93,6 +94,7 @@ data class Configuration(
             DateResolver(),
             TimeResolver(),
             FileResolver(),
+            FormatResolver(),
 
             ObjectResolver(),
             SealedClassResolver(),
