@@ -25,11 +25,14 @@ import com.appmattus.kotlinfixture.config.before
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import java.time.Duration
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.OffsetTime
+import java.time.Period
 import java.time.ZonedDateTime
 import java.util.Date
 import kotlin.reflect.KClass
@@ -77,7 +80,7 @@ class TimeResolverTest {
         @Suppress("UNCHECKED_CAST")
         private val context = TestContext(
             Configuration(),
-            CompositeResolver(TimeResolver(), KTypeResolver(), DateResolver())
+            CompositeResolver(TimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
         )
 
         @Test
@@ -106,7 +109,10 @@ class TimeResolverTest {
                 arrayOf(LocalTime::class),
                 arrayOf(LocalDateTime::class),
                 arrayOf(OffsetDateTime::class),
-                arrayOf(OffsetTime::class)
+                arrayOf(OffsetTime::class),
+                arrayOf(Instant::class),
+                arrayOf(Period::class),
+                arrayOf(Duration::class)
             )
         }
     }

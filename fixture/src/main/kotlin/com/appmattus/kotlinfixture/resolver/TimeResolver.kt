@@ -63,6 +63,17 @@ internal class TimeResolver : Resolver {
 
     private fun Context.generateDuration(): Duration = Duration.of(
         random.nextLong(-1000, 1000),
-        resolve(ChronoUnit::class) as ChronoUnit
+        generatePreciseChronoUnit()
     )
+
+    private fun Context.generatePreciseChronoUnit() = listOf(
+        ChronoUnit.NANOS,
+        ChronoUnit.MICROS,
+        ChronoUnit.MILLIS,
+        ChronoUnit.SECONDS,
+        ChronoUnit.MINUTES,
+        ChronoUnit.HOURS,
+        ChronoUnit.HALF_DAYS,
+        ChronoUnit.DAYS
+    ).random(random)
 }
