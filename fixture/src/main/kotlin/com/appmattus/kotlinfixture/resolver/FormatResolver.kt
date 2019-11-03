@@ -25,24 +25,33 @@ import java.text.SimpleDateFormat
 
 internal class FormatResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == DateFormat::class || obj == SimpleDateFormat::class) {
-            val style = dateFormatStyles.random(context.random)
-            val locale = SimpleDateFormat.getAvailableLocales().toList().random(context.random)
+    override fun resolve(context: Context, obj: Any): Any? = when (obj) {
+        DateFormat::class,
+        SimpleDateFormat::class -> generateSimpleDate(context)
 
-            return SimpleDateFormat.getDateInstance(style, locale)
-        } else if (obj == DecimalFormat::class || obj == NumberFormat::class) {
-            val locale = DecimalFormat.getAvailableLocales().toList().random(context.random)
+        DecimalFormat::class,
+        NumberFormat::class -> generateDecimalFormat(context)
 
-            return when (context.random.nextInt(4)) {
-                3 -> DecimalFormat.getIntegerInstance(locale)
-                2 -> DecimalFormat.getPercentInstance(locale)
-                1 -> DecimalFormat.getCurrencyInstance(locale)
-                else -> DecimalFormat.getNumberInstance(locale)
-            }
-        } else {
-            Unresolved
+        else -> Unresolved
+    }
+
+    private fun generateDecimalFormat(context: Context): NumberFormat? {
+        val locale = DecimalFormat.getAvailableLocales().toList().random(context.random)
+
+        @Suppress("MagicNumber")
+        return when (context.random.nextInt(4)) {
+            3 -> DecimalFormat.getIntegerInstance(locale)
+            2 -> DecimalFormat.getPercentInstance(locale)
+            1 -> DecimalFormat.getCurrencyInstance(locale)
+            else -> DecimalFormat.getNumberInstance(locale)
         }
+    }
+
+    private fun generateSimpleDate(context: Context): DateFormat? {
+        val style = dateFormatStyles.random(context.random)
+        val locale = SimpleDateFormat.getAvailableLocales().toList().random(context.random)
+
+        return SimpleDateFormat.getDateInstance(style, locale)
     }
 
     companion object {

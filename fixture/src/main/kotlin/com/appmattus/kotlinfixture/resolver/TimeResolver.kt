@@ -34,6 +34,7 @@ import java.util.Date
 
 internal class TimeResolver : Resolver {
 
+    @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         return when (obj) {
             Instant::class -> context.generateInstant()
@@ -55,12 +56,14 @@ internal class TimeResolver : Resolver {
 
     private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
 
+    @Suppress("MagicNumber")
     private fun Context.generatePeriod(): Period = Period.of(
         random.nextInt(-100, 100),
         random.nextInt(-11, 11),
         random.nextInt(-28, 28)
     )
 
+    @Suppress("MagicNumber")
     private fun Context.generateDuration(): Duration = Duration.of(
         random.nextLong(-1000, 1000),
         generatePreciseChronoUnit()

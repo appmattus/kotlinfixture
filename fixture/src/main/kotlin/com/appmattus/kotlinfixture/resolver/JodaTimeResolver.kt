@@ -31,6 +31,7 @@ import java.util.Date
 
 internal class JodaTimeResolver : Resolver {
 
+    @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         return if (hasJodaTime) {
             when (obj) {
@@ -53,6 +54,7 @@ internal class JodaTimeResolver : Resolver {
     private fun Context.randomDateTimeZone(): DateTimeZone =
         DateTimeZone.forID(DateTimeZone.getAvailableIDs().random(random))
 
+    @Suppress("MagicNumber")
     private fun Context.generatePeriod(): Period {
         val randomValue = random.nextInt(-1000, 1000)
         return when (random.nextInt(8)) {
@@ -67,6 +69,7 @@ internal class JodaTimeResolver : Resolver {
         }
     }
 
+    @Suppress("MagicNumber")
     private fun Context.generateDuration(): Duration {
         val randomValue = random.nextLong(-1000, 1000)
         return when (random.nextInt(4)) {

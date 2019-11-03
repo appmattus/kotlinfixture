@@ -35,6 +35,7 @@ import java.util.Date
 
 internal class ThreeTenResolver : Resolver {
 
+    @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         return if (hasThreeTen) {
             when (obj) {
@@ -60,12 +61,14 @@ internal class ThreeTenResolver : Resolver {
 
     private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
 
+    @Suppress("MagicNumber")
     private fun Context.generatePeriod(): Period = Period.of(
         random.nextInt(-100, 100),
         random.nextInt(-11, 11),
         random.nextInt(-28, 28)
     )
 
+    @Suppress("MagicNumber")
     private fun Context.generateDuration(): Duration = Duration.of(
         random.nextLong(-1000, 1000),
         generatePreciseChronoUnit()
