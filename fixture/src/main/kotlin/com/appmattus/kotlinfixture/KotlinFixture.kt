@@ -20,7 +20,9 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import kotlin.reflect.KClass
 import kotlin.reflect.KType
+import kotlin.reflect.full.starProjectedType
 
 class Fixture(val fixtureConfiguration: Configuration) {
 
@@ -41,10 +43,21 @@ class Fixture(val fixtureConfiguration: Configuration) {
         }
     }
 
-    fun create(type: KType, configuration: Configuration): Any? {
-        return ContextImpl(configuration).resolve(type)
+    fun create(clazz: Class<*>, configuration: Configuration = fixtureConfiguration): Any? {
+        return create(clazz.kotlin, configuration)
+    }
+
+    fun create(clazz: KClass<*>, configuration: Configuration = fixtureConfiguration): Any? {
+        return create(clazz.starProjectedType, configuration)
+    }
+
+    fun create(type: KType, configuration: Configuration = fixtureConfiguration): Any? {
+        val result = ContextImpl(configuration).resolve(type)
+        if (result is Unresolved) {
+            throw UnsupportedOperationException("Unable to handle $type")
+        }
+        return result
     }
 }
 
-fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) =
-    Fixture(ConfigurationBuilder().apply(init).build())
+fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) = Fixture(ConfigurationBuilder().apply(init).build())

@@ -14,23 +14,19 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.decorator.recursion
+package com.appmattus.kotlinfixture.resolver
 
-import com.appmattus.kotlinfixture.typeOf
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNull
+import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.nextUuid
+import java.io.File
 
-class NullRecursionStrategyTest {
-    @Test
-    fun `throws illegal state exception when stack is empty`() {
-        assertFailsWith<IllegalStateException> {
-            NullRecursionStrategy.handleRecursion(typeOf<String>(), emptyList())
+class FileResolver : Resolver {
+    override fun resolve(context: Context, obj: Any): Any? {
+        return if (obj == File::class) {
+            return File(context.random.nextUuid().toString())
+        } else {
+            Unresolved
         }
-    }
-
-    @Test
-    fun `returns null when stack is populated`() {
-        assertNull(NullRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>())))
     }
 }

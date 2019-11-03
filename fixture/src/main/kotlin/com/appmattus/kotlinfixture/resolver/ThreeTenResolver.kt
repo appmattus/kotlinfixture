@@ -19,38 +19,43 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.typeOf
-import java.time.Duration
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.OffsetDateTime
-import java.time.OffsetTime
-import java.time.Period
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
+import org.threeten.bp.DateTimeUtils
+import org.threeten.bp.Duration
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.OffsetTime
+import org.threeten.bp.Period
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.temporal.ChronoUnit
 import java.util.Date
 
-internal class TimeResolver : Resolver {
+internal class ThreeTenResolver : Resolver {
 
     @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
-        return when (obj) {
-            Instant::class -> context.generateInstant()
-            ZonedDateTime::class -> context.generateZonedDateTime()
-            LocalDate::class -> context.generateZonedDateTime().toLocalDate()
-            LocalTime::class -> context.generateZonedDateTime().toLocalTime()
-            LocalDateTime::class -> context.generateZonedDateTime().toLocalDateTime()
-            OffsetDateTime::class -> context.generateZonedDateTime().toOffsetDateTime()
-            OffsetTime::class -> context.generateZonedDateTime().toOffsetDateTime().toOffsetTime()
-            Period::class -> context.generatePeriod()
-            Duration::class -> context.generateDuration()
-            else -> Unresolved
+        return if (hasThreeTen) {
+            when (obj) {
+                Instant::class -> context.generateInstant()
+                ZonedDateTime::class -> context.generateZonedDateTime()
+                LocalDate::class -> context.generateZonedDateTime().toLocalDate()
+                LocalTime::class -> context.generateZonedDateTime().toLocalTime()
+                LocalDateTime::class -> context.generateZonedDateTime().toLocalDateTime()
+                OffsetDateTime::class -> context.generateZonedDateTime().toOffsetDateTime()
+                OffsetTime::class -> context.generateZonedDateTime().toOffsetDateTime().toOffsetTime()
+                Period::class -> context.generatePeriod()
+                Duration::class -> context.generateDuration()
+                else -> Unresolved
+            }
+        } else {
+            Unresolved
         }
     }
 
-    private fun Context.generateInstant(): Instant = (resolve(typeOf<Date>()) as Date).toInstant()
+    private fun Context.generateInstant(): Instant = DateTimeUtils.toInstant(resolve(typeOf<Date>()) as Date)
 
     private fun Context.generateZonedDateTime(): ZonedDateTime = generateInstant().atZone(randomZoneId())
 
@@ -79,4 +84,15 @@ internal class TimeResolver : Resolver {
         ChronoUnit.HALF_DAYS,
         ChronoUnit.DAYS
     ).random(random)
+
+    companion object {
+        private val hasThreeTen: Boolean by lazy {
+            try {
+                Class.forName("org.threeten.bp.LocalDate", false, ThreeTenResolver::class.java.classLoader)
+                true
+            } catch (expected: ClassNotFoundException) {
+                false
+            }
+        }
+    }
 }

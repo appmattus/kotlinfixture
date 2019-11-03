@@ -24,18 +24,24 @@ import java.util.concurrent.TimeUnit
 internal class DateResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == Date::class) {
-            val timeNow = Date().time
-
-            return Date(
-                @Suppress("MagicNumber")
-                context.random.nextLong(
-                    timeNow - TimeUnit.DAYS.toMillis(365),
-                    timeNow + TimeUnit.DAYS.toMillis(365)
-                )
-            )
-        } else {
-            Unresolved
+        return when (obj) {
+            Date::class -> context.generateJavaUtilDate()
+            java.sql.Date::class -> java.sql.Date(context.generateJavaUtilDate().time)
+            java.sql.Time::class -> java.sql.Time(context.generateJavaUtilDate().time)
+            java.sql.Timestamp::class -> java.sql.Timestamp(context.generateJavaUtilDate().time)
+            else -> Unresolved
         }
+    }
+
+    private fun Context.generateJavaUtilDate(): Date {
+        val timeNow = Date().time
+
+        return Date(
+            @Suppress("MagicNumber")
+            random.nextLong(
+                timeNow - TimeUnit.DAYS.toMillis(365),
+                timeNow + TimeUnit.DAYS.toMillis(365)
+            )
+        )
     }
 }

@@ -23,18 +23,21 @@ import com.appmattus.kotlinfixture.config.Configuration
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import java.util.Date
+import java.text.DateFormat
+import java.text.DecimalFormat
+import java.text.Format
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @RunWith(Enclosed::class)
-class DateResolverTest {
+class FormatResolverTest {
 
     class Single {
-
-        private val context = TestContext(Configuration(), DateResolver())
+        private val context = TestContext(Configuration(), FormatResolver())
 
         @Test
         fun `Unknown class returns Unresolved`() {
@@ -47,42 +50,43 @@ class DateResolverTest {
     @RunWith(Parameterized::class)
     class Parameterised {
 
-        @Parameterized.Parameter(0)
-        lateinit var type: KClass<*>
+        private val context = TestContext(Configuration(), FormatResolver())
 
-        private val context = TestContext(Configuration(), DateResolver())
+        @Parameterized.Parameter(0)
+        lateinit var clazz: KClass<*>
 
         @Test
-        fun `Class returns date`() {
-            val result = context.resolve(type)
+        fun `creates instance`() {
+            val result = context.resolve(clazz)
 
-            assertNotNull(result)
-            assertEquals(type, result::class)
+            assertTrue {
+                clazz.isInstance(result)
+            }
         }
 
         @Test
         fun `Random values returned`() {
             assertIsRandom {
-                context.resolve(type)
+                (context.resolve(clazz) as Format)
             }
         }
 
         @Test
         fun `Uses seeded random`() {
-            val value1 = context.seedRandom().resolve(type) as Date
-            val value2 = context.seedRandom().resolve(type) as Date
+            val value1 = context.seedRandom().resolve(clazz) as Format
+            val value2 = context.seedRandom().resolve(clazz) as Format
 
-            assertEquals(value1.time, value2.time)
+            assertEquals(value1, value2)
         }
 
         companion object {
             @JvmStatic
             @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
-                arrayOf(Date::class),
-                arrayOf(java.sql.Date::class),
-                arrayOf(java.sql.Time::class),
-                arrayOf(java.sql.Timestamp::class)
+                arrayOf(NumberFormat::class),
+                arrayOf(DecimalFormat::class),
+                arrayOf(DateFormat::class),
+                arrayOf(SimpleDateFormat::class)
             )
         }
     }

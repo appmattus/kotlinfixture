@@ -25,15 +25,16 @@ import com.appmattus.kotlinfixture.config.before
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import java.time.Duration
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.OffsetDateTime
-import java.time.OffsetTime
-import java.time.Period
-import java.time.ZonedDateTime
+import org.threeten.bp.DateTimeUtils
+import org.threeten.bp.Duration
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.OffsetTime
+import org.threeten.bp.Period
+import org.threeten.bp.ZonedDateTime
 import java.util.Date
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -42,14 +43,14 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @RunWith(Enclosed::class)
-class TimeResolverTest {
+class ThreeTenResolverTest {
 
     class Single {
         private val now = Date()
 
         private val context = TestContext(
             ConfigurationBuilder().apply { factory<Date> { before(now) } }.build(),
-            CompositeResolver(TimeResolver(), FactoryResolver())
+            CompositeResolver(ThreeTenResolver(), FactoryResolver())
         )
 
         @Test
@@ -65,7 +66,7 @@ class TimeResolverTest {
                 val result = context.resolve(ZonedDateTime::class) as ZonedDateTime
 
                 assertTrue {
-                    result.toInstant() <= now.toInstant()
+                    result.toInstant() <= DateTimeUtils.toInstant(now)
                 }
             }
         }
@@ -80,7 +81,7 @@ class TimeResolverTest {
         @Suppress("UNCHECKED_CAST")
         private val context = TestContext(
             Configuration(),
-            CompositeResolver(TimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
+            CompositeResolver(ThreeTenResolver(), KTypeResolver(), DateResolver(), EnumResolver())
         )
 
         @Test

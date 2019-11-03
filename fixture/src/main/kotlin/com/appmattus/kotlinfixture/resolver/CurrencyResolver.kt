@@ -14,11 +14,19 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.decorator.logging
+package com.appmattus.kotlinfixture.resolver
 
-import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.Unresolved
+import java.util.Currency
 
-@Suppress("unused")
-fun ConfigurationBuilder.loggingStrategy(strategy: LoggingStrategy) {
-    strategies[LoggingStrategy::class] = strategy
+internal class CurrencyResolver : Resolver {
+
+    override fun resolve(context: Context, obj: Any): Any? {
+        return if (obj == Currency::class) {
+            Currency.getAvailableCurrencies().random(context.random)
+        } else {
+            Unresolved
+        }
+    }
 }

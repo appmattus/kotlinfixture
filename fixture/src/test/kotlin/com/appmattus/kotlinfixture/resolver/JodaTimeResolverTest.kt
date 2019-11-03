@@ -22,18 +22,16 @@ import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.config.before
+import org.joda.time.DateTime
+import org.joda.time.Duration
+import org.joda.time.Instant
+import org.joda.time.LocalDate
+import org.joda.time.LocalDateTime
+import org.joda.time.LocalTime
+import org.joda.time.Period
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import java.time.Duration
-import java.time.Instant
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.OffsetDateTime
-import java.time.OffsetTime
-import java.time.Period
-import java.time.ZonedDateTime
 import java.util.Date
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -42,14 +40,14 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 @RunWith(Enclosed::class)
-class TimeResolverTest {
+class JodaTimeResolverTest {
 
     class Single {
         private val now = Date()
 
         private val context = TestContext(
             ConfigurationBuilder().apply { factory<Date> { before(now) } }.build(),
-            CompositeResolver(TimeResolver(), FactoryResolver())
+            CompositeResolver(JodaTimeResolver(), FactoryResolver())
         )
 
         @Test
@@ -62,10 +60,10 @@ class TimeResolverTest {
         @Test
         fun `Before specification gives date in the past`() {
             repeat(100) {
-                val result = context.resolve(ZonedDateTime::class) as ZonedDateTime
+                val result = context.resolve(DateTime::class) as DateTime
 
                 assertTrue {
-                    result.toInstant() <= now.toInstant()
+                    result.toInstant() <= Instant(now)
                 }
             }
         }
@@ -80,7 +78,7 @@ class TimeResolverTest {
         @Suppress("UNCHECKED_CAST")
         private val context = TestContext(
             Configuration(),
-            CompositeResolver(TimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
+            CompositeResolver(JodaTimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
         )
 
         @Test
@@ -104,13 +102,11 @@ class TimeResolverTest {
             @JvmStatic
             @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
-                arrayOf(ZonedDateTime::class),
+                arrayOf(Instant::class),
                 arrayOf(LocalDate::class),
                 arrayOf(LocalTime::class),
                 arrayOf(LocalDateTime::class),
-                arrayOf(OffsetDateTime::class),
-                arrayOf(OffsetTime::class),
-                arrayOf(Instant::class),
+                arrayOf(DateTime::class),
                 arrayOf(Period::class),
                 arrayOf(Duration::class)
             )
