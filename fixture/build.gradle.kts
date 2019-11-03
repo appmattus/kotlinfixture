@@ -48,6 +48,7 @@ dependencies {
     // Used for ComparisonTest
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
     testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
+    testImplementation("org.jeasy:easy-random-core:4.0.0")
 }
 
 tasks.withType<KotlinCompile> {

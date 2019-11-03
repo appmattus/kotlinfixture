@@ -23,6 +23,7 @@ import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.VALID
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolverTest.Parameterised.TestDelayed
 import com.flextrade.kfixture.KFixture
 import com.marcellogalhardo.fixture.Fixture
+import org.jeasy.random.EasyRandom
 import org.junit.Assume.assumeTrue
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
@@ -139,10 +140,13 @@ class ComparisonTest {
         lateinit var flextradeSupports: Result
         @Parameterized.Parameter(3)
         lateinit var marcellogalhardoSupports: Result
+        @Parameterized.Parameter(4)
+        lateinit var easyRandomSupports: Result
 
         private val marcellogalhardo = Fixture()
         private val flextrade = KFixture()
         private val appmattus = kotlinFixture()
+        private val easyRandom = EasyRandom()
 
         private fun assumeValid(result: Result) {
             assumeTrue(result == VALID || result == NOT_RANDOM)
@@ -268,6 +272,46 @@ class ComparisonTest {
             }
         }
 
+        @Test
+        fun `easyrandom creates instance`() {
+            assumeValid(easyRandomSupports)
+
+            val result = easyRandom.nextObject(resultClass.java)
+
+            assertTrue {
+                resultClass.isInstance(result)
+            }
+        }
+
+        @Test
+        fun `easyrandom creates random instance`() {
+            assumeRandom(easyRandomSupports)
+
+            assertIsRandom {
+                easyRandom.nextObject(resultClass.java)
+            }
+        }
+
+        @Test
+        fun `easyrandom cannot create instance`() {
+            assumeUnsupported(easyRandomSupports)
+
+            assertFails {
+                easyRandom.nextObject(resultClass.java)
+            }
+        }
+
+        @Test
+        fun `easyrandom creates invalid instance`() {
+            assumeInvalid(easyRandomSupports)
+
+            val result = easyRandom.nextObject(resultClass.java)
+
+            assertFalse {
+                resultClass.isInstance(result)
+            }
+        }
+
         enum class Result {
             VALID, NOT_RANDOM, INVALID, UNSUPPORTED
         }
@@ -278,165 +322,165 @@ class ComparisonTest {
             @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
                 // Boolean
-                arrayOf(typeOf<Boolean>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Boolean>(), VALID, VALID, VALID, VALID),
 
                 // Primitives and numbers
-                arrayOf(typeOf<Byte>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<Double>(), VALID, VALID, VALID),
-                arrayOf(typeOf<Float>(), VALID, VALID, VALID),
-                arrayOf(typeOf<Int>(), VALID, VALID, VALID),
-                arrayOf(typeOf<Long>(), VALID, VALID, VALID),
-                arrayOf(typeOf<Short>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<UByte>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<UInt>(), VALID, VALID, VALID),
-                arrayOf(typeOf<ULong>(), VALID, VALID, VALID),
-                arrayOf(typeOf<UShort>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Byte>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Double>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<Float>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<Int>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<Long>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<Short>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<UByte>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<UInt>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<ULong>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<UShort>(), VALID, VALID, UNSUPPORTED, VALID),
 
                 // String
-                arrayOf(typeOf<String>(), VALID, VALID, VALID),
+                arrayOf(typeOf<String>(), VALID, VALID, VALID, VALID),
 
                 // UUID
-                arrayOf(typeOf<UUID>(), VALID, VALID, VALID),
+                arrayOf(typeOf<UUID>(), VALID, VALID, VALID, VALID),
 
                 // Character
-                arrayOf(typeOf<Char>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Char>(), VALID, VALID, VALID, VALID),
 
                 // Date
-                arrayOf(typeOf<Date>(), VALID, VALID, VALID),
-                arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Date>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED, VALID),
 
-                arrayOf(typeOf<Instant>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<ZonedDateTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED),
-                arrayOf(typeOf<LocalTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<LocalDateTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<OffsetDateTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<OffsetTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Instant>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<ZonedDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<LocalTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<LocalDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<OffsetDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
                 // flextrade works on CI but not locally
-                // arrayOf(typeOf<Duration>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                // arrayOf(typeOf<Period>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                // arrayOf(typeOf<Duration>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                // arrayOf(typeOf<Period>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
 
-                arrayOf(typeOf<org.threeten.bp.Instant>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.ZonedDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.LocalTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.LocalDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.OffsetDateTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.OffsetTime>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.Duration>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<org.threeten.bp.Period>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.Instant>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.ZonedDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.LocalTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.LocalDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.OffsetDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.Duration>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.Period>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
 
-                arrayOf(typeOf<org.joda.time.Instant>(), VALID, VALID, VALID),
-                arrayOf(typeOf<org.joda.time.LocalDate>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<org.joda.time.LocalTime>(), VALID, VALID, VALID),
-                arrayOf(typeOf<org.joda.time.LocalDateTime>(), VALID, VALID, VALID),
-                arrayOf(typeOf<org.joda.time.DateTime>(), VALID, VALID, VALID),
-                arrayOf(typeOf<org.joda.time.Duration>(), VALID, VALID, VALID),
-                arrayOf(typeOf<org.joda.time.Period>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<org.joda.time.Instant>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.LocalDate>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<org.joda.time.LocalTime>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.LocalDateTime>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.DateTime>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.Duration>(), VALID, VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<org.joda.time.Period>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
 
                 // Tuples
-                arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID),
-                arrayOf(typeOf<Triple<String, String, String>>(), VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID, VALID),
+                arrayOf(typeOf<Triple<String, String, String>>(), VALID, UNSUPPORTED, VALID, VALID),
 
                 // Array
-                arrayOf(typeOf<ByteArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<CharArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<ShortArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<IntArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<LongArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<FloatArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<DoubleArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<BooleanArray>(), VALID, VALID, UNSUPPORTED),
-                arrayOf(typeOf<UByteArray>(), VALID, VALID, VALID),
-                arrayOf(typeOf<UIntArray>(), VALID, VALID, VALID),
-                arrayOf(typeOf<ULongArray>(), VALID, VALID, VALID),
-                arrayOf(typeOf<UShortArray>(), VALID, VALID, VALID),
-                arrayOf(typeOf<Array<String>>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<ByteArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<CharArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<ShortArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<IntArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<LongArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<FloatArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<DoubleArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<BooleanArray>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<UByteArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<UIntArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<ULongArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<UShortArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<Array<String>>(), VALID, VALID, UNSUPPORTED, VALID),
 
                 // Iterable, List
-                arrayOf(typeOf<Iterable<String>>(), VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<Collection<String>>(), VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<AbstractCollection<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<Iterable<String>>(), VALID, NOT_RANDOM, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Collection<String>>(), VALID, NOT_RANDOM, VALID, NOT_RANDOM),
+                arrayOf(typeOf<AbstractCollection<String>>(), VALID, UNSUPPORTED, UNSUPPORTED, NOT_RANDOM),
 
                 // Set
-                arrayOf(typeOf<Set<String>>(), VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<AbstractSet<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<SortedSet<String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<NavigableSet<String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<HashSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<LinkedHashSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<TreeSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<ConcurrentSkipListSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<CopyOnWriteArraySet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<Set<String>>(), VALID, NOT_RANDOM, VALID, NOT_RANDOM),
+                arrayOf(typeOf<AbstractSet<String>>(), VALID, UNSUPPORTED, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<SortedSet<String>>(), VALID, INVALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<NavigableSet<String>>(), VALID, INVALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<HashSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<LinkedHashSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<TreeSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentSkipListSet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<CopyOnWriteArraySet<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
 
                 // List
-                arrayOf(typeOf<List<String>>(), VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<MutableList<String>>(), VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<AbstractList<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<ArrayList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<AbstractSequentialList<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<LinkedList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<Vector<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<Stack<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<CopyOnWriteArrayList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<List<String>>(), VALID, NOT_RANDOM, VALID, NOT_RANDOM),
+                arrayOf(typeOf<MutableList<String>>(), VALID, NOT_RANDOM, VALID, NOT_RANDOM),
+                arrayOf(typeOf<AbstractList<String>>(), VALID, UNSUPPORTED, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<ArrayList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<AbstractSequentialList<String>>(), VALID, UNSUPPORTED, UNSUPPORTED, INVALID),
+                arrayOf(typeOf<LinkedList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<Vector<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<Stack<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<CopyOnWriteArrayList<String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
 
                 // Queue
-                arrayOf(typeOf<Queue<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<AbstractQueue<String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<PriorityQueue<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<DelayQueue<TestDelayed>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<LinkedBlockingQueue<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<PriorityBlockingQueue<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<LinkedTransferQueue<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<BlockingQueue<String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<TransferQueue<String>>(), VALID, INVALID, VALID),
+                arrayOf(typeOf<Queue<String>>(), VALID, VALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<AbstractQueue<String>>(), VALID, UNSUPPORTED, UNSUPPORTED, INVALID),
+                arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), VALID, VALID, VALID, INVALID),
+                arrayOf(typeOf<PriorityQueue<String>>(), VALID, VALID, VALID, INVALID),
+                arrayOf(typeOf<DelayQueue<TestDelayed>>(), VALID, VALID, VALID, INVALID),
+                arrayOf(typeOf<LinkedBlockingQueue<String>>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<PriorityBlockingQueue<String>>(), VALID, VALID, VALID, INVALID),
+                arrayOf(typeOf<LinkedTransferQueue<String>>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<BlockingQueue<String>>(), VALID, INVALID, VALID, VALID),
+                arrayOf(typeOf<TransferQueue<String>>(), VALID, INVALID, VALID, VALID),
 
                 // Deque
-                arrayOf(typeOf<Deque<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<ArrayDeque<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), VALID, VALID, VALID),
-                arrayOf(typeOf<BlockingDeque<String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<LinkedBlockingDeque<String>>(), VALID, VALID, VALID),
+                arrayOf(typeOf<Deque<String>>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<ArrayDeque<String>>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), VALID, VALID, VALID, INVALID),
+                arrayOf(typeOf<BlockingDeque<String>>(), VALID, INVALID, VALID, VALID),
+                arrayOf(typeOf<LinkedBlockingDeque<String>>(), VALID, VALID, VALID, VALID),
 
                 // Map
-                arrayOf(typeOf<Map<String, String>>(), VALID, NOT_RANDOM, VALID),
-                arrayOf(typeOf<SortedMap<String, String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<NavigableMap<String, String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<ConcurrentMap<String, String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<ConcurrentNavigableMap<String, String>>(), VALID, INVALID, VALID),
-                arrayOf(typeOf<java.util.AbstractMap<String, String>>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<HashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<LinkedHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<IdentityHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<WeakHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<TreeMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<ConcurrentHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
-                arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<Map<String, String>>(), VALID, NOT_RANDOM, VALID, NOT_RANDOM),
+                arrayOf(typeOf<SortedMap<String, String>>(), VALID, INVALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<NavigableMap<String, String>>(), VALID, INVALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentMap<String, String>>(), VALID, INVALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentNavigableMap<String, String>>(), VALID, INVALID, VALID, NOT_RANDOM),
+                arrayOf(typeOf<java.util.AbstractMap<String, String>>(), VALID, UNSUPPORTED, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<HashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<LinkedHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<IdentityHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<WeakHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, INVALID),
+                arrayOf(typeOf<TreeMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
 
                 // Format class
-                arrayOf(typeOf<DateFormat>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<SimpleDateFormat>(), VALID, UNSUPPORTED, NOT_RANDOM),
-                arrayOf(typeOf<NumberFormat>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<DateFormat>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<SimpleDateFormat>(), VALID, UNSUPPORTED, NOT_RANDOM, UNSUPPORTED),
+                arrayOf(typeOf<NumberFormat>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM, VALID),
 
-                arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<Locale>(), VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Locale>(), VALID, UNSUPPORTED, VALID, VALID),
 
                 // Enum
-                arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED, VALID),
 
                 // Class
-                arrayOf(typeOf<TestClass>(), VALID, VALID, VALID),
+                arrayOf(typeOf<TestClass>(), VALID, VALID, VALID, VALID),
 
                 // Object
-                arrayOf(typeOf<TestObject>(), NOT_RANDOM, UNSUPPORTED, NOT_RANDOM),
+                arrayOf(typeOf<TestObject>(), NOT_RANDOM, UNSUPPORTED, NOT_RANDOM, VALID),
 
                 // Sealed class
-                arrayOf(typeOf<TestSealedClass>(), VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<TestSealedClass>(), VALID, UNSUPPORTED, VALID, UNSUPPORTED),
 
                 // Abstract class
-                arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED)
+                arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED)
             )
         }
     }
