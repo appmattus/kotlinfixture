@@ -37,6 +37,7 @@ import com.appmattus.kotlinfixture.resolver.FileResolver
 import com.appmattus.kotlinfixture.resolver.FormatResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
+import com.appmattus.kotlinfixture.resolver.JodaTimeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
 import com.appmattus.kotlinfixture.resolver.LocaleResolver
@@ -48,6 +49,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.SealedClassResolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.resolver.SubTypeResolver
+import com.appmattus.kotlinfixture.resolver.ThreeTenResolver
 import com.appmattus.kotlinfixture.resolver.TimeResolver
 import com.appmattus.kotlinfixture.resolver.TupleKTypeResolver
 import com.appmattus.kotlinfixture.resolver.UriResolver
@@ -95,6 +97,8 @@ data class Configuration(
             CalendarResolver(),
             DateResolver(),
             TimeResolver(),
+            JodaTimeResolver(),
+            ThreeTenResolver(),
             FileResolver(),
             FormatResolver(),
             CurrencyResolver(),

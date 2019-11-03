@@ -31,9 +31,13 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.OffsetTime
+import java.time.ZonedDateTime
 import java.util.AbstractCollection
 import java.util.AbstractList
 import java.util.AbstractQueue
@@ -300,12 +304,35 @@ class ComparisonTest {
                 // Date
                 arrayOf(typeOf<Date>(), VALID, VALID, VALID),
                 arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED),
+
+                arrayOf(typeOf<Instant>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<ZonedDateTime>(), VALID, VALID, UNSUPPORTED),
                 arrayOf(typeOf<LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED),
-                arrayOf(typeOf<LocalDateTime>(), VALID, VALID, UNSUPPORTED),
                 arrayOf(typeOf<LocalTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<LocalDateTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<OffsetDateTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<OffsetTime>(), VALID, VALID, UNSUPPORTED),
                 // flextrade works on CI but not locally
                 // arrayOf(typeOf<Duration>(), VALID, UNSUPPORTED, UNSUPPORTED),
                 // arrayOf(typeOf<Period>(), VALID, UNSUPPORTED, UNSUPPORTED),
+
+                arrayOf(typeOf<org.threeten.bp.Instant>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.ZonedDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.LocalTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.LocalDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.OffsetDateTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.OffsetTime>(), VALID, VALID, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.Duration>(), VALID, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.Period>(), VALID, UNSUPPORTED, UNSUPPORTED),
+
+                arrayOf(typeOf<org.joda.time.Instant>(), VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.LocalDate>(), VALID, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<org.joda.time.LocalTime>(), VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.LocalDateTime>(), VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.DateTime>(), VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.Duration>(), VALID, VALID, VALID),
+                arrayOf(typeOf<org.joda.time.Period>(), VALID, NOT_RANDOM, NOT_RANDOM),
 
                 // Tuples
                 arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID),

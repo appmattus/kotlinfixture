@@ -34,6 +34,12 @@ dependencies {
     implementation("io.github.classgraph:classgraph:4.8.52")
     implementation(kotlin("reflect"))
 
+    compileOnly("joda-time:joda-time:2.10.5")
+    testImplementation("joda-time:joda-time:2.10.5")
+
+    compileOnly("org.threeten:threetenbp:1.4.0")
+    testImplementation("org.threeten:threetenbp:1.4.0")
+
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
