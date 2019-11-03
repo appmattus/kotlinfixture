@@ -16,6 +16,7 @@
 
 package com.appmattus.kotlinfixture
 
+import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.IGNORE
 import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.INVALID
 import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.NOT_RANDOM
 import com.appmattus.kotlinfixture.ComparisonTest.Parameterised.Result.UNSUPPORTED
@@ -32,12 +33,14 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetDateTime
 import java.time.OffsetTime
+import java.time.Period
 import java.time.ZonedDateTime
 import java.util.AbstractCollection
 import java.util.AbstractList
@@ -313,7 +316,7 @@ class ComparisonTest {
         }
 
         enum class Result {
-            VALID, NOT_RANDOM, INVALID, UNSUPPORTED
+            VALID, NOT_RANDOM, INVALID, UNSUPPORTED, IGNORE
         }
 
         companion object {
@@ -359,9 +362,8 @@ class ComparisonTest {
                 arrayOf(typeOf<LocalDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<OffsetDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
-                // flextrade works on CI but not locally
-                // arrayOf(typeOf<Duration>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
-                // arrayOf(typeOf<Period>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Duration>(), VALID, IGNORE, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Period>(), VALID, IGNORE, UNSUPPORTED, VALID),
 
                 arrayOf(typeOf<org.threeten.bp.Instant>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<org.threeten.bp.ZonedDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
@@ -370,15 +372,15 @@ class ComparisonTest {
                 arrayOf(typeOf<org.threeten.bp.LocalDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
                 arrayOf(typeOf<org.threeten.bp.OffsetDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<org.threeten.bp.OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
-                arrayOf(typeOf<org.threeten.bp.Duration>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
-                arrayOf(typeOf<org.threeten.bp.Period>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.Duration>(), VALID, IGNORE, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.Period>(), VALID, IGNORE, UNSUPPORTED, VALID),
 
                 arrayOf(typeOf<org.joda.time.Instant>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<org.joda.time.LocalDate>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
                 arrayOf(typeOf<org.joda.time.LocalTime>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<org.joda.time.LocalDateTime>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<org.joda.time.DateTime>(), VALID, VALID, VALID, VALID),
-                arrayOf(typeOf<org.joda.time.Duration>(), VALID, VALID, NOT_RANDOM, VALID),
+                arrayOf(typeOf<org.joda.time.Duration>(), VALID, VALID, IGNORE, VALID),
                 arrayOf(typeOf<org.joda.time.Period>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
 
                 // Tuples
