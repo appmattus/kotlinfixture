@@ -348,6 +348,9 @@ class ComparisonTest {
                 // Date
                 arrayOf(typeOf<Date>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<java.sql.Date>(), VALID, UNSUPPORTED, VALID, VALID),
+                arrayOf(typeOf<java.sql.Time>(), VALID, UNSUPPORTED, VALID, VALID),
+                arrayOf(typeOf<java.sql.Timestamp>(), VALID, VALID, VALID, VALID),
 
                 arrayOf(typeOf<Instant>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<ZonedDateTime>(), VALID, VALID, UNSUPPORTED, VALID),

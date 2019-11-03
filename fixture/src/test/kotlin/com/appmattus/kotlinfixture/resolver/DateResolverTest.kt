@@ -20,42 +20,70 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import org.junit.experimental.runners.Enclosed
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import java.util.Date
+import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
+@RunWith(Enclosed::class)
 class DateResolverTest {
 
-    private val context = TestContext(Configuration(), DateResolver())
+    class Single {
 
-    @Test
-    fun `Unknown class returns Unresolved`() {
-        val result = context.resolve(Number::class)
+        private val context = TestContext(Configuration(), DateResolver())
 
-        assertEquals(Unresolved, result)
-    }
+        @Test
+        fun `Unknown class returns Unresolved`() {
+            val result = context.resolve(Number::class)
 
-    @Test
-    fun `Date class returns date`() {
-        val result = context.resolve(Date::class)
-
-        assertNotNull(result)
-        assertEquals(Date::class, result::class)
-    }
-
-    @Test
-    fun `Random values returned`() {
-        assertIsRandom {
-            context.resolve(Date::class)
+            assertEquals(Unresolved, result)
         }
     }
 
-    @Test
-    fun `Uses seeded random`() {
-        val value1 = context.seedRandom().resolve(Date::class) as Date
-        val value2 = context.seedRandom().resolve(Date::class) as Date
+    @RunWith(Parameterized::class)
+    class Parameterised {
 
-        assertEquals(value1.time, value2.time)
+        @Parameterized.Parameter(0)
+        lateinit var type: KClass<*>
+
+        private val context = TestContext(Configuration(), DateResolver())
+
+        @Test
+        fun `Class returns date`() {
+            val result = context.resolve(type)
+
+            assertNotNull(result)
+            assertEquals(type, result::class)
+        }
+
+        @Test
+        fun `Random values returned`() {
+            assertIsRandom {
+                context.resolve(type)
+            }
+        }
+
+        @Test
+        fun `Uses seeded random`() {
+            val value1 = context.seedRandom().resolve(type) as Date
+            val value2 = context.seedRandom().resolve(type) as Date
+
+            assertEquals(value1.time, value2.time)
+        }
+
+        companion object {
+            @JvmStatic
+            @Parameterized.Parameters(name = "{0}")
+            fun data() = arrayOf(
+                arrayOf(Date::class),
+                arrayOf(java.sql.Date::class),
+                arrayOf(java.sql.Time::class),
+                arrayOf(java.sql.Timestamp::class)
+            )
+        }
     }
 }
