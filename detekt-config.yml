@@ -1,2 +1,6 @@
 build:
   maxIssues: 0
+
+style:
+  MagicNumber:
+    excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt,**/*.gradle.kts"

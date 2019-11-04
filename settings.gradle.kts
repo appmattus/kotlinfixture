@@ -16,5 +16,6 @@
 
 include(
     "fixture",
-    "fixture-kotlintest"
+    "fixture-kotlintest",
+    "fixture-android-tests"
 )

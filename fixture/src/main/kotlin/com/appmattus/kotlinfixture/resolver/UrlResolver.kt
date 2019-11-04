@@ -23,5 +23,16 @@ import java.net.URL
 internal class UrlResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == URL::class) URL("http://localhost") else Unresolved
+        if (obj == URL::class) URL(values.random(context.random)) else Unresolved
+
+    companion object {
+        private val values = listOf(
+            "https://home.java.net",
+            "http://www.oracle.com",
+            "http://www.google.com",
+            "https://www.github.com",
+            "http://www.yahoo.com",
+            "http://www.wikipedia.org"
+        )
+    }
 }

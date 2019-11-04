@@ -23,12 +23,6 @@ plugins {
 apply(from = "$rootDir/bintray.gradle.kts")
 apply(from = "$rootDir/codecoverage.gradle.kts")
 
-repositories {
-    mavenCentral()
-    jcenter()
-    maven { setUrl("https://jitpack.io") }
-}
-
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.github.classgraph:classgraph:4.8.52")
@@ -39,6 +33,8 @@ dependencies {
 
     compileOnly("org.threeten:threetenbp:1.4.0")
     testImplementation("org.threeten:threetenbp:1.4.0")
+
+    compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
 
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))

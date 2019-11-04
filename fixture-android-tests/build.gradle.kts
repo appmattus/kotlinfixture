@@ -17,16 +17,37 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm")
+    id("com.android.library")
+    kotlin("android")
 }
 
-apply(from = "$rootDir/bintray.gradle.kts")
-apply(from = "$rootDir/codecoverage.gradle.kts")
+// apply(from = "$rootDir/codecoverage.gradle.kts")
+
+android {
+    compileSdkVersion(29)
+
+    defaultConfig {
+        minSdkVersion(19)
+        targetSdkVersion(29)
+        versionCode = 1
+        versionName = "1.0"
+    }
+
+    testOptions {
+        unitTests.apply {
+            isIncludeAndroidResources = true
+        }
+    }
+}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+
+    testImplementation("androidx.test:core:1.2.0")
+    testImplementation("androidx.test:runner:1.2.0")
+    testImplementation("androidx.test.ext:junit:1.1.1")
+    testImplementation("org.robolectric:robolectric:4.3.1")
 
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))
@@ -38,15 +59,6 @@ dependencies {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-}
-
-// Fix lack of source code when publishing pure Kotlin projects
-// See https://github.com/novoda/bintray-release/issues/262
-tasks.whenTaskAdded {
-    if (name == "generateSourcesJarForMavenPublication") {
-        this as Jar
-        from(sourceSets.main.get().allSource)
-    }
 }
 
 tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("detekt"))
