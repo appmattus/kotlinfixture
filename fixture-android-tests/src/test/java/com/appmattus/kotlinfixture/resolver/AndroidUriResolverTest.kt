@@ -16,45 +16,55 @@
 
 package com.appmattus.kotlinfixture.resolver
 
-import com.appmattus.kotlinfixture.TestContext
-import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.assertIsRandom
-import com.appmattus.kotlinfixture.config.Configuration
-import java.net.URI
+import android.net.Uri
+import com.appmattus.kotlinfixture.kotlinFixture
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
+import kotlin.test.fail
 
-class UriResolverTest {
-    private val context = TestContext(Configuration(), UriResolver())
-
-    @Test
-    fun `Unknown class returns Unresolved`() {
-        val result = context.resolve(Number::class)
-
-        assertEquals(Unresolved, result)
-    }
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE, sdk = [28])
+class AndroidUriResolverTest {
+    private val fixture = kotlinFixture()
 
     @Test
-    fun `URI class returns uri`() {
-        val result = context.resolve(URI::class)
+    fun `Uri class returns uri`() {
+        val result = fixture<Uri>()
 
         assertNotNull(result)
-        assertEquals(URI::class, result::class)
+        assertTrue {
+            Uri::class.isInstance(result)
+        }
     }
 
     @Test
     fun `Random values returned`() {
         assertIsRandom {
-            context.resolve(URI::class)
+            fixture<Uri>()
         }
     }
 
     @Test
     fun `Uses seeded random`() {
-        val value1 = context.seedRandom().resolve(URI::class)
-        val value2 = context.seedRandom().resolve(URI::class)
+        val value1 = fixture<Uri> { random = Random(0) }
+        val value2 = fixture<Uri> { random = Random(0) }
 
         assertEquals(value1.toString(), value2.toString())
+    }
+
+    private fun assertIsRandom(block: () -> Any?) {
+        val initial = block()
+
+        repeat(1000) {
+            if (initial != block()) return
+        }
+
+        fail("Value always equal to $initial")
     }
 }

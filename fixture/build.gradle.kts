@@ -18,16 +18,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
+    id("com.android.lint")
 }
 
 apply(from = "$rootDir/bintray.gradle.kts")
 apply(from = "$rootDir/codecoverage.gradle.kts")
-
-repositories {
-    mavenCentral()
-    jcenter()
-    maven { setUrl("https://jitpack.io") }
-}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
@@ -40,15 +35,23 @@ dependencies {
     compileOnly("org.threeten:threetenbp:1.4.0")
     testImplementation("org.threeten:threetenbp:1.4.0")
 
+    compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
+
     testImplementation("junit:junit:4.12")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     // Used for ComparisonTest
+    @Suppress("GradleDependency")
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
     testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
     testImplementation("org.jeasy:easy-random-core:4.0.0")
+}
+
+lintOptions {
+    isAbortOnError = true
+    isWarningsAsErrors = true
 }
 
 tasks.withType<KotlinCompile> {

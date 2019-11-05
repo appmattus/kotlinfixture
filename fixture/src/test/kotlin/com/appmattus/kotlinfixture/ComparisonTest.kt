@@ -29,6 +29,8 @@ import org.junit.Assume.assumeTrue
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import java.net.URI
+import java.net.URL
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -462,6 +464,10 @@ class ComparisonTest {
                 arrayOf(typeOf<TreeMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
                 arrayOf(typeOf<ConcurrentHashMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
                 arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+
+                // Uris class
+                arrayOf(typeOf<URI>(), VALID, NOT_RANDOM, VALID, VALID),
+                arrayOf(typeOf<URL>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
 
                 // Format class
                 arrayOf(typeOf<DateFormat>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),

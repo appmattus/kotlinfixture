@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
+import com.appmattus.kotlinfixture.resolver.AndroidUriResolver
 import com.appmattus.kotlinfixture.resolver.ArrayResolver
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
 import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
@@ -90,6 +91,7 @@ data class Configuration(
             PrimitiveResolver(),
             UrlResolver(),
             UriResolver(),
+            AndroidUriResolver(),
             BigDecimalResolver(),
             BigIntegerResolver(),
             UuidResolver(),

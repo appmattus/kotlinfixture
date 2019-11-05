@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import java.net.URL
 import kotlin.test.Test
@@ -40,5 +41,20 @@ class UrlResolverTest {
 
         assertNotNull(result)
         assertEquals(URL::class, result::class)
+    }
+
+    @Test
+    fun `Random values returned`() {
+        assertIsRandom {
+            context.resolve(URL::class)
+        }
+    }
+
+    @Test
+    fun `Uses seeded random`() {
+        val value1 = context.seedRandom().resolve(URL::class)
+        val value2 = context.seedRandom().resolve(URL::class)
+
+        assertEquals(value1.toString(), value2.toString())
     }
 }

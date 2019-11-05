@@ -19,10 +19,19 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.net.URI
-import java.net.URL
 
 internal class UriResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == URI::class) (context.resolve(URL::class) as URL).toURI() else Unresolved
+        if (obj == URI::class) URI(values.random(context.random)) else Unresolved
+
+    companion object {
+        private val values = listOf(
+            "ftp://ftp.is.co.za/rfc/rfc1808.txt",
+            "http://www.ietf.org/rfc/rfc2396.txt",
+            "telnet://192.0.2.16:80/",
+            "mailto:John.Doe@example.com",
+            "http://www.wikipedia.org"
+        )
+    }
 }

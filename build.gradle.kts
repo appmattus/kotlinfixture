@@ -23,12 +23,24 @@ plugins {
     id("com.appmattus.markdown") version "0.5.0"
 }
 
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:3.5.1")
+    }
+}
+
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
 
 allprojects {
     repositories {
-        jcenter()
+        google()
         mavenCentral()
+        jcenter()
+        maven { setUrl("https://jitpack.io") }
     }
 }
 
