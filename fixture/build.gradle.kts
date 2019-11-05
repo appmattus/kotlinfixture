@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
+    id("com.android.lint")
 }
 
 apply(from = "$rootDir/bintray.gradle.kts")
@@ -42,9 +43,15 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     // Used for ComparisonTest
+    @Suppress("GradleDependency")
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
     testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
     testImplementation("org.jeasy:easy-random-core:4.0.0")
+}
+
+lintOptions {
+    isAbortOnError = true
+    isWarningsAsErrors = true
 }
 
 tasks.withType<KotlinCompile> {

@@ -18,6 +18,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
+    id("com.android.lint")
 }
 
 apply(from = "$rootDir/bintray.gradle.kts")
@@ -34,6 +35,11 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     testImplementation(kotlin("reflect"))
+}
+
+lintOptions {
+    isAbortOnError = true
+    isWarningsAsErrors = true
 }
 
 tasks.withType<KotlinCompile> {

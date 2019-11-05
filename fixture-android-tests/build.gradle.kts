@@ -38,6 +38,11 @@ android {
             isIncludeAndroidResources = true
         }
     }
+
+    lintOptions {
+        isAbortOnError = true
+        isWarningsAsErrors = true
+    }
 }
 
 dependencies {
