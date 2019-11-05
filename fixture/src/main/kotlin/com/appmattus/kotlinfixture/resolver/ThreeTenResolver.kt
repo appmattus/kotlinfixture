@@ -25,10 +25,15 @@ import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
+import org.threeten.bp.Month
+import org.threeten.bp.MonthDay
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
 import org.threeten.bp.Period
+import org.threeten.bp.Year
+import org.threeten.bp.YearMonth
 import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import java.util.Date
@@ -48,6 +53,12 @@ internal class ThreeTenResolver : Resolver {
                 OffsetTime::class -> context.generateZonedDateTime().toOffsetDateTime().toOffsetTime()
                 Period::class -> context.generatePeriod()
                 Duration::class -> context.generateDuration()
+                ZoneId::class -> context.randomZoneId()
+                ZoneOffset::class -> context.generateZoneOffset()
+                Year::class -> context.generateYear()
+                Month::class -> context.generateMonth()
+                YearMonth::class -> context.generateYearMonth()
+                MonthDay::class -> context.generateMonthDay()
                 else -> Unresolved
             }
         } else {
@@ -55,11 +66,23 @@ internal class ThreeTenResolver : Resolver {
         }
     }
 
+    private fun Context.generateYear(): Year = Year.of(random.nextInt(Year.MIN_VALUE, Year.MAX_VALUE))
+
+    private fun Context.generateMonth(): Month = Month.values().random(random)
+
+    private fun Context.generateYearMonth(): YearMonth = YearMonth.of(generateYear().value, generateMonth())
+
+    private fun Context.generateMonthDay(): MonthDay =
+        generateMonth().let { MonthDay.of(it, random.nextInt(1, it.maxLength())) }
+
     private fun Context.generateInstant(): Instant = DateTimeUtils.toInstant(resolve(typeOf<Date>()) as Date)
 
     private fun Context.generateZonedDateTime(): ZonedDateTime = generateInstant().atZone(randomZoneId())
 
     private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
+
+    private fun Context.generateZoneOffset(): ZoneOffset =
+        ZoneOffset.ofTotalSeconds(random.nextInt(ZoneOffset.MIN.totalSeconds, ZoneOffset.MAX.totalSeconds))
 
     @Suppress("MagicNumber")
     private fun Context.generatePeriod(): Period = Period.of(

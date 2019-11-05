@@ -40,9 +40,15 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.Month
+import java.time.MonthDay
 import java.time.OffsetDateTime
 import java.time.OffsetTime
 import java.time.Period
+import java.time.Year
+import java.time.YearMonth
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.AbstractCollection
 import java.util.AbstractList
@@ -54,6 +60,7 @@ import java.util.Calendar
 import java.util.Currency
 import java.util.Date
 import java.util.Deque
+import java.util.GregorianCalendar
 import java.util.IdentityHashMap
 import java.util.LinkedList
 import java.util.Locale
@@ -64,6 +71,7 @@ import java.util.Queue
 import java.util.SortedMap
 import java.util.SortedSet
 import java.util.Stack
+import java.util.TimeZone
 import java.util.TreeMap
 import java.util.TreeSet
 import java.util.UUID
@@ -353,6 +361,7 @@ class ComparisonTest {
                 // Date
                 arrayOf(typeOf<Date>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<GregorianCalendar>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<java.sql.Date>(), VALID, UNSUPPORTED, VALID, VALID),
                 arrayOf(typeOf<java.sql.Time>(), VALID, UNSUPPORTED, VALID, VALID),
                 arrayOf(typeOf<java.sql.Timestamp>(), VALID, VALID, VALID, VALID),
@@ -366,6 +375,13 @@ class ComparisonTest {
                 arrayOf(typeOf<OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<Duration>(), VALID, IGNORE, UNSUPPORTED, VALID),
                 arrayOf(typeOf<Period>(), VALID, IGNORE, UNSUPPORTED, VALID),
+                arrayOf(typeOf<ZoneId>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<ZoneOffset>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<TimeZone>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Year>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Month>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<YearMonth>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<MonthDay>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
 
                 arrayOf(typeOf<org.threeten.bp.Instant>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<org.threeten.bp.ZonedDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
@@ -376,6 +392,12 @@ class ComparisonTest {
                 arrayOf(typeOf<org.threeten.bp.OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<org.threeten.bp.Duration>(), VALID, IGNORE, UNSUPPORTED, VALID),
                 arrayOf(typeOf<org.threeten.bp.Period>(), VALID, IGNORE, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.ZoneId>(), VALID, NOT_RANDOM, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.threeten.bp.ZoneOffset>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.Year>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.Month>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.YearMonth>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
+                arrayOf(typeOf<org.threeten.bp.MonthDay>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
 
                 arrayOf(typeOf<org.joda.time.Instant>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<org.joda.time.LocalDate>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
