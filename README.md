@@ -68,7 +68,7 @@ different lengths each execution:
 
 ```kotlin
 repeatCount {
-    Random.nextInt(1, 5)
+    random.nextInt(1, 5)
 }
 ```
 
@@ -116,7 +116,7 @@ execution:
 
 ```kotlin
 factory<Number> {
-    Random.nextInt(10, 50)
+    random.nextInt(10, 50)
 }
 ```
 
