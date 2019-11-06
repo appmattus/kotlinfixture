@@ -18,6 +18,8 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
@@ -34,14 +36,16 @@ internal class DateResolver : Resolver {
     }
 
     private fun Context.generateJavaUtilDate(): Date {
-        val timeNow = Date().time
-
         return Date(
             @Suppress("MagicNumber")
             random.nextLong(
-                timeNow - TimeUnit.DAYS.toMillis(365),
-                timeNow + TimeUnit.DAYS.toMillis(365)
+                referenceTime - TimeUnit.DAYS.toMillis(365 * 10),
+                referenceTime + TimeUnit.DAYS.toMillis(365 * 10)
             )
         )
+    }
+
+    companion object {
+        private val referenceTime = ZonedDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()).toEpochSecond()
     }
 }

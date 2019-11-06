@@ -122,8 +122,8 @@ factory<Number> {
 
 ##### Date and Calendar instances
 
-By default `Date` and `Calendar` instances pick a date within one year either
-side of now.
+By default `Date` and `Calendar` instances pick a date within 10 years of
+1 Jan 2020.
 
 This can be overridden using `factory` which has some built in constructs:
 

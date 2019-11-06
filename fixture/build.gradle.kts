@@ -52,6 +52,13 @@ dependencies {
 lintOptions {
     isAbortOnError = true
     isWarningsAsErrors = true
+    htmlOutput = file("${buildDir}/reports/lint-results.html")
+    xmlOutput = file("${buildDir}/reports/lint-results.xml")
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<KotlinCompile> {
