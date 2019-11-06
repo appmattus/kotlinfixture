@@ -94,6 +94,12 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.LinkedTransferQueue
 import java.util.concurrent.PriorityBlockingQueue
 import java.util.concurrent.TransferQueue
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicIntegerArray
+import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.AtomicLongArray
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.test.Test
@@ -361,7 +367,7 @@ class ComparisonTest {
                 // Date
                 arrayOf(typeOf<Date>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<Calendar>(), VALID, VALID, UNSUPPORTED, VALID),
-                arrayOf(typeOf<GregorianCalendar>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<GregorianCalendar>(), VALID, UNSUPPORTED, VALID, VALID),
                 arrayOf(typeOf<java.sql.Date>(), VALID, UNSUPPORTED, VALID, VALID),
                 arrayOf(typeOf<java.sql.Time>(), VALID, UNSUPPORTED, VALID, VALID),
                 arrayOf(typeOf<java.sql.Timestamp>(), VALID, VALID, VALID, VALID),
@@ -500,6 +506,14 @@ class ComparisonTest {
                 arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
                 arrayOf(typeOf<Locale>(), VALID, UNSUPPORTED, VALID, VALID),
 
+                // Atomic class
+                arrayOf(typeOf<AtomicBoolean>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicInteger>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicLong>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicIntegerArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicLongArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicReference<String>>(), VALID, UNSUPPORTED, VALID, VALID),
+
                 // Enum
                 arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED, VALID),
 
@@ -521,11 +535,16 @@ class ComparisonTest {
 
 object TestObject
 
+@Suppress("CanSealedSubClassBeObject")
 sealed class TestSealedClass {
+    @Suppress("unused", "CanSealedSubClassBeObject")
     class A : TestSealedClass()
+
+    @Suppress("unused")
     class B : TestSealedClass()
 }
 
+@Suppress("unused")
 enum class TestEnumClass {
     A, B
 }

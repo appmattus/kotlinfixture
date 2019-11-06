@@ -39,6 +39,7 @@ import java.time.temporal.ChronoUnit
 import java.util.Date
 import java.util.TimeZone
 
+@Suppress("TooManyFunctions")
 @SuppressLint("NewApi")
 internal class TimeResolver : Resolver {
 

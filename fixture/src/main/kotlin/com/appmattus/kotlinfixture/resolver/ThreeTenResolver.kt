@@ -38,6 +38,7 @@ import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import java.util.Date
 
+@Suppress("TooManyFunctions")
 internal class ThreeTenResolver : Resolver {
 
     @Suppress("ComplexMethod")

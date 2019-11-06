@@ -22,6 +22,7 @@ import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
 import com.appmattus.kotlinfixture.resolver.AndroidUriResolver
 import com.appmattus.kotlinfixture.resolver.ArrayResolver
+import com.appmattus.kotlinfixture.resolver.AtomicKTypeResolver
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
 import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
 import com.appmattus.kotlinfixture.resolver.CalendarResolver
@@ -109,10 +110,10 @@ data class Configuration(
             ObjectResolver(),
             SealedClassResolver(),
 
+            AtomicKTypeResolver(),
             TupleKTypeResolver(),
 
             ArrayResolver(),
-
             PrimitiveArrayResolver(),
             HashtableKTypeResolver(),
             IterableKTypeResolver(),
