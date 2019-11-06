@@ -30,7 +30,7 @@ internal class ClassResolver : Resolver, PopulateInstance {
                 context = context,
                 obj = obj,
                 constructorParameterNames = obj.constructorParameterNames(),
-                overrides = context.configuration.properties.getOrDefault(obj, emptyMap())
+                overrides = context.configuration.properties.getOrElse(obj) { emptyMap() }
             )
 
             obj.constructors.shuffled().forEach { constructor ->

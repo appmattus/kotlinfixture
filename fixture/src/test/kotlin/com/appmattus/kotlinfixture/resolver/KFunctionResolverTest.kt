@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import kotlin.reflect.full.functions
 import kotlin.reflect.full.primaryConstructor
 import kotlin.test.Test
@@ -86,7 +87,9 @@ class KFunctionResolverTest {
     @Test
     fun `Constructor creates instance with provided parameter`() {
         val context = context.copy(
-            configuration = Configuration(properties = mapOf(SimpleClass::class to mapOf("value" to { "custom" })))
+            configuration = ConfigurationBuilder().apply {
+                property(SimpleClass::value) { "custom" }
+            }.build()
         )
 
         val constructor = SimpleClass::class.primaryConstructor!!
@@ -160,7 +163,10 @@ class KFunctionResolverTest {
     class FactoryClass private constructor(val value: String) {
 
         companion object {
+            @Suppress("unused")
             fun noParams() = FactoryClass("default")
+
+            @Suppress("unused")
             fun oneParam(value: String) = FactoryClass(value)
         }
     }

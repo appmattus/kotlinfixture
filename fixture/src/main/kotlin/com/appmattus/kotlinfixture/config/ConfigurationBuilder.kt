@@ -36,18 +36,18 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     var random: Random = configuration.random
 
     private var repeatCount: () -> Int = configuration.repeatCount
-    private val properties: MutableMap<KClass<*>, MutableMap<String, () -> Any?>> =
+    private val properties: MutableMap<KClass<*>, MutableMap<String, GeneratorFun>> =
         configuration.properties.mapValues { it.value.toMutableMap() }.toMutableMap()
-    private val factories: MutableMap<KType, Generator<Any?>.() -> Any?> = configuration.factories.toMutableMap()
+    private val factories: MutableMap<KType, GeneratorFun> = configuration.factories.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
 
     @Suppress("UNCHECKED_CAST")
     inline fun <reified T> factory(noinline generator: Generator<T>.() -> T) =
-        factory(typeOf<T>(), generator as Generator<Any?>.() -> Any?)
+        factory(typeOf<T>(), generator as GeneratorFun)
 
-    fun factory(type: KType, generator: Generator<Any?>.() -> Any?) {
+    fun factory(type: KType, generator: GeneratorFun) {
         factories[type] = generator
     }
 
@@ -57,10 +57,11 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         subTypes[superType] = subType
     }
 
-    inline fun <reified T> property(propertyName: String, noinline generator: () -> Any?) =
-        property(T::class, propertyName, generator)
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T, G> property(propertyName: String, noinline generator: Generator<G>.() -> G) =
+        property(T::class, propertyName, generator as GeneratorFun)
 
-    inline fun <reified T, U> property(property: KProperty1<T, U>, noinline generator: () -> U) {
+    inline fun <reified T, G> property(property: KProperty1<T, G>, noinline generator: Generator<G>.() -> G) {
         // Only allow read only properties in constructor(s)
         if (property !is KMutableProperty1) {
             val constructorParams = T::class.constructors.flatMap {
@@ -72,13 +73,18 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
             }
         }
 
-        return property(T::class, property.name, generator)
+        @Suppress("UNCHECKED_CAST")
+        return property(T::class, property.name, generator as GeneratorFun)
     }
 
-    inline fun <reified U> property(function: KFunction<Unit>, noinline generator: () -> U) =
-        property(function.parameters[0].type.classifier as KClass<*>, function.name, generator)
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified G> property(function: KFunction<Unit>, noinline generator: Generator<G>.() -> G) = property(
+        function.parameters[0].type.classifier as KClass<*>,
+        function.name,
+        generator as GeneratorFun
+    )
 
-    fun property(clazz: KClass<*>, propertyName: String, generator: () -> Any?) {
+    fun property(clazz: KClass<*>, propertyName: String, generator: GeneratorFun) {
         val classProperties = properties.getOrElse(clazz) { mutableMapOf() }
         classProperties[propertyName] = generator
 

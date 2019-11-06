@@ -52,35 +52,59 @@ class ConfigurationBuilderTest {
 
     @Test
     fun `can override properties using propertyOf(String)`() {
+        val original: Generator<Properties>.() -> Properties = { Properties("2") }
+
+        @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
-            Configuration(properties = mapOf(Properties::class to mapOf("property" to { 2 })))
+            Configuration(properties = mapOf(Properties::class to mapOf("property" to original as GeneratorFun)))
         ).apply {
-            property<Properties>("property") { 1 }
+            property<Properties, Int>("property") { 1 }
         }.build()
 
-        assertEquals(1, (configuration.properties[Properties::class]?.get("property"))?.invoke())
+        with(TestGenerator) {
+            assertEquals(
+                1,
+                (configuration.properties.getValue(Properties::class).getValue("property"))()
+            )
+        }
     }
 
     @Test
     fun `can override properties using propertyOf(KClass, String)`() {
+        val original: Generator<Properties>.() -> Properties = { Properties("2") }
+
+        @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
-            Configuration(properties = mapOf(Properties::class to mapOf("property" to { 2 })))
+            Configuration(properties = mapOf(Properties::class to mapOf("property" to original as GeneratorFun)))
         ).apply {
             property(Properties::class, "property") { 1 }
         }.build()
 
-        assertEquals(1, (configuration.properties[Properties::class]?.get("property"))?.invoke())
+        with(TestGenerator) {
+            assertEquals(
+                1,
+                (configuration.properties.getValue(Properties::class).getValue("property"))()
+            )
+        }
     }
 
     @Test
     fun `can override properties using property(KProperty)`() {
+        val original: Generator<Properties>.() -> Properties = { Properties("2") }
+
+        @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
-            Configuration(properties = mapOf(Properties::class to mapOf("property" to { 2 })))
+            Configuration(properties = mapOf(Properties::class to mapOf("property" to original as GeneratorFun)))
         ).apply {
-            property(Properties::property) { 1 }
+            property(Properties::property) { "1" }
         }.build()
 
-        assertEquals(1, configuration.properties[Properties::class]?.get("property")?.invoke())
+        with(TestGenerator) {
+            assertEquals(
+                "1",
+                (configuration.properties.getValue(Properties::class).getValue("property"))()
+            )
+        }
     }
 
     @Test
@@ -101,7 +125,7 @@ class ConfigurationBuilderTest {
         @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
             Configuration(
-                factories = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
+                factories = mapOf(Properties::class.starProjectedType to original as GeneratorFun)
             )
         ).apply {
             factory<Properties> { Properties("1") }
@@ -122,7 +146,7 @@ class ConfigurationBuilderTest {
         @Suppress("UNCHECKED_CAST")
         val configuration = ConfigurationBuilder(
             Configuration(
-                factories = mapOf(Properties::class.starProjectedType to original as Generator<Any?>.() -> Any?)
+                factories = mapOf(Properties::class.starProjectedType to original as GeneratorFun)
             )
         ).apply {
             factory(Properties::class.starProjectedType) { Properties("1") }

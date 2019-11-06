@@ -16,10 +16,10 @@
 
 package com.appmattus.kotlinfixture.config
 
+import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Fixture
-import kotlin.random.Random
 
-object TestGenerator : Generator<Any?> {
-    override val random = Random
-    override val fixture = Fixture(Configuration())
+internal class DefaultGenerator(context: Context) : Generator<Any?> {
+    override val random = context.random
+    override val fixture = Fixture(context.configuration)
 }

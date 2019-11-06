@@ -18,6 +18,8 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.config.GeneratorFun
+import com.appmattus.kotlinfixture.config.DefaultGenerator
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KMutableProperty
@@ -32,7 +34,7 @@ internal interface PopulateInstance {
         val context: Context,
         val obj: KClass<*>,
         val constructorParameterNames: Set<String?>,
-        val overrides: Map<String, () -> Any?>
+        val overrides: Map<String, GeneratorFun>
     )
 
     fun populatePropertiesAndSetters(
@@ -59,7 +61,7 @@ internal interface PopulateInstance {
             callContext.constructorParameterNames.contains(name)
         }.forEach {
             val propertyResult = if (it.name in callContext.overrides) {
-                callContext.overrides[it.name]?.invoke()
+                callContext.overrides[it.name]?.invoke(DefaultGenerator(callContext.context))
             } else {
                 callContext.context.resolve(it.valueParameters[0].type)
             }
@@ -82,7 +84,7 @@ internal interface PopulateInstance {
             .filterNot { callContext.constructorParameterNames.contains(it.name) }
             .forEach { property ->
                 val propertyResult = if (property.name in callContext.overrides) {
-                    callContext.overrides[property.name]?.invoke()
+                    callContext.overrides[property.name]?.invoke(DefaultGenerator(callContext.context))
                 } else {
                     callContext.context.resolve(property.returnType)
                 }
