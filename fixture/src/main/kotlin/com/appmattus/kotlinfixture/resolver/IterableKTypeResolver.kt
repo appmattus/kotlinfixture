@@ -16,7 +16,6 @@
 
 package com.appmattus.kotlinfixture.resolver
 
-import android.annotation.SuppressLint
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.util.AbstractQueue
@@ -78,9 +77,8 @@ internal class IterableKTypeResolver : Resolver {
         return Unresolved
     }
 
-    @SuppressLint("NewApi")
     @Suppress("ComplexMethod")
-    private fun createCollection(obj: KType) = when (obj.classifier as KClass<*>) {
+    private fun createCollection(obj: KType): MutableCollection<Any?>? = when (obj.classifier as KClass<*>) {
 
         Iterable::class,
         Collection::class,
@@ -129,9 +127,6 @@ internal class IterableKTypeResolver : Resolver {
         LinkedBlockingQueue::class -> LinkedBlockingQueue()
         PriorityBlockingQueue::class -> PriorityBlockingQueue()
 
-        else -> {
-            @Suppress("USELESS_CAST")
-            null as MutableCollection<Any?>?
-        }
+        else -> null
     }
 }

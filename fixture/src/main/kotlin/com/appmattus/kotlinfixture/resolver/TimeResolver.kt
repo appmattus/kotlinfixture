@@ -16,7 +16,6 @@
 
 package com.appmattus.kotlinfixture.resolver
 
-import android.annotation.SuppressLint
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.typeOf
@@ -40,7 +39,6 @@ import java.util.Date
 import java.util.TimeZone
 
 @Suppress("TooManyFunctions")
-@SuppressLint("NewApi")
 internal class TimeResolver : Resolver {
 
     @Suppress("ComplexMethod")
