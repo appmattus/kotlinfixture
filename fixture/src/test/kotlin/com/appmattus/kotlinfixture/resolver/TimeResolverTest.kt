@@ -30,11 +30,18 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.Month
+import java.time.MonthDay
 import java.time.OffsetDateTime
 import java.time.OffsetTime
 import java.time.Period
+import java.time.Year
+import java.time.YearMonth
+import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.Date
+import java.util.TimeZone
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -112,7 +119,15 @@ class TimeResolverTest {
                 arrayOf(OffsetTime::class),
                 arrayOf(Instant::class),
                 arrayOf(Period::class),
-                arrayOf(Duration::class)
+                arrayOf(Duration::class),
+                arrayOf(TimeZone::class),
+                arrayOf(ZoneId::class),
+                arrayOf(ZoneOffset::class),
+                arrayOf(Year::class),
+                arrayOf(Month::class),
+                arrayOf(YearMonth::class),
+                arrayOf(MonthDay::class)
+
             )
         }
     }

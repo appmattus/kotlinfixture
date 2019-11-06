@@ -17,23 +17,12 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
-import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.typeOf
-import java.util.Calendar
-import java.util.Date
-import java.util.GregorianCalendar
+import kotlin.reflect.KType
 
-internal class CalendarResolver : Resolver {
-
-    override fun resolve(context: Context, obj: Any): Any? {
-        return when (obj) {
-            Calendar::class,
-            GregorianCalendar::class -> {
-                GregorianCalendar().apply {
-                    time = context.resolve(typeOf<Date>()) as Date
-                }
-            }
-            else -> Unresolved
-        }
+internal fun Context.wrapNullability(type: KType, block: Context.() -> Any?): Any? {
+    return if (type.isMarkedNullable && random.nextBoolean()) {
+        null
+    } else {
+        block()
     }
 }

@@ -23,6 +23,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.config.before
 import java.util.Calendar
 import java.util.Date
+import java.util.GregorianCalendar
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -65,9 +66,26 @@ class CalendarResolverTest {
     }
 
     @Test
-    fun `Random values returned`() {
+    fun `Random values returned for Calendar`() {
         assertIsRandom {
             context.resolve(Calendar::class)
+        }
+    }
+
+    @Test
+    fun `GregorianCalendar class returns date`() {
+        val result = context.resolve(GregorianCalendar::class)
+
+        assertNotNull(result)
+        assertTrue {
+            result is GregorianCalendar
+        }
+    }
+
+    @Test
+    fun `Random values returned for GregorianCalendar`() {
+        assertIsRandom {
+            context.resolve(GregorianCalendar::class)
         }
     }
 }

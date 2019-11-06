@@ -36,43 +36,33 @@ internal class TupleKTypeResolver : Resolver {
         return Unresolved
     }
 
-    @Suppress("ReturnCount")
-    private fun generatePair(context: Context, obj: KType): Any? {
-        if (obj.isMarkedNullable && context.random.nextBoolean()) {
-            return null
-        }
-
+    private fun generatePair(context: Context, obj: KType): Any? = context.wrapNullability(obj) {
         val keyType = obj.arguments[0].type!!
         val valueType = obj.arguments[1].type!!
 
-        val key = context.resolve(keyType)
-        val value = context.resolve(valueType)
+        val key = resolve(keyType)
+        val value = resolve(valueType)
 
         if (key == Unresolved || value == Unresolved) {
-            return Unresolved
+            Unresolved
+        } else {
+            key to value
         }
-
-        return key to value
     }
 
-    @Suppress("ReturnCount")
-    private fun generateTriple(context: Context, obj: KType): Any? {
-        if (obj.isMarkedNullable && context.random.nextBoolean()) {
-            return null
-        }
-
+    private fun generateTriple(context: Context, obj: KType): Any? = context.wrapNullability(obj) {
         val firstType = obj.arguments[0].type!!
         val secondType = obj.arguments[1].type!!
         val thirdType = obj.arguments[2].type!!
 
-        val first = context.resolve(firstType)
-        val second = context.resolve(secondType)
-        val third = context.resolve(thirdType)
+        val first = resolve(firstType)
+        val second = resolve(secondType)
+        val third = resolve(thirdType)
 
         if (first == Unresolved || second == Unresolved || third == Unresolved) {
-            return Unresolved
+            Unresolved
+        } else {
+            Triple(first, second, third)
         }
-
-        return Triple(first, second, third)
     }
 }

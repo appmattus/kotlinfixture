@@ -31,9 +31,15 @@ import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
+import org.threeten.bp.Month
+import org.threeten.bp.MonthDay
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.OffsetTime
 import org.threeten.bp.Period
+import org.threeten.bp.Year
+import org.threeten.bp.YearMonth
+import org.threeten.bp.ZoneId
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import java.util.Date
 import kotlin.reflect.KClass
@@ -113,7 +119,13 @@ class ThreeTenResolverTest {
                 arrayOf(OffsetTime::class),
                 arrayOf(Instant::class),
                 arrayOf(Period::class),
-                arrayOf(Duration::class)
+                arrayOf(Duration::class),
+                arrayOf(ZoneId::class),
+                arrayOf(ZoneOffset::class),
+                arrayOf(Year::class),
+                arrayOf(Month::class),
+                arrayOf(YearMonth::class),
+                arrayOf(MonthDay::class)
             )
         }
     }
