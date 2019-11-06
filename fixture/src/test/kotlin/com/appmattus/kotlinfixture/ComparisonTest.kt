@@ -510,8 +510,8 @@ class ComparisonTest {
                 arrayOf(typeOf<AtomicBoolean>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<AtomicInteger>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<AtomicLong>(), VALID, VALID, VALID, VALID),
-                arrayOf(typeOf<AtomicIntegerArray>(), VALID, VALID, VALID, VALID),
-                arrayOf(typeOf<AtomicLongArray>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicIntegerArray>(), VALID, VALID, IGNORE, VALID),
+                arrayOf(typeOf<AtomicLongArray>(), VALID, VALID, IGNORE, VALID),
                 arrayOf(typeOf<AtomicReference<String>>(), VALID, UNSUPPORTED, VALID, VALID),
 
                 // Enum
