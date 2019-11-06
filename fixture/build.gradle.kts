@@ -52,8 +52,8 @@ dependencies {
 lintOptions {
     isAbortOnError = true
     isWarningsAsErrors = true
-    htmlOutput = file("${buildDir}/reports/lint-results.html")
-    xmlOutput = file("${buildDir}/reports/lint-results.xml")
+    htmlOutput = file("$buildDir/reports/lint-results.html")
+    xmlOutput = file("$buildDir/reports/lint-results.xml")
 }
 
 java {
