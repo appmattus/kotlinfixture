@@ -4,3 +4,7 @@ build:
 style:
   MagicNumber:
     excludes: "**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt,**/*.gradle.kts"
+
+formatting:
+  StringTemplate:
+    excludes: "**/*.gradle.kts"
