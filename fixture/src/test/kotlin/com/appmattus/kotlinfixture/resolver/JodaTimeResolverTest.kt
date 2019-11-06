@@ -83,11 +83,13 @@ class JodaTimeResolverTest {
 
         @Test
         fun `Class returns date`() {
-            val result = context.resolve(type)
+            repeat(100) {
+                val result = context.resolve(type)
 
-            assertNotNull(result)
-            assertTrue {
-                type.isInstance(result)
+                assertNotNull(result)
+                assertTrue {
+                    type.isInstance(result)
+                }
             }
         }
 

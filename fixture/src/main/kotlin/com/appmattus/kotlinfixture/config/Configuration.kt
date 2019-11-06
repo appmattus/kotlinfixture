@@ -65,10 +65,10 @@ import kotlin.reflect.KType
 
 data class Configuration(
     val repeatCount: () -> Int = defaultRepeatCount,
-    val properties: Map<KClass<*>, Map<String, () -> Any?>> =
-        emptyMap<KClass<*>, Map<String, () -> Any?>>().toUnmodifiableMap(),
-    val factories: Map<KType, Generator<Any?>.() -> Any?> =
-        emptyMap<KType, Generator<Any?>.() -> Any?>().toUnmodifiableMap(),
+    val properties: Map<KClass<*>, Map<String, GeneratorFun>> =
+        emptyMap<KClass<*>, Map<String, GeneratorFun>>().toUnmodifiableMap(),
+    val factories: Map<KType, GeneratorFun> =
+        emptyMap<KType, GeneratorFun>().toUnmodifiableMap(),
     val subTypes: Map<KClass<*>, KClass<*>> = emptyMap<KClass<*>, KClass<*>>().toUnmodifiableMap(),
     val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),

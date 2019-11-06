@@ -19,6 +19,7 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.config.DefaultGenerator
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.jvm.isAccessible
@@ -30,12 +31,12 @@ internal class KFunctionResolver : Resolver {
             return try {
                 obj.function.isAccessible = true
 
-                val overrides = context.configuration.properties.getOrDefault(obj.containingClass, emptyMap())
+                val overrides = context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
 
                 val parameters = obj.function.parameters.associateWith {
                     if (it.kind == KParameter.Kind.VALUE) {
                         if (it.name in overrides) {
-                            overrides[it.name]?.invoke()
+                            overrides[it.name]?.invoke(DefaultGenerator(context))
                         } else {
                             context.resolve(it.type)
                         }

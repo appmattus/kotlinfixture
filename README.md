@@ -83,7 +83,7 @@ val fixture = kotlinFixture {
 
 val alwaysInt = fixture<Number>()
 
-val alwaysFloat = fixture<Number>() {
+val alwaysFloat = fixture<Number> {
     // Overrides the parent configuration
     subType<Number, Float>()
 }
@@ -103,7 +103,7 @@ val fixture = kotlinFixture {
 
 val alwaysFortyOne = fixture<Number>()
 
-val alwaysOnePointFive = fixture<Number>() {
+val alwaysOnePointFive = fixture<Number> {
     // Overrides the parent configuration
     factory<Number> {
         1.5
@@ -167,7 +167,7 @@ val fixture = kotlinFixture {
     property(KotlinClass::readOnly) { "a" }
 
     // Private constructor parameters are overridden by name:
-    property<KotlinClass>("private") { "b" }
+    property<KotlinClass, String>("private") { "b" }
 
     // Public member properties overridden by reference:
     property(KotlinClass::member) { "c" }
@@ -192,11 +192,11 @@ We can override creating an instance of `JavaClass` as follows:
 ```kotlin
 val fixture = kotlinFixture {
     // Setter overridden by reference:
-    property(JavaClass::setMutable) { "d" }
+    property<String>(JavaClass::setMutable) { "d" }
 
     // Constructor parameters don't typically retain names and so are
     // overridden by a positional 'arg' names:
-    property<JavaClass>("arg0") { "e" }
+    property<JavaClass, String>("arg0") { "e" }
 }
 ```
 
@@ -213,7 +213,7 @@ val fixture = kotlinFixture {
 val alwaysTheSame = fixture<Int>()
 
 // Can be specified on creation, but makes the result static
-val aStaticValue = fixture<Int>() {
+val aStaticValue = fixture<Int> {
     random = Random(seed = 5)
 }
 ```
@@ -252,7 +252,7 @@ val fixture = kotlinFixture {
     loggingStrategy(SysOutLoggingStrategy)
 }
 
-fixture<String>() {
+fixture<String> {
     // You can also override at instance creation
     loggingStrategy(SysOutLoggingStrategy)
 }

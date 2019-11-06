@@ -21,6 +21,7 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -69,9 +70,9 @@ class ClassResolverTest {
     @Test
     fun `Constructor parameter can be overridden`() {
         val context = context.copy(
-            configuration = Configuration(
-                properties = mapOf(SingleConstructor::class to mapOf("value" to { "custom" }))
-            )
+            configuration = ConfigurationBuilder().apply {
+                property(SingleConstructor::value) { "custom" }
+            }.build()
         )
 
         val result = context.resolve(SingleConstructor::class) as SingleConstructor
@@ -97,9 +98,9 @@ class ClassResolverTest {
     @Test
     fun `Mutable parameter can be overridden`() {
         val context = context.copy(
-            configuration = Configuration(
-                properties = mapOf(MutableParameter::class to mapOf("parameter" to { "custom" }))
-            )
+            configuration = ConfigurationBuilder().apply {
+                property(MutableParameter::parameter) { "custom" }
+            }.build()
         )
 
         val result = context.resolve(MutableParameter::class) as MutableParameter
@@ -129,9 +130,9 @@ class ClassResolverTest {
     @Test
     fun `Can override Java constructor arg`() {
         val context = context.copy(
-            configuration = Configuration(
-                properties = mapOf(FixtureTestJavaClass::class to mapOf("arg0" to { "custom" }))
-            )
+            configuration = ConfigurationBuilder().apply {
+                property<FixtureTestJavaClass, String>("arg0") { "custom" }
+            }.build()
         )
 
         val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
@@ -141,9 +142,9 @@ class ClassResolverTest {
     @Test
     fun `Can override Java setter`() {
         val context = context.copy(
-            configuration = Configuration(
-                properties = mapOf(FixtureTestJavaClass::class to mapOf("setMutable" to { "custom" }))
-            )
+            configuration = ConfigurationBuilder().apply {
+                property<String>(FixtureTestJavaClass::setMutable) { "custom" }
+            }.build()
         )
 
         val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass

@@ -18,7 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.Generator
+import com.appmattus.kotlinfixture.config.DefaultGenerator
 import kotlin.reflect.KType
 
 internal class FactoryResolver : Resolver {
@@ -27,14 +27,10 @@ internal class FactoryResolver : Resolver {
 
         if (obj is KType) {
             context.configuration.factories[obj]?.let {
-                return with(FactoryGenerator(context)) { it() }
+                return with(DefaultGenerator(context)) { it() }
             }
         }
 
         return Unresolved
-    }
-
-    private class FactoryGenerator(context: Context) : Generator<Any?> {
-        override val random = context.random
     }
 }

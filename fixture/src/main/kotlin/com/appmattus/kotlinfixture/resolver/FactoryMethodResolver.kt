@@ -42,7 +42,7 @@ class FactoryMethodResolver : Resolver, PopulateInstance {
                             context,
                             result::class,
                             constructorParameterNames = emptySet(),
-                            overrides = context.configuration.properties.getOrDefault(obj, emptyMap())
+                            overrides = context.configuration.properties.getOrElse(obj) { emptyMap() }
                         )
 
                         populatePropertiesAndSetters(callContext, result)

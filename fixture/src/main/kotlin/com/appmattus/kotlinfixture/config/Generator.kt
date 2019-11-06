@@ -16,8 +16,12 @@
 
 package com.appmattus.kotlinfixture.config
 
+import com.appmattus.kotlinfixture.Fixture
 import kotlin.random.Random
 
 interface Generator<T> {
     val random: Random
+    val fixture: Fixture
 }
+
+internal typealias GeneratorFun = Generator<Any?>.() -> Any?
