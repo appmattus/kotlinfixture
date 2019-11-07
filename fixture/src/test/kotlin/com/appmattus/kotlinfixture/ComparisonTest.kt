@@ -189,10 +189,6 @@ class ComparisonTest {
 
             val result = appmattus.create(type, appmattus.fixtureConfiguration)!!
 
-            println(result)
-            println("Expected: $resultClass")
-            println("Actual: ${result::class}")
-
             assertTrue {
                 resultClass.isInstance(result)
             }
@@ -212,10 +208,6 @@ class ComparisonTest {
             assumeValid(flextradeSupports)
 
             val result = flextrade.jFixture.create((type.classifier as KClass<*>).java)
-
-            println(result)
-            println("Expected: $resultClass")
-            println("Actual: ${result::class}")
 
             assertTrue {
                 resultClass.isInstance(result)

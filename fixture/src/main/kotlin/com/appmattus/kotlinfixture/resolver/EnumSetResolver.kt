@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.EnumSet
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -36,27 +37,25 @@ internal class EnumSetResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.classifier == EnumSet::class) {
-                if (obj.isMarkedNullable && context.random.nextBoolean()) {
-                    return null
-                }
+                return context.wrapNullability(obj) {
+                    val argType = obj.arguments.first().type!!
+                    val enumClass = argType.classifier as KClass<*>
 
-                val argType = obj.arguments.first().type!!
-                val enumClass = argType.classifier as KClass<*>
+                    val allValues = (enumClass.members.first { it.name == "values" }.call() as Array<*>).toMutableList()
 
-                val allValues = (enumClass.members.first { it.name == "values" }.call() as Array<*>).toMutableList()
+                    val selected = mutableListOf<Any>()
 
-                val selected = mutableListOf<Any>()
+                    repeat(random.nextInt(allValues.size + 1)) {
+                        val index = random.nextInt(allValues.size)
+                        selected.add(allValues.removeAt(index) as Any)
+                    }
 
-                repeat(context.random.nextInt(allValues.size + 1)) {
-                    val index = context.random.nextInt(allValues.size)
-                    selected.add(allValues.removeAt(index) as Any)
-                }
-
-                return if (selected.isNotEmpty()) {
-                    val last = selected.subList(1, selected.size).filterIsInstance<Enum<*>>().toTypedArray()
-                    enumSetOf.call(selected.first(), last)
-                } else {
-                    enumSetNoneOf.call(enumClass.java) as EnumSet<*>
+                    if (selected.isNotEmpty()) {
+                        val last = selected.subList(1, selected.size).filterIsInstance<Enum<*>>().toTypedArray()
+                        enumSetOf.call(selected.first(), last)
+                    } else {
+                        enumSetNoneOf.call(enumClass.java) as EnumSet<*>
+                    }
                 }
             }
         }

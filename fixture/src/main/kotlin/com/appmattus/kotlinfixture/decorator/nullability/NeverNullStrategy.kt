@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture.decorator.nullability
 
 import com.appmattus.kotlinfixture.Context
-import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
-import kotlin.reflect.KClass
-import kotlin.reflect.KType
 
-internal class KTypeResolver : Resolver {
+object NeverNullStrategy : NullabilityStrategy {
 
-    override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj is KType && obj.classifier is KClass<*>) {
-            context.wrapNullability(obj) {
-                resolve(obj.classifier!!)
-            }
-        } else {
-            Unresolved
-        }
-    }
+    override fun Context.generateAsNull() = false
 }

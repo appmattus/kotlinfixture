@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.EnumMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -36,44 +37,46 @@ internal class EnumMapResolver : Resolver {
         EnumMap::class.members.first { it.name == "put" }
     }
 
-    @Suppress("ReturnCount", "ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
             if (obj.classifier == EnumMap::class) {
-                if (obj.isMarkedNullable && context.random.nextBoolean()) {
-                    return null
+                return context.wrapNullability(obj) {
+                    generateEnumMap(obj)
                 }
-
-                val argType = obj.arguments.first().type!!
-                val enumClass = argType.classifier as KClass<*>
-                val valueClass = obj.arguments[1].type?.classifier as KClass<*>
-
-                val enumMap = enumMapConstructor.call(enumClass.java)
-
-                val allValues = (enumClass.members.first { it.name == "values" }.call() as Array<*>).toMutableList()
-
-                // Verify the value class can be resolved
-                if (context.resolve(valueClass) == Unresolved) {
-                    return Unresolved
-                }
-
-                repeat(context.random.nextInt(allValues.size + 1)) {
-                    val index = context.random.nextInt(allValues.size)
-
-                    val key = allValues.removeAt(index)
-                    val value = context.resolve(valueClass)
-
-                    if (value == Unresolved) {
-                        return Unresolved
-                    }
-
-                    enumMapPut.call(enumMap, key, value)
-                }
-
-                return enumMap
             }
         }
 
         return Unresolved
+    }
+
+    @Suppress("ReturnCount")
+    private fun Context.generateEnumMap(obj: KType): Any? {
+        val argType = obj.arguments.first().type!!
+        val enumClass = argType.classifier as KClass<*>
+        val valueClass = obj.arguments[1].type?.classifier as KClass<*>
+
+        val enumMap = enumMapConstructor.call(enumClass.java)
+
+        val allValues = (enumClass.members.first { it.name == "values" }.call() as Array<*>).toMutableList()
+
+        // Verify the value class can be resolved
+        if (resolve(valueClass) == Unresolved) {
+            return Unresolved
+        }
+
+        repeat(random.nextInt(allValues.size + 1)) {
+            val index = random.nextInt(allValues.size)
+
+            val key = allValues.removeAt(index)
+            val value = resolve(valueClass)
+
+            if (value == Unresolved) {
+                return Unresolved
+            }
+
+            enumMapPut.call(enumMap, key, value)
+        }
+
+        return enumMap
     }
 }
