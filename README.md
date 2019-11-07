@@ -218,6 +218,29 @@ val aStaticValue = fixture<Int> {
 }
 ```
 
+#### nullabilityStrategy
+
+By default when the library comes across a nullable type, such as `String?` it
+will randomly return a value or null. This can be overridden by setting a
+nullability strategy.
+
+```kotlin
+val fixture = kotlinFixture {
+    // All optionals will be populated with a value
+    nullabilityStrategy(NeverNullStrategy)
+}
+
+// You can also override at instance creation
+
+fixture<AnObject> {
+    // All optionals will be populated with null
+    nullabilityStrategy(AlwaysNullStrategy)
+}
+```
+
+It is also possible to define and implement your own nullability strategy by
+implementing `NullabilityStrategy` and applying it as above.
+
 #### recursionStrategy
 
 When recursion is detected the library will, by default, throw a

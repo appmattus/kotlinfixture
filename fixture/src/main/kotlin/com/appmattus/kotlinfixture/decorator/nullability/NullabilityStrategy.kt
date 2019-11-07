@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture.decorator.nullability
 
 import com.appmattus.kotlinfixture.Context
-import kotlin.reflect.KType
 
-internal fun Context.wrapNullability(type: KType, block: Context.() -> Any?): Any? {
-    return if (type.isMarkedNullable && random.nextBoolean()) {
-        null
-    } else {
-        block()
-    }
+interface NullabilityStrategy {
+    fun Context.generateAsNull(): Boolean
 }

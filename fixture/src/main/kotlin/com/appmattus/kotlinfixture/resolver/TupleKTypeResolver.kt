@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 

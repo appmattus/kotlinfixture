@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.AbstractQueue
 import java.util.AbstractSequentialList
 import java.util.ArrayDeque
@@ -55,26 +56,28 @@ internal class IterableKTypeResolver : Resolver {
             val collection = createCollection(obj)
 
             if (collection != null) {
-                if (obj.isMarkedNullable && context.random.nextBoolean()) {
-                    return null
+                return context.wrapNullability(obj) {
+                    populateCollection(obj, collection)
                 }
-
-                val argType = obj.arguments.first().type!!
-
-                repeat(context.configuration.repeatCount()) {
-                    val value = context.resolve(argType)
-                    if (value == Unresolved) {
-                        return Unresolved
-                    }
-
-                    collection.add(value)
-                }
-
-                return collection
             }
         }
 
         return Unresolved
+    }
+
+    private fun Context.populateCollection(obj: KType, collection: MutableCollection<Any?>): Any? {
+        val argType = obj.arguments.first().type!!
+
+        repeat(configuration.repeatCount()) {
+            val value = resolve(argType)
+            if (value == Unresolved) {
+                return Unresolved
+            }
+
+            collection.add(value)
+        }
+
+        return collection
     }
 
     @Suppress("ComplexMethod")

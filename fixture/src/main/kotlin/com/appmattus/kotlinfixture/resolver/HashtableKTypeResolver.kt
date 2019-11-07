@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.Dictionary
 import java.util.Hashtable
 import kotlin.reflect.KClass
@@ -31,29 +32,31 @@ internal class HashtableKTypeResolver : Resolver {
             val collection = createCollection(obj)
 
             if (collection != null) {
-                if (obj.isMarkedNullable && context.random.nextBoolean()) {
-                    return null
+                return context.wrapNullability(obj) {
+                    populateCollection(obj, collection)
                 }
-
-                val keyType = obj.arguments[0].type!!
-                val valueType = obj.arguments[1].type!!
-
-                repeat(context.configuration.repeatCount()) {
-                    val key = context.resolve(keyType)
-                    val value = context.resolve(valueType)
-
-                    if (key == Unresolved || value == Unresolved) {
-                        return Unresolved
-                    }
-
-                    collection.put(key, value)
-                }
-
-                return collection
             }
         }
 
         return Unresolved
+    }
+
+    private fun Context.populateCollection(obj: KType, collection: Dictionary<Any?, Any?>): Any? {
+        val keyType = obj.arguments[0].type!!
+        val valueType = obj.arguments[1].type!!
+
+        repeat(configuration.repeatCount()) {
+            val key = resolve(keyType)
+            val value = resolve(valueType)
+
+            if (key == Unresolved || value == Unresolved) {
+                return Unresolved
+            }
+
+            collection.put(key, value)
+        }
+
+        return collection
     }
 
     private fun createCollection(obj: KType) = when (obj.classifier as KClass<*>) {
