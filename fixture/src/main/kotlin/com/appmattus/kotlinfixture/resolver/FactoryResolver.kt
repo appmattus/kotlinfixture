@@ -19,7 +19,9 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.DefaultGenerator
+import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import kotlin.reflect.KType
+import kotlin.reflect.full.withNullability
 
 internal class FactoryResolver : Resolver {
 
@@ -28,6 +30,14 @@ internal class FactoryResolver : Resolver {
         if (obj is KType) {
             context.configuration.factories[obj]?.let {
                 return with(DefaultGenerator(context)) { it() }
+            }
+
+            if (obj.isMarkedNullable) {
+                context.configuration.factories[obj.withNullability(false)]?.let {
+                    return context.wrapNullability(obj) {
+                        with(DefaultGenerator(context)) { it() }
+                    }
+                }
             }
         }
 

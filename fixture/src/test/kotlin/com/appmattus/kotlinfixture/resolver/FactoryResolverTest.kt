@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.typeOf
@@ -36,7 +37,7 @@ class FactoryResolverTest {
     }
 
     @Test
-    fun `Factory returned when mapping found`() {
+    fun `Factory returned when non-null mapping found for non-null`() {
         val configuration = ConfigurationBuilder().apply {
             factory<Number> { 12 }
         }.build()
@@ -54,6 +55,38 @@ class FactoryResolverTest {
 
         repeat(100) {
             assertTrue(context.resolve(typeOf<Number>()) in 1..5)
+        }
+    }
+
+    @Test
+    fun `Unresolved returned when non-nullable requested and only nullable factory found`() {
+        val configuration = ConfigurationBuilder().apply {
+            factory<Number?> { 12 }
+        }.build()
+        val context = TestContext(configuration, FactoryResolver())
+
+        assertEquals(Unresolved, context.resolve(typeOf<Number>()))
+    }
+
+    @Test
+    fun `Factory returned when nullable mapping found for nullable`() {
+        val configuration = ConfigurationBuilder().apply {
+            factory<Number?> { 12 }
+        }.build()
+        val context = TestContext(configuration, FactoryResolver())
+
+        assertEquals(12, context.resolve(typeOf<Number?>()))
+    }
+
+    @Test
+    fun `Random nullability returned when non-null mapping found for nullable`() {
+        val configuration = ConfigurationBuilder().apply {
+            factory<Number> { 12 }
+        }.build()
+        val context = TestContext(configuration, FactoryResolver())
+
+        assertIsRandom {
+            context.resolve(typeOf<Number?>()) == null
         }
     }
 }
