@@ -25,6 +25,7 @@ import kotlin.reflect.full.withNullability
 
 internal class FactoryResolver : Resolver {
 
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
 
         if (obj is KType) {
