@@ -26,7 +26,7 @@ apply(from = "$rootDir/codecoverage.gradle.kts")
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.53")
+    implementation("io.github.classgraph:classgraph:4.8.54")
     implementation(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:2.10.5")
