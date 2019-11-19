@@ -54,101 +54,123 @@ class ClassResolverTest {
 
     @Test
     fun `Class with single constructor creates instance`() {
-        val result = context.resolve(SingleConstructor::class)
+        repeat(100) {
+            val result = context.resolve(SingleConstructor::class)
 
-        assertNotNull(result)
-        assertEquals(SingleConstructor::class, result::class)
+            assertNotNull(result)
+            assertEquals(SingleConstructor::class, result::class)
+        }
     }
 
     @Test
     fun `Class with single constructor generates random content`() {
-        assertIsRandom {
-            (context.resolve(SingleConstructor::class) as SingleConstructor).value
+        repeat(100) {
+            assertIsRandom {
+                (context.resolve(SingleConstructor::class) as SingleConstructor).value
+            }
         }
     }
 
     @Test
     fun `Constructor parameter can be overridden`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property(SingleConstructor::value) { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property(SingleConstructor::value) { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(SingleConstructor::class) as SingleConstructor
-        assertEquals("custom", result.value)
+            val result = context.resolve(SingleConstructor::class) as SingleConstructor
+            assertEquals("custom", result.value)
+        }
     }
 
     @Test
     fun `Class with multiple constructors picks one at random`() {
-        assertIsRandom {
-            val result = context.resolve(MultipleConstructors::class) as MultipleConstructors
-            result.constructorCalled
+        repeat(100) {
+            assertIsRandom {
+                val result = context.resolve(MultipleConstructors::class) as MultipleConstructors
+                result.constructorCalled
+            }
         }
     }
 
     @Test
     fun `Class with mutable parameter is set at random`() {
-        assertIsRandom {
-            val result = context.resolve(MutableParameter::class) as MutableParameter
-            result.parameter
+        repeat(100) {
+            assertIsRandom {
+                val result = context.resolve(MutableParameter::class) as MutableParameter
+                result.parameter
+            }
         }
     }
 
     @Test
     fun `Mutable parameter can be overridden`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property(MutableParameter::parameter) { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property(MutableParameter::parameter) { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(MutableParameter::class) as MutableParameter
-        assertEquals("custom", result.parameter)
+            val result = context.resolve(MutableParameter::class) as MutableParameter
+            assertEquals("custom", result.parameter)
+        }
     }
 
     @Test
     fun `Parameter unset if name matches constructor property name`() {
-        val result = context.resolve(MatchingNames::class) as MatchingNames
-        assertFalse(result.isInitialised)
+        repeat(100) {
+            val result = context.resolve(MatchingNames::class) as MatchingNames
+            assertFalse(result.isInitialised)
+        }
     }
 
     @Test
     fun `Constructs Java class with random constructor value`() {
-        assertIsRandom {
-            (context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass).constructor
+        repeat(100) {
+            assertIsRandom {
+                (context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass).constructor
+            }
         }
     }
 
     @Test
     fun `Constructs Java class with random setter value`() {
-        assertIsRandom {
-            (context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass).mutable
+        repeat(100) {
+            assertIsRandom {
+                (context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass).mutable
+            }
         }
     }
 
     @Test
     fun `Can override Java constructor arg`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property<FixtureTestJavaClass, String>("arg0") { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property<FixtureTestJavaClass, String>("arg0") { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
-        assertEquals("custom", result.constructor)
+            val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
+            assertEquals("custom", result.constructor)
+        }
     }
 
     @Test
     fun `Can override Java setter`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property<String>(FixtureTestJavaClass::setMutable) { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property<String>(FixtureTestJavaClass::setMutable) { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
-        assertEquals("custom", result.mutable)
+            val result = context.resolve(FixtureTestJavaClass::class) as FixtureTestJavaClass
+            assertEquals("custom", result.mutable)
+        }
     }
 
     @Suppress("UNUSED_PARAMETER")

@@ -17,16 +17,16 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    kotlin("jvm")
     id("com.android.lint")
 }
 
 apply(from = "$rootDir/bintray.gradle.kts")
-apply(from = "$rootDir/codecoverage.gradle.kts")
+apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.52")
+    implementation("io.github.classgraph:classgraph:4.8.54")
     implementation(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:2.10.5")
@@ -46,7 +46,7 @@ dependencies {
     @Suppress("GradleDependency")
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
     testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
-    testImplementation("org.jeasy:easy-random-core:4.0.0")
+    testImplementation("org.jeasy:easy-random-core:4.1.0")
 }
 
 lintOptions {

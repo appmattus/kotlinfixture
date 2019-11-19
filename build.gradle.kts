@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.50" apply false
     id("com.github.ben-manes.versions") version "0.27.0"
     id("io.gitlab.arturbosch.detekt") version "1.1.1"
-    id("com.appmattus.markdown") version "0.5.0"
+    id("com.appmattus.markdown") version "0.6.0"
 }
 
 buildscript {
@@ -29,11 +29,13 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.5.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.60")
+        classpath("com.android.tools.build:gradle:3.5.2")
     }
 }
 
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+apply<JacocoPlugin>()
 
 allprojects {
     repositories {
@@ -74,4 +76,43 @@ detekt {
     buildUponDefaultConfig = true
 
     config = files("detekt-config.yml")
+}
+
+val jacocoTestReport by tasks.registering(JacocoReport::class) {
+    group = "Coverage reports"
+    description = "Generates an aggregate report from all subprojects"
+
+    reports {
+        html.isEnabled = true
+        xml.isEnabled = true
+        csv.isEnabled = false
+    }
+
+    setOnlyIf {
+        true
+    }
+}
+
+tasks.register("check").dependsOn(jacocoTestReport)
+
+subprojects {
+    plugins.withType<JacocoPlugin> {
+        // this is executed for each project that has Jacoco plugin applied
+        the<JacocoPluginExtension>().toolVersion = "0.8.5"
+
+        tasks.withType<JacocoReport> {
+            val task = this
+            rootProject.tasks.getByName("jacocoTestReport").dependsOn(task)
+
+            jacocoTestReport {
+                executionData.from(task.executionData)
+                additionalSourceDirs.from(task.sourceDirectories)
+                additionalClassDirs.from(task.classDirectories)
+            }
+        }
+
+        tasks.withType<Test> {
+            rootProject.tasks.getByName("jacocoTestReport").dependsOn(this)
+        }
+    }
 }
