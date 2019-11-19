@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import com.android.build.gradle.internal.tasks.factory.dependsOn
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
@@ -91,6 +92,8 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
         true
     }
 }
+
+tasks.register("check").dependsOn(jacocoTestReport)
 
 subprojects {
     plugins.withType<JacocoPlugin> {
