@@ -59,96 +59,116 @@ class FactoryMethodResolverTest {
 
     @Test
     fun `Class with single factory method creates instance`() {
-        val result = context.resolve(SingleFactoryMethod::class)
+        repeat(100) {
+            val result = context.resolve(SingleFactoryMethod::class)
 
-        assertNotNull(result)
-        assertEquals(SingleFactoryMethod::class, result::class)
+            assertNotNull(result)
+            assertEquals(SingleFactoryMethod::class, result::class)
+        }
     }
 
     @Test
     fun `Class with single factory method generates random content`() {
-        assertIsRandom {
-            (context.resolve(SingleFactoryMethod::class) as SingleFactoryMethod).value
+        repeat(100) {
+            assertIsRandom {
+                (context.resolve(SingleFactoryMethod::class) as SingleFactoryMethod).value
+            }
         }
     }
 
     @Test
     fun `Factory method parameter can be overridden`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property(SingleFactoryMethod::value) { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property(SingleFactoryMethod::value) { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(SingleFactoryMethod::class) as SingleFactoryMethod
-        assertEquals("custom", result.value)
+            val result = context.resolve(SingleFactoryMethod::class) as SingleFactoryMethod
+            assertEquals("custom", result.value)
+        }
     }
 
     @Test
     fun `Class with multiple constructors picks one at random`() {
-        assertIsRandom {
-            val result = context.resolve(MultipleFactoryMethods::class) as MultipleFactoryMethods
-            result.factoryMethodCalled
+        repeat(100) {
+            assertIsRandom {
+                val result = context.resolve(MultipleFactoryMethods::class) as MultipleFactoryMethods
+                result.factoryMethodCalled
+            }
         }
     }
 
     @Test
     fun `Class with mutable parameter is set at random`() {
-        assertIsRandom {
-            val result =
-                context.resolve(MutableParameter::class) as MutableParameter
-            result.parameter
+        repeat(100) {
+            assertIsRandom {
+                val result =
+                    context.resolve(MutableParameter::class) as MutableParameter
+                result.parameter
+            }
         }
     }
 
     @Test
     fun `Mutable parameter can be overridden`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property(MutableParameter::parameter) { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property(MutableParameter::parameter) { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(MutableParameter::class) as MutableParameter
-        assertEquals("custom", result.parameter)
+            val result = context.resolve(MutableParameter::class) as MutableParameter
+            assertEquals("custom", result.parameter)
+        }
     }
 
     @Test
     fun `Constructs Java class with random constructor value`() {
-        assertIsRandom {
-            (context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass).constructor
+        repeat(100) {
+            assertIsRandom {
+                (context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass).constructor
+            }
         }
     }
 
     @Test
     fun `Constructs Java class with random setter value`() {
-        assertIsRandom {
-            (context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass).mutable
+        repeat(100) {
+            assertIsRandom {
+                (context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass).mutable
+            }
         }
     }
 
     @Test
     fun `Can override Java constructor arg`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property<FactoryMethodJavaClass, String>("arg0") { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property<FactoryMethodJavaClass, String>("arg0") { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass
-        assertEquals("custom", result.constructor)
+            val result = context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass
+            assertEquals("custom", result.constructor)
+        }
     }
 
     @Test
     fun `Can override Java setter`() {
-        val context = context.copy(
-            configuration = ConfigurationBuilder().apply {
-                property<String>(FactoryMethodJavaClass::setMutable) { "custom" }
-            }.build()
-        )
+        repeat(100) {
+            val context = context.copy(
+                configuration = ConfigurationBuilder().apply {
+                    property<String>(FactoryMethodJavaClass::setMutable) { "custom" }
+                }.build()
+            )
 
-        val result = context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass
-        assertEquals("custom", result.mutable)
+            val result = context.resolve(FactoryMethodJavaClass::class) as FactoryMethodJavaClass
+            assertEquals("custom", result.mutable)
+        }
     }
 
     @Suppress("UNUSED_PARAMETER", "unused")

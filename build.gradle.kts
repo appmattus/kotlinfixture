@@ -34,6 +34,7 @@ buildscript {
 }
 
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+apply<JacocoPlugin>()
 
 allprojects {
     repositories {
@@ -74,4 +75,41 @@ detekt {
     buildUponDefaultConfig = true
 
     config = files("detekt-config.yml")
+}
+
+val jacocoTestReport by tasks.registering(JacocoReport::class) {
+    group = "Coverage reports"
+    description = "Generates an aggregate report from all subprojects"
+
+    reports {
+        html.isEnabled = true
+        xml.isEnabled = true
+        csv.isEnabled = false
+    }
+
+    setOnlyIf {
+        true
+    }
+}
+
+subprojects {
+    plugins.withType<JacocoPlugin> {
+        // this is executed for each project that has Jacoco plugin applied
+        the<JacocoPluginExtension>().toolVersion = "0.8.5"
+
+        tasks.withType<JacocoReport> {
+            val task = this
+            rootProject.tasks.getByName("jacocoTestReport").dependsOn(task)
+
+            jacocoTestReport {
+                executionData.from(task.executionData)
+                additionalSourceDirs.from(task.sourceDirectories)
+                additionalClassDirs.from(task.classDirectories)
+            }
+        }
+
+        tasks.withType<Test> {
+            rootProject.tasks.getByName("jacocoTestReport").dependsOn(this)
+        }
+    }
 }

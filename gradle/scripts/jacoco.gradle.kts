@@ -20,7 +20,8 @@ tasks.getByName("test").finalizedBy(tasks.getByName("jacocoTestReport"))
 
 tasks.withType<JacocoReport> {
     reports {
-        xml.isEnabled = true
         html.isEnabled = true
+        xml.isEnabled = false
+        csv.isEnabled = false
     }
 }

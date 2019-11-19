@@ -21,7 +21,7 @@ plugins {
     kotlin("android")
 }
 
-// apply(from = "$rootDir/codecoverage.gradle.kts")
+apply(from = "$rootDir/gradle/scripts/jacoco-android.gradle.kts")
 
 android {
     compileSdkVersion(29)
