@@ -23,6 +23,7 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.Instant
+import org.joda.time.Interval
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
@@ -42,6 +43,8 @@ internal class JodaTimeResolver : Resolver {
                 DateTime::class -> DateTime(context.generateInstant(), context.randomDateTimeZone())
                 Period::class -> context.generatePeriod()
                 Duration::class -> context.generateDuration()
+                DateTimeZone::class -> context.randomDateTimeZone()
+                Interval::class -> context.generateInterval()
                 else -> Unresolved
             }
         } else {
@@ -78,6 +81,11 @@ internal class JodaTimeResolver : Resolver {
             1 -> Duration.standardMinutes(randomValue)
             else -> Duration.standardSeconds(randomValue)
         }
+    }
+
+    private fun Context.generateInterval(): Interval {
+        val instants = listOf(resolve(typeOf<Instant>()) as Instant, resolve(typeOf<Instant>()) as Instant).sorted()
+        return Interval(instants[0], instants[1])
     }
 
     companion object {

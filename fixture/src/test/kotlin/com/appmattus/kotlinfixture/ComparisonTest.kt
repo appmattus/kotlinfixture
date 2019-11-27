@@ -404,6 +404,8 @@ class ComparisonTest {
                 arrayOf(typeOf<org.joda.time.DateTime>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<org.joda.time.Duration>(), VALID, VALID, IGNORE, VALID),
                 arrayOf(typeOf<org.joda.time.Period>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
+                arrayOf(typeOf<org.joda.time.DateTimeZone>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
+                arrayOf(typeOf<org.joda.time.Interval>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
 
                 // Tuples
                 arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID, VALID),

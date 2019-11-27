@@ -46,6 +46,7 @@ class AbstractClassResolverTest {
         assertEquals(Unresolved, result)
     }
 
+    @Suppress("UnnecessaryAbstractClass")
     abstract class SingleAbstractClass {
         object OnlySubclass : SingleAbstractClass()
     }
@@ -57,7 +58,7 @@ class AbstractClassResolverTest {
         assertEquals(SingleAbstractClass.OnlySubclass::class, result)
     }
 
-    @Suppress("unused")
+    @Suppress("unused", "UnnecessaryAbstractClass")
     abstract class MultiAbstractClass {
         object SubclassA : MultiAbstractClass()
         object SubclassB : MultiAbstractClass()
@@ -99,7 +100,7 @@ class AbstractClassResolverTest {
         assertEquals(SingleInterfaceClass.OnlySubclass::class, result)
     }
 
-    @Suppress("unused")
+    @Suppress("unused", "UnnecessaryAbstractClass")
     abstract class MultiInterfaceClass {
         object SubclassA : MultiInterfaceClass()
         object SubclassB : MultiInterfaceClass()
