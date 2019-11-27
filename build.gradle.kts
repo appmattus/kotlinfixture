@@ -19,7 +19,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("com.github.ben-manes.versions") version "0.27.0"
-    id("io.gitlab.arturbosch.detekt") version "1.1.1"
+    id("io.gitlab.arturbosch.detekt") version "1.2.0"
     id("com.appmattus.markdown") version "0.6.0"
 }
 
@@ -29,7 +29,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.60")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
         classpath("com.android.tools.build:gradle:3.5.2")
     }
 }
@@ -67,7 +67,7 @@ tasks.withType(DependencyUpdatesTask::class.java).all {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.1.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.2.0")
 }
 
 detekt {
