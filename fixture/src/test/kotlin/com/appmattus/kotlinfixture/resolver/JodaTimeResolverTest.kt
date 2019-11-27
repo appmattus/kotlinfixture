@@ -23,8 +23,10 @@ import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.config.before
 import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import org.joda.time.Duration
 import org.joda.time.Instant
+import org.joda.time.Interval
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
@@ -110,7 +112,9 @@ class JodaTimeResolverTest {
                 arrayOf(LocalDateTime::class),
                 arrayOf(DateTime::class),
                 arrayOf(Period::class),
-                arrayOf(Duration::class)
+                arrayOf(Duration::class),
+                arrayOf(DateTimeZone::class),
+                arrayOf(Interval::class)
             )
         }
     }
