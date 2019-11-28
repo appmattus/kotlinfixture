@@ -20,6 +20,9 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.DefaultGenerator
+import com.appmattus.kotlinfixture.decorator.optional.OptionalStrategy
+import com.appmattus.kotlinfixture.decorator.optional.RandomlyOptionalStrategy
+import com.appmattus.kotlinfixture.strategyOrDefault
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.jvm.isAccessible
@@ -46,8 +49,15 @@ internal class KFunctionResolver : Resolver {
                         throw IllegalStateException("Unsupported parameter type: $it")
                     }
                 }.filterKeys {
-                    // Keep if the parameter has an override, is mandatory, or if optional at random
-                    overrides.containsKey(it.name) || !it.isOptional || context.random.nextBoolean()
+                    with(context) {
+                        with(strategyOrDefault<OptionalStrategy>(RandomlyOptionalStrategy)) {
+                            // Keep if the parameter has an override, is mandatory, or if optional using the strategy
+                            overrides.containsKey(it.name) || !it.isOptional || !generateAsOptional(
+                                obj.containingClass,
+                                it.name!!
+                            )
+                        }
+                    }
                 }
 
                 if (parameters.all { it.value != Unresolved }) {

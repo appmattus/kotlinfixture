@@ -29,6 +29,7 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
+@ConfigurationDsl
 class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     var decorators: MutableList<Decorator> = configuration.decorators.toMutableList()
