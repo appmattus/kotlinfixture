@@ -226,20 +226,47 @@ nullability strategy.
 
 ```kotlin
 val fixture = kotlinFixture {
-    // All optionals will be populated with a value
+    // All nullable types will be populated with a value
     nullabilityStrategy(NeverNullStrategy)
 }
 
 // You can also override at instance creation
 
 fixture<AnObject> {
-    // All optionals will be populated with null
+    // All nullable types will be populated with null
     nullabilityStrategy(AlwaysNullStrategy)
 }
 ```
 
 It is also possible to define and implement your own nullability strategy by
 implementing `NullabilityStrategy` and applying it as above.
+
+#### optionalStrategy
+
+By default when the library comes across an optional type, such as
+`value: String = "default"` it will randomly return that default value
+or a generated value. This can be overridden by setting an optional
+strategy.
+
+```kotlin
+val fixture = kotlinFixture {
+    // All optionals will be populated with generated values
+    optionalStrategy(NeverOptionalStrategy)
+}
+
+// You can also override at instance creation
+
+fixture<AnObject> {
+    // All optionals will be populated with their default value
+    optionalStrategy(AlwaysOptionalStrategy) {
+        // You can override the strategy for a particular class
+        classOverride<AnotherObject>(NeverOptionalStrategy)
+
+        // You can override the strategy for a property of a class
+        propertyOverride(AnotherObject:property, RandomlyOptionalStrategy)
+    }
+}
+```
 
 #### recursionStrategy
 
