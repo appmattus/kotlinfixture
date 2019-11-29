@@ -245,7 +245,7 @@ implementing `NullabilityStrategy` and applying it as above.
 
 By default when the library comes across an optional type, such as
 `value: String = "default"` it will randomly return that default value
-or a generated value. This cab be overridden by setting an optional
+or a generated value. This can be overridden by setting an optional
 strategy.
 
 ```kotlin
