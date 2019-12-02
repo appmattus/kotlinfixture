@@ -30,7 +30,7 @@ internal class KTypeResolver : Resolver {
                 resolve(obj.classifier!!)
             }
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 }

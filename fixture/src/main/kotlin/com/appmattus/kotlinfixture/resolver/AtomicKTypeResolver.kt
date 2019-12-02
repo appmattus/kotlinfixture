@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import com.appmattus.kotlinfixture.typeOf
 import java.util.concurrent.atomic.AtomicBoolean
@@ -42,11 +43,11 @@ internal class AtomicKTypeResolver : Resolver {
                 AtomicIntegerArray::class -> generateAtomicIntegerArray(obj)
                 AtomicLongArray::class -> generateAtomicLongArray(obj)
                 AtomicReference::class -> generateAtomicReference(obj)
-                else -> Unresolved
+                else -> Unresolved.Unhandled
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 
     private fun Context.generateAtomicBoolean(obj: KType) = wrapNullability(obj) {
@@ -71,8 +72,8 @@ internal class AtomicKTypeResolver : Resolver {
 
     private fun Context.generateAtomicReference(obj: KType) = wrapNullability(obj) {
         val reference = resolve(obj.arguments.first().type!!)
-        if (reference == Unresolved) {
-            Unresolved
+        if (reference is Unresolved) {
+            createUnresolved("Unable to resolve ${obj.arguments.first().type}", listOf(reference))
         } else {
             AtomicReference(reference)
         }

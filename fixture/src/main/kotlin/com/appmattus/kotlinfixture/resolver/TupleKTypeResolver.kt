@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -30,24 +31,25 @@ internal class TupleKTypeResolver : Resolver {
             return when (obj.classifier as KClass<*>) {
                 Pair::class -> generatePair(context, obj)
                 Triple::class -> generateTriple(context, obj)
-                else -> Unresolved
+                else -> Unresolved.Unhandled
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 
     private fun generatePair(context: Context, obj: KType): Any? = context.wrapNullability(obj) {
-        val keyType = obj.arguments[0].type!!
-        val valueType = obj.arguments[1].type!!
+        val firstType = obj.arguments[0].type!!
+        val secondType = obj.arguments[1].type!!
 
-        val key = resolve(keyType)
-        val value = resolve(valueType)
+        val first = resolve(firstType)
+        val second = resolve(secondType)
 
-        if (key == Unresolved || value == Unresolved) {
-            Unresolved
-        } else {
-            key to value
+        when {
+            first is Unresolved -> createUnresolved("Unable to create Pair first $firstType", listOf(first))
+            second is Unresolved -> createUnresolved("Unable to create Pair second $secondType", listOf(second))
+
+            else -> first to second
         }
     }
 
@@ -60,10 +62,12 @@ internal class TupleKTypeResolver : Resolver {
         val second = resolve(secondType)
         val third = resolve(thirdType)
 
-        if (first == Unresolved || second == Unresolved || third == Unresolved) {
-            Unresolved
-        } else {
-            Triple(first, second, third)
+        when {
+            first is Unresolved -> createUnresolved("Unable to create Triple first $firstType", listOf(first))
+            second is Unresolved -> createUnresolved("Unable to create Triple second $secondType", listOf(second))
+            third is Unresolved -> createUnresolved("Unable to create Triple third $thirdType", listOf(third))
+
+            else -> Triple(first, second, third)
         }
     }
 }

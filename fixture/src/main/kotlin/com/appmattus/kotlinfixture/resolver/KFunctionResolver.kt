@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.DefaultGenerator
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.optional.OptionalStrategy
 import com.appmattus.kotlinfixture.decorator.optional.RandomlyOptionalStrategy
 import com.appmattus.kotlinfixture.strategyOrDefault
@@ -60,18 +61,18 @@ internal class KFunctionResolver : Resolver {
                     }
                 }
 
-                if (parameters.all { it.value != Unresolved }) {
+                if (parameters.all { it.value !is Unresolved }) {
                     obj.function.callBy(parameters)
                 } else {
-                    Unresolved
+                    createUnresolved("Unable to create function ${obj.function} parameters", parameters.toList())
                 }
             } catch (expected: FixtureException) {
                 throw expected
             } catch (expected: Exception) {
-                Unresolved
+                Unresolved.ByException(expected)
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

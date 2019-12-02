@@ -34,7 +34,7 @@ class AbstractClassResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     abstract class EmptyAbstractClass
@@ -43,7 +43,7 @@ class AbstractClassResolverTest {
     fun `Abstract class with no subclasses returns Unresolved`() {
         val result = context.resolve(EmptyAbstractClass::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Suppress("UnnecessaryAbstractClass")
@@ -86,7 +86,7 @@ class AbstractClassResolverTest {
     fun `Interface with no subclasses returns Unresolved`() {
         val result = context.resolve(EmptyInterfaceClass::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     interface SingleInterfaceClass {

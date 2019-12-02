@@ -19,11 +19,12 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import kotlin.reflect.KClass
 
 internal class ClassResolver : Resolver, PopulateInstance {
 
-    @Suppress("NestedBlockDepth")
+    @Suppress("NestedBlockDepth", "ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
             val callContext = PopulateInstance.CallContext(
@@ -33,22 +34,26 @@ internal class ClassResolver : Resolver, PopulateInstance {
                 overrides = context.configuration.properties.getOrElse(obj) { emptyMap() }
             )
 
-            obj.constructors.shuffled().forEach { constructor ->
+            val results = obj.constructors.shuffled().map { constructor ->
                 try {
                     val result = context.resolve(KFunctionRequest(obj, constructor))
-                    if (result != Unresolved) {
+                    if (result !is Unresolved) {
                         return if (populatePropertiesAndSetters(callContext, result)) {
                             result
                         } else {
-                            Unresolved
+                            Unresolved.Unsupported("Unable to populate class $obj")
                         }
                     }
+                    return createUnresolved("Unable to create class $obj", listOf(result))
                 } catch (expected: FixtureException) {
                     // Ignore and move on to the next function, there is a chance here of hiding recursion exceptions
+                    Unresolved.ByException(expected)
                 }
             }
+
+            return createUnresolved("Unable to create class $obj", results)
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

@@ -66,7 +66,7 @@ internal interface PopulateInstance {
                 callContext.context.resolve(it.valueParameters[0].type)
             }
 
-            if (propertyResult == Unresolved) {
+            if (propertyResult is Unresolved) {
                 return false
             }
 
@@ -89,7 +89,7 @@ internal interface PopulateInstance {
                     callContext.context.resolve(property.returnType)
                 }
 
-                if (propertyResult == Unresolved) {
+                if (propertyResult is Unresolved) {
                     return false
                 }
 

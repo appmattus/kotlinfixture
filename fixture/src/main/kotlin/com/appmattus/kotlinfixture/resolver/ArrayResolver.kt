@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import kotlin.reflect.KClass
 
 internal class ArrayResolver : Resolver {
@@ -32,8 +33,8 @@ internal class ArrayResolver : Resolver {
 
             for (i in 0 until size) {
                 val element = context.resolve(obj.java.componentType!!.kotlin)
-                if (element == Unresolved) {
-                    return Unresolved
+                if (element is Unresolved) {
+                    return createUnresolved("Unable to resolve ${obj.java.componentType!!.kotlin}", listOf(element))
                 }
                 java.lang.reflect.Array.set(array, i, element)
             }
@@ -41,6 +42,6 @@ internal class ArrayResolver : Resolver {
             return array
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

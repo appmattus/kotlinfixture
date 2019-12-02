@@ -39,6 +39,6 @@ internal class PrimitiveResolver : Resolver {
         ULong::class -> context.random.nextULong()
         UShort::class -> context.random.nextUInt().toUShort()
 
-        else -> Unresolved
+        else -> Unresolved.Unhandled
     }
 }

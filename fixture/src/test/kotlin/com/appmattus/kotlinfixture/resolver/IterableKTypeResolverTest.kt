@@ -70,14 +70,14 @@ class IterableKTypeResolverTest {
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
 
         @Test
         fun `Unknown type parameter returns Unresolved`() {
             val result = context.resolve(typeOf<Collection<Number>>())
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
 
         @Test

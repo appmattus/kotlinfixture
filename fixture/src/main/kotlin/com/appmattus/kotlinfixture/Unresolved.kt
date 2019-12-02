@@ -16,6 +16,24 @@
 
 package com.appmattus.kotlinfixture
 
-object Unresolved {
+sealed class Unresolved {
     override fun toString() = "Unresolved"
+
+    object Unhandled : Unresolved()
+
+    data class Unsupported(val message: String) : Unresolved()
+
+    data class CausedBy(val message: String, val causes: List<Unresolved>) : Unresolved()
+
+    data class ByException(val exception: Exception) : Unresolved()
+}
+
+fun createUnresolved(message: String, causes: List<Any?> = emptyList()): Unresolved {
+    val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unresolved.Unhandled }
+
+    return if (filtered.isNotEmpty()) {
+        Unresolved.CausedBy(message, filtered)
+    } else {
+        Unresolved.Unsupported(message)
+    }
 }

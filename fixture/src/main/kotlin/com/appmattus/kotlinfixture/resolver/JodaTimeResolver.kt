@@ -45,10 +45,10 @@ internal class JodaTimeResolver : Resolver {
                 Duration::class -> context.generateDuration()
                 DateTimeZone::class -> context.randomDateTimeZone()
                 Interval::class -> context.generateInterval()
-                else -> Unresolved
+                else -> Unresolved.Unhandled
             }
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 

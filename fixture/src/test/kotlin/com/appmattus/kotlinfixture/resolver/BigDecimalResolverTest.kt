@@ -24,6 +24,7 @@ import java.math.BigDecimal
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class BigDecimalResolverTest {
     private val context = TestContext(Configuration(), BigDecimalResolver())
@@ -32,7 +33,7 @@ class BigDecimalResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

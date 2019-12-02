@@ -32,6 +32,6 @@ internal class EnumResolver : Resolver {
             }.next()
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

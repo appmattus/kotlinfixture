@@ -25,6 +25,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class FactoryMethodResolverTest {
     private val context = TestContext(
@@ -42,7 +43,7 @@ class FactoryMethodResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
@@ -54,7 +55,7 @@ class FactoryMethodResolverTest {
 
         val result = context.resolve(SingleFactoryMethod::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

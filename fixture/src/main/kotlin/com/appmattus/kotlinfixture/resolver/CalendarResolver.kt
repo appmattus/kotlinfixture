@@ -33,7 +33,7 @@ internal class CalendarResolver : Resolver {
                     time = context.resolve(typeOf<Date>()) as Date
                 }
             }
-            else -> Unresolved
+            else -> Unresolved.Unhandled
         }
     }
 }

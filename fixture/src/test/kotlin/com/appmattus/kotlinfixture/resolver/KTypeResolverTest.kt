@@ -24,6 +24,7 @@ import kotlin.reflect.full.createType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class KTypeResolverTest {
     private val context = TestContext(Configuration(), CompositeResolver(PrimitiveResolver(), KTypeResolver()))
@@ -32,7 +33,7 @@ class KTypeResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

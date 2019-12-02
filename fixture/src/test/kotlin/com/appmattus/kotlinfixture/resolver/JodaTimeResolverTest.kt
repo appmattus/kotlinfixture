@@ -37,7 +37,6 @@ import org.junit.runners.Parameterized
 import java.util.Date
 import kotlin.reflect.KClass
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -56,7 +55,7 @@ class JodaTimeResolverTest {
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
 
         @Test

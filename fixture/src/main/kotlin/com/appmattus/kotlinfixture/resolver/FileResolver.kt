@@ -26,7 +26,7 @@ class FileResolver : Resolver {
         return if (obj == File::class) {
             return File(context.random.nextUuid().toString())
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 }

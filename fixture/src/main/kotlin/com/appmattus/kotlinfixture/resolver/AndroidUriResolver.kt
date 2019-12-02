@@ -19,6 +19,7 @@ package com.appmattus.kotlinfixture.resolver
 import android.net.Uri
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.typeOf
 import java.net.URI
 
@@ -28,10 +29,10 @@ internal class AndroidUriResolver : Resolver {
         return if (hasAndroid) {
             when (obj) {
                 Uri::class -> context.generateUri()
-                else -> Unresolved
+                else -> Unresolved.Unhandled
             }
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 
@@ -46,7 +47,7 @@ internal class AndroidUriResolver : Resolver {
                 .query(oldUri.rawQuery)
                 .fragment(oldUri.rawFragment)
                 .build()
-        } ?: Unresolved
+        } ?: createUnresolved("Unable to resolve java.net.URI")
     }
 
     companion object {

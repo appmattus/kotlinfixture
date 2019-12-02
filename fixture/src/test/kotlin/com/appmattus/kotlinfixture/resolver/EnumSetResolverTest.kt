@@ -24,6 +24,7 @@ import com.appmattus.kotlinfixture.typeOf
 import java.util.EnumSet
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class EnumSetResolverTest {
     private val context = TestContext(Configuration(), CompositeResolver(EnumSetResolver(), EnumResolver()))
@@ -32,7 +33,7 @@ class EnumSetResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     enum class EmptyEnumClass

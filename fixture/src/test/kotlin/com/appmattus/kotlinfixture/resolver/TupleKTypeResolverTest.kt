@@ -35,21 +35,21 @@ class TupleKTypeResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
     fun `Unknown Pair key type parameter returns Unresolved`() {
         val result = context.resolve(typeOf<Pair<Number, String>>())
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
     fun `Unknown Pair value type parameter returns Unresolved`() {
         val result = context.resolve(typeOf<Pair<String, Number>>())
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
@@ -87,21 +87,21 @@ class TupleKTypeResolverTest {
     fun `Unknown Triple first type parameter returns Unresolved`() {
         val result = context.resolve(typeOf<Triple<Number, String, String>>())
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
     fun `Unknown Triple second type parameter returns Unresolved`() {
         val result = context.resolve(typeOf<Triple<String, Number, String>>())
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
     fun `Unknown Triple third type parameter returns Unresolved`() {
         val result = context.resolve(typeOf<Triple<String, String, Number>>())
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
