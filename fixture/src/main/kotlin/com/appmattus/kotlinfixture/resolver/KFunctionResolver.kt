@@ -17,7 +17,6 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
-import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.DefaultGenerator
 import com.appmattus.kotlinfixture.createUnresolved
@@ -32,44 +31,42 @@ import kotlin.reflect.jvm.isAccessible
 internal class KFunctionResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KFunctionRequest) {
-            return try {
-                obj.function.isAccessible = true
+            obj.function.isAccessible = true
 
-                val overrides = context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
+            val overrides = context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
 
-                val parameters = obj.function.parameters.associateWith {
-                    if (it.kind == KParameter.Kind.VALUE) {
-                        if (it.name in overrides) {
-                            overrides[it.name]?.invoke(DefaultGenerator(context))
-                        } else {
-                            context.resolve(it.type)
-                        }
-                    } else if (it.kind == KParameter.Kind.INSTANCE) {
-                        obj.containingClass.companionObjectInstance
+            val parameters = obj.function.parameters.associateWith {
+                if (it.kind == KParameter.Kind.VALUE) {
+                    if (it.name in overrides) {
+                        overrides[it.name]?.invoke(DefaultGenerator(context))
                     } else {
-                        throw IllegalStateException("Unsupported parameter type: $it")
+                        context.resolve(it.type)
                     }
-                }.filterKeys {
-                    with(context) {
-                        with(strategyOrDefault<OptionalStrategy>(RandomlyOptionalStrategy)) {
-                            // Keep if the parameter has an override, is mandatory, or if optional using the strategy
-                            overrides.containsKey(it.name) || !it.isOptional || !generateAsOptional(
-                                obj.containingClass,
-                                it.name!!
-                            )
-                        }
-                    }
-                }
-
-                if (parameters.all { it.value !is Unresolved }) {
-                    obj.function.callBy(parameters)
+                } else if (it.kind == KParameter.Kind.INSTANCE) {
+                    obj.containingClass.companionObjectInstance
                 } else {
-                    createUnresolved("Unable to create function ${obj.function} parameters", parameters.toList())
+                    throw IllegalStateException("Unsupported parameter type: $it")
                 }
-            } catch (expected: FixtureException) {
-                throw expected
-            } catch (expected: Exception) {
-                Unresolved.ByException(expected)
+            }.filterKeys {
+                with(context) {
+                    with(strategyOrDefault<OptionalStrategy>(RandomlyOptionalStrategy)) {
+                        // Keep if the parameter has an override, is mandatory, or if optional using the strategy
+                        overrides.containsKey(it.name) || !it.isOptional || !generateAsOptional(
+                            obj.containingClass,
+                            it.name!!
+                        )
+                    }
+                }
+            }
+
+            return if (parameters.all { it.value !is Unresolved }) {
+                try {
+                    obj.function.callBy(parameters)
+                } catch (expected: Exception) {
+                    Unresolved.Unsupported("Unable to call function ${obj.function}")
+                }
+            } else {
+                createUnresolved("Unable to create function ${obj.function} parameters", parameters.values.toList())
             }
         }
 

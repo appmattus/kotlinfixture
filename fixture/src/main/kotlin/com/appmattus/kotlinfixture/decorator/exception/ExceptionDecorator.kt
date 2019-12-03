@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture.decorator.exception
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.createUnresolved
+import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.resolver.Resolver
 
-internal class CompositeResolver(private val resolvers: Collection<Resolver>) : Resolver, Iterable<Resolver> {
+class ExceptionDecorator : Decorator {
+    override fun decorate(resolver: Resolver): Resolver = ExceptionResolver(resolver)
 
-    constructor(vararg resolvers: Resolver) : this(resolvers.toList())
+    private class ExceptionResolver(
+        private val resolver: Resolver
+    ) : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? {
-        val results = resolvers.map {
-            it.resolve(context, obj).also { result ->
-                if (result !is Unresolved) {
-                    return result
-                }
+        override fun resolve(context: Context, obj: Any): Any? {
+            return try {
+                resolver.resolve(context, obj)
+            } catch (expected: Exception) {
+                Unresolved.ByException(expected)
             }
         }
-
-        return createUnresolved("Unable to resolve $obj", results)
     }
-
-    override fun iterator() = resolvers.iterator()
 }
