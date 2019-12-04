@@ -16,23 +16,18 @@
 
 package com.appmattus.kotlinfixture.decorator.recursion
 
-import com.appmattus.kotlinfixture.typeOf
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
+import com.appmattus.kotlinfixture.Unresolved
+import kotlin.reflect.KType
 
-class ThrowingRecursionStrategyTest {
+object UnresolvedRecursionStrategy : RecursionStrategy {
 
-    @Test
-    fun `throws illegal state exception when stack is empty`() {
-        assertFailsWith<IllegalStateException> {
-            ThrowingRecursionStrategy.handleRecursion(typeOf<String>(), emptyList())
-        }
+    override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
+        check(stack.isNotEmpty()) { "Stack must be populated" }
+
+        return Unresolved.Unsupported(
+            "Unable to create ${stack.first()} with circular reference: ${stack.toStackString(type)}"
+        )
     }
 
-    @Test
-    fun `throws expected exception when stack is populated`() {
-        assertFailsWith<UnsupportedOperationException> {
-            ThrowingRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>()))
-        }
-    }
+    private fun Collection<KType>.toStackString(type: KType) = (this + type).joinToString(separator = " → ")
 }

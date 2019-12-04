@@ -16,23 +16,26 @@
 
 package com.appmattus.kotlinfixture.decorator.recursion
 
+import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.typeOf
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
-class ThrowingRecursionStrategyTest {
+class UnresolvedRecursionStrategyTest {
 
     @Test
     fun `throws illegal state exception when stack is empty`() {
         assertFailsWith<IllegalStateException> {
-            ThrowingRecursionStrategy.handleRecursion(typeOf<String>(), emptyList())
+            UnresolvedRecursionStrategy.handleRecursion(typeOf<String>(), emptyList())
         }
     }
 
     @Test
-    fun `throws expected exception when stack is populated`() {
-        assertFailsWith<UnsupportedOperationException> {
-            ThrowingRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>()))
+    fun `return Unresolved when stack is populated`() {
+        assertTrue {
+            UnresolvedRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>())) is
+                    Unresolved
         }
     }
 }

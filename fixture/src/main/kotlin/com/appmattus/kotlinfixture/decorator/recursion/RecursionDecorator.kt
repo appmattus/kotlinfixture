@@ -33,7 +33,7 @@ internal class RecursionDecorator : Decorator {
 
         @Suppress("ReturnCount")
         override fun resolve(context: Context, obj: Any): Any? {
-            val strategy = context.strategyOrDefault<RecursionStrategy>(ThrowingRecursionStrategy)
+            val strategy = context.strategyOrDefault<RecursionStrategy>(UnresolvedRecursionStrategy)
 
             if (obj is KType) {
                 if (stack.contains(obj)) {

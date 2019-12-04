@@ -16,7 +16,6 @@
 
 package com.appmattus.kotlinfixture.decorator.recursion
 
-import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KType
 
 object ThrowingRecursionStrategy : RecursionStrategy {
@@ -24,9 +23,8 @@ object ThrowingRecursionStrategy : RecursionStrategy {
     override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
         check(stack.isNotEmpty()) { "Stack must be populated" }
 
-        return Unresolved.Unsupported(
-            "Unable to create ${stack.first()} with circular reference: ${stack.toStackString(type)}"
-        )
+        val errorMessage = "Unable to create ${stack.first()} with circular reference: ${stack.toStackString(type)}"
+        throw UnsupportedOperationException(errorMessage)
     }
 
     private fun Collection<KType>.toStackString(type: KType) = (this + type).joinToString(separator = " → ")
