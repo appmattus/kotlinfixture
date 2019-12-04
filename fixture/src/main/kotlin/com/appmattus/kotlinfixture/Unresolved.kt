@@ -21,18 +21,22 @@ import java.io.StringWriter
 import java.io.Writer
 
 sealed class Unresolved {
-    override fun toString() = "Unresolved"
-
+    /**
+     * Use [Unhandled] when a resolver does not handle a particular type
+     */
     object Unhandled : Unresolved()
 
-    data class Unsupported(val message: String) : Unresolved()
+    /**
+     * Use [NotSupported] when a resolver handles a particular type but is unable to
+     */
+    class NotSupported(val message: String, val causes: List<Unresolved> = emptyList()) : Unresolved()
 
-    data class CausedBy(val message: String, val causes: List<Unresolved>) : Unresolved()
+    /**
+     * Use [WithException] when a resolver handles a particular type but is unable to due to a caught exception
+     */
+    class WithException(val exception: Exception) : Unresolved()
 
-    data class ByException(val exception: Exception) : Unresolved()
-
-    fun stackTrace(): String {
-
+    override fun toString(): String {
         val writer = StringWriter()
 
         stackTrace(writer, 0)
@@ -43,11 +47,11 @@ sealed class Unresolved {
 
     private fun stackTrace(writer: Writer, depth: Int = 0) {
         when (this) {
-            is CausedBy -> {
+            is NotSupported -> {
                 writer.write("${"    ".repeat(depth)}$message\n")
                 causes.forEach { it.stackTrace(writer, depth + 1) }
             }
-            is ByException -> {
+            is WithException -> {
                 val stringWriter = StringWriter()
 
                 val stackTrace = PrintWriter(stringWriter).use {
@@ -59,7 +63,6 @@ sealed class Unresolved {
                 writer.write(stackTrace.prependIndent("    ".repeat(depth)))
                 writer.write("\n")
             }
-            is Unsupported -> writer.write("${"    ".repeat(depth)}$message\n")
         }
     }
 }
@@ -67,13 +70,10 @@ sealed class Unresolved {
 fun createUnresolved(message: String, causes: List<Any?> = emptyList()): Unresolved {
     val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unresolved.Unhandled }
 
-    return if (filtered.isNotEmpty()) {
-        if (filtered.size > 1) {
-            Unresolved.CausedBy(message, filtered)
-        } else {
-            filtered.first()
-        }
+    return if (filtered.size == 1) {
+        // Unwrap single causes to reduce nesting
+        filtered.first()
     } else {
-        Unresolved.Unsupported(message)
+        Unresolved.NotSupported(message, filtered)
     }
 }

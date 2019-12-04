@@ -24,7 +24,7 @@ object UnresolvedRecursionStrategy : RecursionStrategy {
     override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
         check(stack.isNotEmpty()) { "Stack must be populated" }
 
-        return Unresolved.Unsupported(
+        return Unresolved.NotSupported(
             "Unable to create ${stack.first()} with circular reference: ${stack.toStackString(type)}"
         )
     }

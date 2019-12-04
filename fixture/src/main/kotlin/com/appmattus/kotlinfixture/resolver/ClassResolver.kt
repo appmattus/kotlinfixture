@@ -39,7 +39,7 @@ internal class ClassResolver : Resolver, PopulateInstance {
                     return if (populatePropertiesAndSetters(callContext, result)) {
                         result
                     } else {
-                        Unresolved.Unsupported("Unable to populate $obj")
+                        Unresolved.NotSupported("Unable to populate $obj")
                     }
                 }
                 result

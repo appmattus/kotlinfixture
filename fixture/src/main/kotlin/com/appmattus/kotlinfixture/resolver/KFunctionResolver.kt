@@ -63,7 +63,7 @@ internal class KFunctionResolver : Resolver {
                 try {
                     obj.function.callBy(parameters)
                 } catch (expected: Exception) {
-                    Unresolved.Unsupported("Unable to call function ${obj.function}")
+                    Unresolved.NotSupported("Unable to call function ${obj.function}")
                 }
             } else {
                 createUnresolved("Unable to create function ${obj.function} parameters", parameters.values.toList())

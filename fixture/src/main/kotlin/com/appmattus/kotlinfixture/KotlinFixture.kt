@@ -20,6 +20,10 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import com.appmattus.kotlinfixture.decorator.nullability.NeverNullStrategy
+import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
+import com.appmattus.kotlinfixture.decorator.optional.NeverOptionalStrategy
+import com.appmattus.kotlinfixture.decorator.optional.optionalStrategy
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
@@ -49,10 +53,24 @@ class Fixture(val fixtureConfiguration: Configuration) {
     fun create(type: KType, configuration: Configuration = fixtureConfiguration): Any? {
         val result = ContextImpl(configuration).resolve(type)
         if (result is Unresolved) {
-            throw UnsupportedOperationException("Unable to handle $type\n${result.stackTrace()}")
+            throw UnsupportedOperationException("Unable to handle $type\n$result")
         }
         return result
     }
 }
 
 fun kotlinFixture(init: ConfigurationBuilder.() -> Unit = {}) = Fixture(ConfigurationBuilder().apply(init).build())
+
+data class CircularRef(val value: CircularRef? = null)
+
+fun main() {
+    val fixture = kotlinFixture {
+        nullabilityStrategy(NeverNullStrategy)
+        optionalStrategy(NeverOptionalStrategy)
+        // loggingStrategy(SysOutLoggingStrategy)
+
+        factory<CircularRef?> { throw IllegalStateException("This is bad, very bad") }
+    }
+
+    fixture<CircularRef>()
+}
