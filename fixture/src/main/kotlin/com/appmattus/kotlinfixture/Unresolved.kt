@@ -34,7 +34,7 @@ sealed class Unresolved {
     /**
      * Use [WithException] when a resolver handles a particular type but is unable to due to a caught exception
      */
-    class WithException(val exception: Exception) : Unresolved()
+    class WithException(val message: String, val exception: Exception) : Unresolved()
 
     override fun toString(): String {
         val writer = StringWriter()
@@ -52,6 +52,8 @@ sealed class Unresolved {
                 causes.forEach { it.stackTrace(writer, depth + 1) }
             }
             is WithException -> {
+                writer.write("${"    ".repeat(depth)}$message\n")
+
                 val stringWriter = StringWriter()
 
                 val stackTrace = PrintWriter(stringWriter).use {
@@ -60,7 +62,7 @@ sealed class Unresolved {
                     stringWriter.toString()
                 }
 
-                writer.write(stackTrace.prependIndent("    ".repeat(depth)))
+                writer.write(stackTrace.prependIndent("    ".repeat(depth + 1)))
                 writer.write("\n")
             }
         }

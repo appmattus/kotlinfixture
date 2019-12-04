@@ -32,7 +32,7 @@ class ExceptionDecorator : Decorator {
             return try {
                 resolver.resolve(context, obj)
             } catch (expected: Exception) {
-                Unresolved.WithException(expected)
+                Unresolved.WithException("Unable to resolve $obj with exception", expected)
             }
         }
     }
