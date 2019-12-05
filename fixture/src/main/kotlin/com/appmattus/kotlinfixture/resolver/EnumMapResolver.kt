@@ -60,6 +60,13 @@ internal class EnumMapResolver : Resolver {
 
         val allValues = (enumClass.members.first { it.name == "values" }.call() as Array<*>).toMutableList()
 
+        // Verify the value class can be resolved, we check here in case the size below is zero
+        resolve(valueClass).also {
+            if (it is Unresolved) {
+                return createUnresolved("Unable to create $valueClass", listOf(it))
+            }
+        }
+
         repeat(random.nextInt(allValues.size + 1)) {
             val index = random.nextInt(allValues.size)
 
