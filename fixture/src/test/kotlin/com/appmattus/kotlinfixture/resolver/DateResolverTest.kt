@@ -28,6 +28,7 @@ import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 @RunWith(Enclosed::class)
 class DateResolverTest {
@@ -40,7 +41,7 @@ class DateResolverTest {
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
     }
 

@@ -30,6 +30,6 @@ internal class SubTypeResolver : Resolver {
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

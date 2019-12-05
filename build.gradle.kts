@@ -19,7 +19,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("com.github.ben-manes.versions") version "0.27.0"
-    id("io.gitlab.arturbosch.detekt") version "1.2.0"
+    id("io.gitlab.arturbosch.detekt") version "1.2.1"
     id("com.appmattus.markdown") version "0.6.0"
 }
 
@@ -67,13 +67,15 @@ tasks.withType(DependencyUpdatesTask::class.java).all {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.2.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.2.1")
 }
 
 detekt {
     input = files("$projectDir")
 
     buildUponDefaultConfig = true
+
+    autoCorrect = true
 
     config = files("detekt-config.yml")
 }

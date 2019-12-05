@@ -21,6 +21,7 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class ObjectResolverTest {
     private val context = TestContext(Configuration(), ObjectResolver())
@@ -31,7 +32,7 @@ class ObjectResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

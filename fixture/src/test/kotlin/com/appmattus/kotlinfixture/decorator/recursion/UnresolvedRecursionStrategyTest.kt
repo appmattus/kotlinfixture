@@ -14,26 +14,28 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture.decorator.recursion
 
-import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.typeOf
-import java.util.Calendar
-import java.util.Date
-import java.util.GregorianCalendar
+import kotlin.test.Test
+import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
-internal class CalendarResolver : Resolver {
+class UnresolvedRecursionStrategyTest {
 
-    override fun resolve(context: Context, obj: Any): Any? {
-        return when (obj) {
-            Calendar::class,
-            GregorianCalendar::class -> {
-                GregorianCalendar().apply {
-                    time = context.resolve(typeOf<Date>()) as Date
-                }
-            }
-            else -> Unresolved.Unhandled
+    @Test
+    fun `throws illegal state exception when stack is empty`() {
+        assertFailsWith<IllegalStateException> {
+            UnresolvedRecursionStrategy.handleRecursion(typeOf<String>(), emptyList())
+        }
+    }
+
+    @Test
+    fun `return Unresolved when stack is populated`() {
+        assertTrue {
+            UnresolvedRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>())) is
+                    Unresolved
         }
     }
 }

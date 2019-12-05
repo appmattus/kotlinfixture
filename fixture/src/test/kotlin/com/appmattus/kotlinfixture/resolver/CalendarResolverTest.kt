@@ -25,7 +25,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 import kotlin.test.Test
-import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -41,7 +40,7 @@ class CalendarResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

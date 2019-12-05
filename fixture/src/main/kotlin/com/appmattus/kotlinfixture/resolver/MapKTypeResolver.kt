@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.IdentityHashMap
 import java.util.NavigableMap
@@ -45,19 +46,23 @@ internal class MapKTypeResolver : Resolver {
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 
+    @Suppress("ReturnCount")
     private fun Context.populateCollection(obj: KType, collection: MutableMap<Any?, Any?>): Any? {
         val keyType = obj.arguments[0].type!!
         val valueType = obj.arguments[1].type!!
 
         repeat(configuration.repeatCount()) {
             val key = resolve(keyType)
-            val value = resolve(valueType)
+            if (key is Unresolved) {
+                return createUnresolved("Unable to resolve ${obj.classifier} key $keyType", listOf(key))
+            }
 
-            if (key == Unresolved || value == Unresolved) {
-                return Unresolved
+            val value = resolve(valueType)
+            if (value is Unresolved) {
+                return createUnresolved("Unable to resolve ${obj.classifier} value $valueType", listOf(value))
             }
 
             collection[key] = value

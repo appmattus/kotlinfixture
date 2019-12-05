@@ -31,7 +31,7 @@ internal class DateResolver : Resolver {
             java.sql.Date::class -> java.sql.Date(context.generateJavaUtilDate().time)
             java.sql.Time::class -> java.sql.Time(context.generateJavaUtilDate().time)
             java.sql.Timestamp::class -> java.sql.Timestamp(context.generateJavaUtilDate().time)
-            else -> Unresolved
+            else -> Unresolved.Unhandled
         }
     }
 

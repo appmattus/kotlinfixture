@@ -20,7 +20,7 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.config.Configuration
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class AndroidUriResolverTest {
     private val context = TestContext(
@@ -32,6 +32,6 @@ class AndroidUriResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 }

@@ -18,21 +18,22 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 
 internal class CompositeResolver(private val resolvers: Collection<Resolver>) : Resolver, Iterable<Resolver> {
 
     constructor(vararg resolvers: Resolver) : this(resolvers.toList())
 
     override fun resolve(context: Context, obj: Any): Any? {
-        resolvers.forEach {
-            val result = it.resolve(context, obj)
-
-            if (result != Unresolved) {
-                return result
+        val results = resolvers.map {
+            it.resolve(context, obj).also { result ->
+                if (result !is Unresolved) {
+                    return result
+                }
             }
         }
 
-        return Unresolved
+        return createUnresolved("Unable to resolve $obj", results)
     }
 
     override fun iterator() = resolvers.iterator()

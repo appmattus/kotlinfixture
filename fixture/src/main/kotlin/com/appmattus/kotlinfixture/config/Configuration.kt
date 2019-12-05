@@ -17,6 +17,7 @@
 package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.decorator.exception.ExceptionDecorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
@@ -81,7 +82,7 @@ data class Configuration(
 
         private val defaultRandom = Random
 
-        private val defaultDecorators = listOf(RecursionDecorator(), LoggingDecorator())
+        private val defaultDecorators = listOf(ExceptionDecorator(), RecursionDecorator(), LoggingDecorator())
 
         private val defaultResolvers = listOf(
             FactoryResolver(),

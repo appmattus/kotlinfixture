@@ -39,7 +39,7 @@ class KFunctionResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
@@ -108,7 +108,7 @@ class KFunctionResolverTest {
 
         val result = context.resolve(request)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

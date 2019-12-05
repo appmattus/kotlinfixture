@@ -26,7 +26,7 @@ internal class LocaleResolver : Resolver {
         return if (obj == Locale::class) {
             Locale.getAvailableLocales().random(context.random)
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 }

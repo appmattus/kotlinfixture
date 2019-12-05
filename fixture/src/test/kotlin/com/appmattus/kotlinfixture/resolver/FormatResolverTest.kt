@@ -43,7 +43,7 @@ class FormatResolverTest {
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
     }
 

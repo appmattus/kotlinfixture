@@ -38,11 +38,12 @@ internal class PrimitiveArrayResolver : Resolver {
         ULongArray::class -> context.resolveConstructor(::ULongArray)
         UShortArray::class -> context.resolveConstructor(::UShortArray)
 
-        else -> Unresolved
+        else -> Unresolved.Unhandled
     }
 
     private inline fun <A, reified T> Context.resolveConstructor(param: (size: Int, init: (Int) -> T) -> A): A {
         return param(configuration.repeatCount()) {
+            // TODO what if one of these is unresolvable?
             resolve(T::class) as T
         }
     }

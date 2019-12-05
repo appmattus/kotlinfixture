@@ -27,15 +27,16 @@ import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class CompositeResolverTest {
 
     private val unresolvedResolver1 = mock<Resolver> {
-        on { resolve(any(), any()) } doReturn Unresolved
+        on { resolve(any(), any()) } doReturn Unresolved.Unhandled
     }
 
     private val unresolvedResolver2 = mock<Resolver> {
-        on { resolve(any(), any()) } doReturn Unresolved
+        on { resolve(any(), any()) } doReturn Unresolved.Unhandled
     }
 
     private val resolvedResolver1 = mock<Resolver> {
@@ -51,7 +52,7 @@ class CompositeResolverTest {
 
         verify(unresolvedResolver1).resolve(any(), any())
         verify(unresolvedResolver2).resolve(any(), any())
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

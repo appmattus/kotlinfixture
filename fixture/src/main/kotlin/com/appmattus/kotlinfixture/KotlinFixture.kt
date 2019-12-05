@@ -34,12 +34,7 @@ class Fixture(val fixtureConfiguration: Configuration) {
         return if (rangeShuffled.isNotEmpty()) {
             rangeShuffled.first()
         } else {
-            val result = create(typeOf<T>(), ConfigurationBuilder(fixtureConfiguration).apply(configuration).build())
-            if (result is T) {
-                result
-            } else {
-                throw UnsupportedOperationException("Unable to handle ${T::class}")
-            }
+            create(typeOf<T>(), ConfigurationBuilder(fixtureConfiguration).apply(configuration).build()) as T
         }
     }
 
@@ -54,7 +49,7 @@ class Fixture(val fixtureConfiguration: Configuration) {
     fun create(type: KType, configuration: Configuration = fixtureConfiguration): Any? {
         val result = ContextImpl(configuration).resolve(type)
         if (result is Unresolved) {
-            throw UnsupportedOperationException("Unable to handle $type")
+            throw UnsupportedOperationException("Unable to handle $type\n$result")
         }
         return result
     }

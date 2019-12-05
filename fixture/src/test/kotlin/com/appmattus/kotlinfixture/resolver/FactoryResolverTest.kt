@@ -33,7 +33,7 @@ class FactoryResolverTest {
     fun `Unresolved returned when no mapping found`() {
         val context = TestContext(Configuration(), FactoryResolver())
 
-        assertEquals(Unresolved, context.resolve(typeOf<Number>()))
+        assertTrue(context.resolve(typeOf<Number>()) is Unresolved)
     }
 
     @Test
@@ -65,7 +65,7 @@ class FactoryResolverTest {
         }.build()
         val context = TestContext(configuration, FactoryResolver())
 
-        assertEquals(Unresolved, context.resolve(typeOf<Number>()))
+        assertTrue(context.resolve(typeOf<Number>()) is Unresolved)
     }
 
     @Test

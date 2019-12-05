@@ -33,7 +33,7 @@ class EnumResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     enum class EmptyEnumClass
@@ -42,7 +42,7 @@ class EnumResolverTest {
     fun `Enum with no values returns Unresolved`() {
         val result = context.resolve(EmptyEnumClass::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     enum class SingleEnumClass {

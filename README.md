@@ -270,11 +270,11 @@ fixture<AnObject> {
 
 #### recursionStrategy
 
-When recursion is detected the library will, by default, throw a
-`FixtureException` with the details of the circular reference. This strategy can
-be changed to instead return `null` for the reference, however, if this results
-in an invalid object an exception will still be thrown as the object requested
-couldn't be resolved.
+When recursion is detected the library will, by default, throw an
+`UnsupportedOperationException` with the details of the circular reference. This
+strategy can be changed to instead return `null` for the reference, however, if
+this results in an invalid object an exception will still be thrown as the
+object requested couldn't be resolved.
 
 ```kotlin
 val fixture = kotlinFixture {

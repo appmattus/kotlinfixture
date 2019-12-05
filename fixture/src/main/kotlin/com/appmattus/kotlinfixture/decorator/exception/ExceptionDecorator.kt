@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture.decorator.exception
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.circularIterator
-import kotlin.reflect.KClass
+import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.resolver.Resolver
 
-internal class EnumResolver : Resolver {
+class ExceptionDecorator : Decorator {
+    override fun decorate(resolver: Resolver): Resolver = ExceptionResolver(resolver)
 
-    private val cache = mutableMapOf<KClass<*>, Iterator<*>>()
+    private class ExceptionResolver(
+        private val resolver: Resolver
+    ) : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? {
-        if ((obj as? KClass<*>)?.java?.isEnum == true && obj.java.enumConstants?.isNotEmpty() == true) {
-            return cache.getOrPut(obj) {
-                obj.java.enumConstants!!.toList().shuffled().circularIterator()
-            }.next()
+        override fun resolve(context: Context, obj: Any): Any? {
+            return try {
+                resolver.resolve(context, obj)
+            } catch (expected: Exception) {
+                Unresolved.WithException("Unable to resolve $obj with exception", expected)
+            }
         }
-
-        return Unresolved.Unhandled
     }
 }

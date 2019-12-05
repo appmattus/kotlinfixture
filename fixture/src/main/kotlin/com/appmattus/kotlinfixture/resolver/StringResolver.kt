@@ -23,5 +23,5 @@ import com.appmattus.kotlinfixture.nextUuid
 internal class StringResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == String::class) context.random.nextUuid().toString() else Unresolved
+        if (obj == String::class) context.random.nextUuid().toString() else Unresolved.Unhandled
 }

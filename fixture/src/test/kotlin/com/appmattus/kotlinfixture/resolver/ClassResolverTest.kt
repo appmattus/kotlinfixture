@@ -26,6 +26,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class ClassResolverTest {
     private val context = TestContext(
@@ -37,7 +38,7 @@ class ClassResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
@@ -49,7 +50,7 @@ class ClassResolverTest {
 
         val result = context.resolve(SingleConstructor::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

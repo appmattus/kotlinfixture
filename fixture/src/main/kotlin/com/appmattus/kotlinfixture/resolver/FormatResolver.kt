@@ -32,7 +32,7 @@ internal class FormatResolver : Resolver {
         DecimalFormat::class,
         NumberFormat::class -> generateDecimalFormat(context)
 
-        else -> Unresolved
+        else -> Unresolved.Unhandled
     }
 
     private fun generateDecimalFormat(context: Context): NumberFormat? {

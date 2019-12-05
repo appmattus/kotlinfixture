@@ -60,7 +60,7 @@ internal class TimeResolver : Resolver {
             Month::class -> context.generateMonth()
             YearMonth::class -> context.generateYearMonth()
             MonthDay::class -> context.generateMonthDay()
-            else -> Unresolved
+            else -> Unresolved.Unhandled
         }
     }
 

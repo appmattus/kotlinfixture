@@ -34,7 +34,7 @@ class SealedClassResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     sealed class EmptySealedClass
@@ -43,7 +43,7 @@ class SealedClassResolverTest {
     fun `Sealed class with no subclasses returns Unresolved`() {
         val result = context.resolve(EmptySealedClass::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     sealed class SingleSealedClass {

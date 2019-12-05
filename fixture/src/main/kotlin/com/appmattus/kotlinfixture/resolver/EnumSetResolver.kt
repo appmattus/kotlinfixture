@@ -60,6 +60,6 @@ internal class EnumSetResolver : Resolver {
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

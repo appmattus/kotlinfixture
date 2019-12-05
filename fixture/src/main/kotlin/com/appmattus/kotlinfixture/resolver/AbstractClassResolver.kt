@@ -19,24 +19,28 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Classes
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import kotlin.reflect.KClass
 
 internal class AbstractClassResolver : Resolver {
 
+    @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.isAbstract == true) {
             val classInfo = Classes.classGraph.getClassInfo(obj.java.name)
 
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
-            classes.shuffled().forEach { subclass ->
+            val results = classes.shuffled().map { subclass ->
                 val result = context.resolve(subclass.loadClass().kotlin)
-                if (result != Unresolved) {
+                if (result !is Unresolved) {
                     return result
                 }
             }
+
+            return createUnresolved("Unable to create abstract class", results)
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

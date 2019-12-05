@@ -16,7 +16,6 @@
 
 package com.appmattus.kotlinfixture.decorator.recursion
 
-import com.appmattus.kotlinfixture.FixtureException
 import com.appmattus.kotlinfixture.typeOf
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
@@ -32,7 +31,7 @@ class ThrowingRecursionStrategyTest {
 
     @Test
     fun `throws expected exception when stack is populated`() {
-        assertFailsWith<FixtureException> {
+        assertFailsWith<UnsupportedOperationException> {
             ThrowingRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>()))
         }
     }

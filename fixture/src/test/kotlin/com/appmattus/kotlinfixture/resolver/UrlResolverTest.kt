@@ -24,6 +24,7 @@ import java.net.URL
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 class UrlResolverTest {
     private val context = TestContext(Configuration(), UrlResolver())
@@ -32,7 +33,7 @@ class UrlResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

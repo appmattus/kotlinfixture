@@ -26,7 +26,7 @@ internal class CurrencyResolver : Resolver {
         return if (obj == Currency::class) {
             Currency.getAvailableCurrencies().random(context.random)
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 }

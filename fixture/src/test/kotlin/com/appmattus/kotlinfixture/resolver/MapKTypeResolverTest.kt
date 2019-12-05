@@ -52,21 +52,21 @@ class MapKTypeResolverTest {
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
 
         @Test
         fun `Unknown key type parameter returns Unresolved`() {
             val result = context.resolve(typeOf<Map<Number, String>>())
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
 
         @Test
         fun `Unknown value type parameter returns Unresolved`() {
             val result = context.resolve(typeOf<Map<String, Number>>())
 
-            assertEquals(Unresolved, result)
+            assertTrue(result is Unresolved)
         }
 
         @Test

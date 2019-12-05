@@ -24,6 +24,7 @@ import com.appmattus.kotlinfixture.typeOf
 import java.util.EnumMap
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class EnumMapResolverTest {
 
@@ -41,14 +42,14 @@ class EnumMapResolverTest {
     fun `Unknown class returns Unresolved`() {
         val result = context.resolve(Number::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test
     fun `Unknown value type parameter returns Unresolved`() {
         val result = context.resolve(typeOf<EnumMap<SingleEnumClass, Number>>())
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
     }
 
     @Test

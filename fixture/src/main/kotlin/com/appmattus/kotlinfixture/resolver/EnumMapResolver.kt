@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.EnumMap
 import kotlin.reflect.KClass
@@ -46,7 +47,7 @@ internal class EnumMapResolver : Resolver {
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 
     @Suppress("ReturnCount")
@@ -59,9 +60,11 @@ internal class EnumMapResolver : Resolver {
 
         val allValues = (enumClass.members.first { it.name == "values" }.call() as Array<*>).toMutableList()
 
-        // Verify the value class can be resolved
-        if (resolve(valueClass) == Unresolved) {
-            return Unresolved
+        // Verify the value class can be resolved, we check here in case the size below is zero
+        resolve(valueClass).also {
+            if (it is Unresolved) {
+                return createUnresolved("Unable to create $valueClass", listOf(it))
+            }
         }
 
         repeat(random.nextInt(allValues.size + 1)) {
@@ -70,8 +73,8 @@ internal class EnumMapResolver : Resolver {
             val key = allValues.removeAt(index)
             val value = resolve(valueClass)
 
-            if (value == Unresolved) {
-                return Unresolved
+            if (value is Unresolved) {
+                return createUnresolved("Unable to create $valueClass", listOf(value))
             }
 
             enumMapPut.call(enumMap, key, value)

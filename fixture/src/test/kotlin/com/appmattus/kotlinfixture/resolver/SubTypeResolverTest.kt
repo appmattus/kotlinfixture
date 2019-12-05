@@ -25,7 +25,7 @@ import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.mockito.internal.verification.Times
 import kotlin.test.Test
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class SubTypeResolverTest {
 
@@ -46,7 +46,7 @@ class SubTypeResolverTest {
     fun `Unresolved returned when no mapping found`() {
         val result = SubTypeResolver().resolve(context, String::class)
 
-        assertEquals(Unresolved, result)
+        assertTrue(result is Unresolved)
         verify(context, Times(0)).resolve(any())
     }
 }

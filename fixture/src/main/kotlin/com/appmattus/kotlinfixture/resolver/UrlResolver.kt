@@ -23,7 +23,7 @@ import java.net.URL
 internal class UrlResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == URL::class) URL(values.random(context.random)) else Unresolved
+        if (obj == URL::class) URL(values.random(context.random)) else Unresolved.Unhandled
 
     companion object {
         private val values = listOf(

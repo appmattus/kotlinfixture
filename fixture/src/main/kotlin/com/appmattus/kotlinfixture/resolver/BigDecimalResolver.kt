@@ -28,7 +28,7 @@ internal class BigDecimalResolver : Resolver {
         return if (obj == BigDecimal::class) {
             BigDecimal(BigInteger(NUM_BITS, context.random.asJavaRandom())).divide(BigDecimal.TEN)
         } else {
-            Unresolved
+            Unresolved.Unhandled
         }
     }
 

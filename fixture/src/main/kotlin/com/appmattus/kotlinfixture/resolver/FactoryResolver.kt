@@ -42,6 +42,6 @@ internal class FactoryResolver : Resolver {
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 }

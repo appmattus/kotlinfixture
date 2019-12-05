@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.nullability.wrapNullability
 import java.util.AbstractQueue
 import java.util.AbstractSequentialList
@@ -62,7 +63,7 @@ internal class IterableKTypeResolver : Resolver {
             }
         }
 
-        return Unresolved
+        return Unresolved.Unhandled
     }
 
     private fun Context.populateCollection(obj: KType, collection: MutableCollection<Any?>): Any? {
@@ -70,8 +71,8 @@ internal class IterableKTypeResolver : Resolver {
 
         repeat(configuration.repeatCount()) {
             val value = resolve(argType)
-            if (value == Unresolved) {
-                return Unresolved
+            if (value is Unresolved) {
+                return createUnresolved("Unable to resolve ${obj.classifier} argument $argType", listOf(value))
             }
 
             collection.add(value)

@@ -14,24 +14,20 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.resolver
+package com.appmattus.kotlinfixture.decorator.recursion
 
-import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.circularIterator
-import kotlin.reflect.KClass
+import kotlin.reflect.KType
 
-internal class EnumResolver : Resolver {
+object UnresolvedRecursionStrategy : RecursionStrategy {
 
-    private val cache = mutableMapOf<KClass<*>, Iterator<*>>()
+    override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
+        check(stack.isNotEmpty()) { "Stack must be populated" }
 
-    override fun resolve(context: Context, obj: Any): Any? {
-        if ((obj as? KClass<*>)?.java?.isEnum == true && obj.java.enumConstants?.isNotEmpty() == true) {
-            return cache.getOrPut(obj) {
-                obj.java.enumConstants!!.toList().shuffled().circularIterator()
-            }.next()
-        }
-
-        return Unresolved.Unhandled
+        return Unresolved.NotSupported(
+            "Unable to create ${stack.first()} with circular reference: ${stack.toStackString(type)}"
+        )
     }
+
+    private fun Collection<KType>.toStackString(type: KType) = (this + type).joinToString(separator = " → ")
 }
