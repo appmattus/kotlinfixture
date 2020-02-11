@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -166,6 +166,21 @@ class FixtureTest {
     }
 
     @Test
+    fun `subclass can be overridden in new when already overridden in initialisation`() {
+        val baseFixture = kotlinFixture {
+            subType<Superclass, SubclassA>()
+        }
+
+        repeat(100) {
+            val fixture = baseFixture.new {
+                subType<Superclass, SubclassB>()
+            }
+            val result = fixture<Superclass>()
+            assertEquals(SubclassB::class, result::class)
+        }
+    }
+
+    @Test
     fun `can override instance in initialisation`() {
         val fixture = kotlinFixture {
             factory<Number> { 10 }
@@ -222,6 +237,20 @@ class FixtureTest {
         assertEquals(30, result)
     }
 
+    @Test
+    fun `can override instance in new when overridden in initialisation`() {
+        val baseFixture = kotlinFixture {
+            factory<Number> { 10 }
+        }
+
+        val fixture = baseFixture.new {
+            factory<Number> { 30 }
+        }
+
+        val result = fixture<Number>()
+        assertEquals(30, result)
+    }
+
     data class KotlinClass(val readOnly: String, private var private: String) {
         var member: String? = null
         val alsoReadOnly: String? = null
@@ -261,6 +290,19 @@ class FixtureTest {
     }
 
     @Test
+    fun `constructor property can be overridden in new when already overridden in initialisation`() {
+        val baseFixture = kotlinFixture {
+            property(KotlinClass::readOnly) { "a" }
+        }
+        val fixture = baseFixture.new {
+            property(KotlinClass::readOnly) { "b" }
+        }
+
+        val instance = fixture<KotlinClass>()
+        assertEquals("b", instance.readOnly)
+    }
+
+    @Test
     fun `private constructor property can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
             property<KotlinClass, String>("private") { "a" }
@@ -293,6 +335,19 @@ class FixtureTest {
     }
 
     @Test
+    fun `private constructor property can be overridden in new when already overridden`() {
+        val baseFixture = kotlinFixture {
+            property<KotlinClass, String>("private") { "a" }
+        }
+        val fixture = baseFixture.new {
+            property<KotlinClass, String>("private") { "b" }
+        }
+
+        val instance = fixture<KotlinClass>()
+        assertEquals("b", instance.getPrivate())
+    }
+
+    @Test
     fun `member property can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
             property(KotlinClass::member) { "a" }
@@ -321,6 +376,19 @@ class FixtureTest {
         val instance = fixture<KotlinClass> {
             property(KotlinClass::member) { "b" }
         }
+        assertEquals("b", instance.member)
+    }
+
+    @Test
+    fun `member property can be overridden in new when already overridden in initialisation`() {
+        val baseFixture = kotlinFixture {
+            property(KotlinClass::member) { "a" }
+        }
+        val fixture = baseFixture.new {
+            property(KotlinClass::member) { "b" }
+        }
+
+        val instance = fixture<KotlinClass>()
         assertEquals("b", instance.member)
     }
 
@@ -377,6 +445,19 @@ class FixtureTest {
     }
 
     @Test
+    fun `java constructor property can be overridden in new when already overridden in initialisation`() {
+        val baseFixture = kotlinFixture {
+            property<FixtureTestJavaClass, String>("arg0") { "a" }
+        }
+        val fixture = baseFixture.new {
+            property<FixtureTestJavaClass, String>("arg0") { "b" }
+        }
+
+        val instance = fixture<FixtureTestJavaClass>()
+        assertEquals("b", instance.constructor)
+    }
+
+    @Test
     fun `java member property can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
             property<String>(FixtureTestJavaClass::setMutable) { "a" }
@@ -405,6 +486,19 @@ class FixtureTest {
         val instance = fixture<FixtureTestJavaClass> {
             property<String>(FixtureTestJavaClass::setMutable) { "b" }
         }
+        assertEquals("b", instance.mutable)
+    }
+
+    @Test
+    fun `java member property can be overridden in new when already overridden in initialisation`() {
+        val baseFixture = kotlinFixture {
+            property<String>(FixtureTestJavaClass::setMutable) { "a" }
+        }
+        val fixture = baseFixture.new {
+            property<String>(FixtureTestJavaClass::setMutable) { "b" }
+        }
+
+        val instance = fixture<FixtureTestJavaClass>()
         assertEquals("b", instance.mutable)
     }
 }

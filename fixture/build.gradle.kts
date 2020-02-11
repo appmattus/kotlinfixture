@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,18 +26,18 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.58")
+    implementation("io.github.classgraph:classgraph:4.8.62")
     implementation(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:2.10.5")
     testImplementation("joda-time:joda-time:2.10.5")
 
-    compileOnly("org.threeten:threetenbp:1.4.0")
-    testImplementation("org.threeten:threetenbp:1.4.0")
+    compileOnly("org.threeten:threetenbp:1.4.1")
+    testImplementation("org.threeten:threetenbp:1.4.1")
 
     compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
 
-    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
