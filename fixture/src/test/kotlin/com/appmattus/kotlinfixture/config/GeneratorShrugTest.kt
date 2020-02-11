@@ -155,7 +155,6 @@ class GeneratorShrugTest {
         assertEquals(fixture<Long> { seededRandom() }, fixture<Long> { seededRandom() })
     }
 
-
     @Test
     fun `Random values returned for UInt shrug`() {
         assertIsRandom {
