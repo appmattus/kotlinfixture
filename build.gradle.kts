@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id("com.github.ben-manes.versions") version "0.27.0"
-    id("io.gitlab.arturbosch.detekt") version "1.2.1"
+    id("io.gitlab.arturbosch.detekt") version "1.5.1"
     id("com.appmattus.markdown") version "0.6.0"
 }
 
@@ -30,7 +30,7 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.61")
-        classpath("com.android.tools.build:gradle:3.5.2")
+        classpath("com.android.tools.build:gradle:3.5.3")
     }
 }
 
@@ -67,7 +67,7 @@ tasks.withType(DependencyUpdatesTask::class.java).all {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.2.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.5.1")
 }
 
 detekt {

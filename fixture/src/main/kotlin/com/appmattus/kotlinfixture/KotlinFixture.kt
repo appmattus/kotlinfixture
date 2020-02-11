@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,6 +52,10 @@ class Fixture(val fixtureConfiguration: Configuration) {
             throw UnsupportedOperationException("Unable to handle $type\n$result")
         }
         return result
+    }
+
+    fun new(configuration: ConfigurationBuilder.() -> Unit = {}): Fixture {
+        return Fixture(ConfigurationBuilder(fixtureConfiguration).apply(configuration).build())
     }
 }
 

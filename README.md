@@ -46,6 +46,24 @@ val anotherRandomIntFromAList = fixture(1..5)
 The default configuration can be overridden when creating the fixture object or
 when creating a particular implementation.
 
+It is possible to create a new fixture based on an existing one, which allows
+the addition of configuration changes:
+
+```kotlin
+val baseFixture = kotlinFixture {
+    factory<Int> { 3 }
+}
+
+val fixture = baseFixture.new {
+    factory<Long> { 100L }
+}
+
+// Prints 100
+println(fixture<Long>())
+// Prints 3
+println(fixture<Int>())
+```
+
 #### repeatCount
 
 Used to determine the length used for lists and maps.
@@ -129,6 +147,9 @@ This can be overridden using `factory` which has some built in constructs:
 
 ```kotlin
 val fixture = kotlinFixture {
+    // Generate using ranges (and iterables)
+    factory<Int> { range(1..10) }
+
     // Generate between two dates
     factory<Date> { between(startDate, endDate) }
 }
@@ -263,7 +284,7 @@ fixture<AnObject> {
         classOverride<AnotherObject>(NeverOptionalStrategy)
 
         // You can override the strategy for a property of a class
-        propertyOverride(AnotherObject:property, RandomlyOptionalStrategy)
+        propertyOverride(AnotherObject::property, RandomlyOptionalStrategy)
     }
 }
 ```

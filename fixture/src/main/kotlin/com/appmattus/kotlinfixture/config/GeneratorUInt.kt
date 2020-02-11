@@ -16,15 +16,7 @@
 
 package com.appmattus.kotlinfixture.config
 
-import com.appmattus.kotlinfixture.Fixture
-import kotlin.random.Random
+import kotlin.random.nextUInt
 
-interface Generator<T> {
-    val random: Random
-    val fixture: Fixture
-}
-
-internal typealias GeneratorFun = Generator<Any?>.() -> Any?
-
-fun <T> Generator<T>.range(range: Iterable<T>) =
-    range.shuffled(random).firstOrNull() ?: throw NoSuchElementException("Range is empty")
+@Suppress("EXPERIMENTAL_API_USAGE", "FunctionName", "NonAsciiCharacters")
+fun Generator<UInt>.`¯＼_(ツ)_／¯`(): UInt = random.nextUInt()

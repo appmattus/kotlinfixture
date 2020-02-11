@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ dependencies {
     testImplementation("androidx.test.ext:junit:1.1.1")
     testImplementation("org.robolectric:robolectric:4.3.1")
 
-    testImplementation("junit:junit:4.12")
+    testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
