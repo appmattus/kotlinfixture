@@ -41,6 +41,31 @@ val randomStringFromTheList = fixture(listOf("Cat", "Dog", "Horse"))
 val anotherRandomIntFromAList = fixture(1..5)
 ```
 
+You can also generate an infinite sequence of a type, which can then be
+filtered:
+
+```kotlin
+val fixture = kotlinFixture()
+
+val intSequence = fixture.asSequence<Int>()
+
+// Standard Kotlin sequence functions can then be applied before using
+// the sequence through an iterator for access to the next() function.
+
+// For example, you can filter values
+val oddIterator = intSequence.filter { it.absoluteValue.rem(2) == 1 }.iterator()
+val oddNumber = oddIterator.next()
+val anotherOddNumber = oddIterator.next()
+
+// Or, ensure it returns only distinct values
+// NOTE: As the sequence is infinite, distinct will hang if no more
+// distinct values can be generated
+enum class XYZ { X, Y, Z }
+val enumIterator = fixture.asSequence<XYZ>().distinct().iterator()
+val aDistinctValue = enumIterator.next()
+val anotherDistinctValue = enumIterator.next()
+```
+
 ### Configuration options
 
 The default configuration can be overridden when creating the fixture object or

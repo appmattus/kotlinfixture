@@ -74,7 +74,8 @@ data class Configuration(
     val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
     val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList(),
-    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap()
+    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap(),
+    val filters: Map<KType, Sequence<*>> = emptyMap<KType, Sequence<*>>().toUnmodifiableMap()
 ) {
 
     private companion object {
