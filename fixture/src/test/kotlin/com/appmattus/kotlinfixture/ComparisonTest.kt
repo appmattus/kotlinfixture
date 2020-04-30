@@ -155,10 +155,13 @@ class ComparisonTest {
 
         @Parameterized.Parameter(1)
         lateinit var appmattusSupports: Result
+
         @Parameterized.Parameter(2)
         lateinit var flextradeSupports: Result
+
         @Parameterized.Parameter(3)
         lateinit var marcellogalhardoSupports: Result
+
         @Parameterized.Parameter(4)
         lateinit var easyRandomSupports: Result
 
@@ -425,6 +428,7 @@ class ComparisonTest {
                 arrayOf(typeOf<ULongArray>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<UShortArray>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<Array<String>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Int>>(), VALID, VALID, UNSUPPORTED, VALID),
 
                 // Iterable, List
                 arrayOf(typeOf<Iterable<String>>(), VALID, NOT_RANDOM, VALID, UNSUPPORTED),
