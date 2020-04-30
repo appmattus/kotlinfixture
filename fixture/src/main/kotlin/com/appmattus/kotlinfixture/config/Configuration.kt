@@ -22,7 +22,7 @@ import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
 import com.appmattus.kotlinfixture.resolver.AndroidUriResolver
-import com.appmattus.kotlinfixture.resolver.ArrayResolver
+import com.appmattus.kotlinfixture.resolver.ArrayKTypeResolver
 import com.appmattus.kotlinfixture.resolver.AtomicKTypeResolver
 import com.appmattus.kotlinfixture.resolver.BigDecimalResolver
 import com.appmattus.kotlinfixture.resolver.BigIntegerResolver
@@ -74,8 +74,7 @@ data class Configuration(
     val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
     val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList(),
-    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap(),
-    val filters: Map<KType, Sequence<*>> = emptyMap<KType, Sequence<*>>().toUnmodifiableMap()
+    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap()
 ) {
 
     private companion object {
@@ -115,7 +114,7 @@ data class Configuration(
             AtomicKTypeResolver(),
             TupleKTypeResolver(),
 
-            ArrayResolver(),
+            ArrayKTypeResolver(),
             PrimitiveArrayResolver(),
             HashtableKTypeResolver(),
             IterableKTypeResolver(),

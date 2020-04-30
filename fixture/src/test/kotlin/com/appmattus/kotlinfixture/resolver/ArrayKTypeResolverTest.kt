@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,16 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.typeOf
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-class ArrayResolverTest {
+class ArrayKTypeResolverTest {
     private val context = TestContext(
         Configuration(),
-        CompositeResolver(ArrayResolver(), StringResolver(), PrimitiveResolver())
+        CompositeResolver(ArrayKTypeResolver(), StringResolver(), PrimitiveResolver(), KTypeResolver())
     )
 
     @Test
@@ -46,25 +47,45 @@ class ArrayResolverTest {
     }
 
     @Test
-    fun `Array-Int class returns int class array`() {
-        val result = context.resolve(Array<Int>::class)
+    fun `Array-Int class returns Unresolved`() {
+        val result = context.resolve(typeOf<Array<Int>>())
 
-        assertNotNull(result)
-        assertEquals(Array<Int>::class, result::class)
+        assertTrue(result is Unresolved)
     }
 
     @Test
     fun `Array-String class returns string array`() {
-        val result = context.resolve(Array<String>::class)
+        val result = context.resolve(typeOf<Array<String>>())
 
         assertNotNull(result)
         assertEquals(Array<String>::class, result::class)
     }
 
     @Test
+    fun `Array-NullableString class returns nullable string array`() {
+        val result = context.resolve(typeOf<Array<String?>>())
+
+        assertIsRandom {
+            val result = context.resolve(typeOf<Array<String?>>())
+
+            assertNotNull(result)
+            assertEquals(Array<String?>::class, result::class)
+
+            (result as Array<String?>)[0] == null
+        }
+    }
+
+    @Test
+    fun `BooleanArray class returns unresolved`() {
+        val result = context.resolve(typeOf<BooleanArray>())
+
+        assertTrue(result is Unresolved)
+    }
+
+    @Test
     fun `Random values returned`() {
         assertIsRandom {
-            context.resolve(Array<String>::class)
+            context.resolve(typeOf<Array<String>>())
         }
     }
 
@@ -72,7 +93,7 @@ class ArrayResolverTest {
     fun `Length of array matches configuration value of 3`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
-        val result = context.resolve(Array<String>::class) as Array<*>
+        val result = context.resolve(typeOf<Array<String>>()) as Array<*>
 
         assertEquals(3, result.size)
     }
@@ -81,7 +102,7 @@ class ArrayResolverTest {
     fun `Length of array matches configuration value of 7`() {
         val context = context.copy(configuration = Configuration(repeatCount = { 7 }))
 
-        val result = context.resolve(Array<String>::class) as Array<*>
+        val result = context.resolve(typeOf<Array<String>>()) as Array<*>
 
         assertEquals(7, result.size)
     }
@@ -91,7 +112,7 @@ class ArrayResolverTest {
         val context = context.copy(configuration = Configuration(repeatCount = { 3 }))
 
         @Suppress("UNCHECKED_CAST")
-        val result = context.resolve(Array<Array<String>>::class) as Array<Array<String>>
+        val result = context.resolve(typeOf<Array<Array<String>>>()) as Array<Array<String>>
 
         assertEquals(3, result.size)
         result.forEach {
