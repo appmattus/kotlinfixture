@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.decorator.filter.DefaultFilter
+import com.appmattus.kotlinfixture.decorator.filter.Filter
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
@@ -30,6 +32,7 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
 @ConfigurationDsl
+@Suppress("TooManyFunctions")
 class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     var decorators: MutableList<Decorator> = configuration.decorators.toMutableList()
@@ -40,6 +43,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private val properties: MutableMap<KClass<*>, MutableMap<String, GeneratorFun>> =
         configuration.properties.mapValues { it.value.toMutableMap() }.toMutableMap()
     private val factories: MutableMap<KType, GeneratorFun> = configuration.factories.toMutableMap()
+    private val filters: MutableMap<KType, Filter> = configuration.filters.toMutableMap()
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
@@ -50,6 +54,14 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     fun factory(type: KType, generator: GeneratorFun) {
         factories[type] = generator
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T> filter(noinline mapping: Sequence<T>.() -> Sequence<T>) =
+        filter(typeOf<T>(), mapping as Sequence<Any?>.() -> Sequence<Any?>)
+
+    fun filter(type: KType, mapping: Sequence<Any?>.() -> Sequence<Any?>) {
+        filters[type] = (filters.getOrElse(type) { DefaultFilter(type) }).map(mapping)
     }
 
     inline fun <reified T, reified U : T> subType() = subType(T::class, U::class)
@@ -104,6 +116,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         random = random,
         decorators = decorators.toUnmodifiableList(),
         resolvers = resolvers.toUnmodifiableList(),
-        strategies = strategies.toUnmodifiableMap()
+        strategies = strategies.toUnmodifiableMap(),
+        filters = filters.toUnmodifiableMap()
     )
 }

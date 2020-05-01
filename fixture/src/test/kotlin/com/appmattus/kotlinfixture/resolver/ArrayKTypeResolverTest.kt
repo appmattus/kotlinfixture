@@ -63,14 +63,13 @@ class ArrayKTypeResolverTest {
 
     @Test
     fun `Array-NullableString class returns nullable string array`() {
-        val result = context.resolve(typeOf<Array<String?>>())
-
         assertIsRandom {
             val result = context.resolve(typeOf<Array<String?>>())
 
             assertNotNull(result)
             assertEquals(Array<String?>::class, result::class)
 
+            @Suppress("UNCHECKED_CAST")
             (result as Array<String?>)[0] == null
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,8 @@ package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.exception.ExceptionDecorator
+import com.appmattus.kotlinfixture.decorator.filter.Filter
+import com.appmattus.kotlinfixture.decorator.filter.FilterDecorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
 import com.appmattus.kotlinfixture.decorator.recursion.RecursionDecorator
 import com.appmattus.kotlinfixture.resolver.AbstractClassResolver
@@ -74,7 +76,8 @@ data class Configuration(
     val random: Random = defaultRandom,
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
     val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList(),
-    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap()
+    val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap(),
+    val filters: Map<KType, Filter> = emptyMap<KType, Filter>().toUnmodifiableMap()
 ) {
 
     private companion object {
@@ -82,7 +85,12 @@ data class Configuration(
 
         private val defaultRandom = Random
 
-        private val defaultDecorators = listOf(ExceptionDecorator(), RecursionDecorator(), LoggingDecorator())
+        private val defaultDecorators = listOf(
+            FilterDecorator(),
+            ExceptionDecorator(),
+            RecursionDecorator(),
+            LoggingDecorator()
+        )
 
         private val defaultResolvers = listOf(
             FactoryResolver(),
