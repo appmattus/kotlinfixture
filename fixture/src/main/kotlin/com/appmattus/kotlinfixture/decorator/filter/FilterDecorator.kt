@@ -32,7 +32,9 @@ internal class FilterDecorator : Decorator {
         override fun resolve(context: Context, obj: Any): Any? {
             if (obj is KType) {
                 context.configuration.filters[obj]?.let {
-                    return it.next(resolver, context)
+                    it.resolver = resolver
+                    it.context = context
+                    return it.next()
                 }
             }
 

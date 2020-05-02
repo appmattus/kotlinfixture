@@ -19,12 +19,22 @@ package com.appmattus.kotlinfixture.decorator.filter
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.resolver.Resolver
 
-interface Filter {
-    val iterator: Iterator<Any?>
-    var resolver: Resolver
-    var context: Context
+internal class DelegatingFilter(
+    private val delegate: Filter,
+    mapping: Sequence<Any?>.() -> Sequence<Any?>
+) : Filter {
 
-    fun next() = iterator.next()
+    override var resolver: Resolver
+        get() = delegate.resolver
+        set(value) {
+            delegate.resolver = value
+        }
 
-    fun map(mapping: Sequence<Any?>.() -> Sequence<Any?>): Filter = DelegatingFilter(this, mapping)
+    override var context: Context
+        get() = delegate.context
+        set(value) {
+            delegate.context = value
+        }
+
+    override val iterator = mapping(delegate.iterator.asSequence()).iterator()
 }
