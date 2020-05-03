@@ -21,7 +21,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 
 internal class DelegatingFilter(
     private val delegate: Filter,
-    override val iterator: Iterator<Any?>
+    mapping: Sequence<Any?>.() -> Sequence<Any?>
 ) : Filter {
 
     override var resolver: Resolver
@@ -35,4 +35,6 @@ internal class DelegatingFilter(
         set(value) {
             delegate.context = value
         }
+
+    override val iterator = mapping(delegate.iterator.asSequence()).iterator()
 }
