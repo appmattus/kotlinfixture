@@ -192,6 +192,35 @@ val futureDate = fixture<Date> {
 }
 ```
 
+#### filter
+
+Used to allow generated values to be filtered using standard sequence
+functions.
+
+```kotlin
+val fixture = kotlinFixture {
+    filter<Int> {
+        filter { it % 2 == 0 }
+    }
+
+    // Can be used to return distinct values.
+    // NOTE: As the sequence is infinite, distinct will hang if no more
+    // distinct values can be generated
+    filter<String> {
+        distinct()
+    }
+}
+
+val evenNumber = fixture<Int>()
+
+val evenNumberLessThan100 = fixture<Int> {
+    // Overrides the parent configuration
+    filter<Int> {
+        filter { it < 100 }
+    }
+}
+```
+
 #### property
 
 Used to override constructor parameters or mutable properties when generating

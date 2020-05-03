@@ -16,7 +16,7 @@
 
 package com.appmattus.kotlinfixture
 
-import org.junit.Test
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class FixtureAsSequenceTest {
