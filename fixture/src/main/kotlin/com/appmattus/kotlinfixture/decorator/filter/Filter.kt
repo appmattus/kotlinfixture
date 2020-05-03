@@ -26,5 +26,6 @@ interface Filter {
 
     fun next() = iterator.next()
 
-    fun map(mapping: Sequence<Any?>.() -> Sequence<Any?>): Filter = DelegatingFilter(this, mapping)
+    fun map(mapping: Sequence<Any?>.() -> Sequence<Any?>): Filter =
+        DelegatingFilter(this, mapping(iterator.asSequence()).iterator())
 }
