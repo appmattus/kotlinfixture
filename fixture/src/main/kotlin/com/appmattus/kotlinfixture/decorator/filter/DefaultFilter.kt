@@ -18,8 +18,11 @@ package com.appmattus.kotlinfixture.decorator.filter
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.resolver.Resolver
+import java.util.concurrent.locks.ReentrantLock
 
 internal class DefaultFilter(private val obj: Any) : Filter {
+    override val lock = ReentrantLock()
+
     override lateinit var resolver: Resolver
     override lateinit var context: Context
 

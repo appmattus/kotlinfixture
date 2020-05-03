@@ -18,13 +18,21 @@ package com.appmattus.kotlinfixture.decorator.filter
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.resolver.Resolver
+import java.util.concurrent.locks.Lock
+import kotlin.concurrent.withLock
 
 interface Filter {
-    val iterator: Iterator<Any?>
+    val lock: Lock
+
     var resolver: Resolver
     var context: Context
+    val iterator: Iterator<Any?>
 
-    fun next() = iterator.next()
+    fun next(resolver: Resolver, context: Context): Any? = lock.withLock {
+        this.resolver = resolver
+        this.context = context
+        iterator.next()
+    }
 
     fun map(mapping: Sequence<Any?>.() -> Sequence<Any?>): Filter = DelegatingFilter(this, mapping)
 }

@@ -24,6 +24,9 @@ internal class DelegatingFilter(
     mapping: Sequence<Any?>.() -> Sequence<Any?>
 ) : Filter {
 
+    override val lock
+        get() = delegate.lock
+
     override var resolver: Resolver
         get() = delegate.resolver
         set(value) {
