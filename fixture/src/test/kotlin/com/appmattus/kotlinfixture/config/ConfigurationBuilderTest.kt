@@ -17,8 +17,11 @@
 package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
+import com.appmattus.kotlinfixture.decorator.filter.DefaultFilter
+import com.appmattus.kotlinfixture.decorator.filter.Filter
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
+import com.appmattus.kotlinfixture.typeOf
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -26,6 +29,7 @@ import kotlin.reflect.full.starProjectedType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertNotEquals
 
 class ConfigurationBuilderTest {
 
@@ -192,6 +196,40 @@ class ConfigurationBuilderTest {
         }.build()
 
         assertEquals(Float::class, configuration.subTypes[Number::class])
+    }
+
+    @Test
+    fun `filters is immutable`() {
+        val configuration = ConfigurationBuilder(Configuration()).build()
+
+        assertFailsWith<UnsupportedOperationException> {
+            @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
+            (configuration.filters as MutableMap<KType, Filter>).put(typeOf<Number>(), DefaultFilter(Unit))
+        }
+    }
+
+    @Test
+    fun `can override filters`() {
+        val originalFilter = DefaultFilter(Unit)
+        val configuration = ConfigurationBuilder(
+            Configuration(filters = mapOf(typeOf<Number>() to originalFilter))
+        ).apply {
+            filter<Number> { this }
+        }.build()
+
+        assertNotEquals(DefaultFilter(Unit), configuration.filters[typeOf<Number>()])
+    }
+
+    @Test
+    fun `can override filter(KType, Filter)`() {
+        val originalFilter = DefaultFilter(Unit)
+        val configuration = ConfigurationBuilder(
+            Configuration(filters = mapOf(typeOf<Number>() to originalFilter))
+        ).apply {
+            filter(typeOf<Number>()) { this }
+        }.build()
+
+        assertNotEquals(DefaultFilter(Unit), configuration.filters[typeOf<Number>()])
     }
 
     @Test
