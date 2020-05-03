@@ -19,25 +19,31 @@ package com.appmattus.kotlinfixture.decorator.filter
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.nhaarman.mockitokotlin2.mock
-import java.util.concurrent.locks.ReentrantLock
+import java.util.concurrent.locks.Lock
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DelegatingFilterTest {
 
+    private val mockLock = mock<Lock>()
     private val mockResolver = mock<Resolver>()
     private val mockResolverAlternate = mock<Resolver>()
     private val mockContext = mock<Context>()
     private val mockContextAlternate = mock<Context>()
 
     private val delegateFilter = object : Filter {
-        override val lock = ReentrantLock()
+        override val lock = mockLock
         override val iterator = (1..10).iterator()
         override var resolver: Resolver = mockResolver
         override var context: Context = mockContext
     }
 
     private val filter = DelegatingFilter(delegateFilter) { this }
+
+    @Test
+    fun `getLock delegates`() {
+        assertEquals(mockLock, filter.lock)
+    }
 
     @Test
     fun `getResolver delegates`() {

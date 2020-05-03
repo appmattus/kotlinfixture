@@ -26,6 +26,7 @@ interface Filter {
 
     var resolver: Resolver
     var context: Context
+
     val iterator: Iterator<Any?>
 
     fun next(resolver: Resolver, context: Context): Any? = lock.withLock {
