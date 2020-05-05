@@ -38,6 +38,18 @@ class Fixture(val fixtureConfiguration: Configuration) {
         }
     }
 
+    inline fun <reified T : Any?> asSequence(
+        noinline configuration: ConfigurationBuilder.() -> Unit = {}
+    ): Sequence<T> {
+        val type = typeOf<T>()
+        val builtConfiguration = ConfigurationBuilder(fixtureConfiguration).apply(configuration).build()
+        return sequence {
+            while (true) {
+                yield(create(type, builtConfiguration) as T)
+            }
+        }
+    }
+
     fun create(clazz: Class<*>, configuration: Configuration = fixtureConfiguration): Any? {
         return create(clazz.kotlin, configuration)
     }

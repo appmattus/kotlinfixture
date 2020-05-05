@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("org.owasp:dependency-check-gradle:5.2.4")
+        classpath("org.owasp:dependency-check-gradle:5.3.2")
     }
 }
 

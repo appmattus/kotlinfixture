@@ -26,14 +26,14 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.62")
+    implementation("io.github.classgraph:classgraph:4.8.78")
     implementation(kotlin("reflect"))
 
-    compileOnly("joda-time:joda-time:2.10.5")
-    testImplementation("joda-time:joda-time:2.10.5")
+    compileOnly("joda-time:joda-time:2.10.6")
+    testImplementation("joda-time:joda-time:2.10.6")
 
-    compileOnly("org.threeten:threetenbp:1.4.1")
-    testImplementation("org.threeten:threetenbp:1.4.1")
+    compileOnly("org.threeten:threetenbp:1.4.4")
+    testImplementation("org.threeten:threetenbp:1.4.4")
 
     compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
 
@@ -46,7 +46,7 @@ dependencies {
     @Suppress("GradleDependency")
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
     testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
-    testImplementation("org.jeasy:easy-random-core:4.1.0")
+    testImplementation("org.jeasy:easy-random-core:4.2.0")
 }
 
 lintOptions {
