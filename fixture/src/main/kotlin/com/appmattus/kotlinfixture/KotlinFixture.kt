@@ -24,7 +24,7 @@ import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
 
-class Fixture(val fixtureConfiguration: Configuration) {
+class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration = ConfigurationBuilder().build()) {
 
     inline operator fun <reified T : Any?> invoke(
         range: Iterable<T> = emptyList(),
@@ -50,14 +50,17 @@ class Fixture(val fixtureConfiguration: Configuration) {
         }
     }
 
+    @JvmOverloads
     fun create(clazz: Class<*>, configuration: Configuration = fixtureConfiguration): Any? {
         return create(clazz.kotlin, configuration)
     }
 
+    @JvmOverloads
     fun create(clazz: KClass<*>, configuration: Configuration = fixtureConfiguration): Any? {
         return create(clazz.starProjectedType, configuration)
     }
 
+    @JvmOverloads
     fun create(type: KType, configuration: Configuration = fixtureConfiguration): Any? {
         val result = ContextImpl(configuration).resolve(type)
         if (result is Unresolved) {
