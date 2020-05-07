@@ -25,9 +25,9 @@ apply(from = "$rootDir/bintray.gradle.kts")
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
+    api("io.kotlintest:kotlintest-runner-junit5:3.4.2")
 
     testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))

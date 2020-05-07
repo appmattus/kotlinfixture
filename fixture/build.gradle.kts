@@ -25,9 +25,9 @@ apply(from = "$rootDir/bintray.gradle.kts")
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:4.8.78")
-    implementation(kotlin("reflect"))
+    api(kotlin("stdlib-jdk8"))
+    api("io.github.classgraph:classgraph:4.8.78")
+    api(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:2.10.6")
     testImplementation("joda-time:joda-time:2.10.6")
