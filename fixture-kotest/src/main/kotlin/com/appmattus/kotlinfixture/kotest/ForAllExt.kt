@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("TooManyFunctions")
+
 package com.appmattus.kotlinfixture.kotest
 
 import com.appmattus.kotlinfixture.Fixture
