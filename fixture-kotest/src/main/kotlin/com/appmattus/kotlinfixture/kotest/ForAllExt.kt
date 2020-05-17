@@ -19,31 +19,42 @@
 package com.appmattus.kotlinfixture.kotest
 
 import com.appmattus.kotlinfixture.Fixture
+import io.kotest.matchers.shouldBe
 import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyContext
+import io.kotest.property.PropertyTesting
 import io.kotest.property.forAll
+import io.kotest.property.internal.proptest
 
 // 1 parameter
 
 suspend inline fun <reified A> Fixture.forAll(
-    noinline fn: PropertyContext.(a: A) -> Boolean
-) = forAll(kotestGen(), fn)
+    crossinline fn: suspend PropertyContext.(a: A) -> Boolean
+) = proptest(PropertyTesting.defaultIterationCount, kotestGen<A>(), PropTestConfig()) { a ->
+    fn(a) shouldBe true
+}
 
 suspend inline fun <reified A> Fixture.forAll(
     iterations: Int,
-    noinline fn: PropertyContext.(a: A) -> Boolean
-) = forAll(iterations, kotestGen(), fn)
+    crossinline fn: suspend PropertyContext.(a: A) -> Boolean
+) = proptest(iterations, kotestGen<A>(), PropTestConfig()) { a ->
+    fn(a) shouldBe true
+}
 
 suspend inline fun <reified A> Fixture.forAll(
     config: PropTestConfig,
-    noinline fn: PropertyContext.(a: A) -> Boolean
-) = forAll(config, kotestGen(), fn)
+    crossinline fn: suspend PropertyContext.(a: A) -> Boolean
+) = proptest(PropertyTesting.defaultIterationCount, kotestGen<A>(), config) { a ->
+    fn(a) shouldBe true
+}
 
 suspend inline fun <reified A> Fixture.forAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: PropertyContext.(a: A) -> Boolean
-) = forAll(iterations, config, kotestGen(), fn)
+    crossinline fn: suspend PropertyContext.(a: A) -> Boolean
+) = proptest(iterations, kotestGen<A>(), config) { a ->
+    fn(a) shouldBe true
+}
 
 // 2 parameters
 
