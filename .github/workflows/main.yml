@@ -26,7 +26,7 @@ jobs:
       with:
         java-version: 1.8
 
-    - name: setup gradle cache
+    - name: gradle cache
       uses: actions/cache@v1
       with:
         path: ~/.gradle/caches
@@ -34,7 +34,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-gradle-
 
-    - name: setup NVD CVE data cache
+    - name: gradle wrapper cache
+      uses: actions/cache@v1
+      with:
+        path: ~/.gradle/wrapper/dists
+        key: ${{ runner.os }}-gradlewrapper
+
+    - name: NVD CVE cache
       uses: actions/cache@v1
       with:
         path: ~/.gradle/dependency-check-data
