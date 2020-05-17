@@ -12,8 +12,8 @@ Include the following dependencies in your `build.gradle.kts` file:
 ```kotlin
 testImplementation("com.appmattus.fixture:fixture:<latest-version>")
 
-// Add for KotlinTest integration
-testImplementation("com.appmattus.fixture:fixture-kotlintest:<latest-version>")
+// Add for Kotest integration
+testImplementation("com.appmattus.fixture:fixture-kotest:<latest-version>")
 ```
 
 Simply create a fixture and invoke it with the type to be generated:
@@ -392,24 +392,25 @@ ktype kotlin.String →
     Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
 ```
 
-## KotlinTest support
+## Kotest support
 
-[KotlinTest](https://github.com/kotlintest/kotlintest/) supports
-[property testing](https://github.com/kotlintest/kotlintest/blob/master/doc/reference.md#property-based),
-but to use it with more than just the few basic types that are built into the
-library requires you to create your own custom generators that you then have to
-provide.
+[Kotest](https://github.com/kotest/kotest/) supports
+[property testing](https://github.com/kotest/kotest/blob/master/doc/reference.md#property-based-testing-),
+but to use it with more than just the few basic types that are built
+into the library requires you to create your own custom generators that
+you then have to provide.
 
-Including the `fixture-kotlintest` dependency in your project adds extension
-functions `assertAll`, `assertNone`, `forAll` and `forNone` to the fixture.
-These functions wrap the equivalent functions from KotlinTest while providing
-generation of all the classes [KotlinFixture](https://github.com/appmattus/kotlinfixture)
-supports. For example:
+Including the `fixture-kotest` dependency in your project adds extension
+functions `checkAll` and `forAll` to the fixture. These
+functions wrap the equivalent functions from Kotest while providing
+generation of all the classes
+[KotlinFixture](https://github.com/appmattus/kotlinfixture) supports.
+For example:
 
 ```kotlin
 data class Person(name: String, age: Int)
 
-fixture.assertAll { person1: Person, person2: Person ->
+fixture.checkAll { person1: Person, person2: Person ->
    person1 shouldNotBeSameInstanceAs person2
 }
 ```
