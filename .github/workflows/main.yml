@@ -38,7 +38,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.gradle/dependency-check-data
-        key: ${{ runner.os }}
+        key: ${{ runner.os }}-dependency-check-data
 
     - name: Build with Gradle
       run: ./gradlew assemble check --stacktrace
