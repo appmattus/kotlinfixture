@@ -16,139 +16,203 @@
 
 package com.appmattus.kotlinfixture.kotest
 
+import com.appmattus.kotlinfixture.Fixture
 import com.appmattus.kotlinfixture.kotlinFixture
+import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyTesting
 import kotlinx.coroutines.runBlocking
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.fail
 
+@RunWith(Parameterized::class)
 class CheckAllExtTest {
-    private val fixture = kotlinFixture()
 
-    @Test
-    fun `one param generates all random values`() = runBlocking {
-        val generatedData = mutableSetOf<Person>()
-        fixture.checkAll { person: Person ->
-            generatedData.add(person)
-        }
-
-        assertEquals(ITERATIONS, generatedData.size)
-    }
-
-    @Test
-    fun `one param succeeds when all values true`() {
-        runBlocking {
-            fixture.checkAll<Person> { }
-        }
-    }
-
-    @Test
-    fun `one param throws when all values false`() {
-        runBlocking {
-            assertFailsWith<AssertionError> {
-                fixture.checkAll<Person> { fail() }
-            }
-        }
-    }
-
-    @Test
-    fun `two param generates all random values`() {
-        runBlocking {
-            val generatedData = mutableSetOf<Person>()
-            fixture.checkAll { person1: Person, person2: Person ->
-                generatedData.add(person1)
-                generatedData.add(person2)
-            }
-
-            assertEquals(ITERATIONS * 2, generatedData.size)
-        }
-    }
-
-    @Test
-    fun `two params succeeds when all values true`() {
-        runBlocking {
-            fixture.checkAll { _: Person, _: Person -> }
-        }
-    }
-
-    @Test
-    fun `two params throws when all values false`() {
-        runBlocking {
-            assertFailsWith<AssertionError> {
-                fixture.checkAll { _: Person, _: Person -> fail() }
-            }
-        }
-    }
-
-    @Test
-    fun `three params succeeds when all values true`() {
-        runBlocking {
-            fixture.checkAll { _: Person, _: Person, _: Person -> }
-        }
-    }
-
-    @Test
-    fun `three params throws when all values false`() {
-        runBlocking {
-            assertFailsWith<AssertionError> {
-                fixture.checkAll { _: Person, _: Person, _: Person -> fail() }
-            }
-        }
-    }
-
-    @Test
-    fun `four params succeeds when all values true`() {
-        runBlocking {
-            fixture.checkAll { _: Person, _: Person, _: Person, _: Person -> }
-        }
-    }
-
-    @Test
-    fun `four params throws when all values false`() {
-        runBlocking {
-            assertFailsWith<AssertionError> {
-                fixture.checkAll { _: Person, _: Person, _: Person, _: Person -> fail() }
-            }
-        }
-    }
-
-    @Test
-    fun `five params succeeds when all values true`() {
-        runBlocking {
-            fixture.checkAll { _: Person, _: Person, _: Person, _: Person, _: Person -> }
-        }
-    }
-
-    @Test
-    fun `five params throws when all values false`() {
-        runBlocking {
-            assertFailsWith<AssertionError> {
-                fixture.checkAll { _: Person, _: Person, _: Person, _: Person, _: Person -> fail() }
-            }
-        }
-    }
-
-    @Test
-    fun `six params succeeds when all values true`() {
-        runBlocking {
-            fixture.checkAll { _: Person, _: Person, _: Person, _: Person, _: Person, _: Person -> }
-        }
-    }
-
-    @Test
-    fun `six params throws when all values false`() {
-        runBlocking {
-            assertFailsWith<AssertionError> {
-                fixture.checkAll { _: Person, _: Person, _: Person, _: Person, _: Person, _: Person -> fail() }
-            }
-        }
-    }
+    @Parameterized.Parameter(0)
+    lateinit var testCase: TestCase
 
     data class Person(val name: String, val age: Int)
 
+    data class TestCase(
+        val expectedCount: Int,
+        val block: suspend Fixture.(save: (person: List<Person>) -> Unit, result: () -> Unit) -> Unit
+    )
+
+    @Test
+    fun `param generates all random values`() {
+        runBlocking {
+            val generatedValues = mutableSetOf<Person>()
+
+            testCase.block(fixture, { generatedValues.addAll(it) }) { }
+
+            assertEquals(testCase.expectedCount, generatedValues.size)
+        }
+    }
+
+    @Test
+    fun `param succeeds when all values true`() {
+        runBlocking {
+            testCase.block(fixture, { }) { }
+        }
+    }
+
+    @Test
+    fun `param throws when all values false`() {
+        runBlocking {
+            assertFailsWith<AssertionError> {
+                testCase.block(fixture, { }) { fail() }
+            }
+        }
+    }
+
     companion object {
-        private val ITERATIONS = PropertyTesting.defaultIterationCount
+        private const val ITERATIONS = 10
+        private val fixture = kotlinFixture()
+
+        @JvmStatic
+        @Parameterized.Parameters
+        @Suppress("LongMethod")
+        fun data(): Array<TestCase> = arrayOf(
+
+            // 1 parameter
+
+            TestCase(PropertyTesting.defaultIterationCount) { save, result ->
+                checkAll<Person> { p1 -> save(listOf(p1)); result() }
+            },
+
+            TestCase(ITERATIONS) { save, result ->
+                checkAll<Person>(ITERATIONS) { p1 -> save(listOf(p1)); result() }
+            },
+
+            TestCase(PropertyTesting.defaultIterationCount) { save, result ->
+                checkAll<Person>(PropTestConfig()) { p1 -> save(listOf(p1)); result() }
+            },
+
+            TestCase(ITERATIONS) { save, result ->
+                checkAll<Person>(ITERATIONS, PropTestConfig()) { p1 -> save(listOf(p1)); result() }
+            },
+
+            // 2 parameters
+
+            TestCase(PropertyTesting.defaultIterationCount * 2) { save, result ->
+                checkAll<Person, Person> { p1, p2 -> save(listOf(p1, p2)); result() }
+            },
+
+            TestCase(ITERATIONS * 2) { save, result ->
+                checkAll<Person, Person>(ITERATIONS) { p1, p2 -> save(listOf(p1, p2)); result() }
+            },
+
+            TestCase(PropertyTesting.defaultIterationCount * 2) { save, result ->
+                checkAll<Person, Person>(PropTestConfig()) { p1, p2 -> save(listOf(p1, p2)); result() }
+            },
+
+            TestCase(ITERATIONS * 2) { save, result ->
+                checkAll<Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2 -> save(listOf(p1, p2)); result() }
+            },
+
+            // 3 parameters
+
+            TestCase(PropertyTesting.defaultIterationCount * 3) { save, result ->
+                checkAll<Person, Person, Person> { p1, p2, p3 -> save(listOf(p1, p2, p3)); result() }
+            },
+
+            TestCase(ITERATIONS * 3) { save, result ->
+                checkAll<Person, Person, Person>(ITERATIONS) { p1, p2, p3 -> save(listOf(p1, p2, p3)); result() }
+            },
+
+            TestCase(PropertyTesting.defaultIterationCount * 3) { save, result ->
+                checkAll<Person, Person, Person>(PropTestConfig()) { p1, p2, p3 ->
+                    save(listOf(p1, p2, p3)); result()
+                }
+            },
+
+            TestCase(ITERATIONS * 3) { save, result ->
+                checkAll<Person, Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2, p3 ->
+                    save(listOf(p1, p2, p3)); result()
+                }
+            },
+
+            // 4 parameters
+
+            TestCase(PropertyTesting.defaultIterationCount * 4) { save, result ->
+                checkAll<Person, Person, Person, Person> { p1, p2, p3, p4 -> save(listOf(p1, p2, p3, p4)); result() }
+            },
+
+            TestCase(ITERATIONS * 4) { save, result ->
+                checkAll<Person, Person, Person, Person>(ITERATIONS) { p1, p2, p3, p4 ->
+                    save(listOf(p1, p2, p3, p4)); result()
+                }
+            },
+
+            TestCase(PropertyTesting.defaultIterationCount * 4) { save, result ->
+                checkAll<Person, Person, Person, Person>(PropTestConfig()) { p1, p2, p3, p4 ->
+                    save(listOf(p1, p2, p3, p4)); result()
+                }
+            },
+
+            TestCase(ITERATIONS * 4) { save, result ->
+                checkAll<Person, Person, Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2, p3, p4 ->
+                    save(listOf(p1, p2, p3, p4)); result()
+                }
+            },
+
+            // 5 parameters
+
+            TestCase(PropertyTesting.defaultIterationCount * 5) { save, result ->
+                checkAll<Person, Person, Person, Person, Person> { p1, p2, p3, p4, p5 ->
+                    save(listOf(p1, p2, p3, p4, p5)); result()
+                }
+            },
+
+            TestCase(ITERATIONS * 5) { save, result ->
+                checkAll<Person, Person, Person, Person, Person>(ITERATIONS) { p1, p2, p3, p4, p5 ->
+                    save(listOf(p1, p2, p3, p4, p5)); result()
+                }
+            },
+
+            TestCase(PropertyTesting.defaultIterationCount * 5) { save, result ->
+                checkAll<Person, Person, Person, Person, Person>(PropTestConfig()) { p1, p2, p3, p4, p5 ->
+                    save(listOf(p1, p2, p3, p4, p5)); result()
+                }
+            },
+
+            TestCase(ITERATIONS * 5) { save, result ->
+                checkAll<Person, Person, Person, Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2, p3, p4, p5 ->
+                    save(listOf(p1, p2, p3, p4, p5)); result()
+                }
+            },
+
+            // 6 parameters
+
+            TestCase(PropertyTesting.defaultIterationCount * 6) { save, result ->
+                checkAll<Person, Person, Person, Person, Person, Person> { p1, p2, p3, p4, p5, p6 ->
+                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                }
+            },
+
+            TestCase(ITERATIONS * 6) { save, result ->
+                checkAll<Person, Person, Person, Person, Person, Person>(ITERATIONS) { p1, p2, p3, p4, p5, p6 ->
+                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                }
+            },
+
+            TestCase(PropertyTesting.defaultIterationCount * 6) { save, result ->
+                checkAll<Person, Person, Person, Person, Person, Person>(PropTestConfig()) { p1, p2, p3, p4, p5, p6 ->
+                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                }
+            },
+
+            TestCase(ITERATIONS * 6) { save, result ->
+                checkAll<Person, Person, Person, Person, Person, Person>(
+                    ITERATIONS,
+                    PropTestConfig()
+                ) { p1, p2, p3, p4, p5, p6 ->
+                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                }
+            }
+        )
     }
 }
