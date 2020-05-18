@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,9 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.kotlintest
+package com.appmattus.kotlinfixture.kotest
 
 import com.appmattus.kotlinfixture.Fixture
-import io.kotlintest.properties.Gen
-import kotlin.reflect.KType
+import io.kotest.property.arbitrary.arb
 
-class KotlinTestGenerator(private val kotlinFixture: Fixture, private val type: KType) : Gen<Any?> {
-    override fun constants() = emptyList<Any?>()
-    override fun random() = generateSequence {
-        kotlinFixture.create(type, kotlinFixture.fixtureConfiguration)
-    }
-}
+inline fun <reified T> Fixture.kotestGen() = arb { asSequence<T>() }
