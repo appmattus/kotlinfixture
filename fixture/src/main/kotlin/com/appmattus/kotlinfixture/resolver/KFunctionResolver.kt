@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.DefaultGenerator
 import com.appmattus.kotlinfixture.createUnresolved
 import com.appmattus.kotlinfixture.decorator.optional.OptionalStrategy
 import com.appmattus.kotlinfixture.decorator.optional.RandomlyOptionalStrategy
@@ -36,16 +35,16 @@ internal class KFunctionResolver : Resolver {
             val overrides = context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
 
             val parameters = obj.function.parameters.associateWith {
-                if (it.kind == KParameter.Kind.VALUE) {
-                    if (it.name in overrides) {
-                        overrides[it.name]?.invoke(DefaultGenerator(context))
-                    } else {
-                        context.resolve(it.type)
+                when (it.kind) {
+                    KParameter.Kind.VALUE -> {
+                        context.resolve(KNamedPropertyRequest(it.name, obj.containingClass, it.type))
                     }
-                } else if (it.kind == KParameter.Kind.INSTANCE) {
-                    obj.containingClass.companionObjectInstance
-                } else {
-                    throw IllegalStateException("Unsupported parameter type: $it")
+                    KParameter.Kind.INSTANCE -> {
+                        obj.containingClass.companionObjectInstance
+                    }
+                    else -> {
+                        throw IllegalStateException("Unsupported parameter type: $it")
+                    }
                 }
             }.filterKeys {
                 with(context) {

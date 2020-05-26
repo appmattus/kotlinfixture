@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,6 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.config.GeneratorFun
-import com.appmattus.kotlinfixture.config.DefaultGenerator
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KMutableProperty
@@ -34,7 +32,7 @@ internal interface PopulateInstance {
         val context: Context,
         val obj: KClass<*>,
         val constructorParameterNames: Set<String?>,
-        val overrides: Map<String, GeneratorFun>
+        val callingClass: KClass<*>
     )
 
     fun populatePropertiesAndSetters(
@@ -42,8 +40,7 @@ internal interface PopulateInstance {
         result: Any?
     ): Boolean {
         return try {
-            populateKotlinProperties(callContext, result) &&
-                    populateJavaSetters(callContext, result)
+            populateKotlinProperties(callContext, result) && populateJavaSetters(callContext, result)
         } catch (expected: Error) {
             // If retrieving setters fails we fail regardless of constructor used
             false
@@ -60,11 +57,9 @@ internal interface PopulateInstance {
             val name = it.name.removePrefix("set").decapitalize()
             callContext.constructorParameterNames.contains(name)
         }.forEach {
-            val propertyResult = if (it.name in callContext.overrides) {
-                callContext.overrides[it.name]?.invoke(DefaultGenerator(callContext.context))
-            } else {
-                callContext.context.resolve(it.valueParameters[0].type)
-            }
+            val propertyResult = callContext.context.resolve(
+                KNamedPropertyRequest(it.name, callContext.callingClass, it.valueParameters[0].type)
+            )
 
             if (propertyResult is Unresolved) {
                 return false
@@ -83,11 +78,9 @@ internal interface PopulateInstance {
         callContext.obj.settableMutableProperties()
             .filterNot { callContext.constructorParameterNames.contains(it.name) }
             .forEach { property ->
-                val propertyResult = if (property.name in callContext.overrides) {
-                    callContext.overrides[property.name]?.invoke(DefaultGenerator(callContext.context))
-                } else {
-                    callContext.context.resolve(property.returnType)
-                }
+                val propertyResult = callContext.context.resolve(
+                    KNamedPropertyRequest(property.name, callContext.callingClass, property.returnType)
+                )
 
                 if (propertyResult is Unresolved) {
                     return false
