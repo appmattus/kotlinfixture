@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,10 +42,10 @@ class FactoryMethodResolver : Resolver, PopulateInstance {
                     if (result !is Unresolved) {
                         if (result != null) {
                             val callContext = PopulateInstance.CallContext(
-                                context,
-                                result::class,
+                                context = context,
+                                obj = result::class,
                                 constructorParameterNames = emptySet(),
-                                overrides = context.configuration.properties.getOrElse(obj) { emptyMap() }
+                                callingClass = obj
                             )
 
                             populatePropertiesAndSetters(callContext, result)

@@ -44,6 +44,7 @@ import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.JodaTimeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
+import com.appmattus.kotlinfixture.resolver.KNamedPropertyResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
 import com.appmattus.kotlinfixture.resolver.LocaleResolver
 import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
@@ -131,6 +132,7 @@ data class Configuration(
             MapKTypeResolver(),
 
             KTypeResolver(),
+            KNamedPropertyResolver(),
             KFunctionResolver(),
 
             AbstractClassResolver(),
