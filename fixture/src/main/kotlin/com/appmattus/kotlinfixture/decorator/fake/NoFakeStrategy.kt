@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.decorator.fake
+
+import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.Unresolved
+
+object NoFakeStrategy : FakeStrategy {
+    override fun fake(context: Context, propertyName: String) = Unresolved.Unhandled
+}

@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
+
+import com.github.javafaker.Internet
+
+@Suppress("unused")
+enum class UserAgent(internal val userAgent: Internet.UserAgent?) {
+    Any(null),
+
+    Aol(Internet.UserAgent.AOL),
+    Chrome(Internet.UserAgent.CHROME),
+    Firefox(Internet.UserAgent.FIREFOX),
+    InternetExplorer(Internet.UserAgent.INTERNET_EXPLORER),
+    Netscape(Internet.UserAgent.NETSCAPE),
+    Opera(Internet.UserAgent.OPERA),
+    Safari(Internet.UserAgent.SAFARI)
+}

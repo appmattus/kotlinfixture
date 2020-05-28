@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
+package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
+
+data class Password(
+    val minimumLength: Int = 8,
+    val maximumLength: Int = 16,
+    val includeUppercase: Boolean = true,
+    val includeSpecial: Boolean = true,
+    val includeDigit: Boolean = true
 )
