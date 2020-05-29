@@ -221,7 +221,7 @@ data class JavaFakerConfiguration(
     }
 }
 
-fun ConfigurationBuilder.javaFakerStrategy(configuration: JavaFakerBuilder.() -> Unit = {}) {
+fun ConfigurationBuilder.javaFakerStrategy(configuration: JavaFakerConfigurationBuilder.() -> Unit = {}) {
     fakeStrategy(
         (fakeStrategy as? JavaFakerStrategy)?.new(configuration) ?: JavaFakerStrategy().new(configuration)
     )

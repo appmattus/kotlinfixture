@@ -23,7 +23,7 @@ import com.github.javafaker.Faker
 import kotlin.random.asJavaRandom
 
 open class JavaFakerStrategy(
-    private val fakerConfiguration: JavaFakerConfiguration = JavaFakerBuilder(
+    private val fakerConfiguration: JavaFakerConfiguration = JavaFakerConfigurationBuilder(
         JavaFakerConfiguration()
     ).build()
 ) : FakeStrategy {
@@ -33,9 +33,9 @@ open class JavaFakerStrategy(
         return func(Faker(fakerConfiguration.locale, context.random.asJavaRandom()), fakerConfiguration)
     }
 
-    fun new(configuration: JavaFakerBuilder.() -> Unit = {}) =
+    fun new(configuration: JavaFakerConfigurationBuilder.() -> Unit = {}) =
         JavaFakerStrategy(
-            JavaFakerBuilder(
+            JavaFakerConfigurationBuilder(
                 fakerConfiguration
             ).apply(configuration).build()
         )
