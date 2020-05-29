@@ -38,7 +38,7 @@ data class JavaFakerConfiguration(
     val password: Password = Password(),
     val temperature: Temperature = Temperature.Celsius,
     val userAgent: UserAgent = UserAgent.Any,
-    val map: Map<String, Faker.(JavaFakerConfiguration) -> Any?> = defaultMap
+    val properties: Map<String, Faker.(JavaFakerConfiguration) -> Any?> = defaultMap
 ) {
     private companion object {
 

@@ -29,7 +29,7 @@ open class JavaFakerStrategy(
 ) : FakeStrategy {
 
     override fun fake(context: Context, propertyName: String): Any? {
-        val func = fakerConfiguration.map.getOrElse(propertyName) { { Unresolved.Unhandled } }
+        val func = fakerConfiguration.properties.getOrElse(propertyName) { { Unresolved.Unhandled } }
         return func(Faker(fakerConfiguration.locale, context.random.asJavaRandom()), fakerConfiguration)
     }
 

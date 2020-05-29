@@ -16,28 +16,73 @@
 
 package com.appmattus.kotlinfixture.decorator.fake.javafaker
 
+import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.CreditCard
+import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.Temperature
+import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.UserAgent
+import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.IpAddress
 import com.appmattus.kotlinfixture.toUnmodifiableMap
 import com.github.javafaker.Faker
+import java.util.Locale
 
 class JavaFakerBuilder(javaFakerConfiguration: JavaFakerConfiguration) {
 
+    /**
+     * Generate `creditCard` properties in the style of the selected credit card company. See [CreditCard] for options.
+     * Default: A credit card number from any company.
+     */
     var creditCard = javaFakerConfiguration.creditCard
+
+    /**
+     * Generate `ipAddress` properties using [IpAddress.V4] or [IpAddress.V6] style.
+     * Default: [IpAddress.V4]
+     */
     var ipAddress = javaFakerConfiguration.ipAddress
+
+    /**
+     * Generate `isbn10` properties with or without separators.
+     * Default: false - without separators.
+     */
     var isbn10Separator = javaFakerConfiguration.isbn10Separator
+
+    /**
+     * Generate `isbn13` properties with or without separators.
+     * Default: false - without separators.
+     */
     var isbn13Separator = javaFakerConfiguration.isbn13Separator
+
+    /**
+     * The [Locale] used to generate fake data.
+     * Default: [Locale.ENGLISH]
+     */
     var locale = javaFakerConfiguration.locale
+
+    /**
+     * Generate `password` properties using digits, uppercase, special characters or a combination, and a minimum and
+     * maximum length.
+     * Default: digits, uppercase and special characters between 8 and 16 characters in length.
+     */
     var password = javaFakerConfiguration.password
+
+    /**
+     * Generate `temperature` properties using [Temperature.Celsius] or [Temperature.Fahrenheit].
+     * Default: [Temperature.Celsius]
+     */
     var temperature = javaFakerConfiguration.temperature
+
+    /**
+     * Generate `userAgent` properties in the style of the selected browser. See [UserAgent] for options.
+     * Default: [UserAgent.Any], simulating any browser.
+     */
     var userAgent = javaFakerConfiguration.userAgent
 
-    private val map = javaFakerConfiguration.map.toMutableMap()
+    private val properties = javaFakerConfiguration.properties.toMutableMap()
 
-    fun remove(name: String) {
-        map.remove(name)
+    fun removeProperty(propertyName: String) {
+        properties.remove(propertyName)
     }
 
-    fun put(name: String, fakeGenerator: Faker.(JavaFakerConfiguration) -> Any?) {
-        map[name] = fakeGenerator
+    fun putProperty(propertyName: String, fakeGenerator: Faker.(JavaFakerConfiguration) -> Any?) {
+        properties[propertyName] = fakeGenerator
     }
 
     fun build() = JavaFakerConfiguration(
@@ -49,6 +94,6 @@ class JavaFakerBuilder(javaFakerConfiguration: JavaFakerConfiguration) {
         password = password,
         temperature = temperature,
         userAgent = userAgent,
-        map = map.toUnmodifiableMap()
+        properties = properties.toUnmodifiableMap()
     )
 }
