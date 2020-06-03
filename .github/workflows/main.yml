@@ -47,7 +47,7 @@ jobs:
         key: ${{ runner.os }}-dependency-check-data
 
     - name: Build with Gradle
-      run: ./gradlew assemble check --stacktrace
+      run: ./gradlew --build-cache assemble check --stacktrace
 
     - name: Set tag version
       run: echo ::set-env name=CIRCLE_TAG::$(echo ${GITHUB_REF:10})
