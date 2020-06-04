@@ -18,7 +18,13 @@ subprojects {
 
         analyzers.assemblyEnabled = false
 
-        skipConfigurations = listOf("lintClassPath", "jacocoAgent", "jacocoAnt", "kotlinCompilerClasspath", "kotlinCompilerPluginClasspath")
+        skipConfigurations = listOf(
+            "lintClassPath",
+            "jacocoAgent",
+            "jacocoAnt",
+            "kotlinCompilerClasspath",
+            "kotlinCompilerPluginClasspath"
+        )
     }
 
     afterEvaluate {
