@@ -22,7 +22,6 @@ import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.KNamedPropertyRequest
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.strategyOrDefault
-import kotlin.reflect.KClass
 
 internal class FakeDecorator : Decorator {
 
@@ -41,11 +40,6 @@ internal class FakeDecorator : Decorator {
 
                 if (obj.name != null && !overrides.containsKey(obj.name)) {
                     strategy.fake(context, obj.name)?.takeIf { it != Unresolved.Unhandled }?.let {
-
-                        println(it::class)
-                        println(obj.type)
-                        println((obj.type.classifier as KClass<*>).isInstance(it))
-
                         return it
                     }
                 }

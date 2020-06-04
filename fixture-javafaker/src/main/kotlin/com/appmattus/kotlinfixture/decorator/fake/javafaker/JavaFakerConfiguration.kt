@@ -176,7 +176,8 @@ data class JavaFakerConfiguration(
             entry("password") {
                 internet().password(
                     it.password.minimumLength,
-                    it.password.maximumLength,
+                    // Work around for https://github.com/DiUS/java-faker/issues/498
+                    it.password.maximumLength + 1,
                     it.password.includeUppercase,
                     it.password.includeSpecial,
                     it.password.includeDigit
