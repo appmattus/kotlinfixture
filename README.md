@@ -445,6 +445,26 @@ data class Person(val name: String, val age: Long)
 println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
 ```
 
+### Regex to String generation
+
+The module also introduces the ability to generate a random string from
+a Regex, with no need to enable the faker functionality:
+
+```kotlin
+        data class DataClass(val index: String, val value: String)
+
+        val indexRegex = "[a-z][0-9]".toRegex()
+        val valueRegex = "[A-Z]{3}".toRegex()
+        
+        val fixture = kotlinFixture {
+            factory<String> { regexify(indexRegex) }
+
+            property(DataClass::value) { regexify(valueRegex) }
+        }
+
+        println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
+```
+s
 ## Contributing
 
 Please fork this repository and contribute back using
