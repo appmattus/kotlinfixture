@@ -455,7 +455,7 @@ a Regex, with no need to enable the faker functionality:
 
         val indexRegex = "[a-z][0-9]".toRegex()
         val valueRegex = "[A-Z]{3}".toRegex()
-        
+
         val fixture = kotlinFixture {
             factory<String> { regexify(indexRegex) }
 
@@ -464,7 +464,7 @@ a Regex, with no need to enable the faker functionality:
 
         println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
 ```
-s
+
 ## Contributing
 
 Please fork this repository and contribute back using
