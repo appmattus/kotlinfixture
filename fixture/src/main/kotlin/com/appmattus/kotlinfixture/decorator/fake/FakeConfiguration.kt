@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.decorator.fake
+
+import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+
+fun ConfigurationBuilder.fakeStrategy(strategy: FakeStrategy) {
+    strategies[FakeStrategy::class] = strategy
+}
+
+val ConfigurationBuilder.fakeStrategy: FakeStrategy?
+    get() = strategies[FakeStrategy::class] as? FakeStrategy

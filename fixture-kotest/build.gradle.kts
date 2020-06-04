@@ -27,7 +27,7 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("io.kotest:kotest-property-jvm:4.0.5")
+    api("io.kotest:kotest-property-jvm:4.0.6")
 
     testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))
@@ -35,7 +35,7 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     testImplementation(kotlin("reflect"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.6")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7")
 }
 
 lintOptions {

@@ -1,4 +1,5 @@
 import org.owasp.dependencycheck.gradle.DependencyCheckPlugin
+import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 
 buildscript {
     repositories {
@@ -11,6 +12,20 @@ buildscript {
 
 subprojects {
     apply<DependencyCheckPlugin>()
+
+    configure<DependencyCheckExtension> {
+        failBuildOnCVSS = 0f
+
+        analyzers.assemblyEnabled = false
+
+        skipConfigurations = listOf(
+            "lintClassPath",
+            "jacocoAgent",
+            "jacocoAnt",
+            "kotlinCompilerClasspath",
+            "kotlinCompilerPluginClasspath"
+        )
+    }
 
     afterEvaluate {
         tasks.getByName("check").dependsOn(tasks.getByName("dependencyCheckAnalyze"))

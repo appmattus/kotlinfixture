@@ -14,6 +14,9 @@ testImplementation("com.appmattus.fixture:fixture:<latest-version>")
 
 // Add for Kotest integration
 testImplementation("com.appmattus.fixture:fixture-kotest:<latest-version>")
+
+// Add for Java Faker integration
+testImplementation("com.appmattus.fixture:fixture-javafaker:<latest-version>")
 ```
 
 Simply create a fixture and invoke it with the type to be generated:
@@ -413,6 +416,53 @@ data class Person(name: String, age: Int)
 fixture.checkAll { person1: Person, person2: Person ->
    person1 shouldNotBeSameInstanceAs person2
 }
+```
+
+## Java Faker support
+
+The [Java Faker](http://dius.github.io/java-faker/) library generates
+fake data, useful if you need to generate objects with pretty data.
+
+Including the `fixture-javafaker` dependency in your project adds a
+`javaFakerStrategy` which will use
+[Java Faker](http://dius.github.io/java-faker/) to populate named
+properties such as `name`, `city` and `phoneNumber`. A full list of
+supported properties and how they map to
+[Java Faker](http://dius.github.io/java-faker/) can be found in
+[JavaFakerConfiguration](fixture-javafaker/src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfiguration.kt).
+
+Additionally, the `javaFakerStrategy` function allows you to override
+faker settings such as `locale`.
+
+```kotlin
+
+val fixture = kotlinFixture {
+    javaFakerStrategy()
+}
+
+data class Person(val name: String, val age: Long)
+
+println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
+```
+
+### Regex to String generation
+
+The module also introduces the ability to generate a random string from
+a Regex, with no need to enable the faker functionality:
+
+```kotlin
+        data class DataClass(val index: String, val value: String)
+
+        val indexRegex = "[a-z][0-9]".toRegex()
+        val valueRegex = "[A-Z]{3}".toRegex()
+
+        val fixture = kotlinFixture {
+            factory<String> { regexify(indexRegex) }
+
+            property(DataClass::value) { regexify(valueRegex) }
+        }
+
+        println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
 ```
 
 ## Contributing

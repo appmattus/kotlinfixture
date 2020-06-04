@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.decorator.fake
+
+import com.appmattus.kotlinfixture.Context
+
+interface FakeStrategy {
+    fun fake(context: Context, propertyName: String): Any?
+}

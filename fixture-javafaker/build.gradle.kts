@@ -26,34 +26,23 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
     api(kotlin("stdlib-jdk8"))
-    api("io.github.classgraph:classgraph:4.8.80")
-    api(kotlin("reflect"))
-
-    compileOnly("joda-time:joda-time:2.10.6")
-    testImplementation("joda-time:joda-time:2.10.6")
-
-    compileOnly("org.threeten:threetenbp:1.4.4")
-    testImplementation("org.threeten:threetenbp:1.4.4")
-
-    compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
+    api(project(":fixture"))
+    api("com.github.javafaker:javafaker:1.0.2")
 
     testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
-    // Used for ComparisonTest
-    @Suppress("GradleDependency")
-    testImplementation("com.github.marcellogalhardo:kotlin-fixture:0.0.2")
-    testImplementation("com.flextrade.jfixture:kfixture:0.2.0")
-    testImplementation("org.jeasy:easy-random-core:4.2.0")
+    testImplementation(kotlin("reflect"))
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7")
 }
 
 lintOptions {
     isAbortOnError = true
     isWarningsAsErrors = true
-    htmlOutput = file("$buildDir/reports/lint-results.html")
-    xmlOutput = file("$buildDir/reports/lint-results.xml")
+    htmlOutput = file("${buildDir}/reports/lint-results.html")
+    xmlOutput = file("${buildDir}/reports/lint-results.xml")
 }
 
 java {

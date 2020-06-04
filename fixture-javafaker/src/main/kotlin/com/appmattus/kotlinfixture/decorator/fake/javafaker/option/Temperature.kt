@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
+
+enum class Temperature {
+    Celsius,
+    Fahrenheit
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2019 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture
+
+import kotlin.test.fail
+
+fun assertIsRandom(block: () -> Any?) {
+    val initial = block()
+
+    repeat(1000) {
+        if (initial != block()) return
+    }
+
+    fail("Value always equal to $initial")
+}
+
+fun assertNone(iterations: Int = 1000, block: () -> Boolean) {
+    repeat(iterations) {
+        if (block()) fail("Value is true")
+    }
+}

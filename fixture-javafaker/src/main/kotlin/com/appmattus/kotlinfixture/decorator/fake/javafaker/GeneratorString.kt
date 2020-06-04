@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.decorator.fake.javafaker
+
+import com.appmattus.kotlinfixture.config.Generator
+import com.github.javafaker.Faker
+import kotlin.random.asJavaRandom
+
+@Suppress("SpellCheckingInspection")
+fun Generator<String>.regexify(regex: String): String {
+    return Faker(random.asJavaRandom()).regexify(regex)
+}
+
+@Suppress("SpellCheckingInspection")
+fun Generator<String>.regexify(regex: Regex): String {
+    return regexify(regex.pattern)
+}
