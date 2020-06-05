@@ -1,9 +1,6 @@
 = Configuration options
 :toc:
-#:toc-title: Options
 
-#mnbnb
-mnn
 The default configuration can be overridden when creating the fixture object or
 when creating a particular implementation.
 
@@ -25,7 +22,6 @@ println(fixture<Int>()) // <2>
 ----
 <1> Prints 100
 <2> Prints 3
-
 
 == repeatCount
 

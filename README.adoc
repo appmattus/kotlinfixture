@@ -3,7 +3,6 @@ Appmattus Limited <info@appmattus.com>
 :toc:
 :homepage: https://github.com/appmattus/kotlinfixture
 
-
 https://bintray.com/appmattus/maven/fixture/_latestVersion[image:https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg[Download]]
 https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg[CI status]]
 https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
@@ -62,13 +61,14 @@ val oddNumber = oddIterator.next()
 val anotherOddNumber = oddIterator.next()
 
 // Or, ensure it returns only distinct values
-// NOTE: As the sequence is infinite, distinct will hang if no more
-// distinct values can be generated
 enum class XYZ { X, Y, Z }
 val enumIterator = fixture.asSequence<XYZ>().distinct().iterator()
 val aDistinctValue = enumIterator.next()
 val anotherDistinctValue = enumIterator.next()
 ----
+
+WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
+
 
 Everything can be customised, see link:docs/configuration-options.adoc[configuration options] for more details.
 
