@@ -1,5 +1,6 @@
 = Configuration options
 :toc:
+:toc-title:
 
 The default configuration can be overridden when creating the fixture object or
 when creating a particular implementation.
@@ -7,7 +8,7 @@ when creating a particular implementation.
 It is possible to create a new fixture based on an existing one, which allows
 the addition of configuration changes:
 
-[source,kotlin,subs=+quotes]
+[source,kotlin]
 ----
 val baseFixture = kotlinFixture {
     factory<Int> { 3 }
@@ -17,8 +18,8 @@ val fixture = baseFixture.new {
     factory<Long> { 100L }
 }
 
-println(fixture<Long>()) // *Prints 100*
-println(fixture<Int>()) // *Prints 3*
+println(fixture<Long>()) // Prints 100
+println(fixture<Int>()) // Prints 3
 ----
 
 == repeatCount
