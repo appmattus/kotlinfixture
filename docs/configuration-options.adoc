@@ -7,7 +7,7 @@ when creating a particular implementation.
 It is possible to create a new fixture based on an existing one, which allows
 the addition of configuration changes:
 
-[source,kotlin]
+[source,kotlin,subs=+quotes]
 ----
 val baseFixture = kotlinFixture {
     factory<Int> { 3 }
@@ -17,11 +17,9 @@ val fixture = baseFixture.new {
     factory<Long> { 100L }
 }
 
-println(fixture<Long>()) // <1>
-println(fixture<Int>()) // <2>
+println(fixture<Long>()) // *Prints 100*
+println(fixture<Int>()) // *Prints 3*
 ----
-<1> Prints 100
-<2> Prints 3
 
 == repeatCount
 
