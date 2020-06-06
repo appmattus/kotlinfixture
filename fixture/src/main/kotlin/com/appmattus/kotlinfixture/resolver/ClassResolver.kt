@@ -19,6 +19,9 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.createUnresolved
+import com.appmattus.kotlinfixture.decorator.constructor.ConstructorStrategy
+import com.appmattus.kotlinfixture.decorator.constructor.RandomConstructorStrategy
+import com.appmattus.kotlinfixture.strategyOrDefault
 import kotlin.reflect.KClass
 
 internal class ClassResolver : Resolver, PopulateInstance {
@@ -33,7 +36,9 @@ internal class ClassResolver : Resolver, PopulateInstance {
                 callingClass = obj
             )
 
-            val results = obj.constructors.shuffled().map { constructor ->
+            val constructorStrategy = context.strategyOrDefault<ConstructorStrategy>(RandomConstructorStrategy)
+
+            val results = constructorStrategy.constructors(context, obj).map { constructor ->
                 val result = context.resolve(KFunctionRequest(obj, constructor))
                 if (result !is Unresolved) {
                     return if (populatePropertiesAndSetters(callContext, result)) {

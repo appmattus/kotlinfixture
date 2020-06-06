@@ -395,6 +395,42 @@ ktype kotlin.String →
     Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
 ```
 
+#### constructorStrategy
+
+By default when the library generates an instance of a class it picks a
+constructor at random. This can be overridden by setting a constructor
+strategy.
+
+```kotlin
+val fixture = kotlinFixture {
+    constructorStrategy(ModestConstructorStrategy)
+}
+```
+
+The following strategies are built in:
+
+- [RandomConstructorStrategy](fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt),
+  order constructors by random.
+
+- [ModestConstructorStrategy](fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt),
+  order constructors by the most modest constructor first. i.e. fewer
+  parameters returned first.
+
+- [GreedyConstructorStrategy](fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt),
+  order constructors by the most greedy constructor first. i.e. greater
+  parameters returned first.
+
+- [ArrayFavouringConstructorStrategy](fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt),
+  order constructors selecting those with the most parameters of
+  Array<*> before any other.
+
+- [ListFavouringConstructorStrategy](fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt),
+  order constructors selecting those with the most parameters of List<*>
+  before any other.
+
+It is also possible to define and implement your own constructor
+strategy by implementing `ConstructorStrategy` and applying it as above.
+
 ## Kotest support
 
 [Kotest](https://github.com/kotest/kotest/) supports
