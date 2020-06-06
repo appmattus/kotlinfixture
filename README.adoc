@@ -1,12 +1,22 @@
 = KotlinFixture
 Appmattus Limited <info@appmattus.com>
 :toc:
+:toc-placement!:
 :homepage: https://github.com/appmattus/kotlinfixture
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 https://bintray.com/appmattus/maven/fixture/_latestVersion[image:https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg[Download]]
 https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg[CI status]]
 https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
+
+toc::[]
 
 == Getting started
 
@@ -68,7 +78,6 @@ val anotherDistinctValue = enumIterator.next()
 ----
 
 WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
-
 
 Everything can be customised, see link:docs/configuration-options.adoc[configuration options] for more details.
 
