@@ -22,6 +22,9 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
+import com.appmattus.kotlinfixture.decorator.constructor.ConstructorStrategy
+import com.appmattus.kotlinfixture.decorator.constructor.GreedyConstructorStrategy
+import com.appmattus.kotlinfixture.decorator.constructor.ModestConstructorStrategy
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -101,6 +104,42 @@ class ClassResolverTest {
                 result.constructorCalled
             }
         }
+    }
+
+    @Test
+    fun `Class with multiple constructors uses seeded random`() {
+        val value1 =
+            (context.seedRandom().resolve(MultipleConstructors::class) as MultipleConstructors).constructorCalled
+        val value2 =
+            (context.seedRandom().resolve(MultipleConstructors::class) as MultipleConstructors).constructorCalled
+
+        assertEquals(value1, value2)
+    }
+
+    @Test
+    fun `Class with multiple constructors using modest strategy picks primary constructor`() {
+        val strategy = context.copy(
+            configuration = context.configuration.copy(
+                strategies = mapOf(ConstructorStrategy::class to ModestConstructorStrategy)
+            )
+        )
+
+        val value = (strategy.resolve(MultipleConstructors::class) as MultipleConstructors).constructorCalled
+
+        assertEquals("primary", value)
+    }
+
+    @Test
+    fun `Class with multiple constructors using greedy strategy picks secondary constructor`() {
+        val strategy = context.copy(
+            configuration = context.configuration.copy(
+                strategies = mapOf(ConstructorStrategy::class to GreedyConstructorStrategy)
+            )
+        )
+
+        val value = (strategy.resolve(MultipleConstructors::class) as MultipleConstructors).constructorCalled
+
+        assertEquals("secondary", value)
     }
 
     @Test
