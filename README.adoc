@@ -21,7 +21,7 @@ link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg
 Include the following dependency in your `build.gradle.kts` file:
 
 [source,kotlin]
-.build.gradle.kts
+._build.gradle.kts_
 ----
 testImplementation("com.appmattus.fixture:fixture:<latest-version>")
 ----
