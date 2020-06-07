@@ -36,7 +36,7 @@ println(fixture<Int> {
 <2> Create a new fixture based on an existing one, allowing overriding configuration.
 <3> Configuration can also be overridden when creating a particular object.
 
-== List and map length - `repeatCount`
+== `repeatCount` - List and map length
 
 Used to determine the length used for lists and maps. By default, the library generates 5 items.
 
@@ -59,7 +59,7 @@ repeatCount {
 }
 ----
 
-== subType
+== `subType` - Subclass used when resolving a superclass
 
 Used to always return an instance of a particular subclass for a superclass.
 
@@ -77,7 +77,7 @@ val alwaysFloat = fixture<Number> {
 }
 ----
 
-== factory
+== `factory` - Customise generation of a class
 
 Used to return the given instance for a particular class using a factory
 method.
@@ -140,37 +140,7 @@ val futureDate = fixture<Date> {
 }
 ----
 
-== filter
-
-Used to allow generated values to be filtered using standard sequence
-functions.
-
-[source,kotlin]
-----
-val fixture = kotlinFixture {
-    filter<Int> {
-        filter { it % 2 == 0 }
-    }
-
-    // Can be used to return distinct values.
-    filter<String> {
-        distinct()
-    }
-}
-
-val evenNumber = fixture<Int>()
-
-val evenNumberLessThan100 = fixture<Int> {
-    // Overrides the parent configuration
-    filter<Int> {
-        filter { it < 100 }
-    }
-}
-----
-
-WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
-
-== property
+== `property` - Customise generation of class properties
 
 Used to override constructor parameters or mutable properties when generating
 instances of generic classes.
@@ -228,9 +198,39 @@ val fixture = kotlinFixture {
 }
 ----
 
-== random
+== filter
 
-By default a `Random` class is used that will generate unique values between
+Used to allow generated values to be filtered using standard sequence
+functions.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    filter<Int> {
+        filter { it % 2 == 0 }
+    }
+
+    // Can be used to return distinct values.
+    filter<String> {
+        distinct()
+    }
+}
+
+val evenNumber = fixture<Int>()
+
+val evenNumberLessThan100 = fixture<Int> {
+    // Overrides the parent configuration
+    filter<Int> {
+        filter { it < 100 }
+    }
+}
+----
+
+WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
+
+== `random` - Providing a seed for `Random`
+
+By default, a `Random` class is used that will generate unique values between
 runs. If you want repeatability you can specify a seeded `Random` instance.
 
 [source,kotlin]
@@ -240,12 +240,10 @@ val fixture = kotlinFixture {
 }
 
 val alwaysTheSame = fixture<Int>()
-
-// Can be specified on creation, but makes the result static
-val aStaticValue = fixture<Int> {
-    random = Random(seed = 5)
-}
 ----
+
+NOTE: While you can specify `random` at object creation, this will make the result static
+i.e. `fixture<Int> { random = Random(seed = 5) }` will always return the same value.
 
 == nullabilityStrategy
 
