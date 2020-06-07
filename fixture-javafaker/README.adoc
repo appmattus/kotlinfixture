@@ -1,14 +1,14 @@
 == Java Faker support
 
+The http://dius.github.io/java-faker/[Java Faker] library generates
+fake data, useful if you need to generate objects with pretty data.
+
 [source,kotlin]
 ._build.gradle.kts_
 ----
 // Add for Java Faker integration
 testImplementation("com.appmattus.fixture:fixture-javafaker:<latest-version>")
 ----
-
-The http://dius.github.io/java-faker/[Java Faker] library generates
-fake data, useful if you need to generate objects with pretty data.
 
 Including the `fixture-javafaker` dependency in your project adds a
 `javaFakerStrategy` which will use
