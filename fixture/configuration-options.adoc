@@ -36,7 +36,7 @@ println(fixture<Int> {
 <2> Create a new fixture based on an existing one, allowing overriding configuration.
 <3> Configuration can also be overridden when creating a particular object.
 
-== `repeatCount` - List and map length
+== Setting list and map length with `repeatCount`
 
 Used to determine the length used for lists and maps. By default, the library generates 5 items.
 
@@ -59,7 +59,7 @@ repeatCount {
 }
 ----
 
-== `subType` - Subclass used when resolving a superclass
+== Resolving abstract superclasses to a chosen subclass with `subType`
 
 Used to always return an instance of a particular subclass for a superclass.
 
@@ -77,7 +77,7 @@ val alwaysFloat = fixture<Number> {
 }
 ----
 
-== `factory` - Customise generation of a class
+== Customising class generation with `factory`
 
 Used to return the given instance for a particular class using a factory
 method.
@@ -112,7 +112,7 @@ factory<Number> {
 
 === Date and Calendar instances
 
-By default `Date` and `Calendar` instances pick a date within 10 years of
+By default, `Date` and `Calendar` instances pick a date within 10 years of
 1 Jan 2020.
 
 This can be overridden using `factory` which has some built in constructs:
@@ -140,7 +140,7 @@ val futureDate = fixture<Date> {
 }
 ----
 
-== `property` - Customise generation of class properties
+== Customising generation of class properties with `property`
 
 Used to override constructor parameters or mutable properties when generating
 instances of generic classes.
@@ -198,7 +198,7 @@ val fixture = kotlinFixture {
 }
 ----
 
-== filter
+== Filtering generated values with `filter`
 
 Used to allow generated values to be filtered using standard sequence
 functions.
@@ -228,7 +228,7 @@ val evenNumberLessThan100 = fixture<Int> {
 
 WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
 
-== `random` - Providing a seed for `Random`
+== Providing a seeded `random`
 
 By default, a `Random` class is used that will generate unique values between
 runs. If you want repeatability you can specify a seeded `Random` instance.
@@ -245,9 +245,9 @@ val alwaysTheSame = fixture<Int>()
 NOTE: While you can specify `random` at object creation, this will make the result static
 i.e. `fixture<Int> { random = Random(seed = 5) }` will always return the same value.
 
-== nullabilityStrategy
+== Overriding nullability with `nullabilityStrategy`
 
-By default when the library comes across a nullable type, such as `String?` it
+By default, when the library comes across a nullable type, such as `String?` it
 will randomly return a value or null. This can be overridden by setting a
 nullability strategy.
 
@@ -269,9 +269,9 @@ fixture<AnObject> {
 It is also possible to define and implement your own nullability strategy by
 implementing `NullabilityStrategy` and applying it as above.
 
-== optionalStrategy
+== Overriding the use of default values with `optionalStrategy`
 
-By default when the library comes across an optional type, such as
+By default, when the library comes across an optional type, such as
 `value: String = &quot;default&quot;` it will randomly return that default value
 or a generated value. This can be overridden by setting an optional
 strategy.
@@ -297,7 +297,7 @@ fixture<AnObject> {
 }
 ----
 
-== recursionStrategy
+== Changing how recursion behaves with `recursionStrategy`
 
 When the library detects recursion, by default, it will throw an
 `UnsupportedOperationException` with the details of the circular reference. This
@@ -321,7 +321,7 @@ fixture<AnObject> {
 It is also possible to define and implement your own recursion strategy by
 implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionStrategy.kt[RecursionStrategy]` and applying it as above.
 
-== loggingStrategy
+== Logging object generation with `loggingStrategy`
 
 A basic logger can be applied using the built in `SysOutLoggingStrategy`. It is
 also possible to define and implement your own logging strategy by implementing
@@ -349,9 +349,9 @@ ktype kotlin.String →
     Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
 ----
 
-== constructorStrategy
+== Choosing the constructor to generate an object with `constructorStrategy`
 
-By default when the library generates an instance of a class it picks a
+By default, when the library generates an instance of a class it picks a
 constructor at random. This can be overridden by setting a constructor
 strategy.
 
@@ -362,25 +362,25 @@ val fixture = kotlinFixture {
 }
 ----
 
-The following strategies are built in:
+The following strategies are available:
 
-- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`,
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
 order constructors by random.
 
-- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`,
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`::
 order constructors by the most modest constructor first. i.e. fewer
 parameters returned first.
 
-- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy]`,
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy]`::
 order constructors by the most greedy constructor first. i.e. greater
 parameters returned first.
 
-- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy]`,
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy]`::
 order constructors selecting those with the most parameters of
-Array<*> before any other.
+`Array<*>` before any other.
 
-- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`,
-order constructors selecting those with the most parameters of List<*>
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`::
+order constructors selecting those with the most parameters of `List<*>`
 before any other.
 
 It is also possible to define and implement your own constructor
