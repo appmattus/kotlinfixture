@@ -1,6 +1,13 @@
 = Configuration options
 :toc: preamble
 :toc-title: Available options
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 All the configuration options available in KotlinFixture can be set when
 creating the fixture object as well as when creating a particular
@@ -146,8 +153,6 @@ val fixture = kotlinFixture {
     }
 
     // Can be used to return distinct values.
-    // NOTE: As the sequence is infinite, distinct will hang if no more
-    // distinct values can be generated
     filter<String> {
         distinct()
     }
@@ -162,6 +167,8 @@ val evenNumberLessThan100 = fixture<Int> {
     }
 }
 ----
+
+WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
 
 == property
 
@@ -359,22 +366,22 @@ val fixture = kotlinFixture {
 
 The following strategies are built in:
 
-- link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy],
+- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`,
 order constructors by random.
 
-- link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy],
+- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`,
 order constructors by the most modest constructor first. i.e. fewer
 parameters returned first.
 
-- link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy],
+- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy]`,
 order constructors by the most greedy constructor first. i.e. greater
 parameters returned first.
 
-- link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy],
+- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy]`,
 order constructors selecting those with the most parameters of
 Array<*> before any other.
 
-- link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy],
+- `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`,
 order constructors selecting those with the most parameters of List<*>
 before any other.
 
