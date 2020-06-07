@@ -78,7 +78,7 @@ val anotherDistinctValue = enumIterator.next()
 
 WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
 
-Everything can be customised, see link:docs/configuration-options.adoc[configuration options] for more details.
+Everything can be customised, see link:fixture/configuration-options.adoc[configuration options] for more details.
 
 == Kotest integration
 
