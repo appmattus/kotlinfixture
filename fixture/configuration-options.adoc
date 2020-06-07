@@ -168,11 +168,6 @@ val evenNumberLessThan100 = fixture<Int> {
 }
 ----
 
-[frame=none,grid=none,cols="^.^,~"]
-|===
-| :warning: | As the sequence is infinite, distinct will hang if no more distinct values can be generated.
-|===
-
 WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
 
 == property
