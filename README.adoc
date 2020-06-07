@@ -129,7 +129,7 @@ http://dius.github.io/java-faker/[Java Faker] to populate named
 properties such as `name`, `city` and `phoneNumber`. A full list of
 supported properties and how they map to
 http://dius.github.io/java-faker/[Java Faker] can be found in
-link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfiguration.kt[JavaFakerConfiguration].
+link:fixture-javafaker/src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfiguration.kt[JavaFakerConfiguration].
 
 [source,kotlin]
 ----
@@ -145,7 +145,7 @@ println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
 
 Additionally, the `javaFakerStrategy` function allows you to override
 faker settings such as `locale`. The available options can be found in
-link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder].
+link:fixture-javafaker/src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder].
 
 === Generate strings based on a regex
 
@@ -168,7 +168,7 @@ val fixture = kotlinFixture {
 println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
 ----
 
-NOTE: Be careful with object creation inside the generation function as it
+IMPORTANT: Be careful with object creation inside the generation function as it
 will be called for every instance of the object you create.
 
 == Related projects

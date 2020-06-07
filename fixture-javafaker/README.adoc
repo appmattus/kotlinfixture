@@ -62,5 +62,5 @@ val fixture = kotlinFixture {
 println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
 ----
 
-NOTE: Be careful with object creation inside the generation function as it
+IMPORTANT: Be careful with object creation inside the generation function as it
 will be called for every instance of the object you create.
