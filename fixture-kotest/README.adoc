@@ -1,6 +1,7 @@
 == Kotest support
 
 [source,kotlin]
+.build.gradle.kts
 ----
 // Add for Kotest integration
 testImplementation("com.appmattus.fixture:fixture-kotest:<latest-version>")

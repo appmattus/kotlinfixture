@@ -1,30 +1,37 @@
 = Configuration options
-:toc:
-:toc-title:
+:toc: preamble
+:toc-title: Available options
 
-The default configuration can be overridden when creating the fixture object or
-when creating a particular implementation.
+All the configuration options available in KotlinFixture can be set when
+creating the fixture object as well as when creating a particular
+implementation.
 
-It is possible to create a new fixture based on an existing one, which allows
-the addition of configuration changes:
+You can also create a new fixture based on an existing one, which allows
+changes to the configuration.
 
 [source,kotlin]
 ----
 val baseFixture = kotlinFixture {
-    factory<Int> { 3 }
+    factory<Int> { 3 } // <1>
 }
 
 val fixture = baseFixture.new {
-    factory<Long> { 100L }
+    factory<Long> { 100L } // <2>
 }
 
 println(fixture<Long>()) // Prints 100
 println(fixture<Int>()) // Prints 3
+println(fixture<Int> {
+    factory<Int> { 4 } // <3>
+}) // Prints 4
 ----
+<1> Configuration when creating the fixture object.
+<2> Create a new fixture based on an existing one, allowing overriding configuration.
+<3> Configuration can also be overridden when creating a particular object.
 
-== repeatCount
+== List and map length - `repeatCount`
 
-Used to determine the length used for lists and maps.
+Used to determine the length used for lists and maps. By default, the library generates 5 items.
 
 [source,kotlin]
 ----
@@ -32,13 +39,7 @@ val fixture = kotlinFixture {
     repeatCount { 3 }
 }
 
-val listOfThreeItems = fixture<List<String>>()
-
-val listOfSevenItems = fixture<List<String>> {
-    // Overrides the parent configuration
-    repeatCount { 7 }
-}
-
+val listOfThreeItems = fixture<List<Int>>() // 10, 81, 3
 ----
 
 `repeatCount` is a factory method so can be used to return lists and maps of
@@ -293,7 +294,7 @@ fixture<AnObject> {
 
 == recursionStrategy
 
-When recursion is detected the library will, by default, throw an
+When the library detects recursion, by default, it will throw an
 `UnsupportedOperationException` with the details of the circular reference. This
 strategy can be changed to instead return `null` for the reference, however, if
 this results in an invalid object an exception will still be thrown as the
@@ -313,7 +314,7 @@ fixture<AnObject> {
 ----
 
 It is also possible to define and implement your own recursion strategy by
-implementing `RecursionStrategy` and applying it as above.
+implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionStrategy.kt[RecursionStrategy]` and applying it as above.
 
 == loggingStrategy
 

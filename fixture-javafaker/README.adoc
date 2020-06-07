@@ -1,6 +1,7 @@
 == Java Faker support
 
 [source,kotlin]
+.build.gradle.kts
 ----
 // Add for Java Faker integration
 testImplementation("com.appmattus.fixture:fixture-javafaker:<latest-version>")

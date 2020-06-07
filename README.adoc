@@ -1,7 +1,7 @@
 = KotlinFixture
 Appmattus Limited <info@appmattus.com>
-:toc:
-:toc-placement!:
+:toc: preamble
+:toc-title: Contents
 :homepage: https://github.com/appmattus/kotlinfixture
 ifdef::env-github[]
 :tip-caption: :bulb:
@@ -16,13 +16,12 @@ https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appm
 https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
-toc::[]
-
 == Getting started
 
 Include the following dependency in your `build.gradle.kts` file:
 
 [source,kotlin]
+.build.gradle.kts
 ----
 testImplementation("com.appmattus.fixture:fixture:<latest-version>")
 ----
@@ -87,16 +86,22 @@ include::fixture-javafaker/README.adoc[]
 
 == Contributing
 
+Please fork this repository and contribute back using
+https://github.com/appmattus/kotlinfixture/pulls[pull requests].
+
+All contributions, large or small, major features, bug fixes, additional
+language translations, unit/integration tests are welcomed.
+
 == License
 
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
-Copyright 2019 Appmattus Limited
+Copyright 2020 Appmattus Limited
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may
 not use this file except in compliance with the License. You may obtain
 a copy of the License at
-http://www.apache.org/licenses/LICENSE-2.0[http://www.apache.org/licenses/LICENSE-2.0]
+https://www.apache.org/licenses/LICENSE-2.0[https://www.apache.org/licenses/LICENSE-2.0]
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
