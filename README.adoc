@@ -80,9 +80,96 @@ WARNING: As the sequence is infinite, distinct will hang if no more distinct val
 
 Everything can be customised, see link:docs/configuration-options.adoc[configuration options] for more details.
 
-include::fixture-kotest/README.adoc[]
+== Kotest integration
 
-include::fixture-javafaker/README.adoc[]
+https://github.com/kotest/kotest/[Kotest] supports
+https://github.com/kotest/kotest/blob/master/doc/reference.md#property-based-testing-[property testing],
+but to use it with more than just the few basic types built
+into the library requires you to create your own custom generators which
+you then provide.
+
+[source,kotlin]
+._build.gradle.kts_
+----
+// Add for Kotest integration
+testImplementation("com.appmattus.fixture:fixture-kotest:<latest-version>")
+----
+
+Including the `fixture-kotest` dependency in your project adds extension
+functions `checkAll` and `forAll` to the fixture. These
+functions wrap the equivalent functions from Kotest while providing
+generation of all the classes
+https://github.com/appmattus/kotlinfixture[KotlinFixture] supports.
+For example:
+
+[source,kotlin]
+----
+data class Person(name: String, age: Int)
+
+fixture.checkAll { person1: Person, person2: Person ->
+   person1 shouldNotBeSameInstanceAs person2
+}
+----
+
+== Java Faker integration
+
+The http://dius.github.io/java-faker/[Java Faker] library generates
+fake data, useful if you need to generate objects with pretty data.
+
+[source,kotlin]
+._build.gradle.kts_
+----
+// Add for Java Faker integration
+testImplementation("com.appmattus.fixture:fixture-javafaker:<latest-version>")
+----
+
+Including the `fixture-javafaker` dependency in your project adds a
+`javaFakerStrategy` which uses
+http://dius.github.io/java-faker/[Java Faker] to populate named
+properties such as `name`, `city` and `phoneNumber`. A full list of
+supported properties and how they map to
+http://dius.github.io/java-faker/[Java Faker] can be found in
+link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfiguration.kt[JavaFakerConfiguration].
+
+[source,kotlin]
+----
+
+val fixture = kotlinFixture {
+    javaFakerStrategy()
+}
+
+data class Person(val name: String, val age: Long)
+
+println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
+----
+
+Additionally, the `javaFakerStrategy` function allows you to override
+faker settings such as `locale`. The available options can be found in
+link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder].
+
+=== Generate strings based on a regex
+
+The module also introduces the ability to generate a random string from
+a Regex, with no need to enable the faker functionality:
+
+[source,kotlin]
+----
+data class DataClass(val index: String, val value: String)
+
+val indexRegex = "[a-z][0-9]".toRegex()
+val valueRegex = "[A-Z]{3}".toRegex()
+
+val fixture = kotlinFixture {
+    factory<String> { regexify(indexRegex) }
+
+    property(DataClass::value) { regexify(valueRegex) }
+}
+
+println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
+----
+
+NOTE: Be careful with object creation inside the generation function as it
+will be called for every instance of the object you create.
 
 == Related projects
 

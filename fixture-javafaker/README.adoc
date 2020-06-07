@@ -1,4 +1,11 @@
-== Java Faker support
+== Java Faker integration
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
 
 The http://dius.github.io/java-faker/[Java Faker] library generates
 fake data, useful if you need to generate objects with pretty data.
@@ -11,15 +18,12 @@ testImplementation("com.appmattus.fixture:fixture-javafaker:<latest-version>")
 ----
 
 Including the `fixture-javafaker` dependency in your project adds a
-`javaFakerStrategy` which will use
+`javaFakerStrategy` which uses
 http://dius.github.io/java-faker/[Java Faker] to populate named
 properties such as `name`, `city` and `phoneNumber`. A full list of
 supported properties and how they map to
 http://dius.github.io/java-faker/[Java Faker] can be found in
 link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfiguration.kt[JavaFakerConfiguration].
-
-Additionally, the `javaFakerStrategy` function allows you to override
-faker settings such as `locale`.
 
 [source,kotlin]
 ----
@@ -33,7 +37,11 @@ data class Person(val name: String, val age: Long)
 println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
 ----
 
-=== Regex to String generation
+Additionally, the `javaFakerStrategy` function allows you to override
+faker settings such as `locale`. The available options can be found in
+link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder].
+
+=== Generate strings based on a regex
 
 The module also introduces the ability to generate a random string from
 a Regex, with no need to enable the faker functionality:
@@ -53,3 +61,6 @@ val fixture = kotlinFixture {
 
 println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
 ----
+
+NOTE: Be careful with object creation inside the generation function as it
+will be called for every instance of the object you create.

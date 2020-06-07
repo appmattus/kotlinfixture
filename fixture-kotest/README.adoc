@@ -1,10 +1,10 @@
-== Kotest support
+== Kotest integration
 
 https://github.com/kotest/kotest/[Kotest] supports
 https://github.com/kotest/kotest/blob/master/doc/reference.md#property-based-testing-[property testing],
-but to use it with more than just the few basic types that are built
-into the library requires you to create your own custom generators that
-you then have to provide.
+but to use it with more than just the few basic types built
+into the library requires you to create your own custom generators which
+you then provide.
 
 [source,kotlin]
 ._build.gradle.kts_
