@@ -1,6 +1,6 @@
 = Configuration options
 :toc: preamble
-:toc-title: Available options
+:toc-title: Options
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
