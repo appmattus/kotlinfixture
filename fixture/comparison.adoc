@@ -7,4 +7,55 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
+:link-easyrandom: Jeasy's https://github.com/j-easy/easy-random[Easy Random]
+:link-flextrade: FlexTrade's https://github.com/FlexTradeUKLtd/kfixture[KFixture]
+:link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
+:link-marcellogalhardo: Marcello Galhardo's https://github.com/marcellogalhardo/kotlin-fixture[Kotlin.Fixture]
+
+Before writing {link-appmattus} we
+originally looked to extend {link-flextrade},
+however, as the core project is Java based we struggled with the type system
+and so {link-appmattus} was born.
+
+Being Java based means {link-easyrandom} and {link-flextrade}
+will never be able to understand Kotlin's https://kotlinlang.org/docs/reference/null-safety.html#nullable-types-and-non-null-types[nullable types].
+Currently {link-marcellogalhardo} also doesn't support nullable types, although this functionality could be added.
+
+Unlike {link-appmattus}, the other libraries have no understanding of Kotlin's
+https://kotlinlang.org/docs/reference/functions.html#default-arguments[default values]
+which can mean missing an important test scenario.
+
+Only {link-appmattus} has built-in support for abstract classes. Kotlin's https://kotlinlang.org/docs/reference/sealed-classes.html[sealed classes]
+are abstract so not supported, with only {link-marcellogalhardo} supporting sealed classes but not abstract classes.
+
+For ease of use, a fixture library needs good support for build-in types to
+reduce the amount of customisation required.
+
+
+One of our frustrations when we previously used {link-flextrade} was because of
+
+
+
+'''
+
+
+
+
+A comprehensive link:src/test/kotlin/com/appmattus/kotlinfixture/ComparisonTest.kt[ComparisonTest]
+is available.
+
+
+
+
+
+Comparison of supported features
+
+flextrade
+Unsupported: Pair, Triple, AbstractSet, AbstractList, AbstractSequentialList, AbstractQueue, Object, Sealed Class, Abstract Class
+Invalid: SortedSet, NavigableSet, BlockingQueue, TransferQueue, ConcurrentNavigableMap
+Not random: Set, HashSet, TreeSet, ConcurrentSkipListSet, CopyOnWriteArraySet, List, MutableList, ArrayList, LinkedList, Vector, Stack, CopyOnWriteArrayList, HashMap, LinkedHashMap, IdentityHashMap, WeakHashMap, TreeMap, ConcurrentHashMap, ConcurrentSkipListMap
+
+marcellogalhardo
+Unsupported: Byte, Short, UByte, UShort, Calendar, LocalDate, LocalDateTime, LocalTime, AbstractSet, AbstractList, AbstractSequentialList, AbstractQueue, Enum, Abstract Class
+Not random: HashSet, LinkedHashSet, TreeSet, ConcurrentSkipListSet, CopyOnWriteArraySet, ArrayList, LinkedList, Vector, Stack, CopyOnWriteArrayList, HashMap, LinkedHashMap, IdentityHashMap, WeakHashMap, TreeMap, ConcurrentHashMap, ConcurrentSkipListMap
 

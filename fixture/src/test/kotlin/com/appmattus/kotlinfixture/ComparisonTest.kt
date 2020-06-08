@@ -114,6 +114,7 @@ class ComparisonTest {
         private val marcellogalhardo = Fixture()
         private val flextrade = KFixture()
         private val appmattus = kotlinFixture()
+        private val easyRandom = EasyRandom()
 
         private val nullableType = typeOf<String?>()
 
@@ -139,6 +140,15 @@ class ComparisonTest {
         fun `marcellogalhardo nullability unsupported`() {
             assertNone {
                 val result = marcellogalhardo.next(nullableType.classifier as KClass<*>, nullableType)
+
+                result == null
+            }
+        }
+
+        @Test
+        fun `easyrandom nullability unsupported`() {
+            assertNone {
+                val result = easyRandom.nextObject((nullableType.classifier as KClass<*>).java)
 
                 result == null
             }
