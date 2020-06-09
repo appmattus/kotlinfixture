@@ -230,8 +230,8 @@ WARNING: As the sequence is infinite, distinct will hang if no more distinct val
 
 == Providing a seeded `random`
 
-By default, a `Random` class is used that will generate unique values between
-runs. If you want repeatability you can specify a seeded `Random` instance.
+By default, we generate unique values between runs using a default `Random`
+class. If you want repeatability you can specify a seeded `Random` instance.
 
 [source,kotlin]
 ----
@@ -272,7 +272,7 @@ implementing `NullabilityStrategy` and applying it as above.
 == Overriding the use of default values with `optionalStrategy`
 
 By default, when the library comes across an optional type, such as
-`value: String = &quot;default&quot;` it will randomly return that default value
+`value: String = &quot;default&quot;` it will randomly return the default value,
 or a generated value. This can be overridden by setting an optional
 strategy.
 

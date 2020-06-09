@@ -44,7 +44,7 @@ various unsupported types, not random, or generated invalid types. For example:
 - `HashMap` is not random in any of the competitors.
 - `SortedSet` and `SortedMap` generate invalid objects in {link-flextrade}.
 - Various `List` types either generate invalid objects or aren't random in {link-easyrandom}.
-- {link-marcellogalhardo} doesn't support primative arrays such as `ByteArray` and `IntArray`.
+- {link-marcellogalhardo} doesn't support primitive arrays such as `ByteArray` and `IntArray`.
 
 Our comprehensive link:src/test/kotlin/com/appmattus/kotlinfixture/ComparisonTest.kt[ComparisonTest]
 contains more details.

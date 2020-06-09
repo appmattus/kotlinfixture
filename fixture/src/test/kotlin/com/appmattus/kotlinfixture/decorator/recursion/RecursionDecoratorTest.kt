@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class RecursionDecoratorTest {
     }.build()
 
     @Test
-    fun `calls resolver when same ktype recursively requested again`() {
+    fun `calls resolver when same KType recursively requested again`() {
         val resolver = TestResolver(listOf(typeOf<Int>(), typeOf<Float>()))
 
         val decoratedResolver = RecursionDecorator().decorate(resolver)
@@ -47,7 +47,7 @@ class RecursionDecoratorTest {
     }
 
     @Test
-    fun `does not call resolver when all different ktypes recursively requested`() {
+    fun `does not call resolver when all different KTypes recursively requested`() {
         val resolver = TestResolver(listOf(typeOf<Int>(), typeOf<Double>(), typeOf<Short>()))
 
         val decoratedResolver = RecursionDecorator().decorate(resolver)

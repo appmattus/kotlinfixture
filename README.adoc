@@ -16,6 +16,8 @@ https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appm
 https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
+
+
 == Getting started
 
 Include the following dependency in your `build.gradle.kts` file:
@@ -52,8 +54,8 @@ val randomStringFromTheList = fixture(listOf("Cat", "Dog", "Horse"))
 val anotherRandomIntFromAList = fixture(1..5)
 ----
 
-You can also generate an infinite sequence of a type, which can then be
-filtered:
+You can also generate an infinite sequence of a type, which you can then
+filter:
 
 [source,kotlin]
 ----
@@ -173,9 +175,9 @@ will be called for every instance of the object you create.
 
 == Related projects
 
-* Marcello Galhardo's https://github.com/marcellogalhardo/kotlin-fixture[Kotlin.Fixture]
-* FlexTrade's https://github.com/FlexTradeUKLtd/kfixture[KFixture] wrapper for https://github.com/FlexTradeUKLtd/jfixture[JFixture]
-* Jeasy's https://github.com/j-easy/easy-random[Easy Random]
+* Marcello Galhardo's https://github.com/marcellogalhardo/kotlin-fixture[Kotlin.Fixture].
+* FlexTrade's https://github.com/FlexTradeUKLtd/kfixture[KFixture] wrapper for https://github.com/FlexTradeUKLtd/jfixture[JFixture].
+* Jeasy's https://github.com/j-easy/easy-random[Easy Random],
 
 Please take a look at the feature link:fixture/comparison.adoc[comparison with related projects].
 
@@ -185,7 +187,7 @@ Please fork this repository and contribute back using
 https://github.com/appmattus/kotlinfixture/pulls[pull requests].
 
 All contributions, large or small, major features, bug fixes, additional
-language translations, unit/integration tests are welcomed.
+language translations, unit/integration tests are welcome.
 
 == License
 
@@ -196,7 +198,7 @@ Copyright 2020 Appmattus Limited
 Licensed under the Apache License, Version 2.0 (the "License"); you may
 not use this file except in compliance with the License. You may obtain
 a copy of the License at
-https://www.apache.org/licenses/LICENSE-2.0[https://www.apache.org/licenses/LICENSE-2.0]
+https://www.apache.org/licenses/LICENSE-2.0[https://www.apache.org/licenses/LICENSE-2.0].
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
