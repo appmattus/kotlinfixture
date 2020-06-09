@@ -70,11 +70,6 @@ val fixture = kotlinFixture {
 }
 
 val alwaysInt = fixture<Number>()
-
-val alwaysFloat = fixture<Number> {
-    // Overrides the parent configuration
-    subType<Number, Float>()
-}
 ----
 
 == Customising class generation with `factory`
@@ -91,13 +86,6 @@ val fixture = kotlinFixture {
 }
 
 val alwaysFortyOne = fixture<Number>()
-
-val alwaysOnePointFive = fixture<Number> {
-    // Overrides the parent configuration
-    factory<Number> {
-        1.5
-    }
-}
 ----
 
 As `factory` is a factory method you can return different values on every
@@ -110,12 +98,28 @@ factory<Number> {
 }
 ----
 
-=== Date and Calendar instances
+=== Generating values in a `range`
+
+`factory` has a built-in `range` function to make it easy to generate values
+in a range.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Generate using ranges (and iterables)
+    factory<Int> { range(1..10) }
+}
+
+val betweenOneAndTen = fixture<Int>()
+----
+
+=== Generating `Date` and `Calendar` values
 
 By default, `Date` and `Calendar` instances pick a date within 10 years of
 1 Jan 2020.
 
-This can be overridden using `factory` which has some built in constructs:
+This can be overridden using the built-in constructs `between`, `before` and
+`after` in your `factory` definition:
 
 [source,kotlin]
 ----
@@ -128,16 +132,6 @@ val fixture = kotlinFixture {
 }
 
 val betweenTwoDates = fixture<Date>()
-
-// You can also override at instance creation
-
-val pastDate = fixture<Date> {
-    factory<Date> { before(Date()) }
-}
-
-val futureDate = fixture<Date> {
-    factory<Date> { after(Date()) }
-}
 ----
 
 == Customising generation of class properties with `property`
@@ -219,7 +213,7 @@ val fixture = kotlinFixture {
 val evenNumber = fixture<Int>()
 
 val evenNumberLessThan100 = fixture<Int> {
-    // Overrides the parent configuration
+    // Builds upon the parent configuration
     filter<Int> {
         filter { it < 100 }
     }
@@ -257,17 +251,24 @@ val fixture = kotlinFixture {
     // All nullable types will be populated with a value
     nullabilityStrategy(NeverNullStrategy)
 }
-
-// You can also override at instance creation
-
-fixture<AnObject> {
-    // All nullable types will be populated with null
-    nullabilityStrategy(AlwaysNullStrategy)
-}
 ----
 
+.Available strategies
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NeverNullStrategy.kt[NeverNullStrategy]`::
+populate nullable values with a non-null value.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/AlwaysNullStrategy.kt[AlwaysNullStrategy]`::
+populate nullable values with `null`.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/RandomlyNullStrategy.kt[RandomlyNullStrategy]`::
+populate nullable values randomly with `null`.
+====
+
 It is also possible to define and implement your own nullability strategy by
-implementing `NullabilityStrategy` and applying it as above.
+implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NullabilityStrategy.kt[NullabilityStrategy]`
+and applying it as above.
 
 == Overriding the use of default values with `optionalStrategy`
 
@@ -279,13 +280,6 @@ strategy.
 [source,kotlin]
 ----
 val fixture = kotlinFixture {
-    // All optionals will be populated with generated values
-    optionalStrategy(NeverOptionalStrategy)
-}
-
-// You can also override at instance creation
-
-fixture<AnObject> {
     // All optionals will be populated with their default value
     optionalStrategy(AlwaysOptionalStrategy) {
         // You can override the strategy for a particular class
@@ -296,6 +290,23 @@ fixture<AnObject> {
     }
 }
 ----
+
+.Available strategies
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
+always use the properties the default value.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/NeverOptionalStrategy.kt[NeverOptionalStrategy]`::
+never use the properties the default value.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/RandomlyOptionalStrategy.kt[RandomlyOptionalStrategy]`::
+randomly use the properties the default value.
+====
+
+It is also possible to define and implement your own optional strategy by
+implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/OptionalStrategy.kt[OptionalStrategy]`
+and applying it as above.
 
 == Changing how recursion behaves with `recursionStrategy`
 
@@ -310,36 +321,40 @@ object requested couldn't be resolved.
 val fixture = kotlinFixture {
     recursionStrategy(NullRecursionStrategy)
 }
-
-// You can also override at instance creation
-
-fixture<AnObject> {
-    recursionStrategy(NullRecursionStrategy)
-}
 ----
+
+.Available strategies
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/NullRecursionStrategy.kt[NullRecursionStrategy]`::
+use `null` for circular references.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/ThrowingRecursionStrategy.kt[ThrowingRecursionStrategy]`::
+throw an exception when finding circular references.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/UnresolvedRecursionStrategy.kt[UnresolvedRecursionStrategy]`::
+use `Unresolved` for circular references, which may result in generation of a
+valid object as other scenarios will be tried
+====
 
 It is also possible to define and implement your own recursion strategy by
 implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionStrategy.kt[RecursionStrategy]` and applying it as above.
 
 == Logging object generation with `loggingStrategy`
 
-A basic logger can be applied using the built in `SysOutLoggingStrategy`. It is
-also possible to define and implement your own logging strategy by implementing
-`LoggingStrategy` and applying it as below.
+A basic logger can be applied using the built in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
+It is also possible to define and implement your own logging strategy by
+implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingStrategy.kt[LoggingStrategy]`
+and applying it as below.
 
 [source,kotlin]
 ----
 val fixture = kotlinFixture {
     loggingStrategy(SysOutLoggingStrategy)
 }
-
-fixture<String> {
-    // You can also override at instance creation
-    loggingStrategy(SysOutLoggingStrategy)
-}
 ----
 
-This outputs:
+The logger for `fixture<String>()` outputs:
 
 [source,text]
 ----
@@ -362,8 +377,9 @@ val fixture = kotlinFixture {
 }
 ----
 
-The following strategies are available:
-
+.Available strategies
+[%collapsible]
+====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
 order constructors by random.
 
@@ -382,6 +398,7 @@ order constructors selecting those with the most parameters of
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`::
 order constructors selecting those with the most parameters of `List<*>`
 before any other.
+====
 
 It is also possible to define and implement your own constructor
 strategy by implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ConstructorStrategy.kt[ConstructorStrategy]` and applying it as above.
