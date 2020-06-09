@@ -16,17 +16,8 @@ https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appm
 https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
-
-.some description
-[%collapsible]
-====
-[source,kotlin]
-._build.gradle.kts_
-----
-testImplementation("com.appmattus.fixture:fixture:<latest-version>")
-----
-====
-
+A tool to generate well-defined, but essentially random, input following the
+idea of constrained non-determinism.
 
 == Getting started
 
@@ -145,7 +136,6 @@ http://dius.github.io/java-faker/[Java Faker] can be found in
 
 [source,kotlin]
 ----
-
 val fixture = kotlinFixture {
     javaFakerStrategy()
 }
