@@ -169,7 +169,7 @@ val fixture = kotlinFixture {
 ----
 ====
 
-.Java class example
+._Java class example_
 [%collapsible]
 ====
 Given the following Java class:
@@ -262,7 +262,7 @@ val fixture = kotlinFixture {
 }
 ----
 
-.Available strategies
+._Available strategies_
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NeverNullStrategy.kt[NeverNullStrategy]`::
@@ -300,7 +300,7 @@ val fixture = kotlinFixture {
 }
 ----
 
-.Available strategies
+._Available strategies_
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
@@ -332,7 +332,7 @@ val fixture = kotlinFixture {
 }
 ----
 
-.Available strategies
+._Available strategies_
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/NullRecursionStrategy.kt[NullRecursionStrategy]`::
@@ -386,7 +386,7 @@ val fixture = kotlinFixture {
 }
 ----
 
-.Available strategies
+._Available strategies_
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
