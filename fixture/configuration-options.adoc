@@ -139,6 +139,10 @@ val betweenTwoDates = fixture<Date>()
 Used to override constructor parameters or mutable properties when generating
 instances of generic classes.
 
+._Kotlin class example_
+[%collapsible%open]
+====
+
 Given the following Kotlin class:
 
 [source,kotlin]
@@ -163,7 +167,11 @@ val fixture = kotlinFixture {
     property(KotlinClass::member) { "c" }
 }
 ----
+====
 
+.Java class example
+[%collapsible]
+====
 Given the following Java class:
 
 [source,java]
@@ -191,6 +199,7 @@ val fixture = kotlinFixture {
     property<JavaClass, String>("arg0") { "e" }
 }
 ----
+====
 
 == Filtering generated values with `filter`
 
