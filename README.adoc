@@ -17,6 +17,16 @@ https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmat
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
 
+.some description
+[%collapsible]
+====
+[source,kotlin]
+._build.gradle.kts_
+----
+testImplementation("com.appmattus.fixture:fixture:<latest-version>")
+----
+====
+
 
 == Getting started
 
