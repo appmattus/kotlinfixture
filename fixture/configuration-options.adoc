@@ -226,7 +226,13 @@ val evenNumberLessThan100 = fixture<Int> {
 }
 ----
 
-WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
+[WARNING]
+====
+The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
+
+* `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
+* `filter` that can never be fulfilled e.g. `filter { false }`
+====
 
 == Providing a seeded `random`
 
@@ -301,13 +307,13 @@ val fixture = kotlinFixture {
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
-always use the properties the default value.
+always use the properties default value.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/NeverOptionalStrategy.kt[NeverOptionalStrategy]`::
-never use the properties the default value.
+never use the properties default value.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/RandomlyOptionalStrategy.kt[RandomlyOptionalStrategy]`::
-randomly use the properties the default value.
+randomly use the properties default value.
 ====
 
 It is also possible to define and implement your own optional strategy by

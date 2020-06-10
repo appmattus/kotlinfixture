@@ -106,7 +106,7 @@ See link:fixture-javafaker/README.adoc[Java Faker integration] for more details.
 
 == Generex integration: regex to random string
 
-To generate a random string from a Regex, look no further than the Generex integration.
+To generate a random string from a regular expression, look no further than the Generex integration.
 
 See link:fixture-generex/README.adoc[Generex integration] for more details.
 

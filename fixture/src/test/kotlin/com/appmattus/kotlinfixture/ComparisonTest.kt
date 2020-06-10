@@ -111,10 +111,6 @@ import kotlin.test.assertTrue
 class ComparisonTest {
 
     class Single {
-        private val marcellogalhardo = Fixture()
-        private val flextrade = KFixture()
-        private val appmattus = kotlinFixture()
-        private val easyRandom = EasyRandom()
 
         private val nullableType = typeOf<String?>()
 
@@ -174,11 +170,6 @@ class ComparisonTest {
 
         @Parameterized.Parameter(4)
         lateinit var easyRandomSupports: Result
-
-        private val marcellogalhardo = Fixture()
-        private val flextrade = KFixture()
-        private val appmattus = kotlinFixture()
-        private val easyRandom = EasyRandom()
 
         private fun assumeValid(result: Result) {
             assumeTrue(result == VALID || result == NOT_RANDOM)
@@ -538,6 +529,13 @@ class ComparisonTest {
                 arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED)
             )
         }
+    }
+
+    private companion object {
+        private val marcellogalhardo = Fixture()
+        private val flextrade = KFixture()
+        private val appmattus = kotlinFixture()
+        private val easyRandom = EasyRandom()
     }
 }
 

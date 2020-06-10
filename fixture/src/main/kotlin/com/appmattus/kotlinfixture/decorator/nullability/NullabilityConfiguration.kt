@@ -18,6 +18,26 @@ package com.appmattus.kotlinfixture.decorator.nullability
 
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
+/**
+ * # Overriding nullability with nullabilityStrategy
+ *
+ * By default, when the library comes across a nullable type, such as `String?` it will randomly return a value or null. This can be overridden by setting a nullability strategy.
+ *
+ * ```
+ * val fixture = kotlinFixture {
+ *     // All nullable types will be populated with a value
+ *     nullabilityStrategy(NeverNullStrategy)
+ * }
+ * ```
+ *
+ * ## Available strategies
+ *
+ * - [NeverNullStrategy] populate nullable values with a non-null value.
+ * - [AlwaysNullStrategy] populate nullable values with `null`.
+ * - [RandomlyNullStrategy] populate nullable values randomly with null.
+ *
+ * It is also possible to define and implement your own nullability strategy by implementing [NullabilityStrategy] and applying it as above.
+ */
 @Suppress("unused")
 fun ConfigurationBuilder.nullabilityStrategy(strategy: NullabilityStrategy) {
     strategies[NullabilityStrategy::class] = strategy

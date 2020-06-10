@@ -21,7 +21,7 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.resolver.Resolver
 
-class ExceptionDecorator : Decorator {
+internal class ExceptionDecorator : Decorator {
     override fun decorate(resolver: Resolver): Resolver = ExceptionResolver(resolver)
 
     private class ExceptionResolver(

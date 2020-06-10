@@ -18,6 +18,9 @@ package com.appmattus.kotlinfixture.decorator.nullability
 
 import com.appmattus.kotlinfixture.Context
 
+/**
+ * Populate nullable values with a non-null value.
+ */
 object NeverNullStrategy : NullabilityStrategy {
 
     override fun Context.generateAsNull() = false

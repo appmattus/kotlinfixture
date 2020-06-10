@@ -18,6 +18,32 @@ package com.appmattus.kotlinfixture.decorator.optional
 
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
+/**
+ * # Overriding the use of default values with optionalStrategy
+ *
+ * By default, when the library comes across an optional type, such as `value: String = "default"` it will randomly return the default value, or a generated value. This can be overridden by setting an optional strategy.
+ *
+ * ```
+ * val fixture = kotlinFixture {
+ *     // All optionals will be populated with their default value
+ *     optionalStrategy(AlwaysOptionalStrategy) {
+ *         // You can override the strategy for a particular class
+ *         classOverride<AnotherObject>(NeverOptionalStrategy)
+ *
+ *         // You can override the strategy for a property of a class
+ *         propertyOverride(AnotherObject::property, RandomlyOptionalStrategy)
+ *     }
+ * }
+ * ```
+ *
+ * ## Available strategies
+ *
+ * - [AlwaysOptionalStrategy] always use the properties default value.
+ * - [NeverOptionalStrategy] never use the properties default value.
+ * - [RandomlyOptionalStrategy] randomly use the properties default value.
+ *
+ * It is also possible to define and implement your own optional strategy by implementing [OptionalStrategy] and applying it as above.
+ */
 @Suppress("unused")
 fun ConfigurationBuilder.optionalStrategy(
     defaultStrategy: OptionalStrategy = RandomlyOptionalStrategy,

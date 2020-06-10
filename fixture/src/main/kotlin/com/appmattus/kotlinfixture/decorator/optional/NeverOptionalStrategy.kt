@@ -19,6 +19,9 @@ package com.appmattus.kotlinfixture.decorator.optional
 import com.appmattus.kotlinfixture.Context
 import kotlin.reflect.KClass
 
+/**
+ * Never use the properties default value.
+ */
 object NeverOptionalStrategy : OptionalStrategy {
 
     override fun Context.generateAsOptional(callingClass: KClass<*>, parameterName: String) = false
