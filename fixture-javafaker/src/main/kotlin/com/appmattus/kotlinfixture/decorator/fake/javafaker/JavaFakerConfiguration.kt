@@ -29,7 +29,7 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
-data class JavaFakerConfiguration(
+data class JavaFakerConfiguration internal constructor(
     val creditCard: CreditCard = CreditCard.Any,
     val ipAddress: IpAddress = IpAddress.V4,
     val isbn10Separator: Boolean = false,

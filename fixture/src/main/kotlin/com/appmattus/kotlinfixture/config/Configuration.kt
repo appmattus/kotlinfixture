@@ -68,7 +68,7 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
-data class Configuration(
+data class Configuration internal constructor(
     val repeatCount: () -> Int = defaultRepeatCount,
     val properties: Map<KClass<*>, Map<String, GeneratorFun>> =
         emptyMap<KClass<*>, Map<String, GeneratorFun>>().toUnmodifiableMap(),
