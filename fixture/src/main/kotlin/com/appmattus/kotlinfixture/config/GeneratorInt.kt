@@ -16,5 +16,8 @@
 
 package com.appmattus.kotlinfixture.config
 
+/**
+ * ¯\_(ツ)_/¯ any value
+ */
 @Suppress("FunctionName", "NonAsciiCharacters")
 fun Generator<Int>.`¯＼_(ツ)_／¯`(): Int = random.nextInt()
