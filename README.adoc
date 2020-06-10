@@ -104,7 +104,7 @@ Generate values with a closer match to real data using http://dius.github.io/jav
 
 See link:fixture-javafaker/README.adoc[Java Faker integration] for more details.
 
-=== Generex integration: regex to random string
+== Generex integration: regex to random string
 
 To generate a random string from a Regex, look no further than the Generex integration.
 
