@@ -40,27 +40,3 @@ println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
 Additionally, the `javaFakerStrategy` function allows you to override
 faker settings such as `locale`. The available options can be found in
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder]`.
-
-=== Generate strings based on a regex
-
-The module also introduces the ability to generate a random string from
-a Regex, with no need to enable the faker functionality:
-
-[source,kotlin]
-----
-data class DataClass(val index: String, val value: String)
-
-val indexRegex = "[a-z][0-9]".toRegex()
-val valueRegex = "[A-Z]{3}".toRegex()
-
-val fixture = kotlinFixture {
-    factory<String> { regexify(indexRegex) }
-
-    property(DataClass::value) { regexify(valueRegex) }
-}
-
-println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
-----
-
-IMPORTANT: Be careful with object creation inside the generation function as it
-will be called for every instance of the object you create.

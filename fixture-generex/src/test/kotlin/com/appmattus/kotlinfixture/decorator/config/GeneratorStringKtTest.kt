@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.decorator.fake.javafaker
+package com.appmattus.kotlinfixture.decorator.config
 
 import com.appmattus.kotlinfixture.assertIsRandom
+import com.appmattus.kotlinfixture.config.regexToRandom
 import com.appmattus.kotlinfixture.kotlinFixture
 import kotlin.random.Random
 import kotlin.test.Test
@@ -29,10 +30,10 @@ class GeneratorStringKtTest {
     private val regex = pattern.toRegex()
 
     @Test
-    fun `regexify using regex generates string matching regex`() {
+    fun `regexToRandom using regex generates string matching regex`() {
 
         val fixture = kotlinFixture {
-            factory<String> { regexify(regex) }
+            factory<String> { regexToRandom(regex) }
         }
 
         repeat(100) {
@@ -45,10 +46,10 @@ class GeneratorStringKtTest {
     }
 
     @Test
-    fun `regexify using regex is random`() {
+    fun `regexToRandom using regex is random`() {
 
         val fixture = kotlinFixture {
-            factory<String> { regexify(regex) }
+            factory<String> { regexToRandom(regex) }
         }
 
         assertIsRandom {
@@ -57,9 +58,9 @@ class GeneratorStringKtTest {
     }
 
     @Test
-    fun `regexify using regex uses seeded random`() {
+    fun `regexToRandom using regex uses seeded random`() {
         val fixture = kotlinFixture {
-            factory<String> { regexify(regex) }
+            factory<String> { regexToRandom(regex) }
         }
 
         val value1 = fixture<String> {
@@ -73,10 +74,10 @@ class GeneratorStringKtTest {
     }
 
     @Test
-    fun `regexify using string generates string matching regex`() {
+    fun `regexToRandom using string generates string matching regex`() {
 
         val fixture = kotlinFixture {
-            factory<String> { regexify(pattern) }
+            factory<String> { regexToRandom(pattern) }
         }
 
         repeat(100) {
@@ -89,10 +90,10 @@ class GeneratorStringKtTest {
     }
 
     @Test
-    fun `regexify using string is random`() {
+    fun `regexToRandom using string is random`() {
 
         val fixture = kotlinFixture {
-            factory<String> { regexify(pattern) }
+            factory<String> { regexToRandom(pattern) }
         }
 
         assertIsRandom {
@@ -101,9 +102,9 @@ class GeneratorStringKtTest {
     }
 
     @Test
-    fun `regexify using string uses seeded random`() {
+    fun `regexToRandom using string uses seeded random`() {
         val fixture = kotlinFixture {
-            factory<String> { regexify(pattern) }
+            factory<String> { regexToRandom(pattern) }
         }
 
         val value1 = fixture<String> {

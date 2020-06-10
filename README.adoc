@@ -92,44 +92,23 @@ The sequence can hang indefinitely if the applied operators prevent the generati
 
 Everything can be customised, see link:fixture/configuration-options.adoc[configuration options] for more details.
 
-== Kotest property based testing integration
+== Kotest integration: property based testing
 
 The library provides {link-appmattus} powered property based testing for https://github.com/kotest/kotest/[Kotest].
 
 See link:fixture-kotest/README.adoc[Kotest integration] for more details.
 
-== Java Faker integration
+== Java Faker integration: pretty data
 
 Require generation of prettier data, such as names and addresses? Take a look at the http://dius.github.io/java-faker/[Java Faker] support.
 
 See link:fixture-javafaker/README.adoc[Java Faker integration] for more details.
 
-The http://dius.github.io/java-faker/[Java Faker] [.text-green]#library generates#
-fake data, useful [blue]#if# you need to #generate objects# with pretty data.
+=== Generex integration: regex to random string
 
-=== Generate strings based on a regex
+To generate a random string from a Regex, look no further than the Generex integration.
 
-The module also introduces the ability to generate a random string from
-a Regex, with no need to enable the faker functionality:
-
-[source,kotlin]
-----
-data class DataClass(val index: String, val value: String)
-
-val indexRegex = "[a-z][0-9]".toRegex()
-val valueRegex = "[A-Z]{3}".toRegex()
-
-val fixture = kotlinFixture {
-    factory<String> { regexify(indexRegex) }
-
-    property(DataClass::value) { regexify(valueRegex) }
-}
-
-println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
-----
-
-IMPORTANT: Be careful with object creation inside the generation function as it
-will be called for every instance of the object you create.
+See link:fixture-generex/README.adoc[Generex integration] for more details.
 
 == Related projects
 

@@ -14,10 +14,16 @@
  * limitations under the License.
  */
 
-include(
-    "fixture",
-    "fixture-javafaker",
-    "fixture-kotest",
-    "fixture-generex",
-    "fixture-android-tests"
-)
+package com.appmattus.kotlinfixture.config
+
+import com.mifmif.common.regex.Generex
+
+fun Generator<String>.regexToRandom(regex: String, minLength: Int = 1, maxLength: Int = Int.MAX_VALUE): String {
+    return Generex(regex).apply {
+        setSeed(random.nextLong())
+    }.random(minLength, maxLength)
+}
+
+fun Generator<String>.regexToRandom(regex: Regex, minLength: Int = 1, maxLength: Int = Int.MAX_VALUE): String {
+    return regexToRandom(regex.pattern, minLength, maxLength)
+}
