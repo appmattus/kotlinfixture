@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture.decorator.fake.javafaker
+package com.appmattus.kotlinfixture
 
-import com.appmattus.kotlinfixture.config.Generator
-import com.github.javafaker.Faker
-import kotlin.random.asJavaRandom
+import kotlin.test.fail
 
-@Suppress("SpellCheckingInspection")
-fun Generator<String>.regexify(regex: String): String {
-    return Faker(random.asJavaRandom()).regexify(regex)
-}
+fun assertIsRandom(block: () -> Any?) {
+    val initial = block()
 
-@Suppress("SpellCheckingInspection")
-fun Generator<String>.regexify(regex: Regex): String {
-    return regexify(regex.pattern)
+    repeat(1000) {
+        if (initial != block()) return
+    }
+
+    fail("Value always equal to $initial")
 }

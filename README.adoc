@@ -1,0 +1,144 @@
+= KotlinFixture
+Appmattus Limited <info@appmattus.com>
+:toc: preamble
+:toc-title: Contents
+:homepage: https://github.com/appmattus/kotlinfixture
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
+
+https://bintray.com/appmattus/maven/fixture/_latestVersion[image:https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg[Download]]
+https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg[CI status]]
+https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
+link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
+
+A tool to generate well-defined, but essentially random, input following the
+idea of constrained non-determinism.
+
+== Getting started
+
+Include the following dependency in your `build.gradle.kts` file:
+
+[source,kotlin]
+._build.gradle.kts_
+----
+testImplementation("com.appmattus.fixture:fixture:<latest-version>")
+----
+
+Simply create a fixture and invoke it with the type to be generated:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture()
+
+// Generate a list of strings
+val aListOfStrings = fixture<List<String>>()
+
+// Nulls are supported
+val sometimesNull = fixture<Int?>()
+
+// Create instances of classes
+// Optional parameters will be randomly used or overridden
+data class ADataClass(val value: String = "default")
+val aClass = fixture<ADataClass>()
+
+// Abstract classes will pick a sub-class at random
+// This could be a Byte, Double, Long, Float, Int or Short
+val anyNumber = fixture<Number>()
+
+// Pick randomly from a list
+val randomStringFromTheList = fixture(listOf("Cat", "Dog", "Horse"))
+val anotherRandomIntFromAList = fixture(1..5)
+----
+
+You can also generate an infinite sequence of a type, which you can then
+filter:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture()
+
+val intSequence = fixture.asSequence<Int>()
+
+// Standard Kotlin sequence functions can then be applied before using
+// the sequence through an iterator for access to the next() function.
+
+// For example, you can filter values
+val oddIterator = intSequence.filter { it.absoluteValue.rem(2) == 1 }.iterator()
+val oddNumber = oddIterator.next()
+val anotherOddNumber = oddIterator.next()
+
+// Or, ensure it returns only distinct values
+enum class XYZ { X, Y, Z }
+val enumIterator = fixture.asSequence<XYZ>().distinct().iterator()
+val aDistinctValue = enumIterator.next()
+val anotherDistinctValue = enumIterator.next()
+----
+
+[WARNING]
+====
+The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
+
+* `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
+* `filter` that can never be fulfilled e.g. `filter { false }`
+====
+
+== Configuration options
+
+Everything can be customised, see link:fixture/configuration-options.adoc[configuration options] for more details.
+
+== Kotest integration: property based testing
+
+The library provides {link-appmattus} powered property based testing for https://github.com/kotest/kotest/[Kotest].
+
+See link:fixture-kotest/README.adoc[Kotest integration] for more details.
+
+== Java Faker integration: pretty data
+
+Generate values with a closer match to real data using http://dius.github.io/java-faker/[Java Faker].
+
+See link:fixture-javafaker/README.adoc[Java Faker integration] for more details.
+
+== Generex integration: regex to random string
+
+To generate a random string from a Regex, look no further than the Generex integration.
+
+See link:fixture-generex/README.adoc[Generex integration] for more details.
+
+== Related projects
+
+* Marcello Galhardo's https://github.com/marcellogalhardo/kotlin-fixture[Kotlin.Fixture].
+* FlexTrade's https://github.com/FlexTradeUKLtd/kfixture[KFixture] wrapper for https://github.com/FlexTradeUKLtd/jfixture[JFixture].
+* Jeasy's https://github.com/j-easy/easy-random[Easy Random],
+
+Please take a look at the feature link:fixture/comparison.adoc[comparison with related projects].
+
+== Contributing
+
+Please fork this repository and contribute back using
+https://github.com/appmattus/kotlinfixture/pulls[pull requests].
+
+All contributions, large or small, major features, bug fixes, additional
+language translations, unit/integration tests are welcome.
+
+== License
+
+link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
+
+Copyright 2020 Appmattus Limited
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+https://www.apache.org/licenses/LICENSE-2.0[https://www.apache.org/licenses/LICENSE-2.0].
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

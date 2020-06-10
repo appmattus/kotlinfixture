@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,6 +98,7 @@ internal class ThreeTenResolver : Resolver {
         generatePreciseChronoUnit()
     )
 
+    @Suppress("SpellCheckingInspection")
     private fun Context.generatePreciseChronoUnit() = listOf(
         ChronoUnit.NANOS,
         ChronoUnit.MICROS,
@@ -112,6 +113,7 @@ internal class ThreeTenResolver : Resolver {
     companion object {
         private val hasThreeTen: Boolean by lazy {
             try {
+                @Suppress("SpellCheckingInspection")
                 Class.forName("org.threeten.bp.LocalDate", false, ThreeTenResolver::class.java.classLoader)
                 true
             } catch (expected: ClassNotFoundException) {

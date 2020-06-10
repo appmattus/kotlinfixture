@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package com.appmattus.kotlinfixture
+package com.appmattus.kotlinfixture.config
 
-import kotlin.test.fail
+import com.mifmif.common.regex.Generex
 
-fun assertIsRandom(block: () -> Any?) {
-    val initial = block()
+fun Generator<String>.regexToRandom(regex: String, minLength: Int = 1, maxLength: Int = Int.MAX_VALUE): String {
+    return Generex(regex).apply {
+        setSeed(random.nextLong())
+    }.random(minLength, maxLength)
+}
 
-    repeat(1000) {
-        if (initial != block()) return
-    }
-
-    fail("Value always equal to $initial")
+fun Generator<String>.regexToRandom(regex: Regex, minLength: Int = 1, maxLength: Int = Int.MAX_VALUE): String {
+    return regexToRandom(regex.pattern, minLength, maxLength)
 }

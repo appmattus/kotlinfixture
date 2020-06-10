@@ -1,0 +1,5 @@
+= fixture-android-tests module
+
+This module enables the execution of tests for Android specific resolvers,
+such as link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/resolver/AndroidUriResolver.kt[AndroidUriResolver],
+using http://robolectric.org[Robolectric].

@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import java.util.Locale
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KMutableProperty
@@ -54,7 +55,8 @@ internal interface PopulateInstance {
         callContext.obj.memberFunctions.filter {
             it.name.startsWith("set") && it.valueParameters.size == 1
         }.filterNot {
-            val name = it.name.removePrefix("set").decapitalize()
+            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
+            val name = it.name.removePrefix("set").decapitalize(Locale.getDefault())
             callContext.constructorParameterNames.contains(name)
         }.forEach {
             val propertyResult = callContext.context.resolve(

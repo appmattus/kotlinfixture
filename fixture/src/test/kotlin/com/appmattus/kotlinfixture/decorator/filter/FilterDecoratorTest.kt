@@ -47,7 +47,7 @@ class FilterDecoratorTest {
     private val context = TestContext(config, resolver)
 
     @Test
-    fun `not ktype calls original resolver`() {
+    fun `not KType calls original resolver`() {
         val decoratedResolver = FilterDecorator().decorate(resolver)
         decoratedResolver.resolve(context, Float::class)
 

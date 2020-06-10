@@ -1,0 +1,410 @@
+= Configuration options
+:toc: preamble
+:toc-title: Options
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+All the configuration options available in KotlinFixture can be set when
+creating the fixture object as well as when creating a particular
+implementation.
+
+You can also create a new fixture based on an existing one, which allows
+changes to the configuration.
+
+[source,kotlin]
+----
+val baseFixture = kotlinFixture {
+    factory<Int> { 3 } // <1>
+}
+
+val fixture = baseFixture.new {
+    factory<Long> { 100L } // <2>
+}
+
+println(fixture<Long>()) // Prints 100
+println(fixture<Int>()) // Prints 3
+println(fixture<Int> {
+    factory<Int> { 4 } // <3>
+}) // Prints 4
+----
+<1> Configuration when creating the fixture object.
+<2> Create a new fixture based on an existing one, allowing overriding configuration.
+<3> Configuration can also be overridden when creating a particular object.
+
+== Setting list and map length with `repeatCount`
+
+Used to determine the length used for lists and maps. By default, the library generates 5 items.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    repeatCount { 3 }
+}
+
+val listOfThreeItems = fixture<List<Int>>() // 10, 81, 3
+----
+
+`repeatCount` is a factory method so can be used to return lists and maps of
+different lengths each execution:
+
+[source,kotlin]
+----
+repeatCount {
+    random.nextInt(1, 5)
+}
+----
+
+== Resolving abstract superclasses to a chosen subclass with `subType`
+
+Used to always return an instance of a particular subclass for a superclass.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    subType<Number, Int>()
+}
+
+val alwaysInt = fixture<Number>()
+----
+
+== Customising class generation with `factory`
+
+Used to return the given instance for a particular class using a factory
+method.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    factory<Number> {
+        41
+    }
+}
+
+val alwaysFortyOne = fixture<Number>()
+----
+
+As `factory` is a factory method you can return different values on every
+execution:
+
+[source,kotlin]
+----
+factory<Number> {
+    random.nextInt(10, 50)
+}
+----
+
+=== Generating values in a `range`
+
+`factory` has a built-in `range` function to make it easy to generate values
+in a range.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Generate using ranges (and iterables)
+    factory<Int> { range(1..10) }
+}
+
+val betweenOneAndTen = fixture<Int>()
+----
+
+=== Generating `Date` and `Calendar` values
+
+By default, `Date` and `Calendar` instances pick a date within 10 years of
+1 Jan 2020.
+
+This can be overridden using the built-in constructs `between`, `before` and
+`after` in your `factory` definition:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Generate between two dates
+    factory<Date> { between(startDate, endDate) }
+}
+
+val betweenTwoDates = fixture<Date>()
+----
+
+== Customising generation of class properties with `property`
+
+Used to override constructor parameters or mutable properties when generating
+instances of generic classes.
+
+._Kotlin class example_
+[%collapsible%open]
+====
+
+Given the following Kotlin class:
+
+[source,kotlin]
+----
+class KotlinClass(val readOnly: String, private var private: String) {
+    var member: String? = null
+}
+----
+
+We can override creating an instance of `KotlinClass` as follows:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Public constructor parameters overridden by reference:
+    property(KotlinClass::readOnly) { "a" }
+
+    // Private constructor parameters are overridden by name:
+    property<KotlinClass, String>("private") { "b" }
+
+    // Public member properties overridden by reference:
+    property(KotlinClass::member) { "c" }
+}
+----
+====
+
+._Java class example_
+[%collapsible]
+====
+Given the following Java class:
+
+[source,java]
+----
+public class JavaClass {
+    private final String constructor;
+    private String mutable;
+
+    public JavaClass(String constructor) { this.constructor = constructor; }
+
+    public void setMutable(String mutable) { this.mutable = mutable; }
+}
+----
+
+We can override creating an instance of `JavaClass` as follows:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Setter overridden by reference:
+    property<String>(JavaClass::setMutable) { "d" }
+
+    // Constructor parameters don't typically retain names and so are
+    // overridden by a positional 'arg' names:
+    property<JavaClass, String>("arg0") { "e" }
+}
+----
+====
+
+== Filtering generated values with `filter`
+
+Used to allow generated values to be filtered using standard sequence
+functions.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    filter<Int> {
+        filter { it % 2 == 0 }
+    }
+
+    // Can be used to return distinct values.
+    filter<String> {
+        distinct()
+    }
+}
+
+val evenNumber = fixture<Int>()
+
+val evenNumberLessThan100 = fixture<Int> {
+    // Builds upon the parent configuration
+    filter<Int> {
+        filter { it < 100 }
+    }
+}
+----
+
+WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
+
+== Providing a seeded `random`
+
+By default, we generate unique values between runs using a default `Random`
+class. If you want repeatability you can specify a seeded `Random` instance.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    random = Random(seed = 10)
+}
+
+val alwaysTheSame = fixture<Int>()
+----
+
+NOTE: While you can specify `random` at object creation, this will make the result static
+i.e. `fixture<Int> { random = Random(seed = 5) }` will always return the same value.
+
+== Overriding nullability with `nullabilityStrategy`
+
+By default, when the library comes across a nullable type, such as `String?` it
+will randomly return a value or null. This can be overridden by setting a
+nullability strategy.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // All nullable types will be populated with a value
+    nullabilityStrategy(NeverNullStrategy)
+}
+----
+
+._Available strategies_
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NeverNullStrategy.kt[NeverNullStrategy]`::
+populate nullable values with a non-null value.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/AlwaysNullStrategy.kt[AlwaysNullStrategy]`::
+populate nullable values with `null`.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/RandomlyNullStrategy.kt[RandomlyNullStrategy]`::
+populate nullable values randomly with `null`.
+====
+
+It is also possible to define and implement your own nullability strategy by
+implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NullabilityStrategy.kt[NullabilityStrategy]`
+and applying it as above.
+
+== Overriding the use of default values with `optionalStrategy`
+
+By default, when the library comes across an optional type, such as
+`value: String = &quot;default&quot;` it will randomly return the default value,
+or a generated value. This can be overridden by setting an optional
+strategy.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // All optionals will be populated with their default value
+    optionalStrategy(AlwaysOptionalStrategy) {
+        // You can override the strategy for a particular class
+        classOverride<AnotherObject>(NeverOptionalStrategy)
+
+        // You can override the strategy for a property of a class
+        propertyOverride(AnotherObject::property, RandomlyOptionalStrategy)
+    }
+}
+----
+
+._Available strategies_
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
+always use the properties the default value.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/NeverOptionalStrategy.kt[NeverOptionalStrategy]`::
+never use the properties the default value.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/RandomlyOptionalStrategy.kt[RandomlyOptionalStrategy]`::
+randomly use the properties the default value.
+====
+
+It is also possible to define and implement your own optional strategy by
+implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/OptionalStrategy.kt[OptionalStrategy]`
+and applying it as above.
+
+== Changing how recursion behaves with `recursionStrategy`
+
+When the library detects recursion, by default, it will throw an
+`UnsupportedOperationException` with the details of the circular reference. This
+strategy can be changed to instead return `null` for the reference, however, if
+this results in an invalid object an exception will still be thrown as the
+object requested couldn't be resolved.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    recursionStrategy(NullRecursionStrategy)
+}
+----
+
+._Available strategies_
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/NullRecursionStrategy.kt[NullRecursionStrategy]`::
+use `null` for circular references.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/ThrowingRecursionStrategy.kt[ThrowingRecursionStrategy]`::
+throw an exception when finding circular references.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/UnresolvedRecursionStrategy.kt[UnresolvedRecursionStrategy]`::
+use `Unresolved` for circular references, which may result in generation of a
+valid object as other scenarios will be tried
+====
+
+It is also possible to define and implement your own recursion strategy by
+implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionStrategy.kt[RecursionStrategy]` and applying it as above.
+
+== Logging object generation with `loggingStrategy`
+
+A basic logger can be applied using the built in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
+It is also possible to define and implement your own logging strategy by
+implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingStrategy.kt[LoggingStrategy]`
+and applying it as below.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    loggingStrategy(SysOutLoggingStrategy)
+}
+----
+
+The logger for `fixture<String>()` outputs:
+
+[source,text]
+----
+ktype kotlin.String →
+    class kotlin.String →
+        Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
+    Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
+----
+
+== Choosing the constructor to generate an object with `constructorStrategy`
+
+By default, when the library generates an instance of a class it picks a
+constructor at random. This can be overridden by setting a constructor
+strategy.
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    constructorStrategy(ModestConstructorStrategy)
+}
+----
+
+._Available strategies_
+[%collapsible]
+====
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
+order constructors by random.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`::
+order constructors by the most modest constructor first. i.e. fewer
+parameters returned first.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy]`::
+order constructors by the most greedy constructor first. i.e. greater
+parameters returned first.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy]`::
+order constructors selecting those with the most parameters of
+`Array<*>` before any other.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`::
+order constructors selecting those with the most parameters of `List<*>`
+before any other.
+====
+
+It is also possible to define and implement your own constructor
+strategy by implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ConstructorStrategy.kt[ConstructorStrategy]` and applying it as above.

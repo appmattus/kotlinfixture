@@ -23,14 +23,26 @@ enum class CreditCard(internal val creditCardType: CreditCardType?) {
     Any(null),
 
     AmericanExpress(CreditCardType.AMERICAN_EXPRESS),
+
+    @Suppress("SpellCheckingInspection")
     Dankort(CreditCardType.DANKORT),
+
     DinersClub(CreditCardType.DINERS_CLUB),
+
     Discover(CreditCardType.DISCOVER),
+
+    @Suppress("SpellCheckingInspection")
     Forbrugsforeningen(CreditCardType.FORBRUGSFORENINGEN),
+
     JCB(CreditCardType.JCB),
+
     Laser(CreditCardType.LASER),
+
     Mastercard(CreditCardType.MASTERCARD),
+
     Solo(CreditCardType.SOLO),
+
     Switch(CreditCardType.SWITCH),
+
     Visa(CreditCardType.VISA)
 }

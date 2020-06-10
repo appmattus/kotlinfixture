@@ -76,6 +76,7 @@ data class JavaFakerConfiguration(
             // Aviation
             entry("aircraft") { aviation().aircraft() },
             entry("airport") { aviation().airport() },
+            @Suppress("SpellCheckingInspection")
             entry("METAR") { aviation().METAR() },
 
             // Business
@@ -84,11 +85,15 @@ data class JavaFakerConfiguration(
             entry("creditCardType") { business().creditCardType() },
 
             // Code
+            @Suppress("SpellCheckingInspection")
             entry("asin") { code().asin() },
             entry("ean13") { code().ean13() },
             entry("ean8") { code().ean8() },
+            @Suppress("SpellCheckingInspection")
             entry("gtin13") { code().gtin13() },
+            @Suppress("SpellCheckingInspection")
             entry("gtin8") { code().gtin8() },
+            @Suppress("SpellCheckingInspection")
             entry("imei") { code().imei() },
             entry("isbn10") { code().isbn10(it.isbn10Separator) },
             entry("isbn13") { code().isbn13(it.isbn13Separator) },
@@ -153,6 +158,7 @@ data class JavaFakerConfiguration(
                     else -> finance().creditCard(it.creditCard.creditCardType)
                 }
             },
+            @Suppress("SpellCheckingInspection")
             entry("iban") { finance().iban() },
 
             // IdNumber
@@ -169,8 +175,10 @@ data class JavaFakerConfiguration(
                 }
             },
             entry("ipV4Address") { internet().ipV4Address() },
+            @Suppress("SpellCheckingInspection")
             entry("ipV4Cidr") { internet().ipV4Cidr() },
             entry("ipV6Address") { internet().ipV6Address() },
+            @Suppress("SpellCheckingInspection")
             entry("ipV6Cidr") { internet().ipV6Cidr() },
             entry("macAddress") { internet().macAddress() },
             entry("password") {
@@ -206,6 +214,7 @@ data class JavaFakerConfiguration(
             entry("phoneNumber") { phoneNumber().phoneNumber() },
 
             // Stock
+            @Suppress("SpellCheckingInspection")
             entry("nsdqSymbol") { stock().nsdqSymbol() },
             entry("nyseSymbol") { stock().nyseSymbol() },
 
