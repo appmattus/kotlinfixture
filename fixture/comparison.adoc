@@ -29,7 +29,7 @@ Only {link-appmattus} has built-in support for abstract classes. Kotlin's https:
 are abstract so not supported, with only {link-marcellogalhardo} supporting
 sealed classes but not abstract classes.
 
-For ease of use, a fixture library needs good support for build-in types to
+For ease of use, a fixture library needs good support for built-in types to
 reduce the amount of customisation required, whether that is types such as
 Kotlin's `https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/[Pair]`,
 Java types such as `Currency` and `Locale` or even Java 8s time types. The user
@@ -48,3 +48,5 @@ various unsupported types, not random, or generated invalid types. For example:
 
 Our comprehensive link:src/test/kotlin/com/appmattus/kotlinfixture/ComparisonTest.kt[ComparisonTest]
 contains more details.
+
+If you find any bugs or have any feature requests for more built-in types please create an https://github.com/appmattus/kotlinfixture/issues[issue].

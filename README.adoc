@@ -100,7 +100,7 @@ See link:fixture-kotest/README.adoc[Kotest integration] for more details.
 
 == Java Faker integration: pretty data
 
-Require generation of prettier data, such as names and addresses? Take a look at the http://dius.github.io/java-faker/[Java Faker] support.
+Generate values with a closer match to real data using http://dius.github.io/java-faker/[Java Faker].
 
 See link:fixture-javafaker/README.adoc[Java Faker integration] for more details.
 
