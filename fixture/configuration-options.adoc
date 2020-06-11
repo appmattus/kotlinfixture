@@ -393,7 +393,7 @@ val fixture = kotlinFixture {
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
-order constructors by random.
+order constructors at random.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`::
 order constructors by the most modest constructor first. i.e. fewer

@@ -31,7 +31,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
  *
  * ## Available strategies
  *
- * - [RandomConstructorStrategy] order constructors by random.
+ * - [RandomConstructorStrategy] order constructors at random.
  * - [ModestConstructorStrategy] order constructors by the most modest constructor first. i.e. fewer parameters returned first.
  * - [GreedyConstructorStrategy] order constructors by the most greedy constructor first. i.e. greater parameters returned first.
  * - [ArrayFavouringConstructorStrategy] order constructors selecting those with the most parameters of `Array<*>` before any other.
