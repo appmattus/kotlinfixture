@@ -92,6 +92,8 @@ The sequence can hang indefinitely if the applied operators prevent the generati
 
 Everything can be customised, see link:fixture/configuration-options.adoc[configuration options] for more details.
 
+link:fixture/advanced-customisation.adoc[Advanced engine customisation] is also possible if the above options are not enough.
+
 == Kotest integration: property based testing
 
 The library provides {link-appmattus} powered property based testing for https://github.com/kotest/kotest/[Kotest].

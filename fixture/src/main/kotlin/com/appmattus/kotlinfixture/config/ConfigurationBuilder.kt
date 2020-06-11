@@ -16,6 +16,7 @@
 
 package com.appmattus.kotlinfixture.config
 
+import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.filter.DefaultFilter
 import com.appmattus.kotlinfixture.decorator.filter.Filter
@@ -31,11 +32,26 @@ import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
+/**
+ * Builder of [Configuration]. When [configuration] is supplied it is built upon allowing the various options to be set and overridden.
+ */
 @ConfigurationDsl
 @Suppress("TooManyFunctions")
-class ConfigurationBuilder(configuration: Configuration = Configuration()) {
+class ConfigurationBuilder(private val configuration: Configuration = Configuration()) {
 
+    /**
+     * Add and remove [Decorator] to wrap the resolver chain.
+     *
+     * [Decorator] allow you to intercept and modify the [Resolver] chain
+     */
     var decorators: MutableList<Decorator> = configuration.decorators.toMutableList()
+
+    /**
+     * Add and remove [Resolver] to the resolver chain.
+     *
+     * We ask each [Resolver] if it handles the current input object, and it returns either a generated fixture or
+     * [Unresolved.Unhandled].
+     */
     var resolvers: MutableList<Resolver> = configuration.resolvers.toMutableList()
 
     /**

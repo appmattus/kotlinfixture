@@ -1,0 +1,61 @@
+= Advanced engine customisation
+:toc: preamble
+:toc-title:
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+:link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
+:url-resolver: link:src/main/kotlin/com/appmattus/kotlinfixture/resolver/Resolver.kt
+:url-decorator: link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/Decorator.kt
+:link-decorator: {url-decorator}[Decorator]
+
+While the main link:configuration-options.adoc[configuration options] should
+handle the majority of ways to alter how {link-appmattus} generates fixtures,
+perhaps there is core functionality missing, or some other reason where you
+need finer grained control.
+
+Of course, we would love to hear about it, to help us improve {link-appmattus}
+so please also consider raising link:https://github.com/appmattus/kotlinfixture/issues[issues]
+and creating link:https://github.com/appmattus/kotlinfixture/pulls[PRs].
+
+== Resolvers
+
+The core engine of {link-appmattus} is based on a chain of `{url-resolver}[Resolvers]`
+which are queried in sequence. We ask each `{url-resolver}[Resolver]`
+if it handles the current input object, and it returns either a generated fixture or `link:src/main/kotlin/com/appmattus/kotlinfixture/Unresolved.kt[Unresolved.Unhandled]`.
+
+NOTE: We use link:src/main/kotlin/com/appmattus/kotlinfixture/Unresolved.kt[Unresolved] as nulls are valid fixtures.
+
+The `{url-resolver}[Resolver]` interface requires the implementation of the `resolve` function:
+
+[source,kotlin]
+----
+fun resolve(context: Context, obj: Any): Any?
+----
+
+Typically, the input object, `obj`, begins as a `KType` and as it passes
+through the resolver chain will be changed to new values, such as a `KClass`.
+A recursive call to `context.resolve(…)` is made with this new value for
+another `{url-resolver}[Resolver]` to pick up.
+
+When generating random content, use `context.random` to retain the ability to link:configuration-options.adoc#_providing_a_seeded_random[provide a seeded `random`].
+
+== Decorators
+
+On the other hand, a `{url-decorator}[Decorator]` allows you to intercept and
+modify the `{url-resolver}[Resolver]` chain and are currently being used for functionality from
+link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingDecorator.kt[logging]
+to link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionDecorator.kt[recursion].
+
+== Strategies
+
+To customise the behaviour of a `{url-resolver}[Resolver]` or
+`{url-decorator}[Decorator]`, a strategy can be provided in the configuration,
+and retrieved using `context.strategyOrDefault(…)`.
+
+For convenience, we are usually adding an extension function to the link:src/main/kotlin/com/appmattus/kotlinfixture/config/ConfigurationBuilder.kt[ConfigurationBuilder].
+For example, see link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingConfiguration.kt[LoggingConfiguration].

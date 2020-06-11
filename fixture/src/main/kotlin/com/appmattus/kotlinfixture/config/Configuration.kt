@@ -18,7 +18,7 @@ package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.exception.ExceptionDecorator
-import com.appmattus.kotlinfixture.decorator.fake.FakeDecorator
+import com.appmattus.kotlinfixture.resolver.FakeResolver
 import com.appmattus.kotlinfixture.decorator.filter.Filter
 import com.appmattus.kotlinfixture.decorator.filter.FilterDecorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
@@ -68,6 +68,9 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 
+/**
+ * The [Configuration] for generating the current fixture. This is a combination of all previous configurations.
+ */
 data class Configuration internal constructor(
     val repeatCount: () -> Int = defaultRepeatCount,
     val properties: Map<KClass<*>, Map<String, GeneratorFun>> =
@@ -88,7 +91,6 @@ data class Configuration internal constructor(
         private val defaultRandom = Random
 
         private val defaultDecorators = listOf(
-            FakeDecorator(),
             FilterDecorator(),
             ExceptionDecorator(),
             RecursionDecorator(),
@@ -134,6 +136,7 @@ data class Configuration internal constructor(
             MapKTypeResolver(),
 
             KTypeResolver(),
+            FakeResolver(),
             KNamedPropertyResolver(),
             KFunctionResolver(),
 

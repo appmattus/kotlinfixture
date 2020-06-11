@@ -234,6 +234,7 @@ The sequence can hang indefinitely if the applied operators prevent the generati
 * `filter` that can never be fulfilled e.g. `filter { false }`
 ====
 
+[#_providing_a_seeded_random]
 == Providing a seeded `random`
 
 By default, we generate unique values between runs using a default `Random`
