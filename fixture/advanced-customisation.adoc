@@ -57,5 +57,5 @@ To customise the behaviour of a `{url-resolver}[Resolver]` or
 `{url-decorator}[Decorator]`, a strategy can be provided in the configuration,
 and retrieved using `context.strategyOrDefault(…)`.
 
-For convenience, we are usually adding an extension function to the link:src/main/kotlin/com/appmattus/kotlinfixture/config/ConfigurationBuilder.kt[ConfigurationBuilder].
+For convenience, we add an extension function to the link:src/main/kotlin/com/appmattus/kotlinfixture/config/ConfigurationBuilder.kt[ConfigurationBuilder].
 For example, see link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingConfiguration.kt[LoggingConfiguration].
