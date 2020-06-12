@@ -117,6 +117,7 @@ class ComparisonTest {
         @Test
         fun `appmattus nullability supported`() {
             assertIsRandom {
+                @Suppress("DEPRECATION_ERROR")
                 val result = appmattus.create(nullableType, appmattus.fixtureConfiguration)
 
                 result == null
@@ -191,6 +192,7 @@ class ComparisonTest {
         fun `appmattus creates instance`() {
             assumeValid(appmattusSupports)
 
+            @Suppress("DEPRECATION_ERROR")
             val result = appmattus.create(type, appmattus.fixtureConfiguration)!!
 
             assertTrue {
@@ -203,6 +205,7 @@ class ComparisonTest {
             assumeRandom(appmattusSupports)
 
             assertIsRandom {
+                @Suppress("DEPRECATION_ERROR")
                 appmattus.create(type, appmattus.fixtureConfiguration)!!
             }
         }
