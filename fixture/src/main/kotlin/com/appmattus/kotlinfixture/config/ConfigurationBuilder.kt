@@ -391,7 +391,8 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     )
 
     @Deprecated(
-        "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or property<Property>(Class::function) { … } functions",
+        "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or " +
+                "property<Property>(Class::function) { … } functions",
         level = DeprecationLevel.ERROR
     )
     fun property(clazz: KClass<*>, propertyName: String, generator: GeneratorFun) {

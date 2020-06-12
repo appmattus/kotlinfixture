@@ -34,6 +34,7 @@ class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration 
         return if (rangeShuffled.isNotEmpty()) {
             rangeShuffled.first()
         } else {
+            @Suppress("DEPRECATION_ERROR")
             create(typeOf<T>(), ConfigurationBuilder(fixtureConfiguration).apply(configuration).build()) as T
         }
     }
@@ -45,6 +46,7 @@ class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration 
         val builtConfiguration = ConfigurationBuilder(fixtureConfiguration).apply(configuration).build()
         return sequence {
             while (true) {
+                @Suppress("DEPRECATION_ERROR")
                 yield(create(type, builtConfiguration) as T)
             }
         }
@@ -52,15 +54,17 @@ class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration 
 
     @JvmOverloads
     fun create(clazz: Class<*>, configuration: Configuration = fixtureConfiguration): Any? {
+        @Suppress("DEPRECATION_ERROR")
         return create(clazz.kotlin, configuration)
     }
 
-    @JvmOverloads
+    @Deprecated("Use the fixture<Class>() function", level = DeprecationLevel.ERROR)
     fun create(clazz: KClass<*>, configuration: Configuration = fixtureConfiguration): Any? {
+        @Suppress("DEPRECATION_ERROR")
         return create(clazz.starProjectedType, configuration)
     }
 
-    @JvmOverloads
+    @Deprecated("Use the fixture<Class>() function", level = DeprecationLevel.ERROR)
     fun create(type: KType, configuration: Configuration = fixtureConfiguration): Any? {
         val result = ContextImpl(configuration).resolve(type)
         if (result is Unresolved) {
