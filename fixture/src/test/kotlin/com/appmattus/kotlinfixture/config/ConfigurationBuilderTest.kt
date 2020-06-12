@@ -81,6 +81,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(
             Configuration(properties = mapOf(Properties::class to mapOf("property" to original as GeneratorFun)))
         ).apply {
+            @Suppress("DEPRECATION_ERROR")
             property(Properties::class, "property") { 1 }
         }.build()
 
@@ -153,6 +154,7 @@ class ConfigurationBuilderTest {
                 factories = mapOf(Properties::class.starProjectedType to original as GeneratorFun)
             )
         ).apply {
+            @Suppress("DEPRECATION_ERROR")
             factory(Properties::class.starProjectedType) { Properties("1") }
         }.build()
 
@@ -192,6 +194,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(
             Configuration(subTypes = mapOf(Number::class to Int::class))
         ).apply {
+            @Suppress("DEPRECATION_ERROR")
             subType(Number::class, Float::class)
         }.build()
 
@@ -226,6 +229,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(
             Configuration(filters = mapOf(typeOf<Number>() to originalFilter))
         ).apply {
+            @Suppress("DEPRECATION_ERROR")
             filter(typeOf<Number>()) { this }
         }.build()
 

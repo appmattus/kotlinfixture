@@ -119,13 +119,11 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * factory<Date> { between(startDate, endDate) }
      * ```
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
     inline fun <reified T> factory(noinline generator: Generator<T>.() -> T) =
         factory(typeOf<T>(), generator as GeneratorFun)
 
-    /**
-     * @hide
-     */
+    @Deprecated("Use the factory<Class> { … } function", level = DeprecationLevel.ERROR)
     fun factory(type: KType, generator: GeneratorFun) {
         factories[type] = generator
     }
@@ -161,13 +159,11 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * - `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
      * - `filter` that can never be fulfilled e.g. `filter { false }`
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
     inline fun <reified T> filter(noinline mapping: Sequence<T>.() -> Sequence<T>) =
         filter(typeOf<T>(), mapping as Sequence<Any?>.() -> Sequence<Any?>)
 
-    /**
-     * @hide
-     */
+    @Deprecated("Use the filter<Class> { … } function", level = DeprecationLevel.ERROR)
     fun filter(type: KType, mapping: Sequence<Any?>.() -> Sequence<Any?>) {
         filters[type] = (filters.getOrElse(type) { DefaultFilter(type) }).map(mapping)
     }
@@ -185,11 +181,10 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * val alwaysInt = fixture<Number>()
      * ```
      */
+    @Suppress("DEPRECATION_ERROR")
     inline fun <reified T, reified U : T> subType() = subType(T::class, U::class)
 
-    /**
-     * @hide
-     */
+    @Deprecated("Use the subType<Superclass, Subclass>() function instead", level = DeprecationLevel.ERROR)
     fun subType(superType: KClass<*>, subType: KClass<*>) {
         subTypes[superType] = subType
     }
@@ -252,7 +247,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
     inline fun <reified T, G> property(propertyName: String, noinline generator: Generator<G>.() -> G) =
         property(T::class, propertyName, generator as GeneratorFun)
 
@@ -326,7 +321,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
             }
         }
 
-        @Suppress("UNCHECKED_CAST")
+        @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
         return property(T::class, property.name, generator as GeneratorFun)
     }
 
@@ -388,16 +383,17 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      */
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
     inline fun <reified G> property(function: KFunction<Unit>, noinline generator: Generator<G>.() -> G) = property(
         function.parameters[0].type.classifier as KClass<*>,
         function.name,
         generator as GeneratorFun
     )
 
-    /**
-     * @hide
-     */
+    @Deprecated(
+        "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or property<Property>(Class::function) { … } functions",
+        level = DeprecationLevel.ERROR
+    )
     fun property(clazz: KClass<*>, propertyName: String, generator: GeneratorFun) {
         val classProperties = properties.getOrElse(clazz) { mutableMapOf() }
         classProperties[propertyName] = generator

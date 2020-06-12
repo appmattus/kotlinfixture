@@ -18,7 +18,6 @@ package com.appmattus.kotlinfixture.config
 
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.exception.ExceptionDecorator
-import com.appmattus.kotlinfixture.resolver.FakeResolver
 import com.appmattus.kotlinfixture.decorator.filter.Filter
 import com.appmattus.kotlinfixture.decorator.filter.FilterDecorator
 import com.appmattus.kotlinfixture.decorator.logging.LoggingDecorator
@@ -39,6 +38,7 @@ import com.appmattus.kotlinfixture.resolver.EnumResolver
 import com.appmattus.kotlinfixture.resolver.EnumSetResolver
 import com.appmattus.kotlinfixture.resolver.FactoryMethodResolver
 import com.appmattus.kotlinfixture.resolver.FactoryResolver
+import com.appmattus.kotlinfixture.resolver.FakeResolver
 import com.appmattus.kotlinfixture.resolver.FileResolver
 import com.appmattus.kotlinfixture.resolver.FormatResolver
 import com.appmattus.kotlinfixture.resolver.HashtableKTypeResolver
@@ -70,6 +70,15 @@ import kotlin.reflect.KType
 
 /**
  * The [Configuration] for generating the current fixture. This is a combination of all previous configurations.
+ * @property repeatCount The length used for lists and maps.
+ * @property properties Overrides for constructor parameters and mutable properties when generating instances of generic classes.
+ * @property factories Given instances for a particular class using a factory method.
+ * @property subTypes Superclass to subclass mapping for subtypes.
+ * @property random Random to use for generating random values. This may be a seeded random.
+ * @property decorators Each [Decorator] wraps the resolver chain.
+ * @property resolvers The resolver chain, each [Resolver] is called in order until one handles the input object.
+ * @property strategies Strategy settings for altering the behaviour of [resolvers] and [decorators].
+ * @property filters Sequence filters for generated values.
  */
 data class Configuration internal constructor(
     val repeatCount: () -> Int = defaultRepeatCount,
