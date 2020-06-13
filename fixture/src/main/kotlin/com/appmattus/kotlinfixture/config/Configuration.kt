@@ -91,7 +91,7 @@ data class Configuration internal constructor(
     val decorators: List<Decorator> = defaultDecorators.toUnmodifiableList(),
     val resolvers: List<Resolver> = defaultResolvers.toUnmodifiableList(),
     val strategies: Map<KClass<*>, Any> = emptyMap<KClass<*>, Any>().toUnmodifiableMap(),
-    val filters: Map<KType, Filter> = emptyMap<KType, Filter>().toUnmodifiableMap()
+    internal val filters: Map<KType, Filter> = emptyMap<KType, Filter>().toUnmodifiableMap()
 ) {
 
     private companion object {

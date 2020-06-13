@@ -19,6 +19,9 @@ package com.appmattus.kotlinfixture.decorator.fake
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 
+/**
+ * A [FakeStrategy] that contains no fake data
+ */
 object NoFakeStrategy : FakeStrategy {
     override fun fake(context: Context, propertyName: String) = Unresolved.Unhandled
 }

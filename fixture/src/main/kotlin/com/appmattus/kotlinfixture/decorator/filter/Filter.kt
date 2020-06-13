@@ -21,7 +21,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import java.util.concurrent.locks.Lock
 import kotlin.concurrent.withLock
 
-interface Filter {
+internal interface Filter {
     val lock: Lock
 
     var resolver: Resolver

@@ -22,9 +22,34 @@ Of course, we would love to hear about it, to help us improve {link-appmattus}
 so please also consider raising link:https://github.com/appmattus/kotlinfixture/issues[issues]
 and creating link:https://github.com/appmattus/kotlinfixture/pulls[PRs].
 
+== Generators
+
+While `factory` and `property` generators have built-in helper functions
+you can also create your own by adding extension functions to `link:src/main/kotlin/com/appmattus/kotlinfixture/config/Generator.kt[Generator]`.
+
+`link:src/main/kotlin/com/appmattus/kotlinfixture/config/Generator.kt[Generator]`
+provides `random` for you to use which can be seeded in your fixture
+definition.
+
+You also have access to `fixture` for internally generating other classes.
+
+[source,kotlin]
+----
+fun Generator<Int>.odd(max: Int = Int.MAX_VALUE): Int  = random.nextInt(max).let {
+    it + if (it % 2 == 0) 1 else 0
+}
+
+data class Person(val name: String, val age: Int)
+
+fun Generator<Person>.person(child: Boolean): Person = Person(
+    name = fixture<String>(),
+    age = if (child) random.nextInt(random.nextInt(0, 17)) else random.nextInt(18, 95)
+)
+----
+
 == Resolvers
 
-The core engine of {link-appmattus} is based on a chain of `{url-resolver}[Resolvers]`
+The core engine of {link-appmattus} is based on a chain of `{url-resolver}[Resolver]` instances
 which are queried in sequence. We ask each `{url-resolver}[Resolver]`
 if it handles the current input object, and it returns either a generated fixture or `link:src/main/kotlin/com/appmattus/kotlinfixture/Unresolved.kt[Unresolved.Unhandled]`.
 

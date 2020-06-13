@@ -355,7 +355,7 @@ implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decora
 
 == Logging object generation with `loggingStrategy`
 
-A basic logger can be applied using the built in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
+A basic logger can be applied using the built-in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
 It is also possible to define and implement your own logging strategy by
 implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingStrategy.kt[LoggingStrategy]`
 and applying it as below.

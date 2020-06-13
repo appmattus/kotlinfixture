@@ -19,6 +19,11 @@ package com.appmattus.kotlinfixture.config
 import com.appmattus.kotlinfixture.Fixture
 import kotlin.random.Random
 
+/**
+ * Generators for `factory` and `property` configuration
+ * @property random The fixtures random, which may be seeded
+ * @property fixture A fixture to be able to generate nested objects
+ */
 interface Generator<T> {
     val random: Random
     val fixture: Fixture
