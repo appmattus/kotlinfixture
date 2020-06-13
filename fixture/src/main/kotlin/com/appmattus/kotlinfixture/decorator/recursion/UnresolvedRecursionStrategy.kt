@@ -19,6 +19,10 @@ package com.appmattus.kotlinfixture.decorator.recursion
 import com.appmattus.kotlinfixture.Unresolved
 import kotlin.reflect.KType
 
+/**
+ * A [RecursionStrategy] that returns [Unresolved] when recursion is detected, giving the possibility the object may
+ * still be resolved, for example, through a different constructor or factory method.
+ */
 object UnresolvedRecursionStrategy : RecursionStrategy {
 
     override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {

@@ -19,6 +19,9 @@ package com.appmattus.kotlinfixture.decorator.logging
 import java.util.Stack
 import kotlin.reflect.KType
 
+/**
+ * A [LoggingStrategy] that logs to [System.out]
+ */
 object SysOutLoggingStrategy : LoggingStrategy {
     private val stack = Stack<Any>()
 

@@ -95,6 +95,7 @@ class OptionalConfigurationTest {
     fun `Default strategy overridden by classOverrides explicit`(): Unit = with(testContext) {
         kotlinFixture {
             optionalStrategy(NeverOptionalStrategy) {
+                @Suppress("DEPRECATION_ERROR")
                 classOverride(DataClass::class, AlwaysOptionalStrategy)
             }
         }.optionalStrategy.apply {

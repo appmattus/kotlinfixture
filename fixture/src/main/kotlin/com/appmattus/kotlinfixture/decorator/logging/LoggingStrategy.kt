@@ -16,7 +16,18 @@
 
 package com.appmattus.kotlinfixture.decorator.logging
 
+/**
+ * Strategy used to provide logging around the resolver chain.
+ */
 interface LoggingStrategy {
+    /**
+     * [request] is called every time the resolver chain is called, which includes nested calls when a resolver calls
+     * the chain after modifying the [obj].
+     */
     fun request(obj: Any)
+
+    /**
+     * [response] is called with the [Result] of the call to the resolver chain.
+     */
     fun response(obj: Any, result: Result<Any?>)
 }

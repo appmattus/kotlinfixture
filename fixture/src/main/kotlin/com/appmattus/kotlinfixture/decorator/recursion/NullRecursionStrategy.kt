@@ -18,6 +18,9 @@ package com.appmattus.kotlinfixture.decorator.recursion
 
 import kotlin.reflect.KType
 
+/**
+ * A [RecursionStrategy] that returns nulls for objects when recursion is detected.
+ */
 object NullRecursionStrategy : RecursionStrategy {
 
     override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {

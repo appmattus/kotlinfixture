@@ -18,6 +18,12 @@ package com.appmattus.kotlinfixture.decorator.nullability
 
 import com.appmattus.kotlinfixture.Context
 
+/**
+ * Strategy used to determine if nullable types resolve to a null or to a value.
+ */
 interface NullabilityStrategy {
+    /**
+     * True means resolve as null
+     */
     fun Context.generateAsNull(): Boolean
 }

@@ -23,23 +23,37 @@ import kotlin.reflect.KMutableProperty1
 import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 
+/**
+ * Builder of [OptionalStrategy], allow class and property overrides.
+ */
 @ConfigurationDsl
-class OptionalStrategyBuilder(private val defaultStrategy: OptionalStrategy) {
+class OptionalStrategyBuilder internal constructor(private val defaultStrategy: OptionalStrategy) {
 
     private val classes: MutableMap<KClass<*>, OptionalStrategy> = mutableMapOf()
 
     private val properties: MutableMap<KClass<*>, MutableMap<String, OptionalStrategy>> = mutableMapOf()
 
+    /**
+     * Override the strategy for a particular class
+     */
+    @Suppress("DEPRECATION_ERROR")
     inline fun <reified T> classOverride(strategy: OptionalStrategy) = classOverride(T::class, strategy)
 
+    @Deprecated("Use the classOverride<Class>(…) function", level = DeprecationLevel.ERROR)
     fun classOverride(superType: KClass<*>, strategy: OptionalStrategy) {
         classes[superType] = strategy
     }
 
-    @Suppress("UNCHECKED_CAST")
+    /**
+     * Override the strategy for a property of a class
+     */
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
     inline fun <reified T> propertyOverride(propertyName: String, strategy: OptionalStrategy) =
         propertyOverride(T::class, propertyName, strategy)
 
+    /**
+     * Override the strategy for a property of a class
+     */
     inline fun <reified T> propertyOverride(property: KProperty1<T, *>, strategy: OptionalStrategy) {
         // Only allow read only properties in constructor(s)
         if (property !is KMutableProperty1) {
@@ -52,10 +66,14 @@ class OptionalStrategyBuilder(private val defaultStrategy: OptionalStrategy) {
             }
         }
 
-        @Suppress("UNCHECKED_CAST")
+        @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
         return propertyOverride(T::class, property.name, strategy)
     }
 
+    @Deprecated(
+        "Use the propertyOverride<Class>(propertyName, strategy) or " +
+                "propertyOverride(Class::propertyName, strategy) function", level = DeprecationLevel.ERROR
+    )
     fun propertyOverride(clazz: KClass<*>, propertyName: String, strategy: OptionalStrategy) {
         val classProperties = properties.getOrElse(clazz) { mutableMapOf() }
         classProperties[propertyName] = strategy
@@ -63,7 +81,7 @@ class OptionalStrategyBuilder(private val defaultStrategy: OptionalStrategy) {
         properties[clazz] = classProperties
     }
 
-    fun build(): OptionalStrategy = OverrideOptionalStrategy(
+    internal fun build(): OptionalStrategy = OverrideOptionalStrategy(
         defaultStrategy = defaultStrategy,
         propertyOverrides = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
         classOverrides = classes.toUnmodifiableMap()

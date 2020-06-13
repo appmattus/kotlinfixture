@@ -85,7 +85,7 @@ class JavaFakerConfigurationBuilder(javaFakerConfiguration: JavaFakerConfigurati
         properties[propertyName] = fakeGenerator
     }
 
-    fun build() = JavaFakerConfiguration(
+    internal fun build() = JavaFakerConfiguration(
         creditCard = creditCard,
         ipAddress = ipAddress,
         isbn10Separator = isbn10Separator,

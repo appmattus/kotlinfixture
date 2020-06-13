@@ -18,6 +18,9 @@ package com.appmattus.kotlinfixture.decorator.recursion
 
 import kotlin.reflect.KType
 
+/**
+ * A [RecursionStrategy] that throws an [UnsupportedOperationException] when recursion is detected.
+ */
 object ThrowingRecursionStrategy : RecursionStrategy {
 
     override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {

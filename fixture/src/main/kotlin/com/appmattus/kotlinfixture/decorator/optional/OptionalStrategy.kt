@@ -19,6 +19,12 @@ package com.appmattus.kotlinfixture.decorator.optional
 import com.appmattus.kotlinfixture.Context
 import kotlin.reflect.KClass
 
+/**
+ * Strategy used to determine if properties with default values generate a value or return the default value.
+ */
 interface OptionalStrategy {
+    /**
+     * True means use the properties default value.
+     */
     fun Context.generateAsOptional(callingClass: KClass<*>, parameterName: String): Boolean
 }

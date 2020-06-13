@@ -16,6 +16,9 @@
 
 package com.appmattus.kotlinfixture.decorator.logging
 
+/**
+ * A [LoggingStrategy] that logs nothing
+ */
 object NoLoggingStrategy : LoggingStrategy {
     override fun request(obj: Any) = Unit
 
