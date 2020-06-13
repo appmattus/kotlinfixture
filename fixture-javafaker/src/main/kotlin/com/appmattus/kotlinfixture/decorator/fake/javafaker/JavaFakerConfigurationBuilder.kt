@@ -24,7 +24,7 @@ import com.appmattus.kotlinfixture.toUnmodifiableMap
 import com.github.javafaker.Faker
 import java.util.Locale
 
-class JavaFakerConfigurationBuilder(javaFakerConfiguration: JavaFakerConfiguration) {
+class JavaFakerConfigurationBuilder internal constructor(javaFakerConfiguration: JavaFakerConfiguration) {
 
     /**
      * Generate `creditCard` properties in the style of the selected credit card company. See [CreditCard] for options.
