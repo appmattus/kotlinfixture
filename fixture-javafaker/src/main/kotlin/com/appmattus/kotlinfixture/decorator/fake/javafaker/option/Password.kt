@@ -16,6 +16,9 @@
 
 package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
 
+/**
+ * Configuration for password generation
+ */
 data class Password(
     val minimumLength: Int = 8,
     val maximumLength: Int = 16,

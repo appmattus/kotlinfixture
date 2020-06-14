@@ -22,7 +22,7 @@ import com.appmattus.kotlinfixture.decorator.fake.FakeStrategy
 import com.github.javafaker.Faker
 import kotlin.random.asJavaRandom
 
-open class JavaFakerStrategy(
+internal class JavaFakerStrategy(
     private val fakerConfiguration: JavaFakerConfiguration = JavaFakerConfigurationBuilder(
         JavaFakerConfiguration()
     ).build()

@@ -18,6 +18,9 @@ package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
 
 import com.github.javafaker.Internet
 
+/**
+ * Different types of [UserAgent]
+ */
 @Suppress("unused")
 enum class UserAgent(internal val userAgent: Internet.UserAgent?) {
     Any(null),

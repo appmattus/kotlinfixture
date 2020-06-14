@@ -16,6 +16,9 @@
 
 package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
 
+/**
+ * Different types of [Temperature]
+ */
 enum class Temperature {
     Celsius,
     Fahrenheit

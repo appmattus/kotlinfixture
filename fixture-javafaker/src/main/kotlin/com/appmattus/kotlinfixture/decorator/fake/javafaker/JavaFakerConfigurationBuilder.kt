@@ -17,13 +17,16 @@
 package com.appmattus.kotlinfixture.decorator.fake.javafaker
 
 import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.CreditCard
+import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.IpAddress
 import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.Temperature
 import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.UserAgent
-import com.appmattus.kotlinfixture.decorator.fake.javafaker.option.IpAddress
 import com.appmattus.kotlinfixture.toUnmodifiableMap
 import com.github.javafaker.Faker
 import java.util.Locale
 
+/**
+ * Builder of [JavaFakerConfiguration].
+ */
 class JavaFakerConfigurationBuilder internal constructor(javaFakerConfiguration: JavaFakerConfiguration) {
 
     /**
@@ -77,10 +80,16 @@ class JavaFakerConfigurationBuilder internal constructor(javaFakerConfiguration:
 
     private val properties = javaFakerConfiguration.properties.toMutableMap()
 
+    /**
+     * Remove the [Java Faker](https://github.com/DiUS/java-faker) generator for [propertyName].
+     */
     fun removeProperty(propertyName: String) {
         properties.remove(propertyName)
     }
 
+    /**
+     * Map a [Java Faker](https://github.com/DiUS/java-faker) generator to a [propertyName].
+     */
     fun putProperty(propertyName: String, fakeGenerator: Faker.(JavaFakerConfiguration) -> Any?) {
         properties[propertyName] = fakeGenerator
     }
