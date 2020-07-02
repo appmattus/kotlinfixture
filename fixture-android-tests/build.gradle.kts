@@ -28,6 +28,7 @@ android {
 
     defaultConfig {
         minSdkVersion(19)
+        @Suppress("OldTargetApi")
         targetSdkVersion(29)
         versionCode = 1
         versionName = "1.0"
