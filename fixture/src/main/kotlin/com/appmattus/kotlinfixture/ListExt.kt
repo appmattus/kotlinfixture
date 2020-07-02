@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,16 @@ internal fun <T> List<T>.circularIterator() = object : Iterator<T> {
     }
 }
 
+/**
+ * Returns an unmodifiable view of the specified map. Query operations on the returned map "read through" to the
+ * specified map, and attempts to modify the returned map, whether direct or via its collection views, result in an
+ * [UnsupportedOperationException].
+ */
 fun <K, V> Map<K, V>.toUnmodifiableMap(): Map<K, V> = Collections.unmodifiableMap(this)
 
+/**
+ * Returns an unmodifiable view of the specified list. Query operations on the returned list "read through" to the
+ * specified list, and attempts to modify the returned list, whether direct or via its iterator, result in an
+ * [UnsupportedOperationException].
+ */
 fun <T> List<T>.toUnmodifiableList(): List<T> = Collections.unmodifiableList(this)

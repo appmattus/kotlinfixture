@@ -226,8 +226,15 @@ val evenNumberLessThan100 = fixture<Int> {
 }
 ----
 
-WARNING: As the sequence is infinite, distinct will hang if no more distinct values can be generated.
+[WARNING]
+====
+The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
 
+* `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
+* `filter` that can never be fulfilled e.g. `filter { false }`
+====
+
+[#_providing_a_seeded_random]
 == Providing a seeded `random`
 
 By default, we generate unique values between runs using a default `Random`
@@ -301,13 +308,13 @@ val fixture = kotlinFixture {
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
-always use the properties the default value.
+always use the properties default value.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/NeverOptionalStrategy.kt[NeverOptionalStrategy]`::
-never use the properties the default value.
+never use the properties default value.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/RandomlyOptionalStrategy.kt[RandomlyOptionalStrategy]`::
-randomly use the properties the default value.
+randomly use the properties default value.
 ====
 
 It is also possible to define and implement your own optional strategy by
@@ -348,7 +355,7 @@ implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decora
 
 == Logging object generation with `loggingStrategy`
 
-A basic logger can be applied using the built in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
+A basic logger can be applied using the built-in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
 It is also possible to define and implement your own logging strategy by
 implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingStrategy.kt[LoggingStrategy]`
 and applying it as below.
@@ -387,7 +394,7 @@ val fixture = kotlinFixture {
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
-order constructors by random.
+order constructors at random.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`::
 order constructors by the most modest constructor first. i.e. fewer

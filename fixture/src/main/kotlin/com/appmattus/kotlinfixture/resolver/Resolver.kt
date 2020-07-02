@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,14 @@
 package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.Unresolved
 
+/**
+ * The core engine is based on a chain of [Resolver] instances which are queried in sequence.
+ */
 interface Resolver {
+    /**
+     * Ask the [Resolver] if it handles the current [obj] and return either a generated fixture or [Unresolved]
+     */
     fun resolve(context: Context, obj: Any): Any?
 }

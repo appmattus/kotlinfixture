@@ -25,132 +25,204 @@ import io.kotest.property.checkAll
 
 // 1 parameter
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A> Fixture.checkAll(
-    noinline fn: suspend PropertyContext.(a: A) -> Unit
-) = checkAll(kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A) -> Unit
+) = checkAll(kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A> Fixture.checkAll(
     iterations: Int,
-    noinline fn: suspend PropertyContext.(a: A) -> Unit
-) = checkAll(iterations, kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A) -> Unit
+) = checkAll(iterations, kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A> Fixture.checkAll(
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A) -> Unit
-) = checkAll(config, kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A) -> Unit
+) = checkAll(config, kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A> Fixture.checkAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A) -> Unit
-) = checkAll(iterations, config, kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A) -> Unit
+) = checkAll(iterations, config, kotestGen(), function)
 
 // 2 parameters
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B> Fixture.checkAll(
-    noinline fn: suspend PropertyContext.(a: A, b: B) -> Unit
-) = checkAll(kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B) -> Unit
+) = checkAll(kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B> Fixture.checkAll(
     iterations: Int,
-    noinline fn: suspend PropertyContext.(a: A, b: B) -> Unit
-) = checkAll(iterations, kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B) -> Unit
+) = checkAll(iterations, kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B> Fixture.checkAll(
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B) -> Unit
-) = checkAll(config, kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B) -> Unit
+) = checkAll(config, kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B> Fixture.checkAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B) -> Unit
-) = checkAll(iterations, config, kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B) -> Unit
+) = checkAll(iterations, config, kotestGen(), kotestGen(), function)
 
 // 3 parameters
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C> Fixture.checkAll(
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
-) = checkAll(kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
+) = checkAll(kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C> Fixture.checkAll(
     iterations: Int,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
-) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
+) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C> Fixture.checkAll(
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
-) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
+) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C> Fixture.checkAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
-) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Unit
+) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), function)
 
 // 4 parameters
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D> Fixture.checkAll(
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
-) = checkAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
+) = checkAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D> Fixture.checkAll(
     iterations: Int,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
-) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
+) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D> Fixture.checkAll(
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
-) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
+) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D> Fixture.checkAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
-) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Unit
+) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
 // 5 parameters
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.checkAll(
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
-) = checkAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
+) = checkAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.checkAll(
     iterations: Int,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
-) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
+) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.checkAll(
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
-) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
+) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.checkAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
-) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Unit
+) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
 // 6 parameters
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.checkAll(
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
-) = checkAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
+) = checkAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.checkAll(
     iterations: Int,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
-) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
+) = checkAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.checkAll(
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
-) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
+) = checkAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
+/**
+ * Use [Fixture] to generate random objects for type parameters and validate the [function] has no assertion failures.
+ */
 suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.checkAll(
     iterations: Int,
     config: PropTestConfig,
-    noinline fn: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
-) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), fn)
+    noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Unit
+) = checkAll(iterations, config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)

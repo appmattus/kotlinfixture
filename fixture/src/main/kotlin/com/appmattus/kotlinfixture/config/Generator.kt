@@ -19,6 +19,11 @@ package com.appmattus.kotlinfixture.config
 import com.appmattus.kotlinfixture.Fixture
 import kotlin.random.Random
 
+/**
+ * Generators for `factory` and `property` configuration
+ * @property random The fixtures random, which may be seeded
+ * @property fixture A fixture to be able to generate nested objects
+ */
 interface Generator<T> {
     val random: Random
     val fixture: Fixture
@@ -26,5 +31,14 @@ interface Generator<T> {
 
 internal typealias GeneratorFun = Generator<Any?>.() -> Any?
 
+/**
+ * # Generating values in a `range`
+ *
+ * `range` function to make it easy to generate values in a range.
+ *
+ * ```
+ * factory<Int> { range(1..10) }
+ * ```
+ */
 fun <T> Generator<T>.range(range: Iterable<T>) =
     range.shuffled(random).firstOrNull() ?: throw NoSuchElementException("Range is empty")

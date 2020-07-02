@@ -17,6 +17,10 @@
 package com.appmattus.kotlinfixture.kotest
 
 import com.appmattus.kotlinfixture.Fixture
+import io.kotest.property.Arb
 import io.kotest.property.arbitrary.arb
 
+/**
+ * Creates a new [Arb] that performs no shrinking, and generates values for the given type, [T].
+ */
 inline fun <reified T> Fixture.kotestGen() = arb { asSequence<T>() }

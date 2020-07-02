@@ -18,15 +18,25 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.nextUuid
-import java.io.File
+import com.appmattus.kotlinfixture.decorator.fake.FakeStrategy
+import com.appmattus.kotlinfixture.decorator.fake.NoFakeStrategy
+import com.appmattus.kotlinfixture.strategyOrDefault
 
-internal class FileResolver : Resolver {
+internal class FakeResolver : Resolver {
+
     override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == File::class) {
-            return File(context.random.nextUuid().toString())
-        } else {
-            Unresolved.Unhandled
+        if (obj is KNamedPropertyRequest) {
+            val strategy = context.strategyOrDefault<FakeStrategy>(NoFakeStrategy)
+
+            val overrides = context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
+
+            if (obj.name != null && !overrides.containsKey(obj.name)) {
+                strategy.fake(context, obj.name)?.takeIf { it != Unresolved.Unhandled }?.let {
+                    return it
+                }
+            }
         }
+
+        return Unresolved.Unhandled
     }
 }

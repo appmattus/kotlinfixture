@@ -27,7 +27,7 @@ import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.staticFunctions
 
 @Suppress("NestedBlockDepth")
-class FactoryMethodResolver : Resolver, PopulateInstance {
+internal class FactoryMethodResolver : Resolver, PopulateInstance {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {

@@ -16,6 +16,9 @@
 
 package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
 
+/**
+ * Different types of [IpAddress]
+ */
 enum class IpAddress {
     V4,
     V6

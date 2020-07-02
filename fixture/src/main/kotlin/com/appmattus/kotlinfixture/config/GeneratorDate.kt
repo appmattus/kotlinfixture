@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,17 @@ package com.appmattus.kotlinfixture.config
 
 import java.util.Date
 
+/**
+ * Generate any date before the [before] date
+ */
 fun Generator<Date>.before(before: Date) = Date(random.nextLong(0L, before.time))
 
+/**
+ * Generate any date after the [after] date
+ */
 fun Generator<Date>.after(after: Date) = Date(random.nextLong(after.time, Long.MAX_VALUE))
 
+/**
+ * Generate any date between the [start] and [end] dates
+ */
 fun Generator<Date>.between(start: Date, end: Date) = Date(random.nextLong(start.time, end.time))

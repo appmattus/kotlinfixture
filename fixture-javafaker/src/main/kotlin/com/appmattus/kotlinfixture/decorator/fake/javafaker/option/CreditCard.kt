@@ -18,6 +18,9 @@ package com.appmattus.kotlinfixture.decorator.fake.javafaker.option
 
 import com.github.javafaker.CreditCardType
 
+/**
+ * Different types of [CreditCard]
+ */
 @Suppress("unused")
 enum class CreditCard(internal val creditCardType: CreditCardType?) {
     Any(null),

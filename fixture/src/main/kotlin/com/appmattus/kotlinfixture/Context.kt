@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@ import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.resolver.Resolver
 import kotlin.random.Random
 
+/**
+ * Used in [Resolver] to provide the current [configuration], access to the [resolver] chain for nested resolving and
+ * convenient access to [random].
+ */
 interface Context {
     val configuration: Configuration
     val resolver: Resolver
@@ -27,7 +31,13 @@ interface Context {
     val random: Random
         get() = configuration.random
 
+    /**
+     * [resolve] the [obj] in the [resolver] chain.
+     */
     fun resolve(obj: Any) = resolver.resolve(this, obj)
 }
 
+/**
+ * Return the configuration for a given strategy or [default] if none is found
+ */
 inline fun <reified T> Context.strategyOrDefault(default: T): T = configuration.strategies[T::class] as? T ?: default

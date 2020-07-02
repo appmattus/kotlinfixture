@@ -17,7 +17,15 @@
 package com.appmattus.kotlinfixture.decorator.fake
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.Unresolved
 
+/**
+ * Strategy used to provide fake data for named properties, useful if you need to generate objects with pretty data.
+ */
 interface FakeStrategy {
+    /**
+     * Return pretty data for a named property, [propertyName], or [Unresolved.Unhandled] if no appropriate value can be
+     * generated. [context] should be used to access `random`, or to `resolve` any types through the resolver chain.
+     */
     fun fake(context: Context, propertyName: String): Any?
 }

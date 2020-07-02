@@ -18,5 +18,8 @@ package com.appmattus.kotlinfixture.config
 
 import kotlin.random.nextUInt
 
+/**
+ * ¯\_(ツ)_/¯ any value
+ */
 @Suppress("EXPERIMENTAL_API_USAGE", "FunctionName", "NonAsciiCharacters")
 fun Generator<UInt>.`¯＼_(ツ)_／¯`(): UInt = random.nextUInt()

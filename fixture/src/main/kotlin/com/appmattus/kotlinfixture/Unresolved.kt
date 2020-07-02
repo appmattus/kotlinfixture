@@ -16,10 +16,14 @@
 
 package com.appmattus.kotlinfixture
 
+import com.appmattus.kotlinfixture.resolver.Resolver
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer
 
+/**
+ * Used by [Resolver] when it is unable to resolve an object.
+ */
 sealed class Unresolved {
     /**
      * Use [Unhandled] when a resolver does not handle a particular type
@@ -70,6 +74,9 @@ sealed class Unresolved {
     }
 }
 
+/**
+ * Create an [Unresolved.NotSupported] from many [causes] which are [Unresolved].
+ */
 fun createUnresolved(message: String, causes: List<Any?> = emptyList()): Unresolved {
     val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unresolved.Unhandled }
 

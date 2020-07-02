@@ -111,16 +111,13 @@ import kotlin.test.assertTrue
 class ComparisonTest {
 
     class Single {
-        private val marcellogalhardo = Fixture()
-        private val flextrade = KFixture()
-        private val appmattus = kotlinFixture()
-        private val easyRandom = EasyRandom()
 
         private val nullableType = typeOf<String?>()
 
         @Test
         fun `appmattus nullability supported`() {
             assertIsRandom {
+                @Suppress("DEPRECATION_ERROR")
                 val result = appmattus.create(nullableType, appmattus.fixtureConfiguration)
 
                 result == null
@@ -175,11 +172,6 @@ class ComparisonTest {
         @Parameterized.Parameter(4)
         lateinit var easyRandomSupports: Result
 
-        private val marcellogalhardo = Fixture()
-        private val flextrade = KFixture()
-        private val appmattus = kotlinFixture()
-        private val easyRandom = EasyRandom()
-
         private fun assumeValid(result: Result) {
             assumeTrue(result == VALID || result == NOT_RANDOM)
         }
@@ -200,6 +192,7 @@ class ComparisonTest {
         fun `appmattus creates instance`() {
             assumeValid(appmattusSupports)
 
+            @Suppress("DEPRECATION_ERROR")
             val result = appmattus.create(type, appmattus.fixtureConfiguration)!!
 
             assertTrue {
@@ -212,6 +205,7 @@ class ComparisonTest {
             assumeRandom(appmattusSupports)
 
             assertIsRandom {
+                @Suppress("DEPRECATION_ERROR")
                 appmattus.create(type, appmattus.fixtureConfiguration)!!
             }
         }
@@ -538,6 +532,13 @@ class ComparisonTest {
                 arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED)
             )
         }
+    }
+
+    private companion object {
+        private val marcellogalhardo = Fixture()
+        private val flextrade = KFixture()
+        private val appmattus = kotlinFixture()
+        private val easyRandom = EasyRandom()
     }
 }
 

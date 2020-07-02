@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,14 @@ package com.appmattus.kotlinfixture.decorator.recursion
 
 import kotlin.reflect.KType
 
+/**
+ * Strategy used to determine the return value used when recursion is detected.
+ */
 interface RecursionStrategy {
+    /**
+     * Called when recursion is detected. The return value is used to populate the object instead of a generated object.
+     * @param type The [type] that resulted in recursion when trying to resolve.
+     * @param stack The stack of types resolved before recursion was detected.
+     */
     fun handleRecursion(type: KType, stack: Collection<KType>): Any?
 }

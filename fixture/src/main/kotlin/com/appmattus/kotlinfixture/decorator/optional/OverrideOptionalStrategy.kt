@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.optional
 import com.appmattus.kotlinfixture.Context
 import kotlin.reflect.KClass
 
-data class OverrideOptionalStrategy(
+internal data class OverrideOptionalStrategy(
     private val defaultStrategy: OptionalStrategy,
     private val propertyOverrides: Map<KClass<*>, Map<String, OptionalStrategy>> = emptyMap(),
     private val classOverrides: Map<KClass<*>, OptionalStrategy> = emptyMap()

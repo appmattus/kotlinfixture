@@ -18,12 +18,52 @@ package com.appmattus.kotlinfixture.config
 
 import com.mifmif.common.regex.Generex
 
+/**
+ * # Generate a random string from a regular expression
+ *
+ * ```
+ * data class DataClass(val index: String, val value: String)
+ *
+ * val indexRegex = "[a-z][0-9]".toRegex()
+ * val valueRegex = "[A-Z]{3}".toRegex()
+ *
+ * val fixture = kotlinFixture {
+ *     factory<String> { regexToRandom(indexRegex) }
+ *
+ *     property(DataClass::value) { regexToRandom(valueRegex) }
+ * }
+ *
+ * println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
+ * ```
+ *
+ * IMPORTANT: Be careful with object creation inside the generation function as it will be called for every instance of the object you create.
+ */
 fun Generator<String>.regexToRandom(regex: String, minLength: Int = 1, maxLength: Int = Int.MAX_VALUE): String {
     return Generex(regex).apply {
         setSeed(random.nextLong())
     }.random(minLength, maxLength)
 }
 
+/**
+ * # Generate a random string from a regular expression
+ *
+ * ```
+ * data class DataClass(val index: String, val value: String)
+ *
+ * val indexRegex = "[a-z][0-9]".toRegex()
+ * val valueRegex = "[A-Z]{3}".toRegex()
+ *
+ * val fixture = kotlinFixture {
+ *     factory<String> { regexToRandom(indexRegex) }
+ *
+ *     property(DataClass::value) { regexToRandom(valueRegex) }
+ * }
+ *
+ * println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
+ * ```
+ *
+ * IMPORTANT: Be careful with object creation inside the generation function as it will be called for every instance of the object you create.
+ */
 fun Generator<String>.regexToRandom(regex: Regex, minLength: Int = 1, maxLength: Int = Int.MAX_VALUE): String {
     return regexToRandom(regex.pattern, minLength, maxLength)
 }
