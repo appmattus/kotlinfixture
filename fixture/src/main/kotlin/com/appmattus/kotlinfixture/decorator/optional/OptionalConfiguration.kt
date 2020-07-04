@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.optional
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
 /**
- * # Overriding the use of default values with optionalStrategy
+ * Overriding the use of default values with optionalStrategy
  *
  * By default, when the library comes across an optional type, such as `value: String = "default"` it will randomly return the default value, or a generated value. This can be overridden by setting an optional strategy.
  *
@@ -36,7 +36,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
  * }
  * ```
  *
- * ## Available strategies
+ * #### Available strategies
  *
  * - [AlwaysOptionalStrategy] always use the properties default value.
  * - [NeverOptionalStrategy] never use the properties default value.

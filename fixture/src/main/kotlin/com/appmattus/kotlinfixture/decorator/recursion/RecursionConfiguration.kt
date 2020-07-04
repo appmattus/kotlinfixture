@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.recursion
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
 /**
- * # Changing how recursion behaves with `recursionStrategy`
+ * Changing how recursion behaves with `recursionStrategy`
  *
  * When the library detects recursion, by default, it will throw an [UnsupportedOperationException] with the details of the circular reference. This strategy can be changed to instead return `null` for the reference, however, if this results in an invalid object an exception will still be thrown as the object requested couldn’t be resolved.
  *
@@ -29,7 +29,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
  * }
  * ```
  *
- * ## Available strategies
+ * #### Available strategies
  *
  * - [NullRecursionStrategy] use null for circular references.
  * - [ThrowingRecursionStrategy] throw an exception when finding circular references.

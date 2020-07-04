@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.nullability
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
 /**
- * # Overriding nullability with nullabilityStrategy
+ * Overriding nullability with nullabilityStrategy
  *
  * By default, when the library comes across a nullable type, such as `String?` it will randomly return a value or null. This can be overridden by setting a nullability strategy.
  *
@@ -30,7 +30,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
  * }
  * ```
  *
- * ## Available strategies
+ * #### Available strategies
  *
  * - [NeverNullStrategy] populate nullable values with a non-null value.
  * - [AlwaysNullStrategy] populate nullable values with `null`.

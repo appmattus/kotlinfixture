@@ -18,7 +18,7 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
-import com.appmattus.kotlinfixture.createUnresolved
+import com.appmattus.kotlinfixture.Unresolved.Companion.createUnresolved
 import com.appmattus.kotlinfixture.decorator.optional.OptionalStrategy
 import com.appmattus.kotlinfixture.decorator.optional.RandomlyOptionalStrategy
 import com.appmattus.kotlinfixture.strategyOrDefault

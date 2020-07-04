@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.fake
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
 /**
- * # Fake object generation with `fakeStrategy`
+ * Fake object generation with `fakeStrategy`
  *
  * A faker intercepts the generation of named properties so their values can be replaced with fake data, useful if you
  * need to generate objects with pretty data.
@@ -32,6 +32,7 @@ fun ConfigurationBuilder.fakeStrategy(strategy: FakeStrategy) {
 
 /**
  * The current [FakeStrategy] in the  [ConfigurationBuilder] or null if none set.
+ * @suppress
  */
 val ConfigurationBuilder.fakeStrategy: FakeStrategy?
     get() = strategies[FakeStrategy::class] as? FakeStrategy

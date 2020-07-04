@@ -32,7 +32,7 @@ interface Generator<T> {
 internal typealias GeneratorFun = Generator<Any?>.() -> Any?
 
 /**
- * # Generating values in a `range`
+ * Generating values in a [range]
  *
  * `range` function to make it easy to generate values in a range.
  *

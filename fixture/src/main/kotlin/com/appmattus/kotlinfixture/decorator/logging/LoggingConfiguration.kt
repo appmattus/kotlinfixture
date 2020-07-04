@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.logging
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
 /**
- * # Logging object generation with `loggingStrategy`
+ * Logging object generation with `loggingStrategy`
  *
  * A basic logger can be applied using the built in [SysOutLoggingStrategy]. It is also possible to define and implement your own logging strategy by implementing [LoggingStrategy] and applying it as below.
  *
