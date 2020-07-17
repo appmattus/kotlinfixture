@@ -14,28 +14,36 @@
  * limitations under the License.
  */
 
-import com.dicedmelon.gradle.jacoco.android.JacocoAndroidPlugin
-import com.dicedmelon.gradle.jacoco.android.JacocoAndroidUnitTestReportExtension
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath("com.dicedmelon.gradle:jacoco-android:0.1.4")
-    }
-}
-
 apply<JacocoPlugin>()
-apply<JacocoAndroidPlugin>()
 
-configure<JacocoAndroidUnitTestReportExtension> {
-    html.enabled(true)
-    xml.enabled(false)
-    csv.enabled(false)
+val jacocoTask = tasks.create<JacocoReport>("jacocoTestReport") {
+    afterEvaluate {
+        dependsOn(tasks.named("testDebugUnitTest"))
+    }
+
+    reports {
+        html.isEnabled = true
+        xml.isEnabled = true
+        csv.isEnabled = false
+    }
+
+    val fileFilter = listOf(
+        "**/R.class", "**/R\$*.class", "**/BuildConfig.*", "**/Manifest*.*", "**/*Test*.*",
+        "android/**/*.*"
+    )
+    val debugTree = fileTree("${project.buildDir}/intermediates/javac/debug") {
+        exclude(fileFilter)
+    }
+
+    val mainSrc = "${project.projectDir}/src/main/kotlin"
+
+    sourceDirectories.setFrom(files(listOf(mainSrc)))
+    classDirectories.setFrom(files(listOf(debugTree)))
+    executionData.setFrom(fileTree(project.buildDir) {
+        include(listOf("jacoco/testDebugUnitTest.exec"))
+    })
 }
 
-tasks.withType<Test>().configureEach {
-    extensions.getByType<JacocoTaskExtension>().isIncludeNoLocationClasses = true
-    finalizedBy(tasks.named("jacocoTestReport"))
+tasks.named("check") {
+    finalizedBy(jacocoTask)
 }

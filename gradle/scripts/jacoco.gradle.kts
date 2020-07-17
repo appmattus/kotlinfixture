@@ -16,12 +16,14 @@
 
 apply<JacocoPlugin>()
 
-tasks.getByName("test").finalizedBy(tasks.getByName("jacocoTestReport"))
-
-tasks.withType<JacocoReport> {
+val jacocoTask = tasks.withType<JacocoReport> {
     reports {
         html.isEnabled = true
         xml.isEnabled = false
         csv.isEnabled = false
     }
+}
+
+tasks.named("check") {
+    finalizedBy(jacocoTask)
 }

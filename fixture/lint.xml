@@ -15,4 +15,5 @@
   -->
 <lint>
     <issue id="NewApi" severity="ignore" />
+    <issue id="GradleDependency" severity="ignore" />
 </lint>

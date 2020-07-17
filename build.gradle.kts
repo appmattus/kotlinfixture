@@ -30,13 +30,12 @@ buildscript {
     }
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
-        classpath("com.android.tools.build:gradle:3.6.3")
+        classpath("com.android.tools.build:gradle:4.0.1")
     }
 }
 
 apply(from = "$rootDir/gradle/scripts/dependencyUpdates.gradle.kts")
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
-apply<JacocoPlugin>()
 
 allprojects {
     repositories {
@@ -65,21 +64,6 @@ detekt {
     config = files("detekt-config.yml")
 }
 
-val jacocoTestReport by tasks.registering(JacocoReport::class) {
-    group = "Coverage reports"
-    description = "Generates an aggregate report from all subprojects"
-
-    reports {
-        html.isEnabled = true
-        xml.isEnabled = true
-        csv.isEnabled = false
-    }
-
-    setOnlyIf {
-        true
-    }
-}
-
 val dokka = tasks.named<DokkaTask>("dokka") {
     outputFormat = "html"
     outputDirectory = "$buildDir/reports/dokka"
@@ -102,26 +86,4 @@ val dokka = tasks.named<DokkaTask>("dokka") {
     }
 }
 
-tasks.register("check").dependsOn(jacocoTestReport).dependsOn(dokka)
-
-subprojects {
-    plugins.withType<JacocoPlugin> {
-        // this is executed for each project that has Jacoco plugin applied
-        the<JacocoPluginExtension>().toolVersion = "0.8.5"
-
-        tasks.withType<JacocoReport> {
-            val task = this
-            rootProject.tasks.getByName("jacocoTestReport").dependsOn(task)
-
-            jacocoTestReport {
-                executionData.from(task.executionData)
-                additionalSourceDirs.from(task.sourceDirectories)
-                additionalClassDirs.from(task.classDirectories)
-            }
-        }
-
-        tasks.withType<Test> {
-            rootProject.tasks.getByName("jacocoTestReport").dependsOn(this)
-        }
-    }
-}
+tasks.register("check").dependsOn(dokka)
