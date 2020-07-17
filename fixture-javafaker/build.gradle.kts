@@ -21,8 +21,9 @@ plugins {
     id("com.android.lint")
 }
 
-apply(from = "$rootDir/bintray.gradle.kts")
+apply(from = "$rootDir/gradle/scripts/bintray.gradle.kts")
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
+apply(from = "$rootDir/gradle/scripts/dokka-javadoc.gradle.kts")
 
 dependencies {
     api(kotlin("stdlib-jdk8"))

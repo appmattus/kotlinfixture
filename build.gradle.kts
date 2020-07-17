@@ -80,7 +80,7 @@ val dokka = tasks.named<DokkaTask>("dokka") {
 
         sourceLink {
             path = "$rootDir"
-            url = "https://github.com/appmattus/kotlinfixture/blob/master/"
+            url = "https://github.com/appmattus/kotlinfixture/blob/main/"
             lineSuffix = "#L"
         }
     }
