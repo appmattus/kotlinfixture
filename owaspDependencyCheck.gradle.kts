@@ -16,6 +16,8 @@ subprojects {
     configure<DependencyCheckExtension> {
         failBuildOnCVSS = 0f
 
+        suppressionFile = file("$rootDir/cve-suppressions.xml").toString()
+
         analyzers.assemblyEnabled = false
 
         skipConfigurations = listOf(
