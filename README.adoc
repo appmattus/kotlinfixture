@@ -14,7 +14,7 @@ endif::[]
 
 https://bintray.com/appmattus/maven/fixture/_latestVersion[image:https://api.bintray.com/packages/appmattus/maven/fixture/images/download.svg[Download]]
 https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg[CI status]]
-https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/master/graph/badge.svg[Coverage status]]
+https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/main/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
 A tool to generate well-defined, but essentially random, input following the
