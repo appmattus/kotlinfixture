@@ -19,7 +19,7 @@ apply<JacocoPlugin>()
 val jacocoTask = tasks.withType<JacocoReport> {
     reports {
         html.isEnabled = true
-        xml.isEnabled = false
+        xml.isEnabled = true
         csv.isEnabled = false
     }
 }
