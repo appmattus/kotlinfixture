@@ -33,7 +33,7 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
 /**
- * Builder of [Configuration]. When [configuration] is supplied it is built upon allowing the various options to be set and overridden.
+ * Builder of [Configuration]. When `configuration` is supplied it is built upon allowing the various options to be set and overridden.
  */
 @ConfigurationDsl
 @Suppress("TooManyFunctions")
@@ -55,7 +55,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     var resolvers: MutableList<Resolver> = configuration.resolvers.toMutableList()
 
     /**
-     * # Providing a seeded random
+     * Providing a seeded random
      *
      * By default, we generate unique values between runs using a default Random class. If you want repeatability you can specify a seeded Random instance.
      *
@@ -81,7 +81,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
 
     /**
-     * # Customising class generation with factory
+     * Customising class generation with factory
      *
      * Used to return the given instance for a particular class using a factory method.
      *
@@ -101,7 +101,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      *
-     * ## Generating values in a `range`
+     * #### Generating values in a `range`
      *
      * `factory` has a built-in `range` function to make it easy to generate values in a range.
      *
@@ -109,7 +109,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * factory<Int> { range(1..10) }
      * ```
      *
-     * ## Generating `Date` and `Calendar` values
+     * #### Generating `Date` and `Calendar` values
      *
      * By default, `Date` and `Calendar` instances pick a date within 10 years of 1 Jan 2020.
      *
@@ -129,7 +129,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     }
 
     /**
-     * # Filtering generated values with `filter`
+     * Filtering generated values with `filter`
      *
      * Used to allow generated values to be filtered using standard sequence functions.
      *
@@ -169,7 +169,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     }
 
     /**
-     * # Resolving abstract superclasses to a chosen subclass with `subType`
+     * Resolving abstract superclasses to a chosen subclass with `subType`
      *
      * Used to always return an instance of a particular subclass for a superclass.
      *
@@ -190,11 +190,11 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     }
 
     /**
-     * # Customising generation of class properties with property
+     * Customising generation of class properties with property
      *
      * Used to override constructor parameters or mutable properties when generating instances of generic classes.
      *
-     * ## Kotlin class example
+     * #### Kotlin class example
      *
      * Given the following Kotlin class:
      *
@@ -219,7 +219,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      *
-     * ## Java class example
+     * #### Java class example
      *
      * Given the following Java class:
      *
@@ -252,11 +252,11 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
         property(T::class, propertyName, generator as GeneratorFun)
 
     /**
-     * # Customising generation of class properties with property
+     * Customising generation of class properties with property
      *
      * Used to override constructor parameters or mutable properties when generating instances of generic classes.
      *
-     * ## Kotlin class example
+     * #### Kotlin class example
      *
      * Given the following Kotlin class:
      *
@@ -281,7 +281,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      *
-     * ## Java class example
+     * #### Java class example
      *
      * Given the following Java class:
      *
@@ -326,11 +326,11 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     }
 
     /**
-     * # Customising generation of class properties with property
+     * Customising generation of class properties with property
      *
      * Used to override constructor parameters or mutable properties when generating instances of generic classes.
      *
-     * ## Kotlin class example
+     * #### Kotlin class example
      *
      * Given the following Kotlin class:
      *
@@ -355,7 +355,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      *
-     * ## Java class example
+     * #### Java class example
      *
      * Given the following Java class:
      *
@@ -403,7 +403,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     }
 
     /**
-     * # Setting list and map length with `repeatCount`
+     * Setting list and map length with `repeatCount`
      *
      * Used to determine the length used for lists and maps. By default, the library generates 5 items.
      *

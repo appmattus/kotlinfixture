@@ -58,7 +58,9 @@ dependencies {
     testImplementation("androidx.test:core:1.2.0")
     testImplementation("androidx.test:runner:1.2.0")
     testImplementation("androidx.test.ext:junit:1.1.1")
-    testImplementation("org.robolectric:robolectric:4.3.1")
+    testImplementation("org.robolectric:robolectric:4.3.1") {
+        exclude(group = "com.google.auto.service", module = "auto-service")
+    }
 
     testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))

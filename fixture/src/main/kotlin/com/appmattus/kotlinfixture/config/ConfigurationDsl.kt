@@ -16,5 +16,8 @@
 
 package com.appmattus.kotlinfixture.config
 
+/**
+ * @suppress
+ */
 @DslMarker
 annotation class ConfigurationDsl

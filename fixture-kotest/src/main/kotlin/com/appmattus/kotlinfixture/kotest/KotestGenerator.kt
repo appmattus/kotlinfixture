@@ -22,5 +22,6 @@ import io.kotest.property.arbitrary.arb
 
 /**
  * Creates a new [Arb] that performs no shrinking, and generates values for the given type, [T].
+ * @suppress
  */
 inline fun <reified T> Fixture.kotestGen() = arb { asSequence<T>() }

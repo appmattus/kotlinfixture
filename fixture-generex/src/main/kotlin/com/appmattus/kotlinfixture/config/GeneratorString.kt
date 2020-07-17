@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.config
 import com.mifmif.common.regex.Generex
 
 /**
- * # Generate a random string from a regular expression
+ * Generate a random string from a regular expression
  *
  * ```
  * data class DataClass(val index: String, val value: String)
@@ -45,7 +45,7 @@ fun Generator<String>.regexToRandom(regex: String, minLength: Int = 1, maxLength
 }
 
 /**
- * # Generate a random string from a regular expression
+ * Generate a random string from a regular expression
  *
  * ```
  * data class DataClass(val index: String, val value: String)

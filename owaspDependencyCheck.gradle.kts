@@ -28,6 +28,8 @@ subprojects {
     }
 
     afterEvaluate {
-        tasks.getByName("check").dependsOn(tasks.getByName("dependencyCheckAnalyze"))
+        tasks.named("check") {
+            dependsOn(tasks.named("dependencyCheckAnalyze"))
+        }
     }
 }

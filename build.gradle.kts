@@ -15,12 +15,12 @@
  */
 
 import com.android.build.gradle.internal.tasks.factory.dependsOn
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    id("com.github.ben-manes.versions") version "0.28.0"
-    id("io.gitlab.arturbosch.detekt") version "1.9.1"
+    id("io.gitlab.arturbosch.detekt") version "1.10.0"
     id("com.appmattus.markdown") version "0.6.0"
+    id("org.jetbrains.dokka") version "0.10.1"
 }
 
 buildscript {
@@ -34,6 +34,7 @@ buildscript {
     }
 }
 
+apply(from = "$rootDir/gradle/scripts/dependencyUpdates.gradle.kts")
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
 apply<JacocoPlugin>()
 
@@ -50,24 +51,8 @@ task("clean", type = Delete::class) {
     delete(rootProject.buildDir)
 }
 
-tasks.withType(DependencyUpdatesTask::class.java).all {
-    resolutionStrategy {
-        componentSelection {
-            all {
-                val rejected = listOf("alpha", "beta", "rc", "cr", "m", "preview")
-                    .map { qualifier -> Regex("(?i).*[.-]$qualifier[.\\d-]*") }
-                    .any { it.matches(candidate.version) }
-
-                if (rejected) {
-                    reject("Release candidate")
-                }
-            }
-        }
-    }
-}
-
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.9.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
 }
 
 detekt {
@@ -95,7 +80,29 @@ val jacocoTestReport by tasks.registering(JacocoReport::class) {
     }
 }
 
-tasks.register("check").dependsOn(jacocoTestReport)
+val dokka = tasks.named<DokkaTask>("dokka") {
+    outputFormat = "html"
+    outputDirectory = "$buildDir/reports/dokka"
+
+    subProjects = listOf(
+        "fixture",
+        "fixture-generex",
+        "fixture-javafaker",
+        "fixture-kotest"
+    )
+
+    configuration {
+        skipDeprecated = true
+
+        sourceLink {
+            path = "$rootDir"
+            url = "https://github.com/appmattus/kotlinfixture/blob/master/"
+            lineSuffix = "#L"
+        }
+    }
+}
+
+tasks.register("check").dependsOn(jacocoTestReport).dependsOn(dokka)
 
 subprojects {
     plugins.withType<JacocoPlugin> {

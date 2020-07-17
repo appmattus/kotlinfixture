@@ -72,18 +72,20 @@ sealed class Unresolved {
             Unhandled -> Unit
         }
     }
-}
 
-/**
- * Create an [Unresolved.NotSupported] from many [causes] which are [Unresolved].
- */
-fun createUnresolved(message: String, causes: List<Any?> = emptyList()): Unresolved {
-    val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unresolved.Unhandled }
+    companion object {
+        /**
+         * Create an [Unresolved.NotSupported] from many [causes] which are [Unresolved].
+         */
+        fun createUnresolved(message: String, causes: List<Any?> = emptyList()): Unresolved {
+            val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unresolved.Unhandled }
 
-    return if (filtered.size == 1) {
-        // Unwrap single causes to reduce nesting
-        filtered.first()
-    } else {
-        Unresolved.NotSupported(message, filtered)
+            return if (filtered.size == 1) {
+                // Unwrap single causes to reduce nesting
+                filtered.first()
+            } else {
+                NotSupported(message, filtered)
+            }
+        }
     }
 }

@@ -26,7 +26,7 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
     api(kotlin("stdlib-jdk8"))
-    api("io.github.classgraph:classgraph:4.8.80")
+    api("io.github.classgraph:classgraph:4.8.87")
     api(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:2.10.6")

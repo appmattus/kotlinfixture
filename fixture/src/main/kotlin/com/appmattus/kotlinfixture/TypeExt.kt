@@ -21,6 +21,7 @@ import kotlin.reflect.typeOf
 
 /**
  * Return the [KType] for the reified type
+ * @suppress
  */
 @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
 inline fun <reified T> typeOf() = typeOf<T>()

@@ -19,7 +19,7 @@ package com.appmattus.kotlinfixture.decorator.constructor
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 
 /**
- * # Choosing the constructor to generate an object with `constructorStrategy`
+ * Choosing the constructor to generate an object with `constructorStrategy`
  *
  * By default, when the library generates an instance of a class it picks a constructor at random. This can be overridden by setting a constructor strategy.
  *
@@ -29,7 +29,7 @@ import com.appmattus.kotlinfixture.config.ConfigurationBuilder
  * }
  * ```
  *
- * ## Available strategies
+ * #### Available strategies
  *
  * - [RandomConstructorStrategy] order constructors at random.
  * - [ModestConstructorStrategy] order constructors by the most modest constructor first. i.e. fewer parameters returned first.
