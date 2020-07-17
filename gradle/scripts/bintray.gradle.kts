@@ -43,8 +43,8 @@ if (project.plugins.hasPlugin("java")) {
 }
 
 val publishVersion =
-    System.getenv("CIRCLE_TAG") ?: System.getProperty("CIRCLE_TAG") ?: System.getenv("TRAVIS_TAG") ?: System.getProperty("TRAVIS_TAG")
-    ?: "unknown"
+    System.getenv("CIRCLE_TAG") ?: System.getProperty("CIRCLE_TAG") ?: System.getenv("TRAVIS_TAG")
+    ?: System.getProperty("TRAVIS_TAG") ?: "unknown"
 
 afterEvaluate {
     configure<PublishingExtension> {
