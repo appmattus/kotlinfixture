@@ -44,7 +44,7 @@ val dokka = tasks.named<DokkaTask>("dokka") {
     }
 }
 
-project.tasks.create<Jar>("dokkaJar") {
+tasks.register<Jar>("dokkaJar") {
     dependsOn(dokka)
 
     archiveClassifier.set("javadoc")

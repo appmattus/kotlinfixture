@@ -18,6 +18,7 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
+    kotlin("jvm") version "1.3.72" apply false
     id("io.gitlab.arturbosch.detekt") version "1.10.0"
     id("com.appmattus.markdown") version "0.6.0"
     id("org.jetbrains.dokka") version "0.10.1"
@@ -26,10 +27,8 @@ plugins {
 buildscript {
     repositories {
         google()
-        jcenter()
     }
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72")
         classpath("com.android.tools.build:gradle:4.0.1")
     }
 }
@@ -46,7 +45,7 @@ allprojects {
     }
 }
 
-task("clean", type = Delete::class) {
+tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
 }
 

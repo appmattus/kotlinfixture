@@ -73,5 +73,7 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("detekt"))
-tasks.getByName("check").finalizedBy(rootProject.tasks.getByName("markdownlint"))
+tasks.named("check") {
+    finalizedBy(rootProject.tasks.named("detekt"))
+    finalizedBy(rootProject.tasks.named("markdownlint"))
+}
