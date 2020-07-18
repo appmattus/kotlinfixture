@@ -16,10 +16,8 @@
 
 apply<JacocoPlugin>()
 
-val jacocoTask = tasks.create<JacocoReport>("jacocoTestReport") {
-    afterEvaluate {
-        dependsOn(tasks.named("testDebugUnitTest"))
-    }
+val jacocoTask = tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.named("testDebugUnitTest"))
 
     reports {
         html.isEnabled = true
