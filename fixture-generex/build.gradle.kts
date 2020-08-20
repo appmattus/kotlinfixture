@@ -36,7 +36,7 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     testImplementation(kotlin("reflect"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.8")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.9")
 }
 
 lintOptions {

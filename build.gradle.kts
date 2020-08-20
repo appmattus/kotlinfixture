@@ -18,8 +18,8 @@ import com.android.build.gradle.internal.tasks.factory.dependsOn
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    kotlin("jvm") version "1.3.72" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.10.0"
+    kotlin("jvm") version "1.4.0" apply false
+    id("io.gitlab.arturbosch.detekt") version "1.11.2"
     id("com.appmattus.markdown") version "0.6.0"
     id("org.jetbrains.dokka") version "0.10.1"
 }
@@ -50,7 +50,7 @@ tasks.register<Delete>("clean") {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.10.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.11.2")
 }
 
 detekt {
