@@ -47,9 +47,11 @@ class AlwaysNullStrategyTest {
     @Test
     fun `always null`() {
         repeat(100) {
-            assertNull(context.wrapNullability(typeOf<String?>()) {
-                "value"
-            })
+            assertNull(
+                context.wrapNullability(typeOf<String?>()) {
+                    "value"
+                }
+            )
         }
     }
 }

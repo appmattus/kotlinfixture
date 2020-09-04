@@ -54,10 +54,10 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
 
-    testImplementation("androidx.test:core:1.2.0")
-    testImplementation("androidx.test:runner:1.2.0")
-    testImplementation("androidx.test.ext:junit:1.1.1")
-    testImplementation("org.robolectric:robolectric:4.3.1") {
+    testImplementation("androidx.test:core:1.3.0")
+    testImplementation("androidx.test:runner:1.3.0")
+    testImplementation("androidx.test.ext:junit:1.1.2")
+    testImplementation("org.robolectric:robolectric:4.4") {
         exclude(group = "com.google.auto.service", module = "auto-service")
     }
 
