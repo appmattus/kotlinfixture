@@ -14,38 +14,8 @@
  * limitations under the License.
  */
 
-import org.jetbrains.dokka.gradle.DokkaPlugin
-import org.jetbrains.dokka.gradle.DokkaTask
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath("org.jetbrains.dokka:dokka-gradle-plugin:0.10.1")
-    }
-}
-
-apply<DokkaPlugin>()
-
-val dokka = tasks.named<DokkaTask>("dokka") {
-    outputFormat = "html"
-    outputDirectory = "$buildDir/reports/dokka"
-
-    configuration {
-        cacheRoot = "default"
-        skipDeprecated = true
-
-        sourceLink {
-            path = "$rootDir"
-            url = "https://github.com/appmattus/kotlinfixture/blob/main/"
-            lineSuffix = "#L"
-        }
-    }
-}
-
 tasks.register<Jar>("dokkaJar") {
-    dependsOn(dokka)
+    dependsOn(tasks.named("dokkaJavadoc"))
 
     archiveClassifier.set("javadoc")
     from("$buildDir/reports/dokka")

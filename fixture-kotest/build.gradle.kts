@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     id("com.android.lint")
+    id("org.jetbrains.dokka")
 }
 
 apply(from = "$rootDir/gradle/scripts/bintray.gradle.kts")
@@ -28,7 +29,7 @@ apply(from = "$rootDir/gradle/scripts/dokka-javadoc.gradle.kts")
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("io.kotest:kotest-property-jvm:4.2.0")
+    api("io.kotest:kotest-property-jvm:4.2.3")
 
     testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))

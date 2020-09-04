@@ -319,11 +319,14 @@ class JavaFakerStrategyTest {
         }
 
         repeat(100) {
-            assertEquals(2, fixture<Person> {
-                javaFakerStrategy {
-                    password = Password(2, 2)
-                }
-            }.password.length)
+            assertEquals(
+                2,
+                fixture<Person> {
+                    javaFakerStrategy {
+                        password = Password(2, 2)
+                    }
+                }.password.length
+            )
         }
     }
 
