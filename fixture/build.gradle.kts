@@ -19,6 +19,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     id("com.android.lint")
+    id("org.jetbrains.dokka")
 }
 
 apply(from = "$rootDir/gradle/scripts/bintray.gradle.kts")
