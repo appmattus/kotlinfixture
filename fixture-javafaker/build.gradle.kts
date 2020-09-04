@@ -30,6 +30,11 @@ dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
     api("com.github.javafaker:javafaker:1.0.2")
+    api("org.yaml:snakeyaml:android") {
+        version {
+            strictly("1.26")
+        }
+    }
 
     testImplementation("junit:junit:4.13")
     testImplementation(kotlin("test"))
