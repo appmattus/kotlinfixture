@@ -32,7 +32,7 @@ dependencies {
     api("com.github.javafaker:javafaker:1.0.2")
     api("org.yaml:snakeyaml:android") {
         version {
-            strictly("1.26")
+            strictly("1.27")
         }
     }
 
