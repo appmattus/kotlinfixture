@@ -20,7 +20,7 @@ import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
 
 plugins {
-    kotlin("jvm") version "1.4.0" apply false
+    kotlin("jvm") version "1.4.10" apply false
     id("io.gitlab.arturbosch.detekt") version "1.12.0"
     id("com.appmattus.markdown") version "0.6.0"
     id("org.jetbrains.dokka") version "1.4.0"

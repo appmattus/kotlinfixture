@@ -28,7 +28,7 @@ apply(from = "$rootDir/gradle/scripts/dokka-javadoc.gradle.kts")
 
 dependencies {
     api(kotlin("stdlib-jdk8"))
-    api("io.github.classgraph:classgraph:4.8.89")
+    api("io.github.classgraph:classgraph:4.8.90")
     api(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:2.10.6")
