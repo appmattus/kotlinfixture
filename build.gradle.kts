@@ -21,7 +21,7 @@ import java.net.URL
 
 plugins {
     kotlin("jvm") version "1.4.10" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.12.0"
+    id("io.gitlab.arturbosch.detekt") version "1.13.1"
     id("com.appmattus.markdown") version "0.6.0"
     id("org.jetbrains.dokka") version "1.4.0"
 }
@@ -68,7 +68,7 @@ tasks.register<Delete>("clean") {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.12.0")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.13.1")
 }
 
 detekt {

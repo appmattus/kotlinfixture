@@ -24,7 +24,7 @@ buildscript {
         maven(url = "https://plugins.gradle.org/m2/")
     }
     dependencies {
-        classpath("com.github.ben-manes:gradle-versions-plugin:0.28.0")
+        classpath("com.github.ben-manes:gradle-versions-plugin:0.33.0")
     }
 }
 
