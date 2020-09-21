@@ -37,10 +37,10 @@ internal class JodaTimeResolver : Resolver {
         return if (hasJodaTime) {
             when (obj) {
                 Instant::class -> context.generateInstant()
-                LocalDate::class -> LocalDate(context.generateInstant(), context.randomDateTimeZone())
-                LocalTime::class -> LocalTime(context.generateInstant(), context.randomDateTimeZone())
-                LocalDateTime::class -> LocalDateTime(context.generateInstant(), context.randomDateTimeZone())
-                DateTime::class -> DateTime(context.generateInstant(), context.randomDateTimeZone())
+                LocalDate::class -> LocalDate(context.generateInstant(), context.generateDateTimeZone())
+                LocalTime::class -> LocalTime(context.generateInstant(), context.generateDateTimeZone())
+                LocalDateTime::class -> LocalDateTime(context.generateInstant(), context.generateDateTimeZone())
+                DateTime::class -> DateTime(context.generateInstant(), context.generateDateTimeZone())
                 Period::class -> context.generatePeriod()
                 Duration::class -> context.generateDuration()
                 DateTimeZone::class -> context.randomDateTimeZone()
@@ -53,6 +53,8 @@ internal class JodaTimeResolver : Resolver {
     }
 
     private fun Context.generateInstant(): Instant = Instant(resolve(typeOf<Date>()) as Date)
+
+    private fun Context.generateDateTimeZone(): DateTimeZone = resolve(typeOf<DateTimeZone>()) as DateTimeZone
 
     private fun Context.randomDateTimeZone(): DateTimeZone =
         DateTimeZone.forID(DateTimeZone.getAvailableIDs().random(random))

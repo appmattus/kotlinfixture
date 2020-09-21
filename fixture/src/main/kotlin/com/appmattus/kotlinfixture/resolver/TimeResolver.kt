@@ -79,7 +79,8 @@ internal class TimeResolver : Resolver {
 
     private fun Context.generateInstant(): Instant = (resolve(typeOf<Date>()) as Date).toInstant()
 
-    private fun Context.generateZonedDateTime(): ZonedDateTime = generateInstant().atZone(randomZoneId())
+    private fun Context.generateZonedDateTime(): ZonedDateTime =
+        generateInstant().atZone(resolve(typeOf<ZoneId>()) as ZoneId)
 
     private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
 

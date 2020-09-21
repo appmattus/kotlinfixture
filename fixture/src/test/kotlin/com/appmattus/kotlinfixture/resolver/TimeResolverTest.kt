@@ -22,6 +22,7 @@ import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.config.before
+import com.appmattus.kotlinfixture.kotlinFixture
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -44,6 +45,7 @@ import java.util.Date
 import java.util.TimeZone
 import kotlin.reflect.KClass
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -55,7 +57,7 @@ class TimeResolverTest {
 
         private val context = TestContext(
             ConfigurationBuilder().apply { factory<Date> { before(now) } }.build(),
-            CompositeResolver(TimeResolver(), FactoryResolver())
+            CompositeResolver(TimeResolver(), FactoryResolver(), KTypeResolver())
         )
 
         @Test
@@ -73,6 +75,17 @@ class TimeResolverTest {
                 assertTrue {
                     result.toInstant() <= now.toInstant()
                 }
+            }
+        }
+
+        @Test
+        fun `Can override ZoneId when creating ZonedDateTime`() {
+            repeat(100) {
+                val zonedDateTime = kotlinFixture {
+                    factory<ZoneId> { ZoneId.of("Europe/London") }
+                } <ZonedDateTime>()
+
+                assertEquals("Europe/London", zonedDateTime.zone.id)
             }
         }
     }
