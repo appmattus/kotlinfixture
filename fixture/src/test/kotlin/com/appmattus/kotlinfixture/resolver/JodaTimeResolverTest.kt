@@ -22,6 +22,7 @@ import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.config.before
+import com.appmattus.kotlinfixture.kotlinFixture
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.Duration
@@ -37,6 +38,7 @@ import org.junit.runners.Parameterized
 import java.util.Date
 import kotlin.reflect.KClass
 import kotlin.test.Test
+import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
@@ -48,7 +50,7 @@ class JodaTimeResolverTest {
 
         private val context = TestContext(
             ConfigurationBuilder().apply { factory<Date> { before(now) } }.build(),
-            CompositeResolver(JodaTimeResolver(), FactoryResolver())
+            CompositeResolver(JodaTimeResolver(), FactoryResolver(), KTypeResolver())
         )
 
         @Test
@@ -66,6 +68,17 @@ class JodaTimeResolverTest {
                 assertTrue {
                     result.toInstant() <= Instant(now)
                 }
+            }
+        }
+
+        @Test
+        fun `Can override DateTimeZone when creating DateTime`() {
+            repeat(100) {
+                val dateTime = kotlinFixture {
+                    factory<DateTimeZone> { DateTimeZone.forID("Europe/London") }
+                } <DateTime>()
+
+                assertEquals("Europe/London", dateTime.zone.id)
             }
         }
     }

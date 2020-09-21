@@ -78,7 +78,8 @@ internal class ThreeTenResolver : Resolver {
 
     private fun Context.generateInstant(): Instant = DateTimeUtils.toInstant(resolve(typeOf<Date>()) as Date)
 
-    private fun Context.generateZonedDateTime(): ZonedDateTime = generateInstant().atZone(randomZoneId())
+    private fun Context.generateZonedDateTime(): ZonedDateTime =
+        generateInstant().atZone(resolve(typeOf<ZoneId>()) as ZoneId)
 
     private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
 
