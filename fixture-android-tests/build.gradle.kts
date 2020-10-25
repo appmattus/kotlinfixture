@@ -61,7 +61,7 @@ dependencies {
         exclude(group = "com.google.auto.service", module = "auto-service")
     }
 
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.1")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
