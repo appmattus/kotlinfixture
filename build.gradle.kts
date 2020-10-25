@@ -21,9 +21,9 @@ import java.net.URL
 
 plugins {
     kotlin("jvm") version "1.4.10" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.13.1"
+    id("io.gitlab.arturbosch.detekt") version "1.14.2"
     id("com.appmattus.markdown") version "0.6.0"
-    id("org.jetbrains.dokka") version "1.4.0"
+    id("org.jetbrains.dokka") version "1.4.10.2"
 }
 
 buildscript {
@@ -31,7 +31,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.1")
+        classpath("com.android.tools.build:gradle:4.1.0")
     }
 }
 
@@ -68,7 +68,7 @@ tasks.register<Delete>("clean") {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.13.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
 }
 
 detekt {
@@ -83,7 +83,7 @@ detekt {
 
 val dokka = tasks.named<DokkaMultiModuleTask>("dokkaHtmlMultiModule") {
     outputDirectory.set(buildDir.resolve("dokkaCustomMultiModuleOutput"))
-    documentationFileName.set("module.md")
+    // documentationFileName.set("module.md")
 }
 
 tasks.register("check").dependsOn(dokka)

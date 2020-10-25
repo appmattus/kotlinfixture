@@ -29,9 +29,9 @@ apply(from = "$rootDir/gradle/scripts/dokka-javadoc.gradle.kts")
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("io.kotest:kotest-property-jvm:4.2.5")
+    api("io.kotest:kotest-property-jvm:4.3.0")
 
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.1")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")

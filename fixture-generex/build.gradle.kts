@@ -31,7 +31,7 @@ dependencies {
     api(project(":fixture"))
     api("com.github.mifmif:generex:1.0.2")
 
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.1")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")

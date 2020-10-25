@@ -31,15 +31,15 @@ dependencies {
     api("io.github.classgraph:classgraph:4.8.90")
     api(kotlin("reflect"))
 
-    compileOnly("joda-time:joda-time:2.10.6")
-    testImplementation("joda-time:joda-time:2.10.6")
+    compileOnly("joda-time:joda-time:2.10.8")
+    testImplementation("joda-time:joda-time:2.10.8")
 
-    compileOnly("org.threeten:threetenbp:1.4.4")
-    testImplementation("org.threeten:threetenbp:1.4.4")
+    compileOnly("org.threeten:threetenbp:1.5.0")
+    testImplementation("org.threeten:threetenbp:1.5.0")
 
     compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
 
-    testImplementation("junit:junit:4.13")
+    testImplementation("junit:junit:4.13.1")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
