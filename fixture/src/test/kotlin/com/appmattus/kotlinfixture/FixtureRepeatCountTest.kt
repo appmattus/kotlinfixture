@@ -94,7 +94,7 @@ class FixtureRepeatCountTest {
     }
 
     @Test
-    fun `constructor property repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
+    fun `constructor property can be overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
             repeatCount(RepeatCountClass::readOnly) { 1 }
         }
@@ -150,7 +150,7 @@ class FixtureRepeatCountTest {
     }
 
     @Test
-    fun `private constructor property repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
+    fun `private constructor property overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
             repeatCount<RepeatCountClass>("private") { 1 }
         }
@@ -210,7 +210,7 @@ class FixtureRepeatCountTest {
     }
 
     @Test
-    fun `member property repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
+    fun `member property repeatCount overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
             nullabilityStrategy(NeverNullStrategy)
             repeatCount(RepeatCountClass::member) { 1 }

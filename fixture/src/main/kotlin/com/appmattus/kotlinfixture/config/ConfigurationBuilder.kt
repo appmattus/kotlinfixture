@@ -82,7 +82,6 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
 
-
     /**
      * Setting list and map length with `repeatCount`
      *
@@ -172,7 +171,6 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         noinline generator: () -> Int
     ) =
         repeatCount(T::class, propertyName, generator)
-
 
     /**
      * Customising list and map length of class properties with property
