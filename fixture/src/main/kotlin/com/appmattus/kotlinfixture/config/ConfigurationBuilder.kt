@@ -37,7 +37,7 @@ import kotlin.reflect.KType
  */
 @ConfigurationDsl
 @Suppress("TooManyFunctions")
-class ConfigurationBuilder(private val configuration: Configuration = Configuration()) {
+class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     /**
      * Add and remove [Decorator] to wrap the resolver chain.
@@ -167,11 +167,11 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * ```
      */
     @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
-    inline fun <reified T> propertyRepeatCount(
+    inline fun <reified T> repeatCount(
         propertyName: String,
         noinline generator: () -> Int
     ) =
-        propertyRepeatCount(T::class, propertyName, generator)
+        repeatCount(T::class, propertyName, generator)
 
 
     /**
@@ -232,7 +232,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      */
-    inline fun <reified T, G> propertyRepeatCount(
+    inline fun <reified T, G> repeatCount(
         property: KProperty1<T, G>,
         noinline generator: () -> Int
     ) {
@@ -248,7 +248,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
         }
 
         @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
-        return propertyRepeatCount(T::class, property.name, generator)
+        return repeatCount(T::class, property.name, generator)
     }
 
     /**
@@ -310,10 +310,10 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * ```
      */
     @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
-    inline fun propertyRepeatCount(
+    fun repeatCount(
         function: KFunction<Unit>,
-        noinline generator: () -> Int
-    ) = propertyRepeatCount(
+        generator: () -> Int
+    ) = repeatCount(
         function.parameters[0].type.classifier as KClass<*>,
         function.name,
         generator
@@ -324,7 +324,7 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
                 "property<Property>(Class::function) { … } functions",
         level = DeprecationLevel.ERROR
     )
-    fun propertyRepeatCount(clazz: KClass<*>, propertyName: String, generator: () -> Int) {
+    fun repeatCount(clazz: KClass<*>, propertyName: String, generator: () -> Int) {
         val classProperties = propertiesRepeatCount.getOrElse(clazz) { mutableMapOf() }
         classProperties[propertyName] = generator
 

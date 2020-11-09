@@ -44,8 +44,6 @@ internal class KNamedPropertyResolver : Resolver {
             context.configuration.propertiesRepeatCount.getOrElse(containingClass) { emptyMap() }
 
         return if (name in repeatCountOverrides) {
-            println("overridden count = " + repeatCountOverrides[name]?.invoke())
-
             object : Context {
                 override val configuration: Configuration =
                     context.configuration.copy(repeatCount = repeatCountOverrides[name]!!)

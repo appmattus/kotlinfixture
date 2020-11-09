@@ -18,11 +18,11 @@ package com.appmattus.kotlinfixture;
 
 import java.util.List;
 
-public class FixturePropertiesRepeatCountTestJavaClass {
+public class FixtureRepeatCountTestJavaClass {
     private final List<Integer> constructor;
     private List<Integer> mutable;
 
-    public FixturePropertiesRepeatCountTestJavaClass(List<Integer> constructor) {
+    public FixtureRepeatCountTestJavaClass(List<Integer> constructor) {
         this.constructor = constructor;
     }
 

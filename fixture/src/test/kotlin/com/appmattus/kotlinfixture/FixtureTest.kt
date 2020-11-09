@@ -34,13 +34,14 @@ class FixtureTest {
             .map { it::class.java.simpleName }
             .sorted()
 
-        val missingResolvers = Classes.classGraph.getClassInfo(Resolver::class.java.name).classesImplementing
-            .map { it.simpleName }
-            .filterNot { it.endsWith("TestResolver") || it == "CompositeResolver" }
-            .sorted()
-            .toMutableList().apply {
-                removeAll(actualResolvers)
-            }
+        val missingResolvers =
+            Classes.classGraph.getClassInfo(Resolver::class.java.name).classesImplementing
+                .map { it.simpleName }
+                .filterNot { it.endsWith("TestResolver") || it == "CompositeResolver" }
+                .sorted()
+                .toMutableList().apply {
+                    removeAll(actualResolvers)
+                }
 
         assertTrue("Missing the resolvers: $missingResolvers") {
             missingResolvers.isEmpty()
@@ -81,38 +82,6 @@ class FixtureTest {
         assertIsRandom {
             fixture(listOf(10, 20, 30))
         }
-    }
-
-    @Test
-    fun `repeatCount can be set in fixture initialisation`() {
-        val fixture = kotlinFixture {
-            repeatCount { 1 }
-        }
-
-        val list = fixture<List<String>>()
-        assertEquals(1, list.size)
-    }
-
-    @Test
-    fun `repeatCount can be overridden in fixture creation`() {
-        val fixture = kotlinFixture()
-
-        val list = fixture<List<String>> {
-            repeatCount { 2 }
-        }
-        assertEquals(2, list.size)
-    }
-
-    @Test
-    fun `repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
-        val fixture = kotlinFixture {
-            repeatCount { 1 }
-        }
-
-        val list = fixture<List<String>> {
-            repeatCount { 2 }
-        }
-        assertEquals(2, list.size)
     }
 
     abstract class Superclass

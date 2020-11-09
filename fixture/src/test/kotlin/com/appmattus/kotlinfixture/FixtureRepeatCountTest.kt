@@ -16,17 +16,13 @@
 
 package com.appmattus.kotlinfixture
 
-import com.appmattus.kotlinfixture.decorator.logging.SysOutLoggingStrategy
-import com.appmattus.kotlinfixture.decorator.logging.loggingStrategy
 import com.appmattus.kotlinfixture.decorator.nullability.NeverNullStrategy
 import com.appmattus.kotlinfixture.decorator.nullability.nullabilityStrategy
-import com.appmattus.kotlinfixture.decorator.optional.NeverOptionalStrategy
-import com.appmattus.kotlinfixture.decorator.optional.optionalStrategy
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
-class FixturePropertiesRepeatCountTest {
+class FixtureRepeatCountTest {
 
     data class RepeatCountClass(val readOnly: List<Int>, private var private: List<Int>) {
         var member: List<Int>? = null
@@ -35,9 +31,52 @@ class FixturePropertiesRepeatCountTest {
     }
 
     @Test
+    fun `repeatCount can be set in fixture initialisation`() {
+        val fixture = kotlinFixture {
+            repeatCount { 1 }
+        }
+
+        val list = fixture<List<String>>()
+        assertEquals(1, list.size)
+    }
+
+    @Test
+    fun `repeatCount can be overridden in fixture creation`() {
+        val fixture = kotlinFixture()
+
+        val list = fixture<List<String>> {
+            repeatCount { 2 }
+        }
+        assertEquals(2, list.size)
+    }
+
+    @Test
+    fun `repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
+        val fixture = kotlinFixture {
+            repeatCount { 1 }
+        }
+
+        val list = fixture<List<String>> {
+            repeatCount { 2 }
+        }
+        assertEquals(2, list.size)
+    }
+
+    @Test
+    fun `repeatCount can be overridden for constructor property`() {
+        val fixture = kotlinFixture {
+            repeatCount { 2 }
+            repeatCount(RepeatCountClass::readOnly) { 1 }
+        }
+
+        val item = fixture<RepeatCountClass>()
+        assertEquals(1, item.readOnly.size)
+    }
+
+    @Test
     fun `constructor property repeatCount can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount(RepeatCountClass::readOnly) { 1 }
+            repeatCount(RepeatCountClass::readOnly) { 1 }
         }
 
         val item = fixture<RepeatCountClass>()
@@ -49,7 +88,7 @@ class FixturePropertiesRepeatCountTest {
         val fixture = kotlinFixture()
 
         val item = fixture<RepeatCountClass> {
-            propertyRepeatCount(RepeatCountClass::readOnly) { 2 }
+            repeatCount(RepeatCountClass::readOnly) { 2 }
         }
         assertEquals(2, item.readOnly.size)
     }
@@ -57,11 +96,11 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `constructor property repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount(RepeatCountClass::readOnly) { 1 }
+            repeatCount(RepeatCountClass::readOnly) { 1 }
         }
 
         val item = fixture<RepeatCountClass> {
-            propertyRepeatCount(RepeatCountClass::readOnly) { 2 }
+            repeatCount(RepeatCountClass::readOnly) { 2 }
         }
         assertEquals(2, item.readOnly.size)
     }
@@ -69,21 +108,31 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `constructor property repeatCount can be overridden in new when already overridden in initialisation`() {
         val baseFixture = kotlinFixture {
-            propertyRepeatCount(RepeatCountClass::readOnly) { 1 }
+            repeatCount(RepeatCountClass::readOnly) { 1 }
         }
         val fixture = baseFixture.new {
-            propertyRepeatCount(RepeatCountClass::readOnly) { 2 }
+            repeatCount(RepeatCountClass::readOnly) { 2 }
         }
 
         val item = fixture<RepeatCountClass>()
         assertEquals(2, item.readOnly.size)
     }
 
+    @Test
+    fun `repeatCount can be overridden for private constructor property`() {
+        val fixture = kotlinFixture {
+            repeatCount { 2 }
+            repeatCount<RepeatCountClass>("private") { 1 }
+        }
+
+        val item = fixture<RepeatCountClass>()
+        assertEquals(1, item.getPrivate().size)
+    }
 
     @Test
     fun `private constructor property repeatCount can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount<RepeatCountClass>("private") { 1 }
+            repeatCount<RepeatCountClass>("private") { 1 }
         }
 
         val item = fixture<RepeatCountClass>()
@@ -95,7 +144,7 @@ class FixturePropertiesRepeatCountTest {
         val fixture = kotlinFixture()
 
         val item = fixture<RepeatCountClass> {
-            propertyRepeatCount<RepeatCountClass>("private") { 2 }
+            repeatCount<RepeatCountClass>("private") { 2 }
         }
         assertEquals(2, item.getPrivate().size)
     }
@@ -103,11 +152,11 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `private constructor property repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount<RepeatCountClass>("private") { 1 }
+            repeatCount<RepeatCountClass>("private") { 1 }
         }
 
         val item = fixture<RepeatCountClass> {
-            propertyRepeatCount<RepeatCountClass>("private") { 2 }
+            repeatCount<RepeatCountClass>("private") { 2 }
         }
         assertEquals(2, item.getPrivate().size)
     }
@@ -115,22 +164,33 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `private constructor property repeatCount can be overridden in new when already overridden`() {
         val baseFixture = kotlinFixture {
-            propertyRepeatCount<RepeatCountClass>("private") { 1 }
+            repeatCount<RepeatCountClass>("private") { 1 }
         }
         val fixture = baseFixture.new {
-            propertyRepeatCount<RepeatCountClass>("private") { 2 }
+            repeatCount<RepeatCountClass>("private") { 2 }
         }
 
         val item = fixture<RepeatCountClass>()
         assertEquals(2, item.getPrivate().size)
     }
 
+    @Test
+    fun `repeatCount can be overridden for member property`() {
+        val fixture = kotlinFixture {
+            nullabilityStrategy(NeverNullStrategy)
+            repeatCount { 2 }
+            repeatCount(RepeatCountClass::member) { 1 }
+        }
+
+        val item = fixture<RepeatCountClass>()
+        assertEquals(1, item.member?.size)
+    }
 
     @Test
     fun `member property repeatCount can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
             nullabilityStrategy(NeverNullStrategy)
-            propertyRepeatCount(RepeatCountClass::member) { 1 }
+            repeatCount(RepeatCountClass::member) { 1 }
         }
 
         val item = fixture<RepeatCountClass>()
@@ -141,11 +201,10 @@ class FixturePropertiesRepeatCountTest {
     fun `member property repeatCount can be overridden in fixture creation`() {
         val fixture = kotlinFixture {
             nullabilityStrategy(NeverNullStrategy)
-            loggingStrategy(SysOutLoggingStrategy)
         }
 
         val item = fixture<RepeatCountClass> {
-            propertyRepeatCount(RepeatCountClass::member) { 2 }
+            repeatCount(RepeatCountClass::member) { 2 }
         }
         assertEquals(2, item.member?.size)
     }
@@ -154,11 +213,11 @@ class FixturePropertiesRepeatCountTest {
     fun `member property repeatCount can be overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
             nullabilityStrategy(NeverNullStrategy)
-            propertyRepeatCount(RepeatCountClass::member) { 1 }
+            repeatCount(RepeatCountClass::member) { 1 }
         }
 
         val item = fixture<RepeatCountClass> {
-            propertyRepeatCount(RepeatCountClass::member) { 2 }
+            repeatCount(RepeatCountClass::member) { 2 }
         }
         assertEquals(2, item.member?.size)
     }
@@ -167,10 +226,10 @@ class FixturePropertiesRepeatCountTest {
     fun `member property repeatCount can be overridden in new when already overridden in initialisation`() {
         val baseFixture = kotlinFixture {
             nullabilityStrategy(NeverNullStrategy)
-            propertyRepeatCount(RepeatCountClass::member) { 1 }
+            repeatCount(RepeatCountClass::member) { 1 }
         }
         val fixture = baseFixture.new {
-            propertyRepeatCount(RepeatCountClass::member) { 2 }
+            repeatCount(RepeatCountClass::member) { 2 }
         }
 
         val item = fixture<RepeatCountClass>()
@@ -181,7 +240,7 @@ class FixturePropertiesRepeatCountTest {
     fun `read only property repeatCount cannot be set in fixture initialisation`() {
         assertFailsWith<IllegalStateException> {
             kotlinFixture {
-                propertyRepeatCount(RepeatCountClass::alsoReadOnly) { 1 }
+                repeatCount(RepeatCountClass::alsoReadOnly) { 1 }
             }
         }
     }
@@ -192,19 +251,29 @@ class FixturePropertiesRepeatCountTest {
             val fixture = kotlinFixture()
 
             fixture<RepeatCountClass> {
-                propertyRepeatCount(RepeatCountClass::alsoReadOnly) { 1 }
+                repeatCount(RepeatCountClass::alsoReadOnly) { 1 }
             }
         }
     }
 
+    @Test
+    fun `repeatCount can be overridden for java constructor property`() {
+        val fixture = kotlinFixture {
+            repeatCount { 2 }
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 1 }
+        }
+
+        val instance = fixture<FixtureRepeatCountTestJavaClass>()
+        assertEquals(1, instance.constructor.size)
+    }
 
     @Test
     fun `java constructor property can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount<FixturePropertiesRepeatCountTestJavaClass>("arg0") { 1 }
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 1 }
         }
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass>()
+        val instance = fixture<FixtureRepeatCountTestJavaClass>()
         assertEquals(1, instance.constructor.size)
     }
 
@@ -212,8 +281,8 @@ class FixturePropertiesRepeatCountTest {
     fun `java constructor property can be overridden in fixture creation`() {
         val fixture = kotlinFixture()
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass> {
-            propertyRepeatCount<FixturePropertiesRepeatCountTestJavaClass>("arg0") { 2 }
+        val instance = fixture<FixtureRepeatCountTestJavaClass> {
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 2 }
         }
         assertEquals(2, instance.constructor.size)
     }
@@ -221,11 +290,11 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `java constructor property can be overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount<FixturePropertiesRepeatCountTestJavaClass>("arg0") { 1 }
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 1 }
         }
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass> {
-            propertyRepeatCount<FixturePropertiesRepeatCountTestJavaClass>("arg0") { 2 }
+        val instance = fixture<FixtureRepeatCountTestJavaClass> {
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 2 }
         }
         assertEquals(2, instance.constructor.size)
     }
@@ -233,23 +302,34 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `java constructor property can be overridden in new when already overridden in initialisation`() {
         val baseFixture = kotlinFixture {
-            propertyRepeatCount<FixturePropertiesRepeatCountTestJavaClass>("arg0") { 1 }
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 1 }
         }
         val fixture = baseFixture.new {
-            propertyRepeatCount<FixturePropertiesRepeatCountTestJavaClass>("arg0") { 2 }
+            repeatCount<FixtureRepeatCountTestJavaClass>("arg0") { 2 }
         }
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass>()
+        val instance = fixture<FixtureRepeatCountTestJavaClass>()
         assertEquals(2, instance.constructor.size)
+    }
+
+    @Test
+    fun `repeatCount can be overridden for java member property`() {
+        val fixture = kotlinFixture {
+            repeatCount { 2 }
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 1 }
+        }
+
+        val instance = fixture<FixtureRepeatCountTestJavaClass>()
+        assertEquals(1, instance.mutable.size)
     }
 
     @Test
     fun `java member property can be set in fixture initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount(FixturePropertiesRepeatCountTestJavaClass::setMutable) { 1 }
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 1 }
         }
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass>()
+        val instance = fixture<FixtureRepeatCountTestJavaClass>()
         assertEquals(1, instance.mutable.size)
     }
 
@@ -257,8 +337,8 @@ class FixturePropertiesRepeatCountTest {
     fun `java member property can be overridden in fixture creation`() {
         val fixture = kotlinFixture()
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass> {
-            propertyRepeatCount(FixturePropertiesRepeatCountTestJavaClass::setMutable) { 2 }
+        val instance = fixture<FixtureRepeatCountTestJavaClass> {
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 2 }
         }
         assertEquals(2, instance.mutable.size)
     }
@@ -266,11 +346,11 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `java member property can be overridden in fixture creation when already overridden in initialisation`() {
         val fixture = kotlinFixture {
-            propertyRepeatCount(FixturePropertiesRepeatCountTestJavaClass::setMutable) { 1 }
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 1 }
         }
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass> {
-            propertyRepeatCount(FixturePropertiesRepeatCountTestJavaClass::setMutable) { 2 }
+        val instance = fixture<FixtureRepeatCountTestJavaClass> {
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 2 }
         }
         assertEquals(2, instance.mutable.size)
     }
@@ -278,13 +358,13 @@ class FixturePropertiesRepeatCountTest {
     @Test
     fun `java member property can be overridden in new when already overridden in initialisation`() {
         val baseFixture = kotlinFixture {
-            propertyRepeatCount(FixturePropertiesRepeatCountTestJavaClass::setMutable) { 1 }
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 1 }
         }
         val fixture = baseFixture.new {
-            propertyRepeatCount(FixturePropertiesRepeatCountTestJavaClass::setMutable) { 2 }
+            repeatCount(FixtureRepeatCountTestJavaClass::setMutable) { 2 }
         }
 
-        val instance = fixture<FixturePropertiesRepeatCountTestJavaClass>()
+        val instance = fixture<FixtureRepeatCountTestJavaClass>()
         assertEquals(2, instance.mutable.size)
     }
 }
