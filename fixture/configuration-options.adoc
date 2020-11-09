@@ -59,6 +59,70 @@ repeatCount {
 }
 ----
 
+Additionally we can override `repeatCount` for properties of a class and nested lists and maps.
+
+._Kotlin class example_
+[%collapsible%open]
+====
+
+Given the following Kotlin class:
+
+[source,kotlin]
+----
+class KotlinClass(val readOnly: List<String>, private var private: List<String>) {
+    var member: List<String>? = null
+}
+----
+
+We can override repeatCount for `KotlinClass` as follows:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Public constructor parameters overridden by reference:
+    repeatCount(KotlinClass::readOnly) { 1 }
+
+    // Private constructor parameters are overridden by name:
+    repeatCount<KotlinClass>("private") { 2 }
+
+    // Public member properties overridden by reference:
+    repeatCount(KotlinClass::member) { 3 }
+}
+----
+====
+
+._Java class example_
+[%collapsible]
+====
+Given the following Java class:
+
+[source,java]
+----
+public class JavaClass {
+    private final List<String> constructor;
+    private List<String> mutable;
+
+    public JavaClass(List<String> constructor) { this.constructor = constructor; }
+
+    public void setMutable(List<String> mutable) { this.mutable = mutable; }
+}
+----
+
+We can override repeatCount for `JavaClass` as follows:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Setter overridden by reference:
+    repeatCount(JavaClass::setMutable) { 1 }
+
+    // Constructor parameters don't typically retain names and so are
+    // overridden by a positional 'arg' names:
+    repeatCount<JavaClass>("arg0") { 2 }
+}
+----
+====
+
 == Resolving abstract superclasses to a chosen subclass with `subType`
 
 Used to always return an instance of a particular subclass for a superclass.
