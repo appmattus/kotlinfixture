@@ -18,20 +18,40 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.config.DefaultGenerator
 
 internal class KNamedPropertyResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KNamedPropertyRequest) {
-            val overrides = context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
+            val overrides =
+                context.configuration.properties.getOrElse(obj.containingClass) { emptyMap() }
+
+            val newContext = obj.repeatCountOverride(context)
 
             return if (obj.name in overrides) {
-                overrides[obj.name]?.invoke(DefaultGenerator(context))
+                overrides[obj.name]?.invoke(DefaultGenerator(newContext))
             } else {
-                context.resolve(obj.type)
+                newContext.resolve(obj.type)
             }
         }
 
         return Unresolved.Unhandled
+    }
+
+    private fun KNamedPropertyRequest.repeatCountOverride(context: Context): Context {
+        val repeatCountOverrides =
+            context.configuration.propertiesRepeatCount.getOrElse(containingClass) { emptyMap() }
+
+        return if (name in repeatCountOverrides) {
+            object : Context {
+                override val configuration: Configuration =
+                    context.configuration.copy(repeatCount = repeatCountOverrides[name]!!)
+
+                override val resolver: Resolver = context.resolver
+            }
+        } else {
+            context
+        }
     }
 }

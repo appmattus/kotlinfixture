@@ -37,7 +37,7 @@ import kotlin.reflect.KType
  */
 @ConfigurationDsl
 @Suppress("TooManyFunctions")
-class ConfigurationBuilder(private val configuration: Configuration = Configuration()) {
+class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     /**
      * Add and remove [Decorator] to wrap the resolver chain.
@@ -72,6 +72,8 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     var random: Random = configuration.random
 
     private var repeatCount: () -> Int = configuration.repeatCount
+    private val propertiesRepeatCount: MutableMap<KClass<*>, MutableMap<String, () -> Int>> =
+        configuration.propertiesRepeatCount.mapValues { it.value.toMutableMap() }.toMutableMap()
     private val properties: MutableMap<KClass<*>, MutableMap<String, GeneratorFun>> =
         configuration.properties.mapValues { it.value.toMutableMap() }.toMutableMap()
     private val factories: MutableMap<KType, GeneratorFun> = configuration.factories.toMutableMap()
@@ -79,6 +81,253 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
+
+    /**
+     * Setting list and map length with `repeatCount`
+     *
+     * Used to determine the length used for lists and maps. By default, the library generates 5 items.
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     repeatCount { 3 }
+     * }
+     *
+     * val listOfThreeItems = fixture<List<Int>>() // 10, 81, 3
+     * ```
+     *
+     * `repeatCount` is a factory method so can be used to return lists and maps of different lengths each execution:
+     *
+     * ```
+     * repeatCount {
+     *     random.nextInt(1, 5)
+     * }
+     * ```
+     */
+    fun repeatCount(generator: () -> Int) {
+        repeatCount = generator
+    }
+
+    /**
+     * Customising list and map length of class properties with property
+     *
+     * Used to override list and map length of constructor parameters or mutable properties when generating instances of generic classes.
+     *
+     * #### Kotlin class example
+     *
+     * Given the following Kotlin class:
+     *
+     * ```
+     * class KotlinClass(val readOnly: List<String>, private var private: List<String>) {
+     *     var member: List<String>? = null
+     * }
+     * ```
+     *
+     * We can override repeatCount when creating an instance of `KotlinClass` as follows:
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     // Public constructor parameters overridden by reference:
+     *     repeatCount(KotlinClass::readOnly) { 1 }
+     *
+     *     // Private constructor parameters are overridden by name:
+     *     repeatCount<KotlinClass>("private") { 2 }
+     *
+     *     // Public member properties overridden by reference:
+     *     repeatCount(KotlinClass::member) { 3 }
+     * }
+     * ```
+     *
+     * #### Java class example
+     *
+     * Given the following Java class:
+     *
+     * ```
+     * public class JavaClass {
+     *     private final List<String> constructor;
+     *     private String mutable;
+     *
+     *     public JavaClass(String constructor) { this.constructor = constructor; }
+     *
+     *     public void setMutable(String mutable) { this.mutable = mutable; }
+     * }
+     * ```
+     *
+     * We can override repeatCount when creating an instance of `JavaClass` as follows:
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     // Setter overridden by reference:
+     *     repeatCount(JavaClass::setMutable) { 1 }
+     *
+     *     // Constructor parameters don't typically retain names and so are
+     *     // overridden by a positional 'arg' names:
+     *     repeatCount<JavaClass>("arg0") { 2 }
+     * }
+     * ```
+     */
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+    inline fun <reified T> repeatCount(
+        propertyName: String,
+        noinline generator: () -> Int
+    ) =
+        repeatCount(T::class, propertyName, generator)
+
+    /**
+     * Customising list and map length of class properties with property
+     *
+     * Used to override list and map length of constructor parameters or mutable properties when generating instances of generic classes.
+     *
+     * #### Kotlin class example
+     *
+     * Given the following Kotlin class:
+     *
+     * ```
+     * class KotlinClass(val readOnly: List<String>, private var private: List<String>) {
+     *     var member: List<String>? = null
+     * }
+     * ```
+     *
+     * We can override repeatCount when creating an instance of `KotlinClass` as follows:
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     // Public constructor parameters overridden by reference:
+     *     repeatCount(KotlinClass::readOnly) { 1 }
+     *
+     *     // Private constructor parameters are overridden by name:
+     *     repeatCount<KotlinClass>("private") { 2 }
+     *
+     *     // Public member properties overridden by reference:
+     *     repeatCount(KotlinClass::member) { 3 }
+     * }
+     * ```
+     *
+     * #### Java class example
+     *
+     * Given the following Java class:
+     *
+     * ```
+     * public class JavaClass {
+     *     private final List<String> constructor;
+     *     private String mutable;
+     *
+     *     public JavaClass(String constructor) { this.constructor = constructor; }
+     *
+     *     public void setMutable(String mutable) { this.mutable = mutable; }
+     * }
+     * ```
+     *
+     * We can override repeatCount when creating an instance of `JavaClass` as follows:
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     // Setter overridden by reference:
+     *     repeatCount(JavaClass::setMutable) { 1 }
+     *
+     *     // Constructor parameters don't typically retain names and so are
+     *     // overridden by a positional 'arg' names:
+     *     repeatCount<JavaClass>("arg0") { 2 }
+     * }
+     * ```
+     */
+    inline fun <reified T, G> repeatCount(
+        property: KProperty1<T, G>,
+        noinline generator: () -> Int
+    ) {
+        // Only allow read only properties in constructor(s)
+        if (property !is KMutableProperty1) {
+            val constructorParams = T::class.constructors.flatMap {
+                it.parameters.map(KParameter::name)
+            }
+
+            check(constructorParams.contains(property.name)) {
+                "No setter available for ${T::class.qualifiedName}.${property.name}"
+            }
+        }
+
+        @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+        return repeatCount(T::class, property.name, generator)
+    }
+
+    /**
+     * Customising list and map length of class properties with property
+     *
+     * Used to override list and map length of constructor parameters or mutable properties when generating instances of generic classes.
+     *
+     * #### Kotlin class example
+     *
+     * Given the following Kotlin class:
+     *
+     * ```
+     * class KotlinClass(val readOnly: List<String>, private var private: List<String>) {
+     *     var member: List<String>? = null
+     * }
+     * ```
+     *
+     * We can override repeatCount when creating an instance of `KotlinClass` as follows:
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     // Public constructor parameters overridden by reference:
+     *     repeatCount(KotlinClass::readOnly) { 1 }
+     *
+     *     // Private constructor parameters are overridden by name:
+     *     repeatCount<KotlinClass>("private") { 2 }
+     *
+     *     // Public member properties overridden by reference:
+     *     repeatCount(KotlinClass::member) { 3 }
+     * }
+     * ```
+     *
+     * #### Java class example
+     *
+     * Given the following Java class:
+     *
+     * ```
+     * public class JavaClass {
+     *     private final List<String> constructor;
+     *     private String mutable;
+     *
+     *     public JavaClass(String constructor) { this.constructor = constructor; }
+     *
+     *     public void setMutable(String mutable) { this.mutable = mutable; }
+     * }
+     * ```
+     *
+     * We can override repeatCount when creating an instance of `JavaClass` as follows:
+     *
+     * ```
+     * val fixture = kotlinFixture {
+     *     // Setter overridden by reference:
+     *     repeatCount(JavaClass::setMutable) { 1 }
+     *
+     *     // Constructor parameters don't typically retain names and so are
+     *     // overridden by a positional 'arg' names:
+     *     repeatCount<JavaClass>("arg0") { 2 }
+     * }
+     * ```
+     */
+    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+    fun repeatCount(
+        function: KFunction<Unit>,
+        generator: () -> Int
+    ) = repeatCount(
+        function.parameters[0].type.classifier as KClass<*>,
+        function.name,
+        generator
+    )
+
+    @Deprecated(
+        "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or " +
+                "property<Property>(Class::function) { … } functions",
+        level = DeprecationLevel.ERROR
+    )
+    fun repeatCount(clazz: KClass<*>, propertyName: String, generator: () -> Int) {
+        val classProperties = propertiesRepeatCount.getOrElse(clazz) { mutableMapOf() }
+        classProperties[propertyName] = generator
+
+        propertiesRepeatCount[clazz] = classProperties
+    }
 
     /**
      * Customising class generation with factory
@@ -184,7 +433,10 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
     @Suppress("DEPRECATION_ERROR")
     inline fun <reified T, reified U : T> subType() = subType(T::class, U::class)
 
-    @Deprecated("Use the subType<Superclass, Subclass>() function instead", level = DeprecationLevel.ERROR)
+    @Deprecated(
+        "Use the subType<Superclass, Subclass>() function instead",
+        level = DeprecationLevel.ERROR
+    )
     fun subType(superType: KClass<*>, subType: KClass<*>) {
         subTypes[superType] = subType
     }
@@ -248,7 +500,10 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * ```
      */
     @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
-    inline fun <reified T, G> property(propertyName: String, noinline generator: Generator<G>.() -> G) =
+    inline fun <reified T, G> property(
+        propertyName: String,
+        noinline generator: Generator<G>.() -> G
+    ) =
         property(T::class, propertyName, generator as GeneratorFun)
 
     /**
@@ -309,7 +564,10 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * }
      * ```
      */
-    inline fun <reified T, G> property(property: KProperty1<T, G>, noinline generator: Generator<G>.() -> G) {
+    inline fun <reified T, G> property(
+        property: KProperty1<T, G>,
+        noinline generator: Generator<G>.() -> G
+    ) {
         // Only allow read only properties in constructor(s)
         if (property !is KMutableProperty1) {
             val constructorParams = T::class.constructors.flatMap {
@@ -384,7 +642,10 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
      * ```
      */
     @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
-    inline fun <reified G> property(function: KFunction<Unit>, noinline generator: Generator<G>.() -> G) = property(
+    inline fun <reified G> property(
+        function: KFunction<Unit>,
+        noinline generator: Generator<G>.() -> G
+    ) = property(
         function.parameters[0].type.classifier as KClass<*>,
         function.name,
         generator as GeneratorFun
@@ -402,33 +663,9 @@ class ConfigurationBuilder(private val configuration: Configuration = Configurat
         properties[clazz] = classProperties
     }
 
-    /**
-     * Setting list and map length with `repeatCount`
-     *
-     * Used to determine the length used for lists and maps. By default, the library generates 5 items.
-     *
-     * ```
-     * val fixture = kotlinFixture {
-     *     repeatCount { 3 }
-     * }
-     *
-     * val listOfThreeItems = fixture<List<Int>>() // 10, 81, 3
-     * ```
-     *
-     * `repeatCount` is a factory method so can be used to return lists and maps of different lengths each execution:
-     *
-     * ```
-     * repeatCount {
-     *     random.nextInt(1, 5)
-     * }
-     * ```
-     */
-    fun repeatCount(generator: () -> Int) {
-        repeatCount = generator
-    }
-
     fun build() = Configuration(
         repeatCount = repeatCount,
+        propertiesRepeatCount = propertiesRepeatCount,
         properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
         factories = factories.toUnmodifiableMap(),
         subTypes = subTypes.toUnmodifiableMap(),

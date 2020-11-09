@@ -71,6 +71,7 @@ import kotlin.reflect.KType
 /**
  * The [Configuration] for generating the current fixture. This is a combination of all previous configurations.
  * @property repeatCount The length used for lists and maps.
+ * @property propertiesRepeatCount Overrides the length used for lists and maps on constructor parameters and mutable properties when generating instances of generic classes.
  * @property properties Overrides for constructor parameters and mutable properties when generating instances of generic classes.
  * @property factories Given instances for a particular class using a factory method.
  * @property subTypes Superclass to subclass mapping for subtypes.
@@ -82,6 +83,8 @@ import kotlin.reflect.KType
  */
 data class Configuration internal constructor(
     val repeatCount: () -> Int = defaultRepeatCount,
+    val propertiesRepeatCount: Map<KClass<*>, Map<String, () -> Int>> =
+        emptyMap<KClass<*>, Map<String, () -> Int>>().toUnmodifiableMap(),
     val properties: Map<KClass<*>, Map<String, GeneratorFun>> =
         emptyMap<KClass<*>, Map<String, GeneratorFun>>().toUnmodifiableMap(),
     val factories: Map<KType, GeneratorFun> =
