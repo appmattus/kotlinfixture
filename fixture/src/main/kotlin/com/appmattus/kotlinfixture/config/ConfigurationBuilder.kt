@@ -128,13 +128,13 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * ```
      * val fixture = kotlinFixture {
      *     // Public constructor parameters overridden by reference:
-     *     propertyRepeatCount(KotlinClass::readOnly) { 1 }
+     *     repeatCount(KotlinClass::readOnly) { 1 }
      *
      *     // Private constructor parameters are overridden by name:
-     *     propertyRepeatCount<KotlinClass>("private") { 2 }
+     *     repeatCount<KotlinClass>("private") { 2 }
      *
      *     // Public member properties overridden by reference:
-     *     propertyRepeatCount(KotlinClass::member) { 3 }
+     *     repeatCount(KotlinClass::member) { 3 }
      * }
      * ```
      *
@@ -158,11 +158,11 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * ```
      * val fixture = kotlinFixture {
      *     // Setter overridden by reference:
-     *     propertyRepeatCount(JavaClass::setMutable) { 1 }
+     *     repeatCount(JavaClass::setMutable) { 1 }
      *
      *     // Constructor parameters don't typically retain names and so are
      *     // overridden by a positional 'arg' names:
-     *     propertyRepeatCount<JavaClass>("arg0") { 2 }
+     *     repeatCount<JavaClass>("arg0") { 2 }
      * }
      * ```
      */
@@ -194,13 +194,13 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * ```
      * val fixture = kotlinFixture {
      *     // Public constructor parameters overridden by reference:
-     *     propertyRepeatCount(KotlinClass::readOnly) { 1 }
+     *     repeatCount(KotlinClass::readOnly) { 1 }
      *
      *     // Private constructor parameters are overridden by name:
-     *     propertyRepeatCount<KotlinClass>("private") { 2 }
+     *     repeatCount<KotlinClass>("private") { 2 }
      *
      *     // Public member properties overridden by reference:
-     *     propertyRepeatCount(KotlinClass::member) { 3 }
+     *     repeatCount(KotlinClass::member) { 3 }
      * }
      * ```
      *
@@ -224,11 +224,11 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * ```
      * val fixture = kotlinFixture {
      *     // Setter overridden by reference:
-     *     propertyRepeatCount(JavaClass::setMutable) { 1 }
+     *     repeatCount(JavaClass::setMutable) { 1 }
      *
      *     // Constructor parameters don't typically retain names and so are
      *     // overridden by a positional 'arg' names:
-     *     propertyRepeatCount<JavaClass>("arg0") { 2 }
+     *     repeatCount<JavaClass>("arg0") { 2 }
      * }
      * ```
      */
@@ -271,13 +271,13 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * ```
      * val fixture = kotlinFixture {
      *     // Public constructor parameters overridden by reference:
-     *     propertyRepeatCount(KotlinClass::readOnly) { 1 }
+     *     repeatCount(KotlinClass::readOnly) { 1 }
      *
      *     // Private constructor parameters are overridden by name:
-     *     propertyRepeatCount<KotlinClass>("private") { 2 }
+     *     repeatCount<KotlinClass>("private") { 2 }
      *
      *     // Public member properties overridden by reference:
-     *     propertyRepeatCount(KotlinClass::member) { 3 }
+     *     repeatCount(KotlinClass::member) { 3 }
      * }
      * ```
      *
@@ -301,11 +301,11 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * ```
      * val fixture = kotlinFixture {
      *     // Setter overridden by reference:
-     *     propertyRepeatCount(JavaClass::setMutable) { 1 }
+     *     repeatCount(JavaClass::setMutable) { 1 }
      *
      *     // Constructor parameters don't typically retain names and so are
      *     // overridden by a positional 'arg' names:
-     *     propertyRepeatCount<JavaClass>("arg0") { 2 }
+     *     repeatCount<JavaClass>("arg0") { 2 }
      * }
      * ```
      */
