@@ -29,7 +29,7 @@ apply(from = "$rootDir/gradle/scripts/dokka-javadoc.gradle.kts")
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("io.kotest:kotest-property-jvm:4.3.0")
+    api("io.kotest:kotest-property-jvm:4.3.1")
 
     testImplementation("junit:junit:4.13.1")
     testImplementation(kotlin("test"))
@@ -37,7 +37,7 @@ dependencies {
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
     testImplementation(kotlin("reflect"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.9")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1")
 }
 
 lintOptions {

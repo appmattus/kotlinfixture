@@ -415,8 +415,8 @@ class ComparisonTest {
                 arrayOf(typeOf<org.joda.time.Interval>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
 
                 // Tuples
-                arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID, VALID),
-                arrayOf(typeOf<Triple<String, String, String>>(), VALID, UNSUPPORTED, VALID, VALID),
+                arrayOf(typeOf<Pair<String, String>>(), VALID, UNSUPPORTED, VALID, UNSUPPORTED),
+                arrayOf(typeOf<Triple<String, String, String>>(), VALID, UNSUPPORTED, VALID, UNSUPPORTED),
 
                 // Array
                 arrayOf(typeOf<ByteArray>(), VALID, VALID, UNSUPPORTED, VALID),
@@ -514,7 +514,7 @@ class ComparisonTest {
                 arrayOf(typeOf<AtomicLong>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<AtomicIntegerArray>(), VALID, VALID, IGNORE, VALID),
                 arrayOf(typeOf<AtomicLongArray>(), VALID, VALID, IGNORE, VALID),
-                arrayOf(typeOf<AtomicReference<String>>(), VALID, UNSUPPORTED, VALID, VALID),
+                arrayOf(typeOf<AtomicReference<String>>(), VALID, UNSUPPORTED, VALID, UNSUPPORTED),
 
                 // Enum
                 arrayOf(typeOf<TestEnumClass>(), VALID, VALID, UNSUPPORTED, VALID),
