@@ -334,13 +334,13 @@ val fixture = kotlinFixture {
 [%collapsible]
 ====
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NeverNullStrategy.kt[NeverNullStrategy]`::
-populate nullable values with a non-null value.
+populate nullable types with a non-null value.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/AlwaysNullStrategy.kt[AlwaysNullStrategy]`::
-populate nullable values with `null`.
+populate nullable types with `null`.
 
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/RandomlyNullStrategy.kt[RandomlyNullStrategy]`::
-populate nullable values randomly with `null`.
+populate nullable types randomly with `null`.
 ====
 
 It is also possible to define and implement your own nullability strategy by
