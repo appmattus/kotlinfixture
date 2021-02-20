@@ -55,15 +55,6 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
 }
 
-// Fix lack of source code when publishing pure Kotlin projects
-// See https://github.com/novoda/bintray-release/issues/262
-tasks.whenTaskAdded {
-    if (name == "generateSourcesJarForMavenPublication") {
-        this as Jar
-        from(sourceSets.main.get().allSource)
-    }
-}
-
 tasks.named("check") {
     finalizedBy(rootProject.tasks.named("detekt"))
     finalizedBy(rootProject.tasks.named("markdownlint"))
