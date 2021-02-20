@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2021 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 
-tasks.register<Jar>("dokkaJar") {
-    dependsOn(tasks.named("dokkaJavadoc"))
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-    archiveClassifier.set("javadoc")
-    from("$buildDir/reports/dokka")
+plugins {
+    `kotlin-dsl`
+}
+
+repositories {
+    jcenter()
+}
+
+kotlinDslPluginOptions {
+    experimentalWarning.set(false)
+}
+
+tasks.withType(KotlinCompile::class.java).all {
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }

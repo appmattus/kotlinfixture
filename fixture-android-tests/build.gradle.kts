@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2021 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,23 +54,23 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
 
-    testImplementation("androidx.test:core:1.3.0")
-    testImplementation("androidx.test:runner:1.3.0")
-    testImplementation("androidx.test.ext:junit:1.1.2")
-    testImplementation("org.robolectric:robolectric:4.4") {
+    testImplementation("androidx.test:core:${Versions.AndroidX.testCore}")
+    testImplementation("androidx.test:runner:${Versions.AndroidX.testRunner}")
+    testImplementation("androidx.test.ext:junit:${Versions.AndroidX.testExtJunit}")
+    testImplementation("org.robolectric:robolectric:${Versions.robolectric}") {
         exclude(group = "com.google.auto.service", module = "auto-service")
     }
 
-    testImplementation("junit:junit:4.13.1")
+    testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}")
 
     testImplementation(kotlin("reflect"))
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
 }
 
 tasks.named("check") {

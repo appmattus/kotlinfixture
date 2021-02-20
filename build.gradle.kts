@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2021 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import com.android.build.gradle.internal.tasks.factory.dependsOn
-import org.jetbrains.dokka.gradle.DokkaMultiModuleTask
+import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
 import java.net.URL
 
 plugins {
-    kotlin("jvm") version "1.4.10" apply false
-    id("io.gitlab.arturbosch.detekt") version "1.14.2"
-    id("com.appmattus.markdown") version "0.6.0"
-    id("org.jetbrains.dokka") version "1.4.10.2"
+    kotlin("jvm") version Versions.kotlin apply false
+    id("io.gitlab.arturbosch.detekt") version Versions.detektGradlePlugin
+    id("com.appmattus.markdown") version Versions.markdownlintGradlePlugin
+    id("com.vanniktech.maven.publish") version Versions.gradleMavenPublishPlugin apply false
+    id("org.jetbrains.dokka") version Versions.dokkaPlugin
 }
 
 buildscript {
@@ -31,7 +31,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.1.0")
+        classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
     }
 }
 
@@ -46,17 +46,24 @@ allprojects {
         maven { setUrl("https://jitpack.io") }
     }
 
-    tasks.withType<DokkaTask> {
-        outputDirectory.set(buildDir.resolve("reports/dokka"))
+    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
+        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
 
-        dokkaSourceSets {
-            configureEach {
-                skipDeprecated.set(true)
+    plugins.withType<DokkaPlugin> {
+        tasks.withType<DokkaTask>().configureEach {
+            dokkaSourceSets {
+                configureEach {
+                    skipDeprecated.set(true)
 
-                sourceLink {
-                    localDirectory.set(rootDir)
-                    remoteUrl.set(URL("https://github.com/appmattus/kotlinfixture/blob/main/"))
-                    remoteLineSuffix.set("#L")
+                    if (name.startsWith("ios")) {
+                        displayName.set("ios")
+                    }
+
+                    sourceLink {
+                        localDirectory.set(rootDir)
+                        remoteUrl.set(URL("https://github.com/appmattus/kotlinfixture/blob/main"))
+                        remoteLineSuffix.set("#L")
+                    }
                 }
             }
         }
@@ -68,7 +75,7 @@ tasks.register<Delete>("clean") {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.detektGradlePlugin}")
 }
 
 detekt {
@@ -80,10 +87,3 @@ detekt {
 
     config = files("detekt-config.yml")
 }
-
-val dokka = tasks.named<DokkaMultiModuleTask>("dokkaHtmlMultiModule") {
-    outputDirectory.set(buildDir.resolve("dokkaCustomMultiModuleOutput"))
-    // documentationFileName.set("module.md")
-}
-
-tasks.register("check").dependsOn(dokka)
