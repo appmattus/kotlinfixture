@@ -64,4 +64,19 @@ class FixtureInvokeTypeTest {
             assertEquals(String::class, it::class)
         }
     }
+
+    @Test
+    fun `can create Set`() {
+        val set = fixture<Set<A>>()
+
+        assertTrue(Set::class.isInstance(set))
+
+        set.forEach {
+            assertEquals(A::class, it::class)
+        }
+    }
+
+    data class A(
+        val string: String
+    )
 }

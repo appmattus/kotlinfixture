@@ -66,7 +66,7 @@ internal class IterableKTypeResolver : Resolver {
         return Unresolved.Unhandled
     }
 
-    private fun Context.populateCollection(obj: KType, collection: MutableCollection<Any?>): Any? {
+    private fun Context.populateCollection(obj: KType, collection: MutableCollection<Any?>): Any {
         val argType = obj.arguments.first().type!!
 
         repeat(configuration.repeatCount()) {
@@ -106,12 +106,12 @@ internal class IterableKTypeResolver : Resolver {
         AbstractQueue::class,
         PriorityQueue::class -> PriorityQueue()
 
-        java.util.AbstractSet::class,
-        Set::class,
         SortedSet::class,
         NavigableSet::class,
         TreeSet::class -> TreeSet()
 
+        java.util.AbstractSet::class,
+        Set::class,
         HashSet::class,
         LinkedHashSet::class -> LinkedHashSet()
 
