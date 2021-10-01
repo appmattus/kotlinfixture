@@ -29,11 +29,13 @@ internal class KTormResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any {
         if (hasKTorm && obj is KClass<*>) {
             if (obj.isSubclassOf(Entity::class) && obj != Entity::class) {
-                return Entity.create(obj).apply {
-                    obj.declaredMembers.filterIsInstance<KProperty<*>>().forEach {
-                        this[it.name] = context.resolve(it.returnType)
-                    }
+                val entity = Entity.create(obj)
+
+                obj.declaredMembers.filterIsInstance<KProperty<*>>().forEach {
+                    entity[it.name] = context.resolve(it.returnType)
                 }
+
+                return entity
             }
         }
 
