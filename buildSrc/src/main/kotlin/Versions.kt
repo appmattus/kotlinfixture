@@ -16,36 +16,36 @@
 
 object Versions {
 
-    const val kotlin = "1.4.30"
+    const val kotlin = "1.5.31"
 
-    const val androidGradlePlugin = "4.1.2"
+    const val androidGradlePlugin = "7.0.2"
     const val dependencyCheckGradlePlugin = "6.1.1"
-    const val detektGradlePlugin = "1.16.0-RC1"
-    const val dokkaPlugin = "1.4.20"
-    const val gradleMavenPublishPlugin = "0.14.2"
+    const val detektGradlePlugin = "1.18.1"
+    const val dokkaPlugin = "1.5.30"
+    const val gradleMavenPublishPlugin = "0.18.0"
     const val gradleVersionsPlugin = "0.36.0"
     const val markdownlintGradlePlugin = "0.6.0"
 
-    const val classgraph = "4.8.102"
-    const val coroutines = "1.4.2"
+    const val classgraph = "4.8.117"
+    const val coroutines = "1.5.2"
     const val generex = "1.0.2"
     const val javafaker = "1.0.2"
-    const val jodaTime = "2.10.10"
+    const val jodaTime = "2.10.12"
     const val multiplatformSettings = "0.7.2"
-    const val threeTen = "1.5.0"
+    const val threeTen = "1.5.1"
 
     const val junit4 = "4.13.2"
-    const val kotest = "4.4.1"
+    const val kotest = "4.6.3"
     const val mockitoKotlin = "2.2.0"
-    const val robolectric = "4.5.1"
+    const val robolectric = "4.6.1"
 
-    const val easyrandom = "4.3.0"
+    const val easyrandom = "5.0.0"
     const val flextrade = "0.2.0"
     const val marcellogalhardo = "0.0.2"
 
     object AndroidX {
-        const val testCore = "1.3.0"
-        const val testExtJunit = "1.1.2"
+        const val testCore = "1.4.0"
+        const val testExtJunit = "1.1.3"
         const val testRunner = "1.3.0"
     }
 }

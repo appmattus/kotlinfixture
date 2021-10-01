@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2021 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,9 @@
 package com.appmattus.kotlinfixture.kotest
 
 import com.appmattus.kotlinfixture.Fixture
-import io.kotest.matchers.shouldBe
 import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyContext
-import io.kotest.property.PropertyTesting
 import io.kotest.property.forAll
-import io.kotest.property.internal.proptest
 
 // 1 parameter
 
@@ -32,30 +29,24 @@ import io.kotest.property.internal.proptest
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
 suspend inline fun <reified A> Fixture.forAll(
-    crossinline function: suspend PropertyContext.(a: A) -> Boolean
-) = proptest(PropertyTesting.defaultIterationCount, kotestGen<A>(), PropTestConfig()) { a ->
-    function(a) shouldBe true
-}
+    noinline function: suspend PropertyContext.(a: A) -> Boolean
+) = forAll(kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
 suspend inline fun <reified A> Fixture.forAll(
     iterations: Int,
-    crossinline function: suspend PropertyContext.(a: A) -> Boolean
-) = proptest(iterations, kotestGen<A>(), PropTestConfig()) { a ->
-    function(a) shouldBe true
-}
+    noinline function: suspend PropertyContext.(a: A) -> Boolean
+) = forAll(iterations, kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
 suspend inline fun <reified A> Fixture.forAll(
     config: PropTestConfig,
-    crossinline function: suspend PropertyContext.(a: A) -> Boolean
-) = proptest(PropertyTesting.defaultIterationCount, kotestGen<A>(), config) { a ->
-    function(a) shouldBe true
-}
+    noinline function: suspend PropertyContext.(a: A) -> Boolean
+) = forAll(config, kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
@@ -63,10 +54,8 @@ suspend inline fun <reified A> Fixture.forAll(
 suspend inline fun <reified A> Fixture.forAll(
     iterations: Int,
     config: PropTestConfig,
-    crossinline function: suspend PropertyContext.(a: A) -> Boolean
-) = proptest(iterations, kotestGen<A>(), config) { a ->
-    function(a) shouldBe true
-}
+    noinline function: suspend PropertyContext.(a: A) -> Boolean
+) = forAll(iterations, config, kotestGen(), function)
 
 // 2 parameters
 
