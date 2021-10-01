@@ -46,6 +46,6 @@ object Versions {
     object AndroidX {
         const val testCore = "1.4.0"
         const val testExtJunit = "1.1.3"
-        const val testRunner = "1.3.0"
+        const val testRunner = "1.4.0"
     }
 }
