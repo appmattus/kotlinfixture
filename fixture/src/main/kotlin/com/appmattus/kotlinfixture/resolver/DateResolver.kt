@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
 
 internal class DateResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? {
+    override fun resolve(context: Context, obj: Any): Any {
         return when (obj) {
             Date::class -> context.generateJavaUtilDate()
             java.sql.Date::class -> java.sql.Date(context.generateJavaUtilDate().time)
@@ -39,8 +39,8 @@ internal class DateResolver : Resolver {
         return Date(
             @Suppress("MagicNumber")
             random.nextLong(
-                referenceTime - TimeUnit.DAYS.toMillis(365 * 10),
-                referenceTime + TimeUnit.DAYS.toMillis(365 * 10)
+                referenceTime - TimeUnit.DAYS.toMillis(3650),
+                referenceTime + TimeUnit.DAYS.toMillis(3650)
             )
         )
     }
