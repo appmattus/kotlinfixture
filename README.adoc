@@ -132,7 +132,7 @@ language translations, unit/integration tests are welcome.
 
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
-Copyright 2020 Appmattus Limited
+Copyright 2021 Appmattus Limited
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may
 not use this file except in compliance with the License. You may obtain

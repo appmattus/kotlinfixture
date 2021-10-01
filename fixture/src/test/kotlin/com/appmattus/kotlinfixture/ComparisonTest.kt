@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2021 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.junit.Assume.assumeTrue
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
+import org.ktorm.entity.Entity
 import java.net.URI
 import java.net.URL
 import java.text.DateFormat
@@ -529,7 +530,10 @@ class ComparisonTest {
                 arrayOf(typeOf<TestSealedClass>(), VALID, UNSUPPORTED, VALID, UNSUPPORTED),
 
                 // Abstract class
-                arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED)
+                arrayOf(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
+
+                // KTorm
+                arrayOf(typeOf<Entity<KTorm>>(), VALID, UNSUPPORTED, IGNORE, UNSUPPORTED)
             )
         }
     }
@@ -559,3 +563,7 @@ enum class TestEnumClass {
 }
 
 data class TestClass(val value: String)
+
+interface KTorm : Entity<KTorm> {
+    companion object : Entity.Factory<KTorm>()
+}

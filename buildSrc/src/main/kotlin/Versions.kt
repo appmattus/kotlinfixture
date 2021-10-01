@@ -33,6 +33,7 @@ object Versions {
     const val jodaTime = "2.10.12"
     const val multiplatformSettings = "0.7.2"
     const val threeTen = "1.5.1"
+    const val kTorm = "3.4.1"
 
     const val junit4 = "4.13.2"
     const val kotest = "4.6.3"
