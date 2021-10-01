@@ -55,8 +55,7 @@ internal interface PopulateInstance {
         callContext.obj.memberFunctions.filter {
             it.name.startsWith("set") && it.valueParameters.size == 1
         }.filterNot {
-            @Suppress("EXPERIMENTAL_API_USAGE_ERROR")
-            val name = it.name.removePrefix("set").decapitalize(Locale.getDefault())
+            val name = it.name.removePrefix("set").replaceFirstChar { it.lowercase(Locale.getDefault()) }
             callContext.constructorParameterNames.contains(name)
         }.forEach {
             val propertyResult = callContext.context.resolve(
