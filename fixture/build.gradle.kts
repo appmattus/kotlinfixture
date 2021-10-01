@@ -36,6 +36,9 @@ dependencies {
     compileOnly("org.threeten:threetenbp:${Versions.threeTen}")
     testImplementation("org.threeten:threetenbp:${Versions.threeTen}")
 
+    compileOnly("org.ktorm:ktorm-core:${Versions.kTorm}")
+    testImplementation("org.ktorm:ktorm-core:${Versions.kTorm}")
+
     compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
 
     testImplementation("junit:junit:${Versions.junit4}")

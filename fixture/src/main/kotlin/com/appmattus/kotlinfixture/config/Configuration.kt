@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2021 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import com.appmattus.kotlinfixture.resolver.IterableKTypeResolver
 import com.appmattus.kotlinfixture.resolver.JodaTimeResolver
 import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KNamedPropertyResolver
+import com.appmattus.kotlinfixture.resolver.KTormResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
 import com.appmattus.kotlinfixture.resolver.LocaleResolver
 import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
@@ -132,6 +133,7 @@ data class Configuration internal constructor(
             FormatResolver(),
             CurrencyResolver(),
             LocaleResolver(),
+            KTormResolver(),
 
             ObjectResolver(),
             SealedClassResolver(),
