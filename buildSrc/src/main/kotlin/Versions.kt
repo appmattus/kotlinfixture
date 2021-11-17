@@ -16,29 +16,29 @@
 
 object Versions {
 
-    const val kotlin = "1.5.31"
+    const val kotlin = "1.6.0"
 
-    const val androidGradlePlugin = "7.0.2"
+    const val androidGradlePlugin = "7.0.3"
     const val dependencyCheckGradlePlugin = "6.1.1"
     const val detektGradlePlugin = "1.18.1"
-    const val dokkaPlugin = "1.5.30"
+    const val dokkaPlugin = "1.5.31"
     const val gradleMavenPublishPlugin = "0.18.0"
     const val gradleVersionsPlugin = "0.36.0"
     const val markdownlintGradlePlugin = "0.6.0"
 
-    const val classgraph = "4.8.117"
+    const val classgraph = "4.8.133"
     const val coroutines = "1.5.2"
     const val generex = "1.0.2"
     const val javafaker = "1.0.2"
-    const val jodaTime = "2.10.12"
+    const val jodaTime = "2.10.13"
     const val multiplatformSettings = "0.7.2"
-    const val threeTen = "1.5.1"
+    const val threeTen = "1.5.2"
     const val kTorm = "3.4.1"
 
     const val junit4 = "4.13.2"
     const val kotest = "4.6.3"
     const val mockitoKotlin = "2.2.0"
-    const val robolectric = "4.6.1"
+    const val robolectric = "4.7"
 
     const val easyrandom = "5.0.0"
     const val flextrade = "0.2.0"
