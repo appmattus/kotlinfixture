@@ -16,37 +16,37 @@
 
 object Versions {
 
-    const val kotlin = "1.6.0"
+    const val kotlin = "1.8.21"
 
     const val androidGradlePlugin = "7.0.3"
     const val dependencyCheckGradlePlugin = "6.1.1"
     const val detektGradlePlugin = "1.18.1"
-    const val dokkaPlugin = "1.5.31"
+    const val dokkaPlugin = "1.8.10"
     const val gradleMavenPublishPlugin = "0.18.0"
     const val gradleVersionsPlugin = "0.36.0"
     const val markdownlintGradlePlugin = "0.6.0"
 
-    const val classgraph = "4.8.133"
-    const val coroutines = "1.5.2"
+    const val classgraph = "4.8.157"
+    const val coroutines = "1.6.4"
     const val generex = "1.0.2"
     const val javafaker = "1.0.2"
-    const val jodaTime = "2.10.13"
+    const val jodaTime = "2.12.5"
     const val multiplatformSettings = "0.7.2"
-    const val threeTen = "1.5.2"
-    const val kTorm = "3.4.1"
+    const val threeTen = "1.6.8"
+    const val kTorm = "3.6.0"
 
     const val junit4 = "4.13.2"
     const val kotest = "4.6.3"
     const val mockitoKotlin = "2.2.0"
-    const val robolectric = "4.7"
+    const val robolectric = "4.10"
 
     const val easyrandom = "5.0.0"
     const val flextrade = "0.2.0"
     const val marcellogalhardo = "0.0.2"
 
     object AndroidX {
-        const val testCore = "1.4.0"
-        const val testExtJunit = "1.1.3"
-        const val testRunner = "1.4.0"
+        const val testCore = "1.5.0"
+        const val testExtJunit = "1.1.5"
+        const val testRunner = "1.5.2"
     }
 }

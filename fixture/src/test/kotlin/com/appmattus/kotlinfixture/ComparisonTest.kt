@@ -336,8 +336,9 @@ class ComparisonTest {
         }
 
         companion object {
+            @OptIn(ExperimentalUnsignedTypes::class)
             @JvmStatic
-            @Suppress("EXPERIMENTAL_API_USAGE", "LongMethod")
+            @Suppress("LongMethod")
             @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
                 // Boolean
@@ -504,17 +505,17 @@ class ComparisonTest {
                 arrayOf(typeOf<DateFormat>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
                 arrayOf(typeOf<SimpleDateFormat>(), VALID, UNSUPPORTED, NOT_RANDOM, UNSUPPORTED),
                 arrayOf(typeOf<NumberFormat>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
-                arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM, VALID),
+                arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM, UNSUPPORTED),
 
                 arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
                 arrayOf(typeOf<Locale>(), VALID, UNSUPPORTED, VALID, VALID),
 
                 // Atomic class
-                arrayOf(typeOf<AtomicBoolean>(), VALID, VALID, VALID, VALID),
+                arrayOf(typeOf<AtomicBoolean>(), VALID, VALID, VALID, UNSUPPORTED),
                 arrayOf(typeOf<AtomicInteger>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<AtomicLong>(), VALID, VALID, VALID, VALID),
-                arrayOf(typeOf<AtomicIntegerArray>(), VALID, VALID, IGNORE, VALID),
-                arrayOf(typeOf<AtomicLongArray>(), VALID, VALID, IGNORE, VALID),
+                arrayOf(typeOf<AtomicIntegerArray>(), VALID, VALID, IGNORE, UNSUPPORTED),
+                arrayOf(typeOf<AtomicLongArray>(), VALID, VALID, IGNORE, UNSUPPORTED),
                 arrayOf(typeOf<AtomicReference<String>>(), VALID, UNSUPPORTED, VALID, UNSUPPORTED),
 
                 // Enum

@@ -28,6 +28,11 @@ kotlinDslPluginOptions {
     experimentalWarning.set(false)
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 tasks.withType(KotlinCompile::class.java).all {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
