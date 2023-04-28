@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -507,7 +507,7 @@ class ComparisonTest {
                 arrayOf(typeOf<NumberFormat>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
                 arrayOf(typeOf<DecimalFormat>(), VALID, UNSUPPORTED, NOT_RANDOM, UNSUPPORTED),
 
-                arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Currency>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
                 arrayOf(typeOf<Locale>(), VALID, UNSUPPORTED, VALID, VALID),
 
                 // Atomic class

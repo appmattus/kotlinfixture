@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven(url = "https://plugins.gradle.org/m2/")
     }
     dependencies {
@@ -31,7 +31,7 @@ buildscript {
 apply<VersionsPlugin>()
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
     val regex = "^[0-9,.v-]+(-r)?$".toRegex()
     return !stableKeyword && !regex.matches(version)
 }

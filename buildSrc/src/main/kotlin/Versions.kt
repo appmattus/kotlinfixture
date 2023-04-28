@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ object Versions {
 
     const val kotlin = "1.8.21"
 
-    const val androidGradlePlugin = "7.0.3"
+    const val androidGradlePlugin = "8.0.0"
     const val dependencyCheckGradlePlugin = "6.1.1"
     const val detektGradlePlugin = "1.18.1"
     const val dokkaPlugin = "1.8.10"

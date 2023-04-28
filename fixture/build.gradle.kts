@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,9 +53,9 @@ dependencies {
     testImplementation("org.jeasy:easy-random-core:${Versions.easyrandom}")
 }
 
-lintOptions {
-    isAbortOnError = true
-    isWarningsAsErrors = true
+lint {
+    abortOnError = true
+    warningsAsErrors = true
     htmlOutput = file("$buildDir/reports/lint-results.html")
     xmlOutput = file("$buildDir/reports/lint-results.xml")
 }
