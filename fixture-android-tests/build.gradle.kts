@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,11 +24,12 @@ plugins {
 apply(from = "$rootDir/gradle/scripts/jacoco-android.gradle.kts")
 
 android {
-    compileSdk = 30
+    namespace = "com.appmattus.fixture.android.tests"
+
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 19
-        targetSdk = 30
     }
 
     testOptions {
@@ -37,9 +38,9 @@ android {
         }
     }
 
-    lintOptions {
-        isAbortOnError = true
-        isWarningsAsErrors = true
+    lint {
+        abortOnError = true
+        warningsAsErrors = true
     }
 
     java {

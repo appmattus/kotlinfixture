@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,11 +21,12 @@ plugins {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
-kotlinDslPluginOptions {
-    experimentalWarning.set(false)
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType(KotlinCompile::class.java).all {

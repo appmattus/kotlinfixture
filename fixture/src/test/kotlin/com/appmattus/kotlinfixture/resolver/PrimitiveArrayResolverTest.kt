@@ -87,8 +87,8 @@ class PrimitiveArrayResolverTest {
         }
 
         companion object {
+            @OptIn(ExperimentalUnsignedTypes::class)
             @JvmStatic
-            @Suppress("EXPERIMENTAL_API_USAGE")
             @Parameterized.Parameters(name = "{0}")
             fun data() = arrayOf(
                 arrayOf(BooleanArray::class),

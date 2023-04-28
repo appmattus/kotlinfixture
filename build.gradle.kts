@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Appmattus Limited
+ * Copyright 2021-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
-import java.net.URL
+import java.net.URI
 
 plugins {
     kotlin("jvm") version Versions.kotlin apply false
@@ -42,7 +42,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven { setUrl("https://jitpack.io") }
     }
 
@@ -61,7 +60,7 @@ allprojects {
 
                     sourceLink {
                         localDirectory.set(rootDir)
-                        remoteUrl.set(URL("https://github.com/appmattus/kotlinfixture/blob/main"))
+                        remoteUrl.set(URI("https://github.com/appmattus/kotlinfixture/blob/main").toURL())
                         remoteLineSuffix.set("#L")
                     }
                 }
@@ -79,7 +78,14 @@ dependencies {
 }
 
 detekt {
-    input = files("$projectDir")
+    source = files(fileTree(projectDir).matching {
+        include("**/*.kt")
+        include("**/*.kts")
+        exclude("**/resources/**")
+        exclude("**/build/**")
+    }.files)
+
+    // input = files("$projectDir")
 
     buildUponDefaultConfig = true
 

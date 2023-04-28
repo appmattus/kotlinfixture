@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Appmattus Limited
+ * Copyright 2019-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,9 @@ val jacocoTask = tasks.register<JacocoReport>("jacocoTestReport") {
     dependsOn(tasks.named("testDebugUnitTest"))
 
     reports {
-        html.isEnabled = true
-        xml.isEnabled = true
-        csv.isEnabled = false
+        html.required.set(true)
+        xml.required.set(true)
+        csv.required.set(false)
     }
 
     val fileFilter = listOf(
@@ -50,4 +50,8 @@ val jacocoTask = tasks.register<JacocoReport>("jacocoTestReport") {
 
 tasks.named("check") {
     finalizedBy(jacocoTask)
+}
+
+configure<JacocoPluginExtension> {
+    toolVersion = "0.8.9"
 }

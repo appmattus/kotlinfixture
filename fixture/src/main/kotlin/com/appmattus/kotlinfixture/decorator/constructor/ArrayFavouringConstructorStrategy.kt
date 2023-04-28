@@ -27,7 +27,7 @@ import kotlin.reflect.full.starProjectedType
  */
 object ArrayFavouringConstructorStrategy : ConstructorStrategy {
 
-    @Suppress("EXPERIMENTAL_API_USAGE")
+    @OptIn(ExperimentalUnsignedTypes::class)
     private val arrayTypes = listOf(
         Array<Any>::class,
 
