@@ -35,6 +35,8 @@ interface ConstructorStrategy {
     val KClass<*>.filteredConstructors: Collection<KFunction<*>>
         get() = constructors.filterNot { it.isSerializationConstructor() }
 
-    private fun KFunction<Any>.isSerializationConstructor(): Boolean =
-        (parameters.lastOrNull()?.type?.classifier as? KClass<*>)?.qualifiedName == "kotlinx.serialization.internal.SerializationConstructorMarker"
+    private fun KFunction<Any>.isSerializationConstructor(): Boolean {
+        val lastParameterType = (parameters.lastOrNull()?.type?.classifier as? KClass<*>)?.qualifiedName
+        return lastParameterType == "kotlinx.serialization.internal.SerializationConstructorMarker"
+    }
 }
