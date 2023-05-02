@@ -21,6 +21,7 @@ plugins {
     id("com.android.lint")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.dokka")
+    id("org.jetbrains.kotlin.plugin.serialization") version Versions.kotlin
 }
 
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
@@ -45,6 +46,8 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serialization}")
 
     // Used for ComparisonTest
     @Suppress("GradleDependency")

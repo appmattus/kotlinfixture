@@ -49,4 +49,8 @@ object Versions {
         const val testExtJunit = "1.1.5"
         const val testRunner = "1.5.2"
     }
+
+    object KotlinX {
+        const val serialization = "1.5.0"
+    }
 }

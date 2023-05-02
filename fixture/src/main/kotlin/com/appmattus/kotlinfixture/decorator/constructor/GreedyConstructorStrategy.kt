@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2020-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,6 @@ import kotlin.reflect.KFunction
  */
 object GreedyConstructorStrategy : ConstructorStrategy {
     override fun constructors(context: Context, obj: KClass<*>): Collection<KFunction<*>> {
-        return obj.constructors.sortedByDescending { it.parameters.size }
+        return obj.filteredConstructors.sortedByDescending { it.parameters.size }
     }
 }

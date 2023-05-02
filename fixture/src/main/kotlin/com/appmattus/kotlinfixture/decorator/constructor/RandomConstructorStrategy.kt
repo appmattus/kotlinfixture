@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2020-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,6 @@ import kotlin.reflect.KFunction
  */
 object RandomConstructorStrategy : ConstructorStrategy {
     override fun constructors(context: Context, obj: KClass<*>): Collection<KFunction<*>> {
-        return obj.constructors.shuffled(context.random)
+        return obj.filteredConstructors.shuffled(context.random)
     }
 }
