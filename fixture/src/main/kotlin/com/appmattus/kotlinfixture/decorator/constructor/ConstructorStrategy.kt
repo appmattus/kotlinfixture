@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2020-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,4 +28,13 @@ interface ConstructorStrategy {
      * Returns [obj] constructors in the order to try when generating an instance.
      */
     fun constructors(context: Context, obj: KClass<*>): Collection<KFunction<*>>
+
+    /**
+     * Constructors of the class with Serializable constructors filtered out
+     */
+    val KClass<*>.filteredConstructors: Collection<KFunction<*>>
+        get() = constructors.filterNot { it.isSerializationConstructor() }
+
+    private fun KFunction<Any>.isSerializationConstructor(): Boolean =
+        (parameters.lastOrNull()?.type?.classifier as? KClass<*>)?.qualifiedName == "kotlinx.serialization.internal.SerializationConstructorMarker"
 }
