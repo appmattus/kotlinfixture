@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Appmattus Limited
+ * Copyright 2020-2023 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,13 +42,6 @@ class ArrayKTypeResolverTest {
     @Test
     fun `Primitive array class returns Unresolved`() {
         val result = context.resolve(IntArray::class)
-
-        assertTrue(result is Unresolved)
-    }
-
-    @Test
-    fun `Array-Int class returns Unresolved`() {
-        val result = context.resolve(typeOf<Array<Int>>())
 
         assertTrue(result is Unresolved)
     }

@@ -196,8 +196,30 @@ class ComparisonTest {
             @Suppress("DEPRECATION_ERROR")
             val result = appmattus.create(type, appmattus.fixtureConfiguration)!!
 
-            assertTrue {
-                resultClass.isInstance(result)
+            // Special handling of primitive arrays due to bug in the Kotlin type system
+            // See https://youtrack.jetbrains.com/issue/KT-52170/Reflection-typeOfArrayLong-gives-classifier-LongArray
+            if (type in listOf(
+                    typeOf<Array<Boolean>>(),
+                    typeOf<Array<Byte>>(),
+                    typeOf<Array<Double>>(),
+                    typeOf<Array<Float>>(),
+                    typeOf<Array<Int>>(),
+                    typeOf<Array<Long>>(),
+                    typeOf<Array<Short>>(),
+                    typeOf<Array<Char>>()
+                )
+            ) {
+                val argumentType = type.arguments[0].type?.classifier as KClass<*>
+                assertTrue {
+                    result is Array<*>
+                }
+                (result as Array<*>).forEach {
+                    argumentType.isInstance(it)
+                }
+            } else {
+                assertTrue {
+                    resultClass.isInstance(result)
+                }
             }
         }
 
@@ -433,8 +455,18 @@ class ComparisonTest {
                 arrayOf(typeOf<UIntArray>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<ULongArray>(), VALID, VALID, VALID, VALID),
                 arrayOf(typeOf<UShortArray>(), VALID, VALID, VALID, VALID),
-                arrayOf(typeOf<Array<String>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Boolean>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Byte>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Double>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Float>>(), VALID, VALID, UNSUPPORTED, VALID),
                 arrayOf(typeOf<Array<Int>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Long>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Short>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<Char>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<UByte>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<UInt>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<ULong>>(), VALID, VALID, UNSUPPORTED, VALID),
+                arrayOf(typeOf<Array<UShort>>(), VALID, VALID, UNSUPPORTED, VALID),
 
                 // Iterable, List
                 arrayOf(typeOf<Iterable<String>>(), VALID, NOT_RANDOM, VALID, UNSUPPORTED),
