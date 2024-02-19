@@ -28,12 +28,15 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("com.github.javafaker:javafaker:${Versions.javafaker}")
-    api("org.yaml:snakeyaml:android") {
-        version {
-            strictly("1.27")
-        }
+    api("com.github.javafaker:javafaker:${Versions.javafaker}") {
+        exclude("org.yaml", "snakeyaml")
     }
+    api("org.yaml:snakeyaml:2.2")
+//    api("org.yaml:snakeyaml:android") {
+//        version {
+//            strictly("1.27")
+//        }
+//    }
 
     testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
@@ -52,12 +55,12 @@ lint {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
 }
 
 tasks.named("check") {
