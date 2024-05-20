@@ -1,4 +1,4 @@
 == fixture module
 
 This module provides the main implementation of KotlinFixture, see the
-main link:../README.md[readme] for further details.
+main link:../README.adoc[readme] for further details.
