@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.8">
-      <module name="fixturekotlin.main" target="11" />
-      <module name="fixturekotlin.test" target="11" />
-      <module name="kotlinfixture.main" target="11" />
-      <module name="kotlinfixture.test" target="11" />
+    <bytecodeTargetLevel target="17">
+      <module name="fixturekotlin.main" target="17" />
+      <module name="fixturekotlin.test" target="17" />
+      <module name="kotlinfixture.main" target="17" />
+      <module name="kotlinfixture.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
