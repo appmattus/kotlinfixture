@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("com.android.lint")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.dokka")
     id("org.jetbrains.kotlin.plugin.serialization") version Versions.kotlin
@@ -40,8 +39,6 @@ dependencies {
     compileOnly("org.ktorm:ktorm-core:${Versions.kTorm}")
     testImplementation("org.ktorm:ktorm-core:${Versions.kTorm}")
 
-    compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
-
     testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
@@ -54,13 +51,6 @@ dependencies {
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:${Versions.marcellogalhardo}")
     testImplementation("com.flextrade.jfixture:kfixture:${Versions.flextrade}")
     testImplementation("org.jeasy:easy-random-core:${Versions.easyrandom}")
-}
-
-lint {
-    abortOnError = true
-    warningsAsErrors = true
-    htmlOutput = file("$buildDir/reports/lint-results.html")
-    xmlOutput = file("$buildDir/reports/lint-results.xml")
 }
 
 java {

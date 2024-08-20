@@ -30,9 +30,6 @@ buildscript {
     repositories {
         google()
     }
-    dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
-    }
 }
 
 apply(from = "$rootDir/gradle/scripts/dependencyUpdates.gradle.kts")

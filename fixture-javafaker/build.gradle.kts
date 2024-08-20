@@ -18,7 +18,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm")
-    id("com.android.lint")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.dokka")
 }
@@ -42,13 +41,6 @@ dependencies {
 
     testImplementation(kotlin("reflect"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
-}
-
-lint {
-    abortOnError = true
-    warningsAsErrors = true
-    htmlOutput = file("$buildDir/reports/lint-results.html")
-    xmlOutput = file("$buildDir/reports/lint-results.xml")
 }
 
 java {
