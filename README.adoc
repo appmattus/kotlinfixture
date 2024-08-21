@@ -11,14 +11,25 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 :link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
+:link-kotlinfixture: https://github.com/detomarco/kotlinfixture[KotlinFixture]
 
-https://search.maven.org/search?q=g:com.appmattus.fixture[image:https://img.shields.io/maven-central/v/com.appmattus.fixture/fixture[Maven Central]]
-https://github.com/appmattus/kotlinfixture/actions[image:https://github.com/appmattus/kotlinfixture/workflows/CI/badge.svg[CI status]]
-https://codecov.io/gh/appmattus/kotlinfixture[image:https://codecov.io/gh/appmattus/kotlinfixture/branch/main/graph/badge.svg[Coverage status]]
+https://search.maven.org/search?q=g:com.appmattus.fixture[image:https://img.shields.io/maven-central/v/com.detomarco.fixture/fixture[Maven Central]]
+https://github.com/detomarco/kotlinfixture/actions[image:https://github.com/detomarco/kotlinfixture/workflows/CI/badge.svg[CI status]]
+https://codecov.io/gh/detomarco/kotlinfixture[image:https://codecov.io/gh/detomarco/kotlinfixture/branch/main/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]
 
 A tool to generate well-defined, but essentially random, input following the
 idea of constrained non-determinism.
+
+== Difference with original project
+
+Since the original project {link-appmattus} is not maintained anymore, we decided to fork it and maintain it ourselves.
+
+The main goal of this fork is to keep the project up-to-date with the latest versions of Kotlin and other dependencies. We don't plan to add new features or change the existing ones, but we will accept PRs that do so.
+
+The differences between this fork and the original project are:
+
+1. `fixture-android-tests` module dropped. We'll consider to add it back if there is a demand for it.
 
 == Getting started
 
@@ -27,7 +38,7 @@ Include the following dependency in your `build.gradle.kts` file:
 [source,kotlin]
 ._build.gradle.kts_
 ----
-testImplementation("com.appmattus.fixture:fixture:<latest-version>")
+testImplementation("io.github.detomarco.kotlinfixture:fixture:<latest-version>")
 ----
 
 Simply create a fixture and invoke it with the type to be generated:
@@ -96,7 +107,7 @@ link:fixture/advanced-customisation.adoc[Advanced engine customisation] is also 
 
 == Kotest integration: property based testing
 
-The library provides {link-appmattus} powered property based testing for https://github.com/kotest/kotest/[Kotest].
+The library provides {link-kotlinfixture} powered property based testing for https://github.com/kotest/kotest/[Kotest].
 
 See link:fixture-kotest/README.adoc[Kotest integration] for more details.
 

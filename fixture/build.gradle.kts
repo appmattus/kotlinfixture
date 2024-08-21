@@ -1,5 +1,6 @@
 /*
  * Copyright 2021-2023 Appmattus Limited
+ *           2024 Detomarco Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,21 +16,21 @@
  */
 
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jreleaser.model.Active
 
 plugins {
     kotlin("jvm")
-    id("com.android.lint")
-    id("com.vanniktech.maven.publish")
     id("org.jetbrains.dokka")
     id("org.jetbrains.kotlin.plugin.serialization") version Versions.kotlin
+    id("maven-publish")
 }
 
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
-    api(kotlin("stdlib-jdk8"))
-    api("io.github.classgraph:classgraph:${Versions.classgraph}")
-    api(kotlin("reflect"))
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("io.github.classgraph:classgraph:${Versions.classgraph}")
+    implementation(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:${Versions.jodaTime}")
     testImplementation("joda-time:joda-time:${Versions.jodaTime}")
@@ -39,8 +40,6 @@ dependencies {
 
     compileOnly("org.ktorm:ktorm-core:${Versions.kTorm}")
     testImplementation("org.ktorm:ktorm-core:${Versions.kTorm}")
-
-    compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-29/android.jar"))
 
     testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
@@ -56,23 +55,64 @@ dependencies {
     testImplementation("org.jeasy:easy-random-core:${Versions.easyrandom}")
 }
 
-lint {
-    abortOnError = true
-    warningsAsErrors = true
-    htmlOutput = file("$buildDir/reports/lint-results.html")
-    xmlOutput = file("$buildDir/reports/lint-results.xml")
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+    withSourcesJar()
+    withJavadocJar()
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+tasks.jar {
+    enabled = true
+    // Remove `plain` postfix from jar file name
+    archiveClassifier.set("")
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("Maven") {
+            from(components["java"])
+            artifactId = "fixture"
+            description = "Fixtures for Kotlin providing generated values for unit testing"
+        }
+        withType<MavenPublication> {
+            pom {
+                packaging = "jar"
+                name = "kotlinfixture"
+                description = "Kotlin Fixture"
+                url = "https://github.com/detomarco/kotlinfixture"
+                inceptionYear = "2024"
+                licenses {
+                    license {
+                        name = "Apache-2.0"
+                        url = "https://spdx.org/licenses/Apache-2.0.html"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "detomarco"
+                        name = "Marco De Toma"
+                    }
+                }
+                scm {
+                    connection = "scm:git:https://github.com/detomarco/kotlinfixture.git"
+                    developerConnection = "scm:git:ssh://github.com/detomarco/kotlinfixture.git"
+                    url = "http://github.com/detomarco/kotlinfixture"
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
 }
 
 tasks.named("check") {
     finalizedBy(rootProject.tasks.named("detekt"))
-    finalizedBy(rootProject.tasks.named("markdownlint"))
 }

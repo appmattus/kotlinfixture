@@ -333,18 +333,18 @@ val fixture = kotlinFixture {
 ._Available strategies_
 [%collapsible]
 ====
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NeverNullStrategy.kt[NeverNullStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/nullability/NeverNullStrategy.kt[NeverNullStrategy]`::
 populate nullable types with a non-null value.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/AlwaysNullStrategy.kt[AlwaysNullStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/nullability/AlwaysNullStrategy.kt[AlwaysNullStrategy]`::
 populate nullable types with `null`.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/RandomlyNullStrategy.kt[RandomlyNullStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/nullability/RandomlyNullStrategy.kt[RandomlyNullStrategy]`::
 populate nullable types randomly with `null`.
 ====
 
 It is also possible to define and implement your own nullability strategy by
-implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/nullability/NullabilityStrategy.kt[NullabilityStrategy]`
+implementing `link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/nullability/NullabilityStrategy.kt[NullabilityStrategy]`
 and applying it as above.
 
 == Overriding the use of default values with `optionalStrategy`
@@ -371,18 +371,18 @@ val fixture = kotlinFixture {
 ._Available strategies_
 [%collapsible]
 ====
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/optional/AlwaysOptionalStrategy.kt[AlwaysOptionalStrategy]`::
 always use the properties default value.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/NeverOptionalStrategy.kt[NeverOptionalStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/optional/NeverOptionalStrategy.kt[NeverOptionalStrategy]`::
 never use the properties default value.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/RandomlyOptionalStrategy.kt[RandomlyOptionalStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/optional/RandomlyOptionalStrategy.kt[RandomlyOptionalStrategy]`::
 randomly use the properties default value.
 ====
 
 It is also possible to define and implement your own optional strategy by
-implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/optional/OptionalStrategy.kt[OptionalStrategy]`
+implementing `link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/optional/OptionalStrategy.kt[OptionalStrategy]`
 and applying it as above.
 
 == Changing how recursion behaves with `recursionStrategy`
@@ -403,25 +403,25 @@ val fixture = kotlinFixture {
 ._Available strategies_
 [%collapsible]
 ====
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/NullRecursionStrategy.kt[NullRecursionStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/recursion/NullRecursionStrategy.kt[NullRecursionStrategy]`::
 use `null` for circular references.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/ThrowingRecursionStrategy.kt[ThrowingRecursionStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/recursion/ThrowingRecursionStrategy.kt[ThrowingRecursionStrategy]`::
 throw an exception when finding circular references.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/UnresolvedRecursionStrategy.kt[UnresolvedRecursionStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/recursion/UnresolvedRecursionStrategy.kt[UnresolvedRecursionStrategy]`::
 use `Unresolved` for circular references, which may result in generation of a
 valid object as other scenarios will be tried
 ====
 
 It is also possible to define and implement your own recursion strategy by
-implementing `link:../fixture/src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionStrategy.kt[RecursionStrategy]` and applying it as above.
+implementing `link:../fixture/src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/recursion/RecursionStrategy.kt[RecursionStrategy]` and applying it as above.
 
 == Logging object generation with `loggingStrategy`
 
-A basic logger can be applied using the built-in `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
+A basic logger can be applied using the built-in `link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/logging/SysOutLoggingStrategy.kt[SysOutLoggingStrategy]`.
 It is also possible to define and implement your own logging strategy by
-implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingStrategy.kt[LoggingStrategy]`
+implementing `link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/logging/LoggingStrategy.kt[LoggingStrategy]`
 and applying it as below.
 
 [source,kotlin]
@@ -457,25 +457,25 @@ val fixture = kotlinFixture {
 ._Available strategies_
 [%collapsible]
 ====
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/constructor/RandomConstructorStrategy.kt[RandomConstructorStrategy]`::
 order constructors at random.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/constructor/ModestConstructorStrategy.kt[ModestConstructorStrategy]`::
 order constructors by the most modest constructor first. i.e. fewer
 parameters returned first.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/constructor/GreedyConstructorStrategy.kt[GreedyConstructorStrategy]`::
 order constructors by the most greedy constructor first. i.e. greater
 parameters returned first.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/constructor/ArrayFavouringConstructorStrategy.kt[ArrayFavouringConstructorStrategy]`::
 order constructors selecting those with the most parameters of
 `Array<*>` before any other.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`::
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/constructor/ListFavouringConstructorStrategy.kt[ListFavouringConstructorStrategy]`::
 order constructors selecting those with the most parameters of `List<*>`
 before any other.
 ====
 
 It is also possible to define and implement your own constructor
-strategy by implementing `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/constructor/ConstructorStrategy.kt[ConstructorStrategy]` and applying it as above.
+strategy by implementing `link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/constructor/ConstructorStrategy.kt[ConstructorStrategy]` and applying it as above.

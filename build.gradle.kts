@@ -16,22 +16,20 @@
 
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
+import org.jreleaser.model.Active
 import java.net.URI
 
 plugins {
     kotlin("jvm") version Versions.kotlin apply false
     id("io.gitlab.arturbosch.detekt") version Versions.detektGradlePlugin
-    id("com.appmattus.markdown") version Versions.markdownlintGradlePlugin
-    id("com.vanniktech.maven.publish") version Versions.gradleMavenPublishPlugin apply false
     id("org.jetbrains.dokka") version Versions.dokkaPlugin
+    id("org.jreleaser") version "1.13.1"
+    id("signing")
 }
 
 buildscript {
     repositories {
         google()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
     }
 }
 
@@ -40,13 +38,15 @@ apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
 
 allprojects {
     repositories {
-        google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
     }
 
-    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
-        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
+    group = "io.github.detomarco"
+//    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
+//        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
+
+    version = "0.0.2"
 
     plugins.withType<DokkaPlugin> {
         tasks.withType<DokkaTask>().configureEach {
@@ -54,23 +54,15 @@ allprojects {
                 configureEach {
                     skipDeprecated.set(true)
 
-                    if (name.startsWith("ios")) {
-                        displayName.set("ios")
-                    }
-
                     sourceLink {
                         localDirectory.set(rootDir)
-                        remoteUrl.set(URI("https://github.com/appmattus/kotlinfixture/blob/main").toURL())
+                        remoteUrl.set(URI("https://github.com/detomarco/kotlinfixture/blob/main").toURL())
                         remoteLineSuffix.set("#L")
                     }
                 }
             }
         }
     }
-}
-
-tasks.register<Delete>("clean") {
-    delete(rootProject.buildDir)
 }
 
 dependencies {
@@ -85,11 +77,34 @@ detekt {
         exclude("**/build/**")
     }.files)
 
-    // input = files("$projectDir")
-
     buildUponDefaultConfig = true
 
     autoCorrect = true
 
     config = files("detekt-config.yml")
+}
+
+jreleaser {
+    project {
+        license = "APACHE-2.0"
+        authors = listOf("Appmattus", "detomarco")
+        copyright = "2019-2023 Appmattus, 2024 detomarco"
+        description = "Fixtures for Kotlin providing generated values for unit testing"
+    }
+    signing {
+        active = Active.ALWAYS
+        armored = true
+    }
+
+    deploy {
+        maven {
+            mavenCentral {
+                create("sonatype") {
+                    active = Active.ALWAYS
+                    url = "https://central.sonatype.com/api/v1/publisher"
+                    stagingRepositories.add("fixture/build/staging-deploy")
+                }
+            }
+        }
+    }
 }

@@ -8,13 +8,13 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
-:link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
-:url-resolver: link:src/main/kotlin/com/appmattus/kotlinfixture/resolver/Resolver.kt
-:url-decorator: link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/Decorator.kt
+:link-kotlinfixture: https://github.com/detomarco/kotlinfixture[KotlinFixture]
+:url-resolver: link:src/main/kotlin/com/detomarco/kotlinfixture/resolver/Resolver.kt
+:url-decorator: link:src/main/kotlin/com/detomarco/kotlinfixture/decorator/Decorator.kt
 :link-decorator: {url-decorator}[Decorator]
 
 While the main link:configuration-options.adoc[configuration options] should
-handle the majority of ways to alter how {link-appmattus} generates fixtures,
+handle the majority of ways to alter how {link-kotlinfixture} generates fixtures,
 perhaps there is core functionality missing, or some other reason where you
 need finer grained control.
 
@@ -25,9 +25,9 @@ and creating link:https://github.com/appmattus/kotlinfixture/pulls[PRs].
 == Generators
 
 While `factory` and `property` generators have built-in helper functions
-you can also create your own by adding extension functions to `link:src/main/kotlin/com/appmattus/kotlinfixture/config/Generator.kt[Generator]`.
+you can also create your own by adding extension functions to `link:src/main/kotlin/io/github/detomarco/kotlinfixture/config/Generator.kt[Generator]`.
 
-`link:src/main/kotlin/com/appmattus/kotlinfixture/config/Generator.kt[Generator]`
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/config/Generator.kt[Generator]`
 provides `random` for you to use which can be seeded in your fixture
 definition.
 
@@ -51,9 +51,9 @@ fun Generator<Person>.person(child: Boolean): Person = Person(
 
 The core engine of {link-appmattus} is based on a chain of `{url-resolver}[Resolver]` instances
 which are queried in sequence. We ask each `{url-resolver}[Resolver]`
-if it handles the current input object, and it returns either a generated fixture or `link:src/main/kotlin/com/appmattus/kotlinfixture/Unresolved.kt[Unresolved.Unhandled]`.
+if it handles the current input object, and it returns either a generated fixture or `link:src/main/kotlin/io/github/detomarco/kotlinfixture/Unresolved.kt[Unresolved.Unhandled]`.
 
-NOTE: We use link:src/main/kotlin/com/appmattus/kotlinfixture/Unresolved.kt[Unresolved] as nulls are valid fixtures.
+NOTE: We use link:src/main/kotlin/io/github/detomarco/kotlinfixture/Unresolved.kt[Unresolved] as nulls are valid fixtures.
 
 The `{url-resolver}[Resolver]` interface requires the implementation of the `resolve` function:
 
@@ -73,8 +73,8 @@ When generating random content, use `context.random` to retain the ability to li
 
 On the other hand, a `{url-decorator}[Decorator]` allows you to intercept and
 modify the `{url-resolver}[Resolver]` chain and are currently being used for functionality from
-link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingDecorator.kt[logging]
-to link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/recursion/RecursionDecorator.kt[recursion].
+link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/logging/LoggingDecorator.kt[logging]
+to link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/recursion/RecursionDecorator.kt[recursion].
 
 == Strategies
 
@@ -82,5 +82,5 @@ To customise the behaviour of a `{url-resolver}[Resolver]` or
 `{url-decorator}[Decorator]`, a strategy can be provided in the configuration,
 and retrieved using `context.strategyOrDefault(…)`.
 
-For convenience, we add an extension function to the link:src/main/kotlin/com/appmattus/kotlinfixture/config/ConfigurationBuilder.kt[ConfigurationBuilder].
-For example, see link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/logging/LoggingConfiguration.kt[LoggingConfiguration].
+For convenience, we add an extension function to the link:src/main/kotlin/io/github/detomarco/kotlinfixture/config/ConfigurationBuilder.kt[ConfigurationBuilder].
+For example, see link:src/main/kotlin/io/github/detomarco/kotlinfixture/decorator/logging/LoggingConfiguration.kt[LoggingConfiguration].
