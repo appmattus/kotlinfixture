@@ -57,7 +57,7 @@ dependencies {
     testImplementation("junit:junit:${junit4Version}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:${mockitoKotlinVersion}")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializatioVersion}")
 

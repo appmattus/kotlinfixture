@@ -21,9 +21,9 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.resolver.Resolver
 import io.github.detomarco.kotlinfixture.typeOf
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.internal.verification.NoMoreInteractions
 import kotlin.reflect.KType
 import kotlin.test.Test

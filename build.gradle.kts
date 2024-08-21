@@ -33,6 +33,10 @@ plugins {
 val detektGradlePluginVersion: String by project
 
 allprojects {
+
+    apply {
+        plugin("com.adarshr.test-logger")
+    }
     repositories {
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
@@ -42,7 +46,7 @@ allprojects {
 //    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
 //        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
 
-    version = "0.0.2"
+    version = "0.0.3"
 
     plugins.withType<DokkaPlugin> {
         tasks.withType<DokkaTask>().configureEach {
@@ -58,6 +62,11 @@ allprojects {
                 }
             }
         }
+    }
+
+    testlogger {
+        theme = ThemeType.MOCHA
+        showSimpleNames = true
     }
 }
 
@@ -105,10 +114,7 @@ jreleaser {
     }
 }
 
-testlogger {
-    theme = ThemeType.MOCHA
-    showSimpleNames = true
-}
+
 
 dependencyCheck {
     failBuildOnCVSS = 0f
@@ -117,3 +123,5 @@ dependencyCheck {
     // Disable the .NET Assembly Analyzer. Requires an external tool, and this project likely won't ever have .NET DLLs.
     analyzers.assemblyEnabled = false
 }
+
+

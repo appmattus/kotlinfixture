@@ -21,9 +21,9 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.resolver.Resolver
 import io.github.detomarco.kotlinfixture.typeOf
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.internal.verification.Times
 import kotlin.reflect.KType
 import kotlin.test.Test
