@@ -21,38 +21,51 @@ import org.jreleaser.model.Active
 plugins {
     kotlin("jvm")
     id("org.jetbrains.dokka")
-    id("org.jetbrains.kotlin.plugin.serialization") version Versions.kotlin
+    id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
 }
 
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
+val classgraphVersion: String by project
+val jodaTimeVersion: String by project
+val threeTenVersion: String by project
+val kTormVersion: String by project
+val junit4Version: String by project
+val mockitoKotlinVersion: String by project
+val serializationVersion: String by project
+val marcellogalhardoVersion: String by project
+val flextradeVersion: String by project
+val easyrandomVersion: String by project
+val kotlinxSerializatioVersion: String by project
+
 dependencies {
+
     implementation(kotlin("stdlib-jdk8"))
-    implementation("io.github.classgraph:classgraph:${Versions.classgraph}")
+    implementation("io.github.classgraph:classgraph:${classgraphVersion}")
     implementation(kotlin("reflect"))
 
-    compileOnly("joda-time:joda-time:${Versions.jodaTime}")
-    testImplementation("joda-time:joda-time:${Versions.jodaTime}")
+    compileOnly("joda-time:joda-time:${jodaTimeVersion}")
+    testImplementation("joda-time:joda-time:${jodaTimeVersion}")
 
-    compileOnly("org.threeten:threetenbp:${Versions.threeTen}")
-    testImplementation("org.threeten:threetenbp:${Versions.threeTen}")
+    compileOnly("org.threeten:threetenbp:${threeTenVersion}")
+    testImplementation("org.threeten:threetenbp:${threeTenVersion}")
 
-    compileOnly("org.ktorm:ktorm-core:${Versions.kTorm}")
-    testImplementation("org.ktorm:ktorm-core:${Versions.kTorm}")
+    compileOnly("org.ktorm:ktorm-core:${kTormVersion}")
+    testImplementation("org.ktorm:ktorm-core:${kTormVersion}")
 
-    testImplementation("junit:junit:${Versions.junit4}")
+    testImplementation("junit:junit:${junit4Version}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}")
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serialization}")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializatioVersion}")
 
     // Used for ComparisonTest
     @Suppress("GradleDependency")
-    testImplementation("com.github.marcellogalhardo:kotlin-fixture:${Versions.marcellogalhardo}")
-    testImplementation("com.flextrade.jfixture:kfixture:${Versions.flextrade}")
-    testImplementation("org.jeasy:easy-random-core:${Versions.easyrandom}")
+    testImplementation("com.github.marcellogalhardo:kotlin-fixture:${marcellogalhardoVersion}")
+    testImplementation("com.flextrade.jfixture:kfixture:${flextradeVersion}")
+    testImplementation("org.jeasy:easy-random-core:${easyrandomVersion}")
 }
 
 java {

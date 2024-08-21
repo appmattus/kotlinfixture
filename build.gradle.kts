@@ -14,27 +14,23 @@
  * limitations under the License.
  */
 
+import com.adarshr.gradle.testlogger.theme.ThemeType
 import org.jetbrains.dokka.gradle.DokkaPlugin
 import org.jetbrains.dokka.gradle.DokkaTask
 import org.jreleaser.model.Active
 import java.net.URI
 
 plugins {
-    kotlin("jvm") version Versions.kotlin apply false
-    id("io.gitlab.arturbosch.detekt") version Versions.detektGradlePlugin
-    id("org.jetbrains.dokka") version Versions.dokkaPlugin
-    id("org.jreleaser") version "1.13.1"
+    kotlin("jvm") apply false
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jetbrains.dokka")
+    id("org.jreleaser")
     id("signing")
+    id("com.adarshr.test-logger")
+    id("org.owasp.dependencycheck")
 }
 
-buildscript {
-    repositories {
-        google()
-    }
-}
-
-apply(from = "$rootDir/gradle/scripts/dependencyUpdates.gradle.kts")
-apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+val detektGradlePluginVersion: String by project
 
 allprojects {
     repositories {
@@ -66,7 +62,7 @@ allprojects {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.detektGradlePlugin}")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektGradlePluginVersion")
 }
 
 detekt {
@@ -107,4 +103,17 @@ jreleaser {
             }
         }
     }
+}
+
+testlogger {
+    theme = ThemeType.MOCHA
+    showSimpleNames = true
+}
+
+dependencyCheck {
+    failBuildOnCVSS = 0f
+    suppressionFile = "project-suppression.xml"
+    autoUpdate = System.getProperty("dependencyCheckAutoUpdate")?.toString()?.trim()?.lowercase() != "false"
+    // Disable the .NET Assembly Analyzer. Requires an external tool, and this project likely won't ever have .NET DLLs.
+    analyzers.assemblyEnabled = false
 }

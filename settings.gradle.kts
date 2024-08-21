@@ -17,3 +17,25 @@
 include(
     "fixture"
 )
+
+pluginManagement {
+
+    val detektGradlePluginVersion: String by settings
+    val dokkaPluginVersion: String by settings
+    val testLoggerVersion: String by settings
+    val kotlinVersion: String by settings
+    val jreleaserVersion: String by settings
+    val dependencyCheckGradlePluginVersion: String by settings
+
+    plugins {
+        kotlin("jvm") version kotlinVersion
+        id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion
+        id("io.gitlab.arturbosch.detekt") version detektGradlePluginVersion
+        id("org.jetbrains.dokka") version dokkaPluginVersion
+        id("org.jreleaser") version jreleaserVersion
+        id("com.adarshr.test-logger") version testLoggerVersion
+        id("org.owasp.dependencycheck") version dependencyCheckGradlePluginVersion
+        id("signing")
+    }
+
+}
