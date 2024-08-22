@@ -51,6 +51,7 @@ jobs:
       run: ./gradlew test
 
   publish:
+    if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     needs: [test, dependency-check]
     steps:
@@ -75,4 +76,3 @@ jobs:
         JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
         JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: ./gradlew jreleaserFullRelease
-      if: startsWith(github.ref, 'refs/tags/')
