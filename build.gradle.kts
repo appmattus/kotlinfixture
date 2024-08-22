@@ -14,74 +14,48 @@
  * limitations under the License.
  */
 
-import org.jetbrains.dokka.gradle.DokkaPlugin
-import org.jetbrains.dokka.gradle.DokkaTask
+import com.adarshr.gradle.testlogger.theme.ThemeType
 import org.jreleaser.model.Active
-import java.net.URI
 
 plugins {
-    kotlin("jvm") version Versions.kotlin apply false
-    id("io.gitlab.arturbosch.detekt") version Versions.detektGradlePlugin
-    id("org.jetbrains.dokka") version Versions.dokkaPlugin
-    id("org.jreleaser") version "1.13.1"
+    kotlin("jvm") apply false
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jreleaser")
     id("signing")
+    id("com.adarshr.test-logger")
+    id("org.owasp.dependencycheck")
 }
 
-buildscript {
-    repositories {
-        google()
-    }
-}
-
-apply(from = "$rootDir/gradle/scripts/dependencyUpdates.gradle.kts")
-apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+val detektGradlePluginVersion: String by project
 
 allprojects {
+
+    apply {
+        plugin("com.adarshr.test-logger")
+    }
     repositories {
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
     }
 
-    group = "io.github.detomarco"
-//    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
-//        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
+    group = "io.github.detomarco.kotlinfixture"
+    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
+        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
 
-    version = "0.0.2"
-
-    plugins.withType<DokkaPlugin> {
-        tasks.withType<DokkaTask>().configureEach {
-            dokkaSourceSets {
-                configureEach {
-                    skipDeprecated.set(true)
-
-                    sourceLink {
-                        localDirectory.set(rootDir)
-                        remoteUrl.set(URI("https://github.com/detomarco/kotlinfixture/blob/main").toURL())
-                        remoteLineSuffix.set("#L")
-                    }
-                }
-            }
-        }
+    testlogger {
+        theme = ThemeType.MOCHA
+        showSimpleNames = true
     }
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.detektGradlePlugin}")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektGradlePluginVersion")
 }
 
 detekt {
-    source = files(fileTree(projectDir).matching {
-        include("**/*.kt")
-        include("**/*.kts")
-        exclude("**/resources/**")
-        exclude("**/build/**")
-    }.files)
-
     buildUponDefaultConfig = true
-
     autoCorrect = true
-
-    config = files("detekt-config.yml")
+    config.setFrom(files("detekt-config.yml"))
 }
 
 jreleaser {
@@ -99,12 +73,26 @@ jreleaser {
     deploy {
         maven {
             mavenCentral {
-                create("sonatype") {
+                register("sonatype") {
                     active = Active.ALWAYS
                     url = "https://central.sonatype.com/api/v1/publisher"
                     stagingRepositories.add("fixture/build/staging-deploy")
                 }
             }
+
         }
     }
 }
+
+
+
+dependencyCheck {
+    nvd.apiKey = System.getenv("NVD_API_KEY")
+    failBuildOnCVSS = 0f
+    suppressionFile = "cve-suppressions.xml"
+    autoUpdate = true
+    // Disable the .NET Assembly Analyzer. Requires an external tool, and this project likely won't ever have .NET DLLs.
+    analyzers.assemblyEnabled = false
+}
+
+

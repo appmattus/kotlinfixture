@@ -20,11 +20,11 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.resolver.Resolver
 import io.github.detomarco.kotlinfixture.typeOf
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

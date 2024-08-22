@@ -19,11 +19,11 @@ package io.github.detomarco.kotlinfixture.resolver
 import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.mockito.internal.verification.Times
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.any
 import kotlin.test.Test
 import kotlin.test.assertTrue
 

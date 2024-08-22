@@ -18,12 +18,12 @@ package io.github.detomarco.kotlinfixture.decorator.filter
 
 import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.resolver.Resolver
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import java.util.concurrent.locks.Lock
 import kotlin.test.Test
 import kotlin.test.assertEquals
