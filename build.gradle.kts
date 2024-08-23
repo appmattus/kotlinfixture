@@ -88,6 +88,11 @@ jreleaser {
                     active = Active.ALWAYS
                     url = "https://central.sonatype.com/api/v1/publisher"
                     stagingRepositories.add("fixture/build/staging-deploy")
+                    stagingRepositories.add("fixture-generex/build/staging-deploy")
+                    stagingRepositories.add("fixture-javafaker/build/staging-deploy")
+                    stagingRepositories.add("fixture-kotest/build/staging-deploy")
+                    retryDelay = 60
+                    maxRetries = 100
                 }
             }
 
