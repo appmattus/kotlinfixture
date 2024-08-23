@@ -14,22 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker.option
-
-import com.github.javafaker.Internet
+package io.github.detomarco.kotlinfixture.datafaker.option
 
 /**
- * Different types of [UserAgent]
+ * Different types of [IpAddress]
  */
-@Suppress("unused")
-enum class UserAgent(internal val userAgent: Internet.UserAgent?) {
-    Any(null),
-
-    Aol(Internet.UserAgent.AOL),
-    Chrome(Internet.UserAgent.CHROME),
-    Firefox(Internet.UserAgent.FIREFOX),
-    InternetExplorer(Internet.UserAgent.INTERNET_EXPLORER),
-    Netscape(Internet.UserAgent.NETSCAPE),
-    Opera(Internet.UserAgent.OPERA),
-    Safari(Internet.UserAgent.SAFARI)
+enum class IpAddress {
+    V4,
+    V6
 }

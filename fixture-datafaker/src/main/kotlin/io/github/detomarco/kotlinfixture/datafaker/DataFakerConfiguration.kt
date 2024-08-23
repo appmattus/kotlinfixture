@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker
+package io.github.detomarco.kotlinfixture.datafaker
 
-import com.github.javafaker.Faker
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
+import io.github.detomarco.kotlinfixture.datafaker.option.CreditCard
+import io.github.detomarco.kotlinfixture.datafaker.option.IpAddress
+import io.github.detomarco.kotlinfixture.datafaker.option.Password
+import io.github.detomarco.kotlinfixture.datafaker.option.Temperature
+import io.github.detomarco.kotlinfixture.datafaker.option.UserAgent
 import io.github.detomarco.kotlinfixture.decorator.fake.fakeStrategy
-import io.github.detomarco.kotlinfixture.javafaker.option.CreditCard
-import io.github.detomarco.kotlinfixture.javafaker.option.IpAddress
-import io.github.detomarco.kotlinfixture.javafaker.option.Password
-import io.github.detomarco.kotlinfixture.javafaker.option.Temperature
-import io.github.detomarco.kotlinfixture.javafaker.option.UserAgent
+import net.datafaker.Faker
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 /**
- * Configuration for the JavaFakerStrategy
+ * Configuration for the DataFakerStrategy
  */
-data class JavaFakerConfiguration internal constructor(
+data class DataFakerConfiguration internal constructor(
     internal val creditCard: CreditCard = CreditCard.Any,
     internal val ipAddress: IpAddress = IpAddress.V4,
     internal val isbn10Separator: Boolean = false,
@@ -41,14 +40,14 @@ data class JavaFakerConfiguration internal constructor(
     internal val password: Password = Password(),
     internal val temperature: Temperature = Temperature.Celsius,
     internal val userAgent: UserAgent = UserAgent.Any,
-    internal val properties: Map<String, Faker.(JavaFakerConfiguration) -> Any?> = defaultMap
+    internal val properties: Map<String, Faker.(DataFakerConfiguration) -> Any?> = defaultMap
 ) {
     private companion object {
 
         private fun entry(
             propertyName: String,
-            generator: Faker.(JavaFakerConfiguration) -> Any?
-        ): Pair<String, Faker.(JavaFakerConfiguration) -> Any?> = Pair(propertyName, generator)
+            generator: Faker.(DataFakerConfiguration) -> Any?
+        ): Pair<String, Faker.(DataFakerConfiguration) -> Any?> = Pair(propertyName, generator)
 
         private val defaultMap = mapOf(
             // Address
@@ -115,25 +114,17 @@ data class JavaFakerConfiguration internal constructor(
             entry("currencyCode") { country().currencyCode() },
             entry("flag") { country().flag() },
 
-            // Crypto
-            entry("md5") { crypto().md5() },
-            entry("sha1") { crypto().sha1() },
-            entry("sha256") { crypto().sha256() },
-            entry("sha512") { crypto().sha512() },
-
             // Currency
-            entry("currencyName") { currency().name() },
+            entry("currencyName") {
+                money().currency()
+            },
 
             // DateAndTime
-            entry("birthday") { date().birthday() },
-            entry("dateOfBirth") { date().birthday() },
-            entry("dob") { date().birthday() },
+            entry("birthday") { timeAndDate().birthday() },
+            entry("dateOfBirth") { timeAndDate().birthday() },
+            entry("dob") { timeAndDate().birthday() },
             entry("age") {
-                val birthday = date().birthday().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate()
-
-                ChronoUnit.YEARS.between(birthday, LocalDate.now())
+                ChronoUnit.YEARS.between(timeAndDate().birthday(), LocalDate.now())
             },
 
             // Demographic
@@ -180,8 +171,7 @@ data class JavaFakerConfiguration internal constructor(
             entry("password") {
                 internet().password(
                     it.password.minimumLength,
-                    // Work around for https://github.com/DiUS/java-faker/issues/498
-                    it.password.maximumLength + 1,
+                    it.password.maximumLength,
                     it.password.includeUppercase,
                     it.password.includeSpecial,
                     it.password.includeDigit
@@ -190,7 +180,7 @@ data class JavaFakerConfiguration internal constructor(
             entry("slug") { internet().slug() },
             entry("userAgent") {
                 when (it.userAgent) {
-                    UserAgent.Any -> internet().userAgentAny()
+                    UserAgent.Any -> internet().userAgent()
                     else -> internet().userAgent(it.userAgent.userAgent)
                 }
             },
@@ -203,7 +193,6 @@ data class JavaFakerConfiguration internal constructor(
             entry("nameWithMiddle") { name().nameWithMiddle() },
             entry("prefix") { name().prefix() },
             entry("suffix") { name().suffix() },
-            entry("username") { name().username() },
 
             // Phone Number
             entry("cellPhone") { phoneNumber().cellPhone() },
@@ -228,13 +217,13 @@ data class JavaFakerConfiguration internal constructor(
 }
 
 /**
- * Fake object generation with `javaFakerStrategy`
+ * Fake object generation with `dataFakerStrategy`
  *
  * The faker intercepts the generation of named properties so their values can be replaced with fake data generated by
  * the [Java Faker](https://github.com/DiUS/java-faker) library
  */
-fun ConfigurationBuilder.javaFakerStrategy(configuration: JavaFakerConfigurationBuilder.() -> Unit = {}) {
+fun ConfigurationBuilder.dataFakerStrategy(configuration: DataFakerConfigurationBuilder.() -> Unit = {}) {
     fakeStrategy(
-        (fakeStrategy as? JavaFakerStrategy)?.new(configuration) ?: JavaFakerStrategy().new(configuration)
+        (fakeStrategy as? DataFakerStrategy)?.new(configuration) ?: DataFakerStrategy().new(configuration)
     )
 }

@@ -14,70 +14,70 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker
+package io.github.detomarco.kotlinfixture.datafaker
 
-import com.github.javafaker.Faker
-import io.github.detomarco.kotlinfixture.javafaker.option.IpAddress
-import io.github.detomarco.kotlinfixture.javafaker.option.Temperature
-import io.github.detomarco.kotlinfixture.javafaker.option.UserAgent
+import io.github.detomarco.kotlinfixture.datafaker.option.IpAddress
+import io.github.detomarco.kotlinfixture.datafaker.option.Temperature
+import io.github.detomarco.kotlinfixture.datafaker.option.UserAgent
 import io.github.detomarco.kotlinfixture.toUnmodifiableMap
+import net.datafaker.Faker
 import java.util.Locale
 
 /**
- * Builder of [JavaFakerConfiguration].
+ * Builder of [DataFakerConfiguration].
  */
-class JavaFakerConfigurationBuilder internal constructor(javaFakerConfiguration: JavaFakerConfiguration) {
+class DataFakerConfigurationBuilder internal constructor(dataFakerConfiguration: DataFakerConfiguration) {
 
     /**
      * Generate `creditCard` properties in the style of the selected credit card company. See [CreditCard] for options.
      * Default: A credit card number from any company.
      */
-    var creditCard = javaFakerConfiguration.creditCard
+    var creditCard = dataFakerConfiguration.creditCard
 
     /**
      * Generate `ipAddress` properties using [IpAddress.V4] or [IpAddress.V6] style.
      * Default: [IpAddress.V4]
      */
-    var ipAddress = javaFakerConfiguration.ipAddress
+    var ipAddress = dataFakerConfiguration.ipAddress
 
     /**
      * Generate `isbn10` properties with or without separators.
      * Default: false - without separators.
      */
-    var isbn10Separator = javaFakerConfiguration.isbn10Separator
+    var isbn10Separator = dataFakerConfiguration.isbn10Separator
 
     /**
      * Generate `isbn13` properties with or without separators.
      * Default: false - without separators.
      */
-    var isbn13Separator = javaFakerConfiguration.isbn13Separator
+    var isbn13Separator = dataFakerConfiguration.isbn13Separator
 
     /**
      * The [Locale] used to generate fake data.
      * Default: [Locale.ENGLISH]
      */
-    var locale = javaFakerConfiguration.locale
+    var locale = dataFakerConfiguration.locale
 
     /**
      * Generate `password` properties using digits, uppercase, special characters or a combination, and a minimum and
      * maximum length.
      * Default: digits, uppercase and special characters between 8 and 16 characters in length.
      */
-    var password = javaFakerConfiguration.password
+    var password = dataFakerConfiguration.password
 
     /**
      * Generate `temperature` properties using [Temperature.Celsius] or [Temperature.Fahrenheit].
      * Default: [Temperature.Celsius]
      */
-    var temperature = javaFakerConfiguration.temperature
+    var temperature = dataFakerConfiguration.temperature
 
     /**
      * Generate `userAgent` properties in the style of the selected browser. See [UserAgent] for options.
      * Default: [UserAgent.Any], simulating any browser.
      */
-    var userAgent = javaFakerConfiguration.userAgent
+    var userAgent = dataFakerConfiguration.userAgent
 
-    private val properties = javaFakerConfiguration.properties.toMutableMap()
+    private val properties = dataFakerConfiguration.properties.toMutableMap()
 
     /**
      * Remove the [Java Faker](https://github.com/DiUS/java-faker) generator for [propertyName].
@@ -89,11 +89,11 @@ class JavaFakerConfigurationBuilder internal constructor(javaFakerConfiguration:
     /**
      * Map a [Java Faker](https://github.com/DiUS/java-faker) generator to a [propertyName].
      */
-    fun putProperty(propertyName: String, fakeGenerator: Faker.(JavaFakerConfiguration) -> Any?) {
+    fun putProperty(propertyName: String, fakeGenerator: Faker.(DataFakerConfiguration) -> Any?) {
         properties[propertyName] = fakeGenerator
     }
 
-    internal fun build() = JavaFakerConfiguration(
+    internal fun build() = DataFakerConfiguration(
         creditCard = creditCard,
         ipAddress = ipAddress,
         isbn10Separator = isbn10Separator,

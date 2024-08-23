@@ -11,25 +11,25 @@ endif::[]
 ._build.gradle.kts_
 ----
 // Add for Java Faker integration
-testImplementation("io.github.detomarco.kotlinfixture:fixture-javafaker:<latest-version>")
+testImplementation("io.github.detomarco.kotlinfixture:fixture-datafaker:<latest-version>")
 ----
 
 The http://dius.github.io/java-faker/[Java Faker] library generates
 fake data, useful if you need to generate objects with pretty data.
 
-Including the `fixture-javafaker` dependency in your project adds a
-`javaFakerStrategy` which uses
+Including the `fixture-datafaker` dependency in your project adds a
+`dataFakerStrategy` which uses
 http://dius.github.io/java-faker/[Java Faker] to populate named
 properties such as `name`, `city` and `phoneNumber`. A full list of
 supported properties and how they map to
 http://dius.github.io/java-faker/[Java Faker] can be found in
-`link:src/main/kotlin/io/github/detomarco/kotlinfixture/javafaker/JavaFakerConfiguration.kt[JavaFakerConfiguration]`.
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/datafaker/DataFakerConfiguration.kt[DataFakerConfiguration]`.
 
 [source,kotlin]
 ----
 
 val fixture = kotlinFixture {
-    javaFakerStrategy()
+    dataFakerStrategy()
 }
 
 data class Person(val name: String, val age: Long)
@@ -37,6 +37,6 @@ data class Person(val name: String, val age: Long)
 println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
 ----
 
-Additionally, the `javaFakerStrategy` function allows you to override
+Additionally, the `dataFakerStrategy` function allows you to override
 faker settings such as `locale`. The available options can be found in
-`link:src/main/kotlin/io/github/detomarco/kotlinfixture/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder]`.
+`link:src/main/kotlin/io/github/detomarco/kotlinfixture/datafaker/DataFakerConfigurationBuilder.kt[DataFakerConfigurationBuilder]`.

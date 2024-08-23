@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture
+package io.github.detomarco.kotlinfixture.datafaker.option
 
-import kotlin.test.fail
-
-fun assertIsRandom(block: () -> Any?) {
-    val initial = block()
-
-    repeat(1000) {
-        if (initial != block()) return
-    }
-
-    fail("Value always equal to $initial")
-}
+/**
+ * Configuration for password generation
+ */
+data class Password(
+    val minimumLength: Int = 8,
+    val maximumLength: Int = 16,
+    val includeUppercase: Boolean = true,
+    val includeSpecial: Boolean = true,
+    val includeDigit: Boolean = true
+)

@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker.option
+package io.github.detomarco.kotlinfixture.datafaker.option
+
+import net.datafaker.providers.base.Internet
 
 /**
- * Configuration for password generation
+ * Different types of [UserAgent]
  */
-data class Password(
-    val minimumLength: Int = 8,
-    val maximumLength: Int = 16,
-    val includeUppercase: Boolean = true,
-    val includeSpecial: Boolean = true,
-    val includeDigit: Boolean = true
-)
+@Suppress("unused")
+enum class UserAgent(internal val userAgent: Internet.UserAgent?) {
+    Any(null),
+
+    Aol(Internet.UserAgent.AOL),
+    Chrome(Internet.UserAgent.CHROME),
+    Firefox(Internet.UserAgent.FIREFOX),
+    InternetExplorer(Internet.UserAgent.INTERNET_EXPLORER),
+    Netscape(Internet.UserAgent.NETSCAPE),
+    Opera(Internet.UserAgent.OPERA),
+    Safari(Internet.UserAgent.SAFARI)
+}

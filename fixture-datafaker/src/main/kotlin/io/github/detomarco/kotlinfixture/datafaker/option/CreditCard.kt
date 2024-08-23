@@ -14,38 +14,38 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker.option
+package io.github.detomarco.kotlinfixture.datafaker.option
 
-import com.github.javafaker.CreditCardType
+import net.datafaker.providers.base.Finance
 
 /**
  * Different types of [CreditCard]
  */
 @Suppress("unused")
-enum class CreditCard(internal val creditCardType: CreditCardType?) {
+enum class CreditCard(internal val creditCardType: Finance.CreditCardType?) {
     Any(null),
 
-    AmericanExpress(CreditCardType.AMERICAN_EXPRESS),
+    AmericanExpress(Finance.CreditCardType.AMERICAN_EXPRESS),
 
     @Suppress("SpellCheckingInspection")
-    Dankort(CreditCardType.DANKORT),
+    Dankort(Finance.CreditCardType.DANKORT),
 
-    DinersClub(CreditCardType.DINERS_CLUB),
+    DinersClub(Finance.CreditCardType.DINERS_CLUB),
 
-    Discover(CreditCardType.DISCOVER),
+    Discover(Finance.CreditCardType.DISCOVER),
 
     @Suppress("SpellCheckingInspection")
-    Forbrugsforeningen(CreditCardType.FORBRUGSFORENINGEN),
+    Forbrugsforeningen(Finance.CreditCardType.FORBRUGSFORENINGEN),
 
-    JCB(CreditCardType.JCB),
+    JCB(Finance.CreditCardType.JCB),
 
-    Laser(CreditCardType.LASER),
+    Laser(Finance.CreditCardType.LASER),
 
-    Mastercard(CreditCardType.MASTERCARD),
+    Mastercard(Finance.CreditCardType.MASTERCARD),
 
-    Solo(CreditCardType.SOLO),
+    Solo(Finance.CreditCardType.SOLO),
 
-    Switch(CreditCardType.SWITCH),
+    Switch(Finance.CreditCardType.SWITCH),
 
-    Visa(CreditCardType.VISA)
+    Visa(Finance.CreditCardType.VISA)
 }

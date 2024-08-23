@@ -24,7 +24,7 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  * A faker intercepts the generation of named properties so their values can be replaced with fake data, useful if you
  * need to generate objects with pretty data.
  *
- * See the `fixture-javafaker` module.
+ * See the `fixture-datafaker` module.
  */
 fun ConfigurationBuilder.fakeStrategy(strategy: FakeStrategy) {
     strategies[FakeStrategy::class] = strategy

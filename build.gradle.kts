@@ -15,6 +15,7 @@
  */
 
 import com.adarshr.gradle.testlogger.theme.ThemeType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jreleaser.model.Active
 
 plugins {
@@ -42,7 +43,7 @@ allprojects {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektGradlePluginVersion")
     }
     group = "io.github.detomarco.kotlinfixture"
-    version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
+    version = (System.getenv("LIB_VERSION") ?: System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
         ?.replaceFirst("refs/tags/", "") ?: "unspecified"
 
     testlogger {
@@ -59,6 +60,10 @@ allprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    }
 }
 
 dependencies {
@@ -70,8 +75,8 @@ dependencies {
 jreleaser {
     project {
         license = "APACHE-2.0"
-        authors = listOf("Appmattus", "detomarco")
-        copyright = "2019-2023 Appmattus, 2024 detomarco"
+        authors = listOf("Appmattus Limited", "detomarco")
+        copyright = "2019-2023 Appmattus Limited, 2024 detomarco"
         description = "Fixtures for Kotlin providing generated values for unit testing"
     }
     signing {
@@ -87,7 +92,7 @@ jreleaser {
                     url = "https://central.sonatype.com/api/v1/publisher"
                     stagingRepositories.add("fixture/build/staging-deploy")
                     stagingRepositories.add("fixture-generex/build/staging-deploy")
-                    stagingRepositories.add("fixture-javafaker/build/staging-deploy")
+                    stagingRepositories.add("fixture-datafaker/build/staging-deploy")
                     stagingRepositories.add("fixture-kotest/build/staging-deploy")
                     retryDelay = 60
                     maxRetries = 100

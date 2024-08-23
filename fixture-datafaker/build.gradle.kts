@@ -22,22 +22,22 @@ plugins {
     id("maven-publish")
 }
 
-val javaFakerVersion: String by project
+val dataFakerVersion: String by project
 val mockitoKotlinVersion: String by project
 val kotlinxVersion: String by project
 val junitVersion: String by project
+val kotestVersion: String by project
 
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("com.github.javafaker:javafaker:$javaFakerVersion")
+    api("net.datafaker:datafaker:$dataFakerVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation(kotlin("test-junit5"))
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
 
-    testImplementation(kotlin("reflect"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxVersion")
 }
 
 
@@ -58,14 +58,14 @@ publishing {
     publications {
         create<MavenPublication>("Maven") {
             from(components["java"])
-            artifactId = "fixture-javafaker"
+            artifactId = "fixture-datafaker"
             description = "kotlinfixture module to generate values with a closer match to real data using"
         }
         withType<MavenPublication> {
             pom {
                 packaging = "jar"
-                name = "kotlinfixture-javafaker"
-                description = "Kotlin Fixture - JavaFaker"
+                name = "kotlinfixture-datafaker"
+                description = "Kotlin Fixture - DataFaker"
                 url = "https://github.com/detomarco/kotlinfixture"
                 inceptionYear = "2024"
                 licenses {
@@ -97,12 +97,4 @@ publishing {
             url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
         }
     }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
-}
-
-tasks.named("check") {
-    finalizedBy(rootProject.tasks.named("detekt"))
 }

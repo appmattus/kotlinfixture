@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker.option
+package io.github.detomarco.kotlinfixture.datafaker.option
 
 /**
- * Different types of [IpAddress]
+ * Different types of [Temperature]
  */
-enum class IpAddress {
-    V4,
-    V6
+enum class Temperature {
+    Celsius,
+    Fahrenheit
 }

@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker
+package io.github.detomarco.kotlinfixture.datafaker
 
-import com.github.javafaker.Faker
 import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.decorator.fake.FakeStrategy
+import net.datafaker.Faker
 import kotlin.random.asJavaRandom
 
-internal class JavaFakerStrategy(
-    private val fakerConfiguration: JavaFakerConfiguration = JavaFakerConfigurationBuilder(
-        JavaFakerConfiguration()
+internal class DataFakerStrategy(
+    private val fakerConfiguration: DataFakerConfiguration = DataFakerConfigurationBuilder(
+        DataFakerConfiguration()
     ).build()
 ) : FakeStrategy {
 
@@ -33,9 +33,9 @@ internal class JavaFakerStrategy(
         return func(Faker(fakerConfiguration.locale, context.random.asJavaRandom()), fakerConfiguration)
     }
 
-    fun new(configuration: JavaFakerConfigurationBuilder.() -> Unit = {}) =
-        JavaFakerStrategy(
-            JavaFakerConfigurationBuilder(
+    fun new(configuration: DataFakerConfigurationBuilder.() -> Unit = {}) =
+        DataFakerStrategy(
+            DataFakerConfigurationBuilder(
                 fakerConfiguration
             ).apply(configuration).build()
         )

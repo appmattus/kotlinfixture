@@ -30,6 +30,7 @@ The main goal of this fork is to keep the project up-to-date with the latest ver
 The differences between this fork and the original project are:
 
 1. `fixture-android-tests` module dropped. We'll consider to add it back if there is a demand for it.
+2. `fixture-javafaker` module replaced by `fixture-datafaker`
 
 == Getting started
 
@@ -115,7 +116,7 @@ See link:fixture-kotest/README.adoc[Kotest integration] for more details.
 
 Generate values with a closer match to real data using http://dius.github.io/java-faker/[Java Faker].
 
-See link:fixture-javafaker/README.adoc[Java Faker integration] for more details.
+See link:fixture-datafaker/README.adoc[Java Faker integration] for more details.
 
 == Generex integration: regex to random string
 

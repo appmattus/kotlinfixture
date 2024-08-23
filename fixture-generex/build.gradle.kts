@@ -96,11 +96,3 @@ publishing {
         }
     }
 }
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
-}
-
-tasks.named("check") {
-    finalizedBy(rootProject.tasks.named("detekt"))
-}

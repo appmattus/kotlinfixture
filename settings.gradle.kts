@@ -17,7 +17,7 @@
 include(
     "fixture",
     "fixture-generex",
-    "fixture-javafaker",
+    "fixture-datafaker",
     "fixture-kotest",
 )
 

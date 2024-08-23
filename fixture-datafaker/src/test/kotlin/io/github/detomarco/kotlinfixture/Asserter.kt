@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 
-package io.github.detomarco.kotlinfixture.javafaker.option
+package io.github.detomarco.kotlinfixture
 
-/**
- * Different types of [Temperature]
- */
-enum class Temperature {
-    Celsius,
-    Fahrenheit
+import org.junit.jupiter.api.Assertions.fail
+
+fun assertIsRandom(block: () -> Any?) {
+    val initial = block()
+
+    repeat(1000) {
+        if (initial != block()) return
+    }
+
+    fail<String>("Value always equal to $initial")
 }
