@@ -27,7 +27,6 @@ internal class FactoryResolver : Resolver {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
-
         if (obj is KType) {
             context.configuration.factories[obj]?.let {
                 return with(DefaultGenerator(context)) { it() }

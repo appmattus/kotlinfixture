@@ -21,9 +21,9 @@ import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.util.IdentityHashMap
 import java.util.NavigableMap
 import java.util.SortedMap
@@ -39,10 +39,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class MapKTypeResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         val context = TestContext(
             Configuration(),
             CompositeResolver(MapKTypeResolver(), StringResolver(), KTypeResolver())
@@ -97,69 +97,61 @@ class MapKTypeResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
-
-        private val context = TestContext(
-            Configuration(),
-            CompositeResolver(
-                MapKTypeResolver(),
-                StringResolver(),
-                PrimitiveResolver(),
-                KTypeResolver(),
-                KFunctionResolver(),
-                ClassResolver()
-            )
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(
+            MapKTypeResolver(),
+            StringResolver(),
+            PrimitiveResolver(),
+            KTypeResolver(),
+            KFunctionResolver(),
+            ClassResolver()
         )
+    )
 
-        @Parameterized.Parameter(0)
-        lateinit var type: KType
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `creates instance`(type: KType, resultClass: KClass<*>) {
+        val result = context.resolve(type)
 
-        @Parameterized.Parameter(1)
-        lateinit var resultClass: KClass<*>
-
-        @Test
-        fun `creates instance`() {
-            val result = context.resolve(type)
-
-            assertTrue {
-                resultClass.isInstance(result)
-            }
+        assertTrue {
+            resultClass.isInstance(result)
         }
+    }
 
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                (context.resolve(type) as MutableMap<*, *>)
-            }
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(type: KType) {
+        assertIsRandom {
+            (context.resolve(type) as MutableMap<*, *>)
         }
+    }
 
-        @Test
-        fun `Uses seeded random`() {
-            val value1 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()
-            val value2 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Uses seeded random`(type: KType) {
+        val value1 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()
+        val value2 = (context.seedRandom().resolve(type) as MutableMap<*, *>).toMap()
 
-            assertEquals(value1, value2)
-        }
+        assertEquals(value1, value2)
+    }
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{1}")
-            fun data() = arrayOf(
-                arrayOf(typeOf<Map<String, String>>(), Map::class),
-                arrayOf(typeOf<SortedMap<String, String>>(), SortedMap::class),
-                arrayOf(typeOf<NavigableMap<String, String>>(), NavigableMap::class),
-                arrayOf(typeOf<ConcurrentMap<String, String>>(), ConcurrentMap::class),
-                arrayOf(typeOf<ConcurrentNavigableMap<String, String>>(), ConcurrentNavigableMap::class),
-                arrayOf(typeOf<java.util.AbstractMap<String, String>>(), java.util.AbstractMap::class),
-                arrayOf(typeOf<HashMap<String, String>>(), HashMap::class),
-                arrayOf(typeOf<LinkedHashMap<String, String>>(), LinkedHashMap::class),
-                arrayOf(typeOf<IdentityHashMap<String, String>>(), IdentityHashMap::class),
-                arrayOf(typeOf<WeakHashMap<String, String>>(), WeakHashMap::class),
-                arrayOf(typeOf<TreeMap<String, String>>(), TreeMap::class),
-                arrayOf(typeOf<ConcurrentHashMap<String, String>>(), ConcurrentHashMap::class),
-                arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), ConcurrentSkipListMap::class)
-            )
-        }
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(typeOf<Map<String, String>>(), Map::class),
+            arrayOf(typeOf<SortedMap<String, String>>(), SortedMap::class),
+            arrayOf(typeOf<NavigableMap<String, String>>(), NavigableMap::class),
+            arrayOf(typeOf<ConcurrentMap<String, String>>(), ConcurrentMap::class),
+            arrayOf(typeOf<ConcurrentNavigableMap<String, String>>(), ConcurrentNavigableMap::class),
+            arrayOf(typeOf<java.util.AbstractMap<String, String>>(), java.util.AbstractMap::class),
+            arrayOf(typeOf<HashMap<String, String>>(), HashMap::class),
+            arrayOf(typeOf<LinkedHashMap<String, String>>(), LinkedHashMap::class),
+            arrayOf(typeOf<IdentityHashMap<String, String>>(), IdentityHashMap::class),
+            arrayOf(typeOf<WeakHashMap<String, String>>(), WeakHashMap::class),
+            arrayOf(typeOf<TreeMap<String, String>>(), TreeMap::class),
+            arrayOf(typeOf<ConcurrentHashMap<String, String>>(), ConcurrentHashMap::class),
+            arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), ConcurrentSkipListMap::class)
+        )
     }
 }

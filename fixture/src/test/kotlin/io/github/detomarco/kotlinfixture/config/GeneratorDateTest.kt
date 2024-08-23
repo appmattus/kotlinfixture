@@ -42,7 +42,6 @@ class GeneratorDateTest {
 
     @Test
     fun `After specification gives date in the future`() {
-
         val fixture = kotlinFixture {
             factory<Date> { after(now) }
         }
@@ -58,7 +57,6 @@ class GeneratorDateTest {
 
     @Test
     fun `After specification is random`() {
-
         val fixture = kotlinFixture {
             factory<Date> { after(now) }
         }
@@ -101,7 +99,6 @@ class GeneratorDateTest {
 
     @Test
     fun `Before specification is random`() {
-
         val fixture = kotlinFixture {
             factory<Date> { before(now) }
         }

@@ -33,7 +33,8 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
 /**
- * Builder of [Configuration]. When `configuration` is supplied it is built upon allowing the various options to be set and overridden.
+ * Builder of [Configuration]. When `configuration` is supplied it is built upon allowing
+ * the various options to be set and overridden.
  */
 @ConfigurationDsl
 @Suppress("TooManyFunctions")
@@ -57,7 +58,8 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     /**
      * Providing a seeded random
      *
-     * By default, we generate unique values between runs using a default Random class. If you want repeatability you can specify a seeded Random instance.
+     * By default, we generate unique values between runs using a default Random class.
+     * If you want repeatability you can specify a seeded Random instance.
      *
      * ```
      * val fixture = kotlinFixture {
@@ -67,7 +69,8 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * val alwaysTheSame = fixture<Int>()
      * ```
      *
-     * NOTE: While you can specify `random` at object creation, this will make the result static i.e. `fixture<Int> { random = Random(seed = 5) }` will always return the same value.
+     * NOTE: While you can specify `random` at object creation, this will make the result static
+     * i.e. `fixture<Int> { random = Random(seed = 5) }` will always return the same value.
      */
     var random: Random = configuration.random
 
@@ -110,7 +113,8 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     /**
      * Customising list and map length of class properties with property
      *
-     * Used to override list and map length of constructor parameters or mutable properties when generating instances of generic classes.
+     * Used to override list and map length of constructor parameters
+     * or mutable properties when generating instances of generic classes.
      *
      * #### Kotlin class example
      *
@@ -175,7 +179,8 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     /**
      * Customising list and map length of class properties with property
      *
-     * Used to override list and map length of constructor parameters or mutable properties when generating instances of generic classes.
+     * Used to override list and map length of constructor parameters
+     * or mutable properties when generating instances of generic classes.
      *
      * #### Kotlin class example
      *
@@ -252,7 +257,8 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     /**
      * Customising list and map length of class properties with property
      *
-     * Used to override list and map length of constructor parameters or mutable properties when generating instances of generic classes.
+     * Used to override list and map length of constructor parameters
+     *      or mutable properties when generating instances of generic classes.
      *
      * #### Kotlin class example
      *
@@ -319,7 +325,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     @Deprecated(
         "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or " +
-                "property<Property>(Class::function) { … } functions",
+            "property<Property>(Class::function) { … } functions",
         level = DeprecationLevel.ERROR
     )
     fun repeatCount(clazz: KClass<*>, propertyName: String, generator: () -> Int) {
@@ -404,8 +410,11 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * }
      * ```
      *
-     * WARNING: The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
-     * - `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
+     * WARNING: The sequence can hang indefinitely if the applied operators prevent the generation of new values.
+     * For example:
+     * - `distinct` will hang if we exhaust all available values.
+     *              A good practice is to add a `take(count)` which will throw a `NoSuchElementException`
+     *              if we try to generate more values.
      * - `filter` that can never be fulfilled e.g. `filter { false }`
      */
     @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
@@ -653,7 +662,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     @Deprecated(
         "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or " +
-                "property<Property>(Class::function) { … } functions",
+            "property<Property>(Class::function) { … } functions",
         level = DeprecationLevel.ERROR
     )
     fun property(clazz: KClass<*>, propertyName: String, generator: GeneratorFun) {

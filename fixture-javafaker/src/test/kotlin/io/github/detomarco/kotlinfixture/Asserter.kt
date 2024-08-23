@@ -1,5 +1,5 @@
 /*
- * Copyright 2019-2023 Appmattus Limited
+ * Copyright 2020 Appmattus Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,16 @@
  * limitations under the License.
  */
 
-apply<JacocoPlugin>()
+package io.github.detomarco.kotlinfixture
 
-val jacocoTask = tasks.withType<JacocoReport> {
-    reports {
-        html.required.set(true)
-        xml.required.set(true)
-        csv.required.set(false)
+import kotlin.test.fail
+
+fun assertIsRandom(block: () -> Any?) {
+    val initial = block()
+
+    repeat(1000) {
+        if (initial != block()) return
     }
-}
 
-tasks.named("check") {
-    finalizedBy(jacocoTask)
-}
-
-configure<JacocoPluginExtension> {
-    toolVersion = "0.8.9"
+    fail("Value always equal to $initial")
 }

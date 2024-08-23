@@ -32,9 +32,9 @@ import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
 import org.joda.time.Period
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.util.Date
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -42,10 +42,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class JodaTimeResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         private val now = Date()
 
         private val context = TestContext(
@@ -76,58 +76,52 @@ class JodaTimeResolverTest {
             repeat(100) {
                 val dateTime = kotlinFixture {
                     factory<DateTimeZone> { DateTimeZone.forID("Europe/London") }
-                } <DateTime>()
+                }
 
-                assertEquals("Europe/London", dateTime.zone.id)
+                assertEquals("Europe/London", dateTime<DateTime>().zone.id)
             }
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
+    @Suppress("UNCHECKED_CAST")
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(JodaTimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
+    )
 
-        @Parameterized.Parameter(0)
-        lateinit var type: KClass<*>
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Class returns date`(type: KClass<*>) {
+        repeat(100) {
+            val result = context.resolve(type)
 
-        @Suppress("UNCHECKED_CAST")
-        private val context = TestContext(
-            Configuration(),
-            CompositeResolver(JodaTimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
+            assertNotNull(result)
+            assertTrue {
+                type.isInstance(result)
+            }
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(type: KClass<*>) {
+        assertIsRandom {
+            context.resolve(type)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(Instant::class),
+            arrayOf(LocalDate::class),
+            arrayOf(LocalTime::class),
+            arrayOf(LocalDateTime::class),
+            arrayOf(DateTime::class),
+            arrayOf(Period::class),
+            arrayOf(Duration::class),
+            arrayOf(DateTimeZone::class),
+            arrayOf(Interval::class)
         )
-
-        @Test
-        fun `Class returns date`() {
-            repeat(100) {
-                val result = context.resolve(type)
-
-                assertNotNull(result)
-                assertTrue {
-                    type.isInstance(result)
-                }
-            }
-        }
-
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                context.resolve(type)
-            }
-        }
-
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{0}")
-            fun data() = arrayOf(
-                arrayOf(Instant::class),
-                arrayOf(LocalDate::class),
-                arrayOf(LocalTime::class),
-                arrayOf(LocalDateTime::class),
-                arrayOf(DateTime::class),
-                arrayOf(Period::class),
-                arrayOf(Duration::class),
-                arrayOf(DateTimeZone::class),
-                arrayOf(Interval::class)
-            )
-        }
     }
 }

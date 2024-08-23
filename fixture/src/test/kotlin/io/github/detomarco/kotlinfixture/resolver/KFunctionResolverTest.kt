@@ -108,7 +108,6 @@ class KFunctionResolverTest {
 
     @Test
     fun `Constructor with unresolvable parameter fails`() {
-
         val constructor = UnresolvableClass::class.primaryConstructor!!
         val request = KFunctionRequest(UnresolvableClass::class, constructor)
 

@@ -20,9 +20,9 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.util.Date
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -30,10 +30,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class DateResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
 
         private val context = TestContext(Configuration(), DateResolver())
 
@@ -45,46 +45,41 @@ class DateResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
+    private val context = TestContext(Configuration(), DateResolver())
 
-        @Parameterized.Parameter(0)
-        lateinit var type: KClass<*>
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Class returns date`(type: KClass<*>) {
+        val result = context.resolve(type)
 
-        private val context = TestContext(Configuration(), DateResolver())
+        assertNotNull(result)
+        assertEquals(type, result::class)
+    }
 
-        @Test
-        fun `Class returns date`() {
-            val result = context.resolve(type)
-
-            assertNotNull(result)
-            assertEquals(type, result::class)
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(type: KClass<*>) {
+        assertIsRandom {
+            context.resolve(type)
         }
+    }
 
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                context.resolve(type)
-            }
-        }
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Uses seeded random`(type: KClass<*>) {
+        val value1 = context.seedRandom().resolve(type) as Date
+        val value2 = context.seedRandom().resolve(type) as Date
 
-        @Test
-        fun `Uses seeded random`() {
-            val value1 = context.seedRandom().resolve(type) as Date
-            val value2 = context.seedRandom().resolve(type) as Date
+        assertEquals(value1.time, value2.time)
+    }
 
-            assertEquals(value1.time, value2.time)
-        }
-
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{0}")
-            fun data() = arrayOf(
-                arrayOf(Date::class),
-                arrayOf(java.sql.Date::class),
-                arrayOf(java.sql.Time::class),
-                arrayOf(java.sql.Timestamp::class)
-            )
-        }
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(Date::class),
+            arrayOf(java.sql.Date::class),
+            arrayOf(java.sql.Time::class),
+            arrayOf(java.sql.Timestamp::class)
+        )
     }
 }

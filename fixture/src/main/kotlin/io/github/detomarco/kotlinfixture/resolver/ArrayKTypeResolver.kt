@@ -28,7 +28,8 @@ internal class ArrayKTypeResolver : Resolver {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any {
-        // Special handling for primitive arrays as Kotlin's KType seems to see Array<Int> as IntArray etc when looking at the classifier
+        // Special handling for primitive arrays as Kotlin's KType seems
+        //      to see Array<Int> as IntArray etc when looking at the classifier
         // See https://youtrack.jetbrains.com/issue/KT-52170/Reflection-typeOfArrayLong-gives-classifier-LongArray
         when (obj) {
             BooleanArrayKType -> return (context.resolve(BooleanArray::class) as BooleanArray).toTypedArray()

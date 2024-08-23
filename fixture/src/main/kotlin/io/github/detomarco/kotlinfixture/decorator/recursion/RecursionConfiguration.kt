@@ -21,7 +21,12 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 /**
  * Changing how recursion behaves with `recursionStrategy`
  *
- * When the library detects recursion, by default, it will throw an [UnsupportedOperationException] with the details of the circular reference. This strategy can be changed to instead return `null` for the reference, however, if this results in an invalid object an exception will still be thrown as the object requested couldn’t be resolved.
+ * When the library detects recursion, by default, it will throw an [UnsupportedOperationException]
+ * with the details of the circular reference.
+ *
+ * This strategy can be changed to instead return `null` for the reference,
+ * however, if this results in an invalid object an exception will still be thrown
+ * as the object requested couldn’t be resolved.
  *
  * ```
  * val fixture = kotlinFixture {
@@ -33,9 +38,11 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  *
  * - [NullRecursionStrategy] use null for circular references.
  * - [ThrowingRecursionStrategy] throw an exception when finding circular references.
- * - [UnresolvedRecursionStrategy] use Unresolved for circular references, which may result in generation of a valid object as other scenarios will be tried
+ * - [UnresolvedRecursionStrategy] use Unresolved for circular references,
+ *      which may result in generation of a valid object as other scenarios will be tried
  *
- * It is also possible to define and implement your own recursion strategy by implementing [RecursionStrategy] and applying it as above.
+ * It is also possible to define and implement your own recursion strategy
+ *  by implementing [RecursionStrategy] and applying it as above.
  */
 @Suppress("unused")
 fun ConfigurationBuilder.recursionStrategy(strategy: RecursionStrategy) {

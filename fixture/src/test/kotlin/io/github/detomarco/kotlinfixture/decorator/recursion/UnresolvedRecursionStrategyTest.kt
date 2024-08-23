@@ -35,7 +35,7 @@ class UnresolvedRecursionStrategyTest {
     fun `return Unresolved when stack is populated`() {
         assertTrue {
             UnresolvedRecursionStrategy.handleRecursion(typeOf<String>(), listOf(typeOf<Int>(), typeOf<Float>())) is
-                    Unresolved
+            Unresolved
         }
     }
 }

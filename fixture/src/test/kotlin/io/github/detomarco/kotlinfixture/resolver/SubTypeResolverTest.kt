@@ -20,10 +20,10 @@ import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import org.mockito.internal.verification.Times
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.any
 import kotlin.test.Test
 import kotlin.test.assertTrue
 

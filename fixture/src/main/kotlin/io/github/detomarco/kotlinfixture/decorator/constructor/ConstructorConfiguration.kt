@@ -21,7 +21,8 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 /**
  * Choosing the constructor to generate an object with `constructorStrategy`
  *
- * By default, when the library generates an instance of a class it picks a constructor at random. This can be overridden by setting a constructor strategy.
+ * By default, when the library generates an instance of a class it picks a constructor at random.
+ * This can be overridden by setting a constructor strategy.
  *
  * ```
  * val fixture = kotlinFixture {
@@ -32,12 +33,17 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  * #### Available strategies
  *
  * - [RandomConstructorStrategy] order constructors at random.
- * - [ModestConstructorStrategy] order constructors by the most modest constructor first. i.e. fewer parameters returned first.
- * - [GreedyConstructorStrategy] order constructors by the most greedy constructor first. i.e. greater parameters returned first.
- * - [ArrayFavouringConstructorStrategy] order constructors selecting those with the most parameters of `Array<*>` before any other.
- * - [ListFavouringConstructorStrategy] order constructors selecting those with the most parameters of `List<*>` before any other.
+ * - [ModestConstructorStrategy] order constructors by the most modest constructor first.
+ *          i.e. fewer parameters returned first.
+ * - [GreedyConstructorStrategy] order constructors by the most greedy constructor first.
+ *          i.e. greater parameters returned first.
+ * - [ArrayFavouringConstructorStrategy] order constructors selecting those with the most parameters of
+ *          `Array<*>` before any other.
+ * - [ListFavouringConstructorStrategy] order constructors selecting those with the most parameters of
+ *          `List<*>` before any other.
  *
- * It is also possible to define and implement your own constructor strategy by implementing [ConstructorStrategy] and applying it as above.
+ * It is also possible to define and implement your own constructor strategy by implementing [ConstructorStrategy]
+ *      and applying it as above.
  */
 @Suppress("unused")
 fun ConfigurationBuilder.constructorStrategy(strategy: ConstructorStrategy) {

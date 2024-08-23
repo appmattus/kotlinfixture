@@ -21,9 +21,9 @@ import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.util.AbstractQueue
 import java.util.AbstractSequentialList
 import java.util.ArrayDeque
@@ -57,10 +57,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class IterableKTypeResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         val context = TestContext(
             Configuration(),
             CompositeResolver(IterableKTypeResolver(), StringResolver(), KTypeResolver())
@@ -108,107 +108,99 @@ class IterableKTypeResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
-
-        private val context = TestContext(
-            Configuration(),
-            CompositeResolver(
-                IterableKTypeResolver(),
-                StringResolver(),
-                PrimitiveResolver(),
-                KTypeResolver(),
-                KFunctionResolver(),
-                KNamedPropertyResolver(),
-                ClassResolver()
-            )
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(
+            IterableKTypeResolver(),
+            StringResolver(),
+            PrimitiveResolver(),
+            KTypeResolver(),
+            KFunctionResolver(),
+            KNamedPropertyResolver(),
+            ClassResolver()
         )
+    )
 
-        @Parameterized.Parameter(0)
-        lateinit var type: KType
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `creates instance`(type: KType, resultClass: KClass<*>) {
+        val result = context.resolve(type)
 
-        @Parameterized.Parameter(1)
-        lateinit var resultClass: KClass<*>
-
-        @Test
-        fun `creates instance`() {
-            val result = context.resolve(type)
-
-            assertTrue {
-                resultClass.isInstance(result)
-            }
+        assertTrue {
+            resultClass.isInstance(result)
         }
+    }
 
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                (context.resolve(type) as MutableCollection<*>).toList()
-            }
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(type: KType) {
+        assertIsRandom {
+            (context.resolve(type) as MutableCollection<*>).toList()
         }
+    }
 
-        @Test
-        fun `Uses seeded random`() {
-            val value1 = (context.seedRandom().resolve(type) as MutableCollection<*>).toList()
-            val value2 = (context.seedRandom().resolve(type) as MutableCollection<*>).toList()
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Uses seeded random`(type: KType) {
+        val value1 = (context.seedRandom().resolve(type) as MutableCollection<*>).toList()
+        val value2 = (context.seedRandom().resolve(type) as MutableCollection<*>).toList()
 
-            assertEquals(value1, value2)
-        }
+        assertEquals(value1, value2)
+    }
 
-        data class TestDelayed(val value: Int) : Delayed {
-            override fun compareTo(other: Delayed?): Int = 0
+    data class TestDelayed(val value: Int) : Delayed {
+        override fun compareTo(other: Delayed?): Int = 0
 
-            override fun getDelay(unit: TimeUnit): Long = 0
-        }
+        override fun getDelay(unit: TimeUnit): Long = 0
+    }
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{1}")
-            fun data() = arrayOf(
-                arrayOf(typeOf<Iterable<String>>(), Iterable::class),
-                arrayOf(typeOf<Collection<String>>(), Collection::class),
-                arrayOf(typeOf<java.util.AbstractCollection<String>>(), java.util.AbstractCollection::class),
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(typeOf<Iterable<String>>(), Iterable::class),
+            arrayOf(typeOf<Collection<String>>(), Collection::class),
+            arrayOf(typeOf<java.util.AbstractCollection<String>>(), java.util.AbstractCollection::class),
 
-                // Set
-                arrayOf(typeOf<Set<String>>(), Set::class),
-                arrayOf(typeOf<java.util.AbstractSet<String>>(), java.util.AbstractSet::class),
-                arrayOf(typeOf<SortedSet<String>>(), SortedSet::class),
-                arrayOf(typeOf<NavigableSet<String>>(), NavigableSet::class),
-                arrayOf(typeOf<HashSet<String>>(), HashSet::class),
-                arrayOf(typeOf<LinkedHashSet<String>>(), LinkedHashSet::class),
-                arrayOf(typeOf<TreeSet<String>>(), TreeSet::class),
-                arrayOf(typeOf<ConcurrentSkipListSet<String>>(), ConcurrentSkipListSet::class),
-                arrayOf(typeOf<CopyOnWriteArraySet<String>>(), CopyOnWriteArraySet::class),
+            // Set
+            arrayOf(typeOf<Set<String>>(), Set::class),
+            arrayOf(typeOf<java.util.AbstractSet<String>>(), java.util.AbstractSet::class),
+            arrayOf(typeOf<SortedSet<String>>(), SortedSet::class),
+            arrayOf(typeOf<NavigableSet<String>>(), NavigableSet::class),
+            arrayOf(typeOf<HashSet<String>>(), HashSet::class),
+            arrayOf(typeOf<LinkedHashSet<String>>(), LinkedHashSet::class),
+            arrayOf(typeOf<TreeSet<String>>(), TreeSet::class),
+            arrayOf(typeOf<ConcurrentSkipListSet<String>>(), ConcurrentSkipListSet::class),
+            arrayOf(typeOf<CopyOnWriteArraySet<String>>(), CopyOnWriteArraySet::class),
 
-                // List
-                arrayOf(typeOf<List<String>>(), List::class),
-                arrayOf(typeOf<MutableList<String>>(), MutableList::class),
-                arrayOf(typeOf<java.util.AbstractList<String>>(), java.util.AbstractList::class),
-                arrayOf(typeOf<ArrayList<String>>(), ArrayList::class),
-                arrayOf(typeOf<AbstractSequentialList<String>>(), AbstractSequentialList::class),
-                arrayOf(typeOf<LinkedList<String>>(), LinkedList::class),
-                arrayOf(typeOf<Vector<String>>(), Vector::class),
-                arrayOf(typeOf<Stack<String>>(), Stack::class),
-                arrayOf(typeOf<CopyOnWriteArrayList<String>>(), CopyOnWriteArrayList::class),
+            // List
+            arrayOf(typeOf<List<String>>(), List::class),
+            arrayOf(typeOf<MutableList<String>>(), MutableList::class),
+            arrayOf(typeOf<java.util.AbstractList<String>>(), java.util.AbstractList::class),
+            arrayOf(typeOf<ArrayList<String>>(), ArrayList::class),
+            arrayOf(typeOf<AbstractSequentialList<String>>(), AbstractSequentialList::class),
+            arrayOf(typeOf<LinkedList<String>>(), LinkedList::class),
+            arrayOf(typeOf<Vector<String>>(), Vector::class),
+            arrayOf(typeOf<Stack<String>>(), Stack::class),
+            arrayOf(typeOf<CopyOnWriteArrayList<String>>(), CopyOnWriteArrayList::class),
 
-                // Queue
-                arrayOf(typeOf<Queue<String>>(), Queue::class),
-                arrayOf(typeOf<AbstractQueue<String>>(), AbstractQueue::class),
-                arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class),
-                arrayOf(typeOf<PriorityQueue<String>>(), PriorityQueue::class),
-                arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class),
-                arrayOf(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class),
-                arrayOf(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class),
-                arrayOf(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class),
-                arrayOf(typeOf<BlockingQueue<String>>(), BlockingQueue::class),
-                arrayOf(typeOf<TransferQueue<String>>(), TransferQueue::class),
+            // Queue
+            arrayOf(typeOf<Queue<String>>(), Queue::class),
+            arrayOf(typeOf<AbstractQueue<String>>(), AbstractQueue::class),
+            arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class),
+            arrayOf(typeOf<PriorityQueue<String>>(), PriorityQueue::class),
+            arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class),
+            arrayOf(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class),
+            arrayOf(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class),
+            arrayOf(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class),
+            arrayOf(typeOf<BlockingQueue<String>>(), BlockingQueue::class),
+            arrayOf(typeOf<TransferQueue<String>>(), TransferQueue::class),
 
-                // Deque
-                arrayOf(typeOf<Deque<String>>(), Deque::class),
-                arrayOf(typeOf<ArrayDeque<String>>(), ArrayDeque::class),
-                arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), ConcurrentLinkedDeque::class),
-                arrayOf(typeOf<BlockingDeque<String>>(), BlockingDeque::class),
-                arrayOf(typeOf<LinkedBlockingDeque<String>>(), LinkedBlockingDeque::class)
-            )
-        }
+            // Deque
+            arrayOf(typeOf<Deque<String>>(), Deque::class),
+            arrayOf(typeOf<ArrayDeque<String>>(), ArrayDeque::class),
+            arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), ConcurrentLinkedDeque::class),
+            arrayOf(typeOf<BlockingDeque<String>>(), BlockingDeque::class),
+            arrayOf(typeOf<LinkedBlockingDeque<String>>(), LinkedBlockingDeque::class)
+        )
     }
 }

@@ -33,7 +33,8 @@ class SerializableTest {
     fun `serializing and deserializing ErrorCodeDto should result in original instance`() {
         repeat(100) {
             val original = fixture<ErrorCodeDto>()
-            // Serializable generates synthetic constructors with nullable parameters so we ensure we verify we don't use that constructor
+            // Serializable generates synthetic constructors with nullable parameters,
+            //  so we ensure we verify we don't use that constructor
             @Suppress("SENSELESS_COMPARISON")
             runCatching {
                 require(original.errorCode != null)

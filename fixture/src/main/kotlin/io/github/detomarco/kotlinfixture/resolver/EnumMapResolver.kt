@@ -30,7 +30,7 @@ internal class EnumMapResolver : Resolver {
     private val enumMapConstructor by lazy {
         EnumMap::class.constructors.first {
             it.parameters.size == 1 &&
-                    it.parameters[0].type.classifier?.starProjectedType == Class::class.starProjectedType
+                it.parameters[0].type.classifier?.starProjectedType == Class::class.starProjectedType
         }
     }
 

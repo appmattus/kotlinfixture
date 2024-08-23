@@ -1,0 +1,40 @@
+== Generex integration
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[source,kotlin]
+._build.gradle.kts_
+----
+// Add for Generex integration
+testImplementation("io.github.detomarco.kotlinfixture:fixture-generex:<latest-version>")
+----
+
+The https://github.com/mifmif/Generex[Generex] library generates random
+strings from a regular expression.
+
+Including the `fixture-generex` dependency in your project adds a
+`regexToRandom` function to `factory` and `property` generators.
+
+[source,kotlin]
+----
+data class DataClass(val index: String, val value: String)
+
+val indexRegex = "[a-z][0-9]".toRegex()
+val valueRegex = "[A-Z]{3}".toRegex()
+
+val fixture = kotlinFixture {
+    factory<String> { regexToRandom(indexRegex) }
+
+    property(DataClass::value) { regexToRandom(valueRegex) }
+}
+
+println(fixture<DataClass>()) // DataClass(index=m3, value=CGJ)
+----
+
+IMPORTANT: Be careful with object creation inside the generation function as it
+will be called for every instance of the object you create.

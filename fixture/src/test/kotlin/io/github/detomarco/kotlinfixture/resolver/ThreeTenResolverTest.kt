@@ -23,9 +23,9 @@ import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.config.before
 import io.github.detomarco.kotlinfixture.kotlinFixture
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import org.threeten.bp.DateTimeUtils
 import org.threeten.bp.Duration
 import org.threeten.bp.Instant
@@ -49,10 +49,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class ThreeTenResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         private val now = Date()
 
         private val context = TestContext(
@@ -83,62 +83,56 @@ class ThreeTenResolverTest {
             repeat(100) {
                 val zonedDateTime = kotlinFixture {
                     factory<ZoneId> { ZoneId.of("Europe/London") }
-                } <ZonedDateTime>()
+                }
 
-                assertEquals("Europe/London", zonedDateTime.zone.id)
+                assertEquals("Europe/London", zonedDateTime<ZonedDateTime>().zone.id)
             }
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
+    @Suppress("UNCHECKED_CAST")
+    private val context = TestContext(
+        Configuration(),
+        CompositeResolver(ThreeTenResolver(), KTypeResolver(), DateResolver(), EnumResolver())
+    )
 
-        @Parameterized.Parameter(0)
-        lateinit var type: KClass<*>
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Class returns date`(type: KClass<*>) {
+        val result = context.resolve(type)
 
-        @Suppress("UNCHECKED_CAST")
-        private val context = TestContext(
-            Configuration(),
-            CompositeResolver(ThreeTenResolver(), KTypeResolver(), DateResolver(), EnumResolver())
+        assertNotNull(result)
+        assertTrue {
+            type.isInstance(result)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(type: KClass<*>) {
+        assertIsRandom {
+            context.resolve(type)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(ZonedDateTime::class),
+            arrayOf(LocalDate::class),
+            arrayOf(LocalTime::class),
+            arrayOf(LocalDateTime::class),
+            arrayOf(OffsetDateTime::class),
+            arrayOf(OffsetTime::class),
+            arrayOf(Instant::class),
+            arrayOf(Period::class),
+            arrayOf(Duration::class),
+            arrayOf(ZoneId::class),
+            arrayOf(ZoneOffset::class),
+            arrayOf(Year::class),
+            arrayOf(Month::class),
+            arrayOf(YearMonth::class),
+            arrayOf(MonthDay::class)
         )
-
-        @Test
-        fun `Class returns date`() {
-            val result = context.resolve(type)
-
-            assertNotNull(result)
-            assertTrue {
-                type.isInstance(result)
-            }
-        }
-
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                context.resolve(type)
-            }
-        }
-
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{0}")
-            fun data() = arrayOf(
-                arrayOf(ZonedDateTime::class),
-                arrayOf(LocalDate::class),
-                arrayOf(LocalTime::class),
-                arrayOf(LocalDateTime::class),
-                arrayOf(OffsetDateTime::class),
-                arrayOf(OffsetTime::class),
-                arrayOf(Instant::class),
-                arrayOf(Period::class),
-                arrayOf(Duration::class),
-                arrayOf(ZoneId::class),
-                arrayOf(ZoneOffset::class),
-                arrayOf(Year::class),
-                arrayOf(Month::class),
-                arrayOf(YearMonth::class),
-                arrayOf(MonthDay::class)
-            )
-        }
     }
 }

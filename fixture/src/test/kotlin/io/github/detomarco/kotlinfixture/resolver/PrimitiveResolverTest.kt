@@ -20,19 +20,19 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class PrimitiveResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         val context = TestContext(Configuration(), PrimitiveResolver())
 
         @Test
@@ -43,54 +43,50 @@ class PrimitiveResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
-        val context = TestContext(Configuration(), PrimitiveResolver())
+    val context = TestContext(Configuration(), PrimitiveResolver())
 
-        @Parameterized.Parameter(0)
-        lateinit var clazz: KClass<*>
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Returns correct type`(clazz: KClass<*>) {
+        val result = context.resolve(clazz)
 
-        @Test
-        fun `Returns correct type`() {
-            val result = context.resolve(clazz)
+        assertNotNull(result)
+        assertEquals(clazz, result::class)
+    }
 
-            assertNotNull(result)
-            assertEquals(clazz, result::class)
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(clazz: KClass<*>) {
+        assertIsRandom {
+            context.resolve(clazz)
         }
+    }
 
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                context.resolve(clazz)
-            }
-        }
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Uses seeded random`(clazz: KClass<*>) {
+        val value1 = context.seedRandom().resolve(clazz)
+        val value2 = context.seedRandom().resolve(clazz)
 
-        @Test
-        fun `Uses seeded random`() {
-            val value1 = context.seedRandom().resolve(clazz)
-            val value2 = context.seedRandom().resolve(clazz)
+        assertEquals(value1, value2)
+    }
 
-            assertEquals(value1, value2)
-        }
+    companion object {
+        @JvmStatic
+        @Suppress("EXPERIMENTAL_API_USAGE")
+        fun data() = arrayOf(
+            arrayOf(Boolean::class),
+            arrayOf(Byte::class),
+            arrayOf(Double::class),
+            arrayOf(Float::class),
+            arrayOf(Int::class),
+            arrayOf(Long::class),
+            arrayOf(Short::class),
 
-        companion object {
-            @JvmStatic
-            @Suppress("EXPERIMENTAL_API_USAGE")
-            @Parameterized.Parameters(name = "{0}")
-            fun data() = arrayOf(
-                arrayOf(Boolean::class),
-                arrayOf(Byte::class),
-                arrayOf(Double::class),
-                arrayOf(Float::class),
-                arrayOf(Int::class),
-                arrayOf(Long::class),
-                arrayOf(Short::class),
-
-                arrayOf(UByte::class),
-                arrayOf(UInt::class),
-                arrayOf(ULong::class),
-                arrayOf(UShort::class)
-            )
-        }
+            arrayOf(UByte::class),
+            arrayOf(UInt::class),
+            arrayOf(ULong::class),
+            arrayOf(UShort::class)
+        )
     }
 }

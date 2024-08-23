@@ -72,7 +72,7 @@ class OptionalStrategyBuilder internal constructor(private val defaultStrategy: 
 
     @Deprecated(
         "Use the propertyOverride<Class>(propertyName, strategy) or " +
-                "propertyOverride(Class::propertyName, strategy) function",
+            "propertyOverride(Class::propertyName, strategy) function",
         level = DeprecationLevel.ERROR
     )
     fun propertyOverride(clazz: KClass<*>, propertyName: String, strategy: OptionalStrategy) {

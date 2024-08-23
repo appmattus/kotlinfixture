@@ -21,7 +21,9 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 /**
  * Logging object generation with `loggingStrategy`
  *
- * A basic logger can be applied using the built in [SysOutLoggingStrategy]. It is also possible to define and implement your own logging strategy by implementing [LoggingStrategy] and applying it as below.
+ * A basic logger can be applied using the built in [SysOutLoggingStrategy].
+ * It is also possible to define and implement your own logging strategy
+ * by implementing [LoggingStrategy] and applying it as below.
  *
  * ```
  * val fixture = kotlinFixture {

@@ -1,6 +1,6 @@
 /*
  * Copyright 2021-2023 Appmattus Limited
- *           2024 Detomarco Limited
+ *           2024 Detomarco
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,13 +23,11 @@ plugins {
     id("maven-publish")
 }
 
-apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
-
 val classgraphVersion: String by project
 val jodaTimeVersion: String by project
 val threeTenVersion: String by project
 val kTormVersion: String by project
-val junit4Version: String by project
+val junitVersion: String by project
 val mockitoKotlinVersion: String by project
 val serializationVersion: String by project
 val marcellogalhardoVersion: String by project
@@ -53,14 +51,13 @@ dependencies {
     compileOnly("org.ktorm:ktorm-core:${kTormVersion}")
     testImplementation("org.ktorm:ktorm-core:${kTormVersion}")
 
-    testImplementation("junit:junit:${junit4Version}")
-    testImplementation(kotlin("test"))
-    testImplementation(kotlin("test-junit"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
+    testImplementation(kotlin("test-junit5"))
     testImplementation("org.mockito.kotlin:mockito-kotlin:${mockitoKotlinVersion}")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializatioVersion}")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-
     // Used for ComparisonTest
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:${marcellogalhardoVersion}")
     testImplementation("com.flextrade.jfixture:kfixture:${flextradeVersion}")
@@ -104,6 +101,10 @@ publishing {
                     developer {
                         id = "detomarco"
                         name = "Marco De Toma"
+                    }
+                    developer {
+                        id = "Appmattus Limited"
+                        name = "Matthew Dolan"
                     }
                 }
                 scm {

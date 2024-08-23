@@ -20,8 +20,8 @@ import io.github.detomarco.kotlinfixture.ContextImpl
 import io.github.detomarco.kotlinfixture.config.Configuration
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.junit.Test
 import kotlin.reflect.KClass
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ListFavouringConstructorStrategyTest {

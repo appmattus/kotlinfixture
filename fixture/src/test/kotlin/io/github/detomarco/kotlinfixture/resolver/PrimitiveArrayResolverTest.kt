@@ -20,19 +20,19 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class PrimitiveArrayResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         val context = TestContext(Configuration(), CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver()))
 
         @Test
@@ -61,50 +61,44 @@ class PrimitiveArrayResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
-        val context = TestContext(
-            Configuration(),
-            CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver(), CharResolver())
+    val context = TestContext(
+        Configuration(),
+        CompositeResolver(PrimitiveArrayResolver(), PrimitiveResolver(), CharResolver())
+    )
+
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Returns correct type`(clazz: KClass<*>) {
+        val result = context.resolve(clazz)
+
+        assertNotNull(result)
+        assertEquals(clazz, result::class)
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(clazz: KClass<*>) {
+        assertIsRandom {
+            context.resolve(clazz)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(BooleanArray::class),
+            arrayOf(ByteArray::class),
+            arrayOf(DoubleArray::class),
+            arrayOf(FloatArray::class),
+            arrayOf(IntArray::class),
+            arrayOf(LongArray::class),
+            arrayOf(ShortArray::class),
+            arrayOf(CharArray::class),
+
+            arrayOf(UByteArray::class),
+            arrayOf(UIntArray::class),
+            arrayOf(ULongArray::class),
+            arrayOf(UShortArray::class)
         )
-
-        @Parameterized.Parameter(0)
-        lateinit var clazz: KClass<*>
-
-        @Test
-        fun `Returns correct type`() {
-            val result = context.resolve(clazz)
-
-            assertNotNull(result)
-            assertEquals(clazz, result::class)
-        }
-
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                context.resolve(clazz)
-            }
-        }
-
-        companion object {
-            @OptIn(ExperimentalUnsignedTypes::class)
-            @JvmStatic
-            @Parameterized.Parameters(name = "{0}")
-            fun data() = arrayOf(
-                arrayOf(BooleanArray::class),
-                arrayOf(ByteArray::class),
-                arrayOf(DoubleArray::class),
-                arrayOf(FloatArray::class),
-                arrayOf(IntArray::class),
-                arrayOf(LongArray::class),
-                arrayOf(ShortArray::class),
-                arrayOf(CharArray::class),
-
-                arrayOf(UByteArray::class),
-                arrayOf(UIntArray::class),
-                arrayOf(ULongArray::class),
-                arrayOf(UShortArray::class)
-            )
-        }
     }
 }

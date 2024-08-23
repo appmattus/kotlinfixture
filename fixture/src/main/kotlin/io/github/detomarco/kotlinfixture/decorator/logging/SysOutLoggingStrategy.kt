@@ -31,7 +31,9 @@ object SysOutLoggingStrategy : LoggingStrategy {
         val indent = "    ".repeat(stack.size - 1)
 
         val prefix = when (obj) {
-            is KType -> @Suppress("SpellCheckingInspection") "ktype "
+            is KType ->
+                @Suppress("SpellCheckingInspection")
+                "ktype "
             else -> ""
         }
         println("$indent$prefix$obj → ")

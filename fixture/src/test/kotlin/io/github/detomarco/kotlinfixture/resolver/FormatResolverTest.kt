@@ -20,9 +20,9 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.Format
@@ -33,10 +33,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class FormatResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         private val context = TestContext(Configuration(), FormatResolver())
 
         @Test
@@ -47,47 +47,42 @@ class FormatResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
+    private val context = TestContext(Configuration(), FormatResolver())
 
-        private val context = TestContext(Configuration(), FormatResolver())
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `creates instance`(clazz: KClass<*>) {
+        val result = context.resolve(clazz)
 
-        @Parameterized.Parameter(0)
-        lateinit var clazz: KClass<*>
-
-        @Test
-        fun `creates instance`() {
-            val result = context.resolve(clazz)
-
-            assertTrue {
-                clazz.isInstance(result)
-            }
+        assertTrue {
+            clazz.isInstance(result)
         }
+    }
 
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                (context.resolve(clazz) as Format)
-            }
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(clazz: KClass<*>) {
+        assertIsRandom {
+            (context.resolve(clazz) as Format)
         }
+    }
 
-        @Test
-        fun `Uses seeded random`() {
-            val value1 = context.seedRandom().resolve(clazz) as Format
-            val value2 = context.seedRandom().resolve(clazz) as Format
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Uses seeded random`(clazz: KClass<*>) {
+        val value1 = context.seedRandom().resolve(clazz) as Format
+        val value2 = context.seedRandom().resolve(clazz) as Format
 
-            assertEquals(value1, value2)
-        }
+        assertEquals(value1, value2)
+    }
 
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{0}")
-            fun data() = arrayOf(
-                arrayOf(NumberFormat::class),
-                arrayOf(DecimalFormat::class),
-                arrayOf(DateFormat::class),
-                arrayOf(SimpleDateFormat::class)
-            )
-        }
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(NumberFormat::class),
+            arrayOf(DecimalFormat::class),
+            arrayOf(DateFormat::class),
+            arrayOf(SimpleDateFormat::class)
+        )
     }
 }

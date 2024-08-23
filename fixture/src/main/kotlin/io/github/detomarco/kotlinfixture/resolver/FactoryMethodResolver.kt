@@ -32,7 +32,6 @@ internal class FactoryMethodResolver : Resolver, PopulateInstance {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
-
             val results =
                 (obj.companionObjectFactoryMethods() ?: obj.staticFactoryMethods()).shuffled().map { factoryMethod ->
 

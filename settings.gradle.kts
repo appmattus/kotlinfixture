@@ -15,7 +15,10 @@
  */
 
 include(
-    "fixture"
+    "fixture",
+    "fixture-generex",
+    "fixture-javafaker",
+    "fixture-kotest",
 )
 
 pluginManagement {

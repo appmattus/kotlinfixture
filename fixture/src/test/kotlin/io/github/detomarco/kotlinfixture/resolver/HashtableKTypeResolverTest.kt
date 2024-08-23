@@ -21,9 +21,9 @@ import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
-import org.junit.experimental.runners.Enclosed
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.MethodSource
 import java.util.Dictionary
 import java.util.Hashtable
 import kotlin.reflect.KClass
@@ -32,10 +32,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-@RunWith(Enclosed::class)
 class HashtableKTypeResolverTest {
 
-    class Single {
+    @Nested
+    inner class Single {
         val context = TestContext(
             Configuration(),
             CompositeResolver(HashtableKTypeResolver(), StringResolver(), KTypeResolver())
@@ -90,51 +90,43 @@ class HashtableKTypeResolverTest {
         }
     }
 
-    @RunWith(Parameterized::class)
-    class Parameterised {
+    val contextParam = TestContext(
+        Configuration(),
+        CompositeResolver(HashtableKTypeResolver(), StringResolver(), PrimitiveResolver(), KTypeResolver())
+    )
 
-        val context = TestContext(
-            Configuration(),
-            CompositeResolver(HashtableKTypeResolver(), StringResolver(), PrimitiveResolver(), KTypeResolver())
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `creates instance`(type: KType, resultClass: KClass<*>) {
+        val result = contextParam.resolve(type)
+
+        assertTrue {
+            resultClass.isInstance(result)
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Random values returned`(type: KType) {
+        assertIsRandom {
+            contextParam.resolve(type) as Dictionary<*, *>
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("data")
+    fun `Uses seeded random`(type: KType) {
+        val value1 = contextParam.seedRandom().resolve(type) as Dictionary<*, *>
+        val value2 = contextParam.seedRandom().resolve(type) as Dictionary<*, *>
+
+        assertEquals(value1, value2)
+    }
+
+    companion object {
+        @JvmStatic
+        fun data() = arrayOf(
+            arrayOf(typeOf<Dictionary<String, String>>(), Dictionary::class),
+            arrayOf(typeOf<Hashtable<String, String>>(), Hashtable::class)
         )
-
-        @Parameterized.Parameter(0)
-        lateinit var type: KType
-
-        @Parameterized.Parameter(1)
-        lateinit var resultClass: KClass<*>
-
-        @Test
-        fun `creates instance`() {
-            val result = context.resolve(type)
-
-            assertTrue {
-                resultClass.isInstance(result)
-            }
-        }
-
-        @Test
-        fun `Random values returned`() {
-            assertIsRandom {
-                context.resolve(type) as Dictionary<*, *>
-            }
-        }
-
-        @Test
-        fun `Uses seeded random`() {
-            val value1 = context.seedRandom().resolve(type) as Dictionary<*, *>
-            val value2 = context.seedRandom().resolve(type) as Dictionary<*, *>
-
-            assertEquals(value1, value2)
-        }
-
-        companion object {
-            @JvmStatic
-            @Parameterized.Parameters(name = "{1}")
-            fun data() = arrayOf(
-                arrayOf(typeOf<Dictionary<String, String>>(), Dictionary::class),
-                arrayOf(typeOf<Hashtable<String, String>>(), Hashtable::class)
-            )
-        }
     }
 }
