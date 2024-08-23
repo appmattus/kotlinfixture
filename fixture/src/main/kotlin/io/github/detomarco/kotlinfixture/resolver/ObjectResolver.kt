@@ -22,5 +22,5 @@ import kotlin.reflect.KClass
 
 internal class ObjectResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? = (obj as? KClass<*>)?.objectInstance ?: Unresolved.Unhandled
+    override fun resolve(context: Context, obj: Any): Any = (obj as? KClass<*>)?.objectInstance ?: Unresolved.Unhandled
 }

@@ -22,6 +22,7 @@ import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -75,18 +76,18 @@ class PrimitiveResolverTest {
         @JvmStatic
         @Suppress("EXPERIMENTAL_API_USAGE")
         fun data() = arrayOf(
-            arrayOf(Boolean::class),
-            arrayOf(Byte::class),
-            arrayOf(Double::class),
-            arrayOf(Float::class),
-            arrayOf(Int::class),
-            arrayOf(Long::class),
-            arrayOf(Short::class),
+            Arguments.of(Boolean::class),
+            Arguments.of(Byte::class),
+            Arguments.of(Double::class),
+            Arguments.of(Float::class),
+            Arguments.of(Int::class),
+            Arguments.of(Long::class),
+            Arguments.of(Short::class),
 
-            arrayOf(UByte::class),
-            arrayOf(UInt::class),
-            arrayOf(ULong::class),
-            arrayOf(UShort::class)
+            Arguments.of(UByte::class),
+            Arguments.of(UInt::class),
+            Arguments.of(ULong::class),
+            Arguments.of(UShort::class)
         )
     }
 }

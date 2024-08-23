@@ -24,7 +24,7 @@ import io.github.detomarco.kotlinfixture.strategyOrDefault
 
 internal class FakeResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? {
+    override fun resolve(context: Context, obj: Any): Any {
         if (obj is KNamedPropertyRequest) {
             val strategy = context.strategyOrDefault<FakeStrategy>(NoFakeStrategy)
 

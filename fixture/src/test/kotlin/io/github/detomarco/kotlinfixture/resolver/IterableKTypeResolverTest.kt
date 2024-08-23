@@ -23,6 +23,7 @@ import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.AbstractQueue
 import java.util.AbstractSequentialList
@@ -157,50 +158,50 @@ class IterableKTypeResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(typeOf<Iterable<String>>(), Iterable::class),
-            arrayOf(typeOf<Collection<String>>(), Collection::class),
-            arrayOf(typeOf<java.util.AbstractCollection<String>>(), java.util.AbstractCollection::class),
+            Arguments.of(typeOf<Iterable<String>>(), Iterable::class),
+            Arguments.of(typeOf<Collection<String>>(), Collection::class),
+            Arguments.of(typeOf<java.util.AbstractCollection<String>>(), java.util.AbstractCollection::class),
 
             // Set
-            arrayOf(typeOf<Set<String>>(), Set::class),
-            arrayOf(typeOf<java.util.AbstractSet<String>>(), java.util.AbstractSet::class),
-            arrayOf(typeOf<SortedSet<String>>(), SortedSet::class),
-            arrayOf(typeOf<NavigableSet<String>>(), NavigableSet::class),
-            arrayOf(typeOf<HashSet<String>>(), HashSet::class),
-            arrayOf(typeOf<LinkedHashSet<String>>(), LinkedHashSet::class),
-            arrayOf(typeOf<TreeSet<String>>(), TreeSet::class),
-            arrayOf(typeOf<ConcurrentSkipListSet<String>>(), ConcurrentSkipListSet::class),
-            arrayOf(typeOf<CopyOnWriteArraySet<String>>(), CopyOnWriteArraySet::class),
+            Arguments.of(typeOf<Set<String>>(), Set::class),
+            Arguments.of(typeOf<java.util.AbstractSet<String>>(), java.util.AbstractSet::class),
+            Arguments.of(typeOf<SortedSet<String>>(), SortedSet::class),
+            Arguments.of(typeOf<NavigableSet<String>>(), NavigableSet::class),
+            Arguments.of(typeOf<HashSet<String>>(), HashSet::class),
+            Arguments.of(typeOf<LinkedHashSet<String>>(), LinkedHashSet::class),
+            Arguments.of(typeOf<TreeSet<String>>(), TreeSet::class),
+            Arguments.of(typeOf<ConcurrentSkipListSet<String>>(), ConcurrentSkipListSet::class),
+            Arguments.of(typeOf<CopyOnWriteArraySet<String>>(), CopyOnWriteArraySet::class),
 
             // List
-            arrayOf(typeOf<List<String>>(), List::class),
-            arrayOf(typeOf<MutableList<String>>(), MutableList::class),
-            arrayOf(typeOf<java.util.AbstractList<String>>(), java.util.AbstractList::class),
-            arrayOf(typeOf<ArrayList<String>>(), ArrayList::class),
-            arrayOf(typeOf<AbstractSequentialList<String>>(), AbstractSequentialList::class),
-            arrayOf(typeOf<LinkedList<String>>(), LinkedList::class),
-            arrayOf(typeOf<Vector<String>>(), Vector::class),
-            arrayOf(typeOf<Stack<String>>(), Stack::class),
-            arrayOf(typeOf<CopyOnWriteArrayList<String>>(), CopyOnWriteArrayList::class),
+            Arguments.of(typeOf<List<String>>(), List::class),
+            Arguments.of(typeOf<MutableList<String>>(), MutableList::class),
+            Arguments.of(typeOf<java.util.AbstractList<String>>(), java.util.AbstractList::class),
+            Arguments.of(typeOf<ArrayList<String>>(), ArrayList::class),
+            Arguments.of(typeOf<AbstractSequentialList<String>>(), AbstractSequentialList::class),
+            Arguments.of(typeOf<LinkedList<String>>(), LinkedList::class),
+            Arguments.of(typeOf<Vector<String>>(), Vector::class),
+            Arguments.of(typeOf<Stack<String>>(), Stack::class),
+            Arguments.of(typeOf<CopyOnWriteArrayList<String>>(), CopyOnWriteArrayList::class),
 
             // Queue
-            arrayOf(typeOf<Queue<String>>(), Queue::class),
-            arrayOf(typeOf<AbstractQueue<String>>(), AbstractQueue::class),
-            arrayOf(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class),
-            arrayOf(typeOf<PriorityQueue<String>>(), PriorityQueue::class),
-            arrayOf(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class),
-            arrayOf(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class),
-            arrayOf(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class),
-            arrayOf(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class),
-            arrayOf(typeOf<BlockingQueue<String>>(), BlockingQueue::class),
-            arrayOf(typeOf<TransferQueue<String>>(), TransferQueue::class),
+            Arguments.of(typeOf<Queue<String>>(), Queue::class),
+            Arguments.of(typeOf<AbstractQueue<String>>(), AbstractQueue::class),
+            Arguments.of(typeOf<ConcurrentLinkedQueue<String>>(), ConcurrentLinkedQueue::class),
+            Arguments.of(typeOf<PriorityQueue<String>>(), PriorityQueue::class),
+            Arguments.of(typeOf<DelayQueue<TestDelayed>>(), DelayQueue::class),
+            Arguments.of(typeOf<LinkedBlockingQueue<String>>(), LinkedBlockingQueue::class),
+            Arguments.of(typeOf<PriorityBlockingQueue<String>>(), PriorityBlockingQueue::class),
+            Arguments.of(typeOf<LinkedTransferQueue<String>>(), LinkedTransferQueue::class),
+            Arguments.of(typeOf<BlockingQueue<String>>(), BlockingQueue::class),
+            Arguments.of(typeOf<TransferQueue<String>>(), TransferQueue::class),
 
             // Deque
-            arrayOf(typeOf<Deque<String>>(), Deque::class),
-            arrayOf(typeOf<ArrayDeque<String>>(), ArrayDeque::class),
-            arrayOf(typeOf<ConcurrentLinkedDeque<String>>(), ConcurrentLinkedDeque::class),
-            arrayOf(typeOf<BlockingDeque<String>>(), BlockingDeque::class),
-            arrayOf(typeOf<LinkedBlockingDeque<String>>(), LinkedBlockingDeque::class)
+            Arguments.of(typeOf<Deque<String>>(), Deque::class),
+            Arguments.of(typeOf<ArrayDeque<String>>(), ArrayDeque::class),
+            Arguments.of(typeOf<ConcurrentLinkedDeque<String>>(), ConcurrentLinkedDeque::class),
+            Arguments.of(typeOf<BlockingDeque<String>>(), BlockingDeque::class),
+            Arguments.of(typeOf<LinkedBlockingDeque<String>>(), LinkedBlockingDeque::class)
         )
     }
 }

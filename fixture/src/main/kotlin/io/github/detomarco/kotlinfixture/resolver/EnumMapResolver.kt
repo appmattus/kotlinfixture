@@ -51,7 +51,7 @@ internal class EnumMapResolver : Resolver {
     }
 
     @Suppress("ReturnCount")
-    private fun Context.generateEnumMap(obj: KType): Any? {
+    private fun Context.generateEnumMap(obj: KType): Any {
         val argType = obj.arguments.first().type!!
         val enumClass = argType.classifier as KClass<*>
         val valueClass = obj.arguments[1].type?.classifier as KClass<*>

@@ -23,7 +23,7 @@ import kotlin.random.asJavaRandom
 
 internal class BigIntegerResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? =
+    override fun resolve(context: Context, obj: Any): Any =
         if (obj == BigInteger::class) BigInteger(NUM_BITS, context.random.asJavaRandom()) else Unresolved.Unhandled
 
     companion object {

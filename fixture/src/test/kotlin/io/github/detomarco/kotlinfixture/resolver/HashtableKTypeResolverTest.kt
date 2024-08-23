@@ -23,6 +23,7 @@ import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.Dictionary
 import java.util.Hashtable
@@ -90,7 +91,7 @@ class HashtableKTypeResolverTest {
         }
     }
 
-    val contextParam = TestContext(
+    private val contextParam = TestContext(
         Configuration(),
         CompositeResolver(HashtableKTypeResolver(), StringResolver(), PrimitiveResolver(), KTypeResolver())
     )
@@ -125,8 +126,8 @@ class HashtableKTypeResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(typeOf<Dictionary<String, String>>(), Dictionary::class),
-            arrayOf(typeOf<Hashtable<String, String>>(), Hashtable::class)
+            Arguments.of(typeOf<Dictionary<String, String>>(), Dictionary::class),
+            Arguments.of(typeOf<Hashtable<String, String>>(), Hashtable::class)
         )
     }
 }

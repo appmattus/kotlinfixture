@@ -50,7 +50,7 @@ internal class MapKTypeResolver : Resolver {
     }
 
     @Suppress("ReturnCount")
-    private fun Context.populateCollection(obj: KType, collection: MutableMap<Any?, Any?>): Any? {
+    private fun Context.populateCollection(obj: KType, collection: MutableMap<Any?, Any?>): Any {
         val keyType = obj.arguments[0].type!!
         val valueType = obj.arguments[1].type!!
 
@@ -91,7 +91,6 @@ internal class MapKTypeResolver : Resolver {
         WeakHashMap::class -> WeakHashMap()
 
         else -> {
-            @Suppress("USELESS_CAST")
             null
         }
     }

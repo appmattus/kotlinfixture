@@ -22,6 +22,7 @@ import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
@@ -104,12 +105,12 @@ class AtomicKTypeResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(typeOf<AtomicBoolean>(), AtomicBoolean::class),
-            arrayOf(typeOf<AtomicInteger>(), AtomicInteger::class),
-            arrayOf(typeOf<AtomicLong>(), AtomicLong::class),
-            arrayOf(typeOf<AtomicIntegerArray>(), AtomicIntegerArray::class),
-            arrayOf(typeOf<AtomicLongArray>(), AtomicLongArray::class),
-            arrayOf(typeOf<AtomicReference<String>>(), AtomicReference::class)
+            Arguments.of(typeOf<AtomicBoolean>(), AtomicBoolean::class),
+            Arguments.of(typeOf<AtomicInteger>(), AtomicInteger::class),
+            Arguments.of(typeOf<AtomicLong>(), AtomicLong::class),
+            Arguments.of(typeOf<AtomicIntegerArray>(), AtomicIntegerArray::class),
+            Arguments.of(typeOf<AtomicLongArray>(), AtomicLongArray::class),
+            Arguments.of(typeOf<AtomicReference<String>>(), AtomicReference::class)
         )
     }
 }

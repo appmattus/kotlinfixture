@@ -47,7 +47,6 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  * It is also possible to define and implement your own optional strategy
  * by implementing [OptionalStrategy] and applying it as above.
  */
-@Suppress("unused")
 fun ConfigurationBuilder.optionalStrategy(
     defaultStrategy: OptionalStrategy = RandomlyOptionalStrategy,
     init: OptionalStrategyBuilder.() -> Unit = {}

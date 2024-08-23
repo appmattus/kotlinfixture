@@ -146,7 +146,6 @@ class JavaFakerConfigurationBuilderTest {
     fun `can override properties using putProperty(String,Lambda)`() {
         val original: Faker.(JavaFakerConfiguration) -> Any? = { "original" }
 
-        @Suppress("UNCHECKED_CAST")
         val configuration = JavaFakerConfigurationBuilder(
             JavaFakerConfiguration(properties = mapOf("name" to original))
         ).apply {
@@ -165,7 +164,6 @@ class JavaFakerConfigurationBuilderTest {
     fun `can override properties using removeProperty(String)`() {
         val original: Faker.(JavaFakerConfiguration) -> Any? = { "original" }
 
-        @Suppress("UNCHECKED_CAST")
         val configuration = JavaFakerConfigurationBuilder(
             JavaFakerConfiguration(properties = mapOf("name" to original))
         ).apply {
@@ -183,7 +181,7 @@ class JavaFakerConfigurationBuilderTest {
         val function: Faker.(JavaFakerConfiguration) -> Any? = { }
 
         assertFailsWith<UnsupportedOperationException> {
-            @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
+            @Suppress("ReplacePutWithAssignment")
             (configuration.properties as MutableMap<String, Faker.(JavaFakerConfiguration) -> Any?>).put(
                 "string",
                 function

@@ -47,7 +47,7 @@ class OptionalStrategyBuilder internal constructor(private val defaultStrategy: 
     /**
      * Override the strategy for a property of a class
      */
-    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+    @Suppress("DEPRECATION_ERROR")
     inline fun <reified T> propertyOverride(propertyName: String, strategy: OptionalStrategy) =
         propertyOverride(T::class, propertyName, strategy)
 
@@ -66,7 +66,7 @@ class OptionalStrategyBuilder internal constructor(private val defaultStrategy: 
             }
         }
 
-        @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+        @Suppress("DEPRECATION_ERROR")
         return propertyOverride(T::class, property.name, strategy)
     }
 

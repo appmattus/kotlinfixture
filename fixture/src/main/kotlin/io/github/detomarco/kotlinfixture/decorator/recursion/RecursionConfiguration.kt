@@ -44,7 +44,6 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  * It is also possible to define and implement your own recursion strategy
  *  by implementing [RecursionStrategy] and applying it as above.
  */
-@Suppress("unused")
 fun ConfigurationBuilder.recursionStrategy(strategy: RecursionStrategy) {
     strategies[RecursionStrategy::class] = strategy
 }

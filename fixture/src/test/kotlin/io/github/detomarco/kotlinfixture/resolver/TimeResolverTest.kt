@@ -25,6 +25,7 @@ import io.github.detomarco.kotlinfixture.config.before
 import io.github.detomarco.kotlinfixture.kotlinFixture
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.time.Duration
 import java.time.Instant
@@ -90,7 +91,6 @@ class TimeResolverTest {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private val context = TestContext(
         Configuration(),
         CompositeResolver(TimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
@@ -118,22 +118,22 @@ class TimeResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(ZonedDateTime::class),
-            arrayOf(LocalDate::class),
-            arrayOf(LocalTime::class),
-            arrayOf(LocalDateTime::class),
-            arrayOf(OffsetDateTime::class),
-            arrayOf(OffsetTime::class),
-            arrayOf(Instant::class),
-            arrayOf(Period::class),
-            arrayOf(Duration::class),
-            arrayOf(TimeZone::class),
-            arrayOf(ZoneId::class),
-            arrayOf(ZoneOffset::class),
-            arrayOf(Year::class),
-            arrayOf(Month::class),
-            arrayOf(YearMonth::class),
-            arrayOf(MonthDay::class)
+            Arguments.of(ZonedDateTime::class),
+            Arguments.of(LocalDate::class),
+            Arguments.of(LocalTime::class),
+            Arguments.of(LocalDateTime::class),
+            Arguments.of(OffsetDateTime::class),
+            Arguments.of(OffsetTime::class),
+            Arguments.of(Instant::class),
+            Arguments.of(Period::class),
+            Arguments.of(Duration::class),
+            Arguments.of(TimeZone::class),
+            Arguments.of(ZoneId::class),
+            Arguments.of(ZoneOffset::class),
+            Arguments.of(Year::class),
+            Arguments.of(Month::class),
+            Arguments.of(YearMonth::class),
+            Arguments.of(MonthDay::class)
 
         )
     }

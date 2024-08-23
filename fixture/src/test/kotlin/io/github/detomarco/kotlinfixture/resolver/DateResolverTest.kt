@@ -22,6 +22,7 @@ import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.Date
 import kotlin.reflect.KClass
@@ -76,10 +77,10 @@ class DateResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(Date::class),
-            arrayOf(java.sql.Date::class),
-            arrayOf(java.sql.Time::class),
-            arrayOf(java.sql.Timestamp::class)
+            Arguments.of(Date::class),
+            Arguments.of(java.sql.Date::class),
+            Arguments.of(java.sql.Time::class),
+            Arguments.of(java.sql.Timestamp::class)
         )
     }
 }

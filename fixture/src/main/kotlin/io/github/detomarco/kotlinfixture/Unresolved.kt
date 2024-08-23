@@ -78,7 +78,7 @@ sealed class Unresolved {
          * Create an [Unresolved.NotSupported] from many [causes] which are [Unresolved].
          */
         fun createUnresolved(message: String, causes: List<Any?> = emptyList()): Unresolved {
-            val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unresolved.Unhandled }
+            val filtered = causes.filterIsInstance<Unresolved>().filterNot { it is Unhandled }
 
             return if (filtered.size == 1) {
                 // Unwrap single causes to reduce nesting

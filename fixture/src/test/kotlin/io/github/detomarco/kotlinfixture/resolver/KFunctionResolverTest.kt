@@ -177,7 +177,6 @@ class KFunctionResolverTest {
     }
 
     object SimpleObject {
-        @Suppress("MemberVisibilityCanBePrivate")
         lateinit var value: String
 
         val isInitialised: Boolean

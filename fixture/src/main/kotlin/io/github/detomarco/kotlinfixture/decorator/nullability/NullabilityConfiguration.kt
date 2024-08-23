@@ -41,7 +41,6 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  * It is also possible to define and implement your own nullability strategy
  *      by implementing [NullabilityStrategy] and applying it as above.
  */
-@Suppress("unused")
 fun ConfigurationBuilder.nullabilityStrategy(strategy: NullabilityStrategy) {
     strategies[NullabilityStrategy::class] = strategy
 }

@@ -129,8 +129,6 @@ See link:fixture-generex/README.adoc[Generex integration] for more details.
 * FlexTrade's https://github.com/FlexTradeUKLtd/kfixture[KFixture] wrapper for https://github.com/FlexTradeUKLtd/jfixture[JFixture].
 * Jeasy's https://github.com/j-easy/easy-random[Easy Random].
 
-Please take a look at the feature link:fixture/comparison.adoc[comparison with related projects].
-
 == Contributing
 
 Please fork this repository and contribute back using

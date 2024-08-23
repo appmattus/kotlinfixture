@@ -23,6 +23,6 @@ import java.util.UUID
 
 internal class UuidResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? =
+    override fun resolve(context: Context, obj: Any): Any =
         if (obj == UUID::class) context.random.nextUuid() else Unresolved.Unhandled
 }

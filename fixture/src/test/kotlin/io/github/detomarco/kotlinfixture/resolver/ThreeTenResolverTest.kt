@@ -90,7 +90,6 @@ class ThreeTenResolverTest {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private val context = TestContext(
         Configuration(),
         CompositeResolver(ThreeTenResolver(), KTypeResolver(), DateResolver(), EnumResolver())
@@ -118,21 +117,21 @@ class ThreeTenResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(ZonedDateTime::class),
-            arrayOf(LocalDate::class),
-            arrayOf(LocalTime::class),
-            arrayOf(LocalDateTime::class),
-            arrayOf(OffsetDateTime::class),
-            arrayOf(OffsetTime::class),
-            arrayOf(Instant::class),
-            arrayOf(Period::class),
-            arrayOf(Duration::class),
-            arrayOf(ZoneId::class),
-            arrayOf(ZoneOffset::class),
-            arrayOf(Year::class),
-            arrayOf(Month::class),
-            arrayOf(YearMonth::class),
-            arrayOf(MonthDay::class)
+            ZonedDateTime::class,
+            LocalDate::class,
+            LocalTime::class,
+            LocalDateTime::class,
+            OffsetDateTime::class,
+            OffsetTime::class,
+            Instant::class,
+            Period::class,
+            Duration::class,
+            ZoneId::class,
+            ZoneOffset::class,
+            Year::class,
+            Month::class,
+            YearMonth::class,
+            MonthDay::class
         )
     }
 }

@@ -22,6 +22,6 @@ import io.github.detomarco.kotlinfixture.nextUuid
 
 internal class StringResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? =
+    override fun resolve(context: Context, obj: Any): Any =
         if (obj == String::class) context.random.nextUuid().toString() else Unresolved.Unhandled
 }

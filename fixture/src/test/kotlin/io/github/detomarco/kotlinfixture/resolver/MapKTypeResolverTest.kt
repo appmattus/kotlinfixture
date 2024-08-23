@@ -23,6 +23,7 @@ import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.IdentityHashMap
 import java.util.NavigableMap
@@ -139,19 +140,19 @@ class MapKTypeResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(typeOf<Map<String, String>>(), Map::class),
-            arrayOf(typeOf<SortedMap<String, String>>(), SortedMap::class),
-            arrayOf(typeOf<NavigableMap<String, String>>(), NavigableMap::class),
-            arrayOf(typeOf<ConcurrentMap<String, String>>(), ConcurrentMap::class),
-            arrayOf(typeOf<ConcurrentNavigableMap<String, String>>(), ConcurrentNavigableMap::class),
-            arrayOf(typeOf<java.util.AbstractMap<String, String>>(), java.util.AbstractMap::class),
-            arrayOf(typeOf<HashMap<String, String>>(), HashMap::class),
-            arrayOf(typeOf<LinkedHashMap<String, String>>(), LinkedHashMap::class),
-            arrayOf(typeOf<IdentityHashMap<String, String>>(), IdentityHashMap::class),
-            arrayOf(typeOf<WeakHashMap<String, String>>(), WeakHashMap::class),
-            arrayOf(typeOf<TreeMap<String, String>>(), TreeMap::class),
-            arrayOf(typeOf<ConcurrentHashMap<String, String>>(), ConcurrentHashMap::class),
-            arrayOf(typeOf<ConcurrentSkipListMap<String, String>>(), ConcurrentSkipListMap::class)
+            Arguments.of(typeOf<Map<String, String>>(), Map::class),
+            Arguments.of(typeOf<SortedMap<String, String>>(), SortedMap::class),
+            Arguments.of(typeOf<NavigableMap<String, String>>(), NavigableMap::class),
+            Arguments.of(typeOf<ConcurrentMap<String, String>>(), ConcurrentMap::class),
+            Arguments.of(typeOf<ConcurrentNavigableMap<String, String>>(), ConcurrentNavigableMap::class),
+            Arguments.of(typeOf<java.util.AbstractMap<String, String>>(), java.util.AbstractMap::class),
+            Arguments.of(typeOf<HashMap<String, String>>(), HashMap::class),
+            Arguments.of(typeOf<LinkedHashMap<String, String>>(), LinkedHashMap::class),
+            Arguments.of(typeOf<IdentityHashMap<String, String>>(), IdentityHashMap::class),
+            Arguments.of(typeOf<WeakHashMap<String, String>>(), WeakHashMap::class),
+            Arguments.of(typeOf<TreeMap<String, String>>(), TreeMap::class),
+            Arguments.of(typeOf<ConcurrentHashMap<String, String>>(), ConcurrentHashMap::class),
+            Arguments.of(typeOf<ConcurrentSkipListMap<String, String>>(), ConcurrentSkipListMap::class)
         )
     }
 }

@@ -22,7 +22,7 @@ import io.github.detomarco.kotlinfixture.nextUuid
 import java.io.File
 
 internal class FileResolver : Resolver {
-    override fun resolve(context: Context, obj: Any): Any? {
+    override fun resolve(context: Context, obj: Any): Any {
         return if (obj == File::class) {
             return File(context.random.nextUuid().toString())
         } else {

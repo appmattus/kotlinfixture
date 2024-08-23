@@ -33,7 +33,7 @@ import java.util.Date
 internal class JodaTimeResolver : Resolver {
 
     @Suppress("ComplexMethod")
-    override fun resolve(context: Context, obj: Any): Any? {
+    override fun resolve(context: Context, obj: Any): Any {
         return if (hasJodaTime) {
             when (obj) {
                 Instant::class -> context.generateInstant()

@@ -47,7 +47,7 @@ class SealedClassResolverTest {
     }
 
     sealed class SingleSealedClass {
-        object OnlySubclass : SingleSealedClass()
+        data object OnlySubclass : SingleSealedClass()
     }
 
     @Test
@@ -58,8 +58,8 @@ class SealedClassResolverTest {
     }
 
     sealed class MultiSealedClass {
-        object SubclassA : MultiSealedClass()
-        object SubclassB : MultiSealedClass()
+        data object SubclassA : MultiSealedClass()
+        data object SubclassB : MultiSealedClass()
     }
 
     @Test

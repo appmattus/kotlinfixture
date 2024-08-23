@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import org.gradle.model.internal.core.ModelNodes.withType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -89,7 +88,7 @@ publishing {
                 scm {
                     connection = "scm:git:https://github.com/detomarco/kotlinfixture.git"
                     developerConnection = "scm:git:ssh://github.com/detomarco/kotlinfixture.git"
-                    url = "http://github.com/detomarco/kotlinfixture"
+                    url = "https://github.com/detomarco/kotlinfixture"
                 }
             }
         }

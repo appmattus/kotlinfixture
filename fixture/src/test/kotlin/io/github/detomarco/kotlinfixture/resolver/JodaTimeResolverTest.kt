@@ -34,6 +34,7 @@ import org.joda.time.LocalTime
 import org.joda.time.Period
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.Date
 import kotlin.reflect.KClass
@@ -83,7 +84,6 @@ class JodaTimeResolverTest {
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private val context = TestContext(
         Configuration(),
         CompositeResolver(JodaTimeResolver(), KTypeResolver(), DateResolver(), EnumResolver())
@@ -113,15 +113,15 @@ class JodaTimeResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(Instant::class),
-            arrayOf(LocalDate::class),
-            arrayOf(LocalTime::class),
-            arrayOf(LocalDateTime::class),
-            arrayOf(DateTime::class),
-            arrayOf(Period::class),
-            arrayOf(Duration::class),
-            arrayOf(DateTimeZone::class),
-            arrayOf(Interval::class)
+            Arguments.of(Instant::class),
+            Arguments.of(LocalDate::class),
+            Arguments.of(LocalTime::class),
+            Arguments.of(LocalDateTime::class),
+            Arguments.of(DateTime::class),
+            Arguments.of(Period::class),
+            Arguments.of(Duration::class),
+            Arguments.of(DateTimeZone::class),
+            Arguments.of(Interval::class)
         )
     }
 }

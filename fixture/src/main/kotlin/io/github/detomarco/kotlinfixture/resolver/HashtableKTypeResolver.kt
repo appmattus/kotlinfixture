@@ -43,7 +43,7 @@ internal class HashtableKTypeResolver : Resolver {
     }
 
     @Suppress("ReturnCount")
-    private fun Context.populateCollection(obj: KType, collection: Dictionary<Any?, Any?>): Any? {
+    private fun Context.populateCollection(obj: KType, collection: Dictionary<Any?, Any?>): Any {
         val keyType = obj.arguments[0].type!!
         val valueType = obj.arguments[1].type!!
 

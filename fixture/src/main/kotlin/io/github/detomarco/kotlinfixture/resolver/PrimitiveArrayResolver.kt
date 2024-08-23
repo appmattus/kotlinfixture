@@ -23,7 +23,7 @@ internal class PrimitiveArrayResolver : Resolver {
 
     @OptIn(ExperimentalUnsignedTypes::class)
     @Suppress("ComplexMethod")
-    override fun resolve(context: Context, obj: Any): Any? = when (obj) {
+    override fun resolve(context: Context, obj: Any): Any = when (obj) {
         BooleanArray::class -> context.resolveConstructor(::BooleanArray)
 
         ByteArray::class -> context.resolveConstructor(::ByteArray)

@@ -69,7 +69,7 @@ internal class ThreeTenResolver : Resolver {
 
     private fun Context.generateYear(): Year = Year.of(random.nextInt(Year.MIN_VALUE, Year.MAX_VALUE))
 
-    private fun Context.generateMonth(): Month = Month.values().random(random)
+    private fun Context.generateMonth(): Month = Month.entries.toTypedArray().random(random)
 
     private fun Context.generateYearMonth(): YearMonth = YearMonth.of(generateYear().value, generateMonth())
 
@@ -114,7 +114,6 @@ internal class ThreeTenResolver : Resolver {
     companion object {
         private val hasThreeTen: Boolean by lazy {
             try {
-                @Suppress("SpellCheckingInspection")
                 Class.forName("org.threeten.bp.LocalDate", false, ThreeTenResolver::class.java.classLoader)
                 true
             } catch (expected: ClassNotFoundException) {

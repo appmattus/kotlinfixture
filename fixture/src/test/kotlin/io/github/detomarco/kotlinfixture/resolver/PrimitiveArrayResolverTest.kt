@@ -22,6 +22,7 @@ import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -86,19 +87,19 @@ class PrimitiveArrayResolverTest {
     companion object {
         @JvmStatic
         fun data() = arrayOf(
-            arrayOf(BooleanArray::class),
-            arrayOf(ByteArray::class),
-            arrayOf(DoubleArray::class),
-            arrayOf(FloatArray::class),
-            arrayOf(IntArray::class),
-            arrayOf(LongArray::class),
-            arrayOf(ShortArray::class),
-            arrayOf(CharArray::class),
+            Arguments.of(BooleanArray::class),
+            Arguments.of(ByteArray::class),
+            Arguments.of(DoubleArray::class),
+            Arguments.of(FloatArray::class),
+            Arguments.of(IntArray::class),
+            Arguments.of(LongArray::class),
+            Arguments.of(ShortArray::class),
+            Arguments.of(CharArray::class),
 
-            arrayOf(UByteArray::class),
-            arrayOf(UIntArray::class),
-            arrayOf(ULongArray::class),
-            arrayOf(UShortArray::class)
+            Arguments.of(UByteArray::class),
+            Arguments.of(UIntArray::class),
+            Arguments.of(ULongArray::class),
+            Arguments.of(UShortArray::class)
         )
     }
 }

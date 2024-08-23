@@ -206,7 +206,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
         assertFailsWith<UnsupportedOperationException> {
-            @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
+            @Suppress("ReplacePutWithAssignment")
             (configuration.filters as MutableMap<KType, Filter>).put(typeOf<Number>(), DefaultFilter(Unit))
         }
     }
@@ -241,7 +241,7 @@ class ConfigurationBuilderTest {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
         assertFailsWith<UnsupportedOperationException> {
-            @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
+            @Suppress("ReplacePutWithAssignment")
             (configuration.subTypes as MutableMap<KClass<*>, KClass<*>>).put(Number::class, Double::class)
         }
     }

@@ -40,7 +40,6 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
  *     Success(5878ec34-c30f-40c7-ad52-c15a39b44ac1)
  * ```
  */
-@Suppress("unused")
 fun ConfigurationBuilder.loggingStrategy(strategy: LoggingStrategy) {
     strategies[LoggingStrategy::class] = strategy
 }

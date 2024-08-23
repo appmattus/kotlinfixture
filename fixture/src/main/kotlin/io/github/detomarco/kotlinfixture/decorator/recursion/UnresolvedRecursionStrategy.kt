@@ -25,7 +25,7 @@ import kotlin.reflect.KType
  */
 object UnresolvedRecursionStrategy : RecursionStrategy {
 
-    override fun handleRecursion(type: KType, stack: Collection<KType>): Any? {
+    override fun handleRecursion(type: KType, stack: Collection<KType>): Any {
         check(stack.isNotEmpty()) { "Stack must be populated" }
 
         return Unresolved.NotSupported(

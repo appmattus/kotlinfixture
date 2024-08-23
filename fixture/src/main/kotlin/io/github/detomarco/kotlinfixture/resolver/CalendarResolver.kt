@@ -25,7 +25,7 @@ import java.util.GregorianCalendar
 
 internal class CalendarResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? {
+    override fun resolve(context: Context, obj: Any): Any {
         return when (obj) {
             Calendar::class,
             GregorianCalendar::class -> {

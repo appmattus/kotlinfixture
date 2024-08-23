@@ -187,17 +187,14 @@ class FactoryMethodResolverTest {
 
     class SingleFactoryMethod private constructor(val value: String) {
         companion object {
-            @Suppress("unused")
             fun create(value: String) = SingleFactoryMethod(value)
         }
     }
 
     class MultipleFactoryMethods private constructor(val value: String, val factoryMethodCalled: String) {
         companion object {
-            @Suppress("unused")
             fun create() = MultipleFactoryMethods("default", "noParams")
 
-            @Suppress("unused")
             fun create(value: String) = MultipleFactoryMethods(value, "oneParam")
         }
     }
@@ -206,7 +203,6 @@ class FactoryMethodResolverTest {
         lateinit var parameter: String
 
         companion object {
-            @Suppress("unused")
             fun create() = MutableParameter()
         }
     }

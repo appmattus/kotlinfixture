@@ -169,7 +169,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * }
      * ```
      */
-    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+    @Suppress("DEPRECATION_ERROR")
     inline fun <reified T> repeatCount(
         propertyName: String,
         noinline generator: () -> Int
@@ -250,7 +250,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
             }
         }
 
-        @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+        @Suppress("DEPRECATION_ERROR")
         return repeatCount(T::class, property.name, generator)
     }
 
@@ -313,7 +313,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * }
      * ```
      */
-    @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
+    @Suppress("DEPRECATION_ERROR")
     fun repeatCount(
         function: KFunction<Unit>,
         generator: () -> Int
