@@ -31,6 +31,7 @@ The differences between this fork and the original project are:
 
 1. `fixture-android-tests` module dropped. We'll consider to add it back if there is a demand for it.
 2. `fixture-javafaker` module replaced by `fixture-datafaker`
+3. `threeten` and `ktorm` build-in support dropped.
 
 == Getting started
 

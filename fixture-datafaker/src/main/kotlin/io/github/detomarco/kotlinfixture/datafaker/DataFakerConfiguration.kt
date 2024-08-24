@@ -152,7 +152,10 @@ data class DataFakerConfiguration internal constructor(
 
             // IdNumber
             entry("ssn") { idNumber().ssnValid() },
-            entry("svSeSsn") { idNumber().validSvSeSsn() },
+            entry("svSeSsn") {
+                val faker = Faker(Locale("sv", "SE"))
+                faker.idNumber().valid()
+            },
 
             // Internet
             entry("domainName") { internet().domainName() },

@@ -29,7 +29,6 @@ import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import org.ktorm.entity.Entity
 import java.net.URI
 import java.net.URL
 import java.text.DateFormat
@@ -453,22 +452,6 @@ class ComparisonParametizedTest {
             Arguments.of(typeOf<YearMonth>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
             Arguments.of(typeOf<MonthDay>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
 
-            Arguments.of(typeOf<org.threeten.bp.Instant>(), VALID, VALID, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.ZonedDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
-            Arguments.of(typeOf<org.threeten.bp.LocalDate>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.LocalTime>(), VALID, VALID, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.LocalDateTime>(), VALID, UNSUPPORTED, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.OffsetDateTime>(), VALID, VALID, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.OffsetTime>(), VALID, VALID, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.Duration>(), VALID, IGNORE, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.Period>(), VALID, IGNORE, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.ZoneId>(), VALID, NOT_RANDOM, UNSUPPORTED, UNSUPPORTED),
-            Arguments.of(typeOf<org.threeten.bp.ZoneOffset>(), VALID, VALID, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.Year>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.Month>(), VALID, VALID, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.YearMonth>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
-            Arguments.of(typeOf<org.threeten.bp.MonthDay>(), VALID, NOT_RANDOM, UNSUPPORTED, VALID),
-
             Arguments.of(typeOf<org.joda.time.Instant>(), VALID, VALID, VALID, VALID),
             Arguments.of(typeOf<org.joda.time.LocalDate>(), VALID, NOT_RANDOM, NOT_RANDOM, NOT_RANDOM),
             Arguments.of(typeOf<org.joda.time.LocalTime>(), VALID, VALID, VALID, VALID),
@@ -605,9 +588,6 @@ class ComparisonParametizedTest {
 
             // Abstract class
             Arguments.of(typeOf<Number>(), VALID, UNSUPPORTED, UNSUPPORTED, UNSUPPORTED),
-
-            // KTorm
-            Arguments.of(typeOf<Entity<KTorm>>(), VALID, UNSUPPORTED, IGNORE, UNSUPPORTED)
         )
     }
 }
@@ -629,7 +609,3 @@ enum class TestEnumClass {
 }
 
 data class TestClass(val value: String)
-
-interface KTorm : Entity<KTorm> {
-    companion object : Entity.Factory<KTorm>()
-}
