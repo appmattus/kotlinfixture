@@ -19,8 +19,8 @@ package io.github.detomarco.kotlinfixture.decorator.optional
 import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.resolver.TestResolver
-import kotlin.test.Test
-import kotlin.test.assertFalse
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Test
 
 class NeverOptionalStrategyTest {
 

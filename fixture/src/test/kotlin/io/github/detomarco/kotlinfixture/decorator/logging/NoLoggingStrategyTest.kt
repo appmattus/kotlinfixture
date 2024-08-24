@@ -16,9 +16,9 @@
 
 package io.github.detomarco.kotlinfixture.decorator.logging
 
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Test
 import java.util.UUID
-import kotlin.test.Test
-import kotlin.test.assertFalse
 
 class NoLoggingStrategyTest {
 

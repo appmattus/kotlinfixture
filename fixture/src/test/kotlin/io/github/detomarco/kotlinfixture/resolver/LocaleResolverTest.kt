@@ -20,11 +20,11 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.util.Locale
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class LocaleResolverTest {
 
@@ -42,7 +42,7 @@ class LocaleResolverTest {
         val result = context.resolve(Locale::class)
 
         assertNotNull(result)
-        assertEquals(Locale::class, result::class)
+        assertEquals(Locale::class, result!!::class)
     }
 
     @Test

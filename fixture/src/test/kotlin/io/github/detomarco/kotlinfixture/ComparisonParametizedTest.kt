@@ -25,7 +25,10 @@ import io.github.detomarco.kotlinfixture.ComparisonParametizedTest.Result.UNSUPP
 import io.github.detomarco.kotlinfixture.ComparisonParametizedTest.Result.VALID
 import io.github.detomarco.kotlinfixture.resolver.IterableKTypeResolverTest
 import org.jeasy.random.EasyRandom
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assumptions.assumeTrue
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -102,9 +105,6 @@ import java.util.concurrent.atomic.AtomicLongArray
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
-import kotlin.test.assertFails
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
 
 @Suppress("UnusedParameter")
 class ComparisonParametizedTest {
@@ -229,7 +229,7 @@ class ComparisonParametizedTest {
     ) {
         assumeUnsupported(flextradeSupports)
 
-        assertFails {
+        assertThrows<Throwable> {
             flextrade.jFixture.create((type.classifier as KClass<*>).java)
         }
     }
@@ -298,7 +298,7 @@ class ComparisonParametizedTest {
     ) {
         assumeUnsupported(marcellogalhardoSupports)
         val resultClass = type.classifier as KClass<*>
-        assertFails {
+        assertThrows<Throwable> {
             marcellogalhardo.next(resultClass, type)!!
         }
     }
@@ -366,7 +366,7 @@ class ComparisonParametizedTest {
     ) {
         assumeUnsupported(easyRandomSupports)
         val resultClass = type.classifier as KClass<*>
-        assertFails {
+        assertThrows<Throwable> {
             easyRandom.nextObject(resultClass.java)
         }
     }

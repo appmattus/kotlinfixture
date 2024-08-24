@@ -18,11 +18,11 @@ package io.github.detomarco.kotlinfixture.decorator.constructor
 
 import io.github.detomarco.kotlinfixture.ContextImpl
 import io.github.detomarco.kotlinfixture.config.Configuration
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
+import io.kotest.matchers.shouldBe
+import io.mockk.every
+import io.mockk.mockk
+import org.junit.jupiter.api.Test
 import kotlin.reflect.KClass
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class ArrayFavouringConstructorStrategyTest {
 
@@ -30,8 +30,8 @@ class ArrayFavouringConstructorStrategyTest {
     fun `Order constructors with greatest array parameter count first followed by remaining modest first`() {
         val context = ContextImpl(Configuration())
 
-        val shuffledConstructors = mock<KClass<MultipleConstructors>> {
-            on { constructors } doReturn MultipleConstructors::class.constructors.shuffled()
+        val shuffledConstructors = mockk<KClass<MultipleConstructors>> {
+            every { constructors } returns MultipleConstructors::class.constructors.shuffled()
         }
 
         val result = ArrayFavouringConstructorStrategy.constructors(context, shuffledConstructors).map {
@@ -39,7 +39,7 @@ class ArrayFavouringConstructorStrategyTest {
             (it.call(*emptyParameters.toTypedArray()) as MultipleConstructors).constructorCalled
         }
 
-        assertEquals(listOf("array-2", "array-1", "primary", "string"), result)
+        result shouldBe listOf("array-2", "array-1", "primary", "string")
     }
 
     @Suppress("unused", "UNUSED_PARAMETER")

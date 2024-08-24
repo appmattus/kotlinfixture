@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
     id("maven-publish")
@@ -26,17 +24,16 @@ val kotlinVersion: String by project
 val kotlinxVersion: String by project
 val junitVersion: String by project
 val generexVersion: String by project
+val kotestVersion: String by project
 
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
     api("com.github.mifmif:generex:$generexVersion")
 
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation(kotlin("test-junit5"))
-
-    testImplementation(kotlin("reflect"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxVersion")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
 }
 
 java {
@@ -50,6 +47,10 @@ tasks.jar {
     enabled = true
     // Remove `plain` postfix from jar file name
     archiveClassifier.set("")
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 publishing {

@@ -18,14 +18,14 @@ package io.github.detomarco.kotlinfixture.kotest
 
 import io.github.detomarco.kotlinfixture.Fixture
 import io.github.detomarco.kotlinfixture.kotlinFixture
+import io.kotest.assertions.fail
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
 import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyTesting
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.fail
 
 class CheckAllExtTest {
 
@@ -43,8 +43,7 @@ class CheckAllExtTest {
             val generatedValues = mutableSetOf<Person>()
 
             testCase.block(fixture, { generatedValues.addAll(it) }) { }
-
-            assertEquals(testCase.expectedCount, generatedValues.size)
+            generatedValues.size shouldBe testCase.expectedCount
         }
     }
 
@@ -60,8 +59,8 @@ class CheckAllExtTest {
     @MethodSource("data")
     fun `param throws when all values false`(testCase: TestCase) {
         runBlocking {
-            assertFailsWith<AssertionError> {
-                testCase.block(fixture, { }) { fail() }
+            shouldThrow<AssertionError> {
+                testCase.block(fixture, { }) { fail("") }
             }
         }
     }

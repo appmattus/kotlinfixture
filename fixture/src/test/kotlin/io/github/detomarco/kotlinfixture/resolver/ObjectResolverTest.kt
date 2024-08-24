@@ -19,9 +19,9 @@ package io.github.detomarco.kotlinfixture.resolver
 import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.config.Configuration
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class ObjectResolverTest {
     private val context = TestContext(Configuration(), ObjectResolver())

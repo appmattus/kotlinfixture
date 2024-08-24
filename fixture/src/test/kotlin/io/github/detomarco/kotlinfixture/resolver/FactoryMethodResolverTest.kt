@@ -22,10 +22,10 @@ import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class FactoryMethodResolverTest {
     private val context = TestContext(
@@ -65,7 +65,7 @@ class FactoryMethodResolverTest {
             val result = context.resolve(SingleFactoryMethod::class)
 
             assertNotNull(result)
-            assertEquals(SingleFactoryMethod::class, result::class)
+            assertEquals(SingleFactoryMethod::class, result!!::class)
         }
     }
 

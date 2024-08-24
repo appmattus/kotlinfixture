@@ -16,11 +16,11 @@
 
 package io.github.detomarco.kotlinfixture
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class ListExtTest {
     @Test
@@ -39,7 +39,7 @@ class ListExtTest {
 
     @Test
     fun `empty list throws exception when getting next value`() {
-        assertFailsWith(NoSuchElementException::class) {
+        assertThrows<NoSuchElementException> {
             emptyList<String>().circularIterator().next()
         }
     }

@@ -18,9 +18,9 @@ package io.github.detomarco.kotlinfixture
 
 import io.github.detomarco.kotlinfixture.decorator.nullability.NeverNullStrategy
 import io.github.detomarco.kotlinfixture.decorator.nullability.nullabilityStrategy
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class FixtureRepeatCountTest {
 
@@ -238,7 +238,7 @@ class FixtureRepeatCountTest {
 
     @Test
     fun `read only property repeatCount cannot be set in fixture initialisation`() {
-        assertFailsWith<IllegalStateException> {
+        assertThrows<IllegalStateException> {
             kotlinFixture {
                 repeatCount(RepeatCountClass::alsoReadOnly) { 1 }
             }
@@ -247,7 +247,7 @@ class FixtureRepeatCountTest {
 
     @Test
     fun `read only property repeatCount cannot be overridden in fixture creation`() {
-        assertFailsWith<IllegalStateException> {
+        assertThrows<IllegalStateException> {
             val fixture = kotlinFixture()
 
             fixture<RepeatCountClass> {

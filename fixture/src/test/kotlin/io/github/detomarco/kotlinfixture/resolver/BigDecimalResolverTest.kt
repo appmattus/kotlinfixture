@@ -20,11 +20,11 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.math.BigDecimal
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class BigDecimalResolverTest {
     private val context = TestContext(Configuration(), BigDecimalResolver())
@@ -41,7 +41,7 @@ class BigDecimalResolverTest {
         val result = context.resolve(BigDecimal::class)
 
         assertNotNull(result)
-        assertEquals(BigDecimal::class, result::class)
+        assertEquals(BigDecimal::class, result!!::class)
     }
 
     @Test

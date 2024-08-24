@@ -17,8 +17,8 @@
 package io.github.detomarco.kotlinfixture
 
 import io.github.detomarco.kotlinfixture.config.TestGenerator.fixture
-import kotlin.test.Test
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 /**
  * More robust testing around Array fixtures as we now have special handling for arrays of primitive types

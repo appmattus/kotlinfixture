@@ -16,10 +16,10 @@
 
 package io.github.detomarco.kotlinfixture.decorator.logging
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.util.UUID
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class SysOutLoggingStrategyTest {
     @Test

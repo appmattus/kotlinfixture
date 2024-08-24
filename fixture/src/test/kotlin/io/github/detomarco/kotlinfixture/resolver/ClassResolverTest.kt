@@ -25,11 +25,11 @@ import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.decorator.constructor.ConstructorStrategy
 import io.github.detomarco.kotlinfixture.decorator.constructor.GreedyConstructorStrategy
 import io.github.detomarco.kotlinfixture.decorator.constructor.ModestConstructorStrategy
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class ClassResolverTest {
     private val context = TestContext(
@@ -69,7 +69,7 @@ class ClassResolverTest {
             val result = context.resolve(SingleConstructor::class)
 
             assertNotNull(result)
-            assertEquals(SingleConstructor::class, result::class)
+            assertEquals(SingleConstructor::class, result!!::class)
         }
     }
 

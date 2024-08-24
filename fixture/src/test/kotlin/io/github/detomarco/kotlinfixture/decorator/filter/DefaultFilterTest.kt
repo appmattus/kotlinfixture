@@ -18,13 +18,13 @@ package io.github.detomarco.kotlinfixture.decorator.filter
 
 import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.resolver.Resolver
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class DefaultFilterTest {
     private val mockObj = mock<Any>()

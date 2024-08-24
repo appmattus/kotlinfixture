@@ -18,10 +18,10 @@ package io.github.detomarco.kotlinfixture.decorator.filter
 
 import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.resolver.Resolver
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
 import java.util.concurrent.locks.Lock
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class DelegatingFilterTest {
 

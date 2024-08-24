@@ -21,13 +21,13 @@ import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import kotlin.reflect.full.functions
 import kotlin.reflect.full.primaryConstructor
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class KFunctionResolverTest {
     private val context = TestContext(
@@ -56,7 +56,7 @@ class KFunctionResolverTest {
         val result = context.resolve(request)
 
         assertNotNull(result)
-        assertEquals(SimpleClass::class, result::class)
+        assertEquals(SimpleClass::class, result!!::class)
     }
 
     @Test
@@ -135,7 +135,7 @@ class KFunctionResolverTest {
         val result = context.resolve(request)
 
         assertNotNull(result)
-        assertEquals(MultiParamsClass::class, result::class)
+        assertEquals(MultiParamsClass::class, result!!::class)
     }
 
     @Test

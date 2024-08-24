@@ -19,13 +19,11 @@ package io.github.detomarco.kotlinfixture.resolver
 import io.github.detomarco.kotlinfixture.Context
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
-import org.mockito.internal.verification.Times
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import kotlin.test.Test
-import kotlin.test.assertTrue
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
+import org.junit.jupiter.api.Test
 
 class SubTypeResolverTest {
 
@@ -33,20 +31,25 @@ class SubTypeResolverTest {
         subType<Number, Int>()
     }.build()
 
-    val context = mock<Context> { on { this.configuration } doReturn configuration }
+    val context = mockk<Context>()
 
     @Test
     fun `sub type mapped when requested`() {
+        every { context.configuration } returns configuration
+        every { context.resolve(Int::class) } returns 1
+
         SubTypeResolver().resolve(context, Number::class)
 
-        verify(context).resolve(Int::class)
+        verify { context.resolve(Int::class) }
     }
 
     @Test
     fun `Unresolved returned when no mapping found`() {
+        every { context.configuration } returns configuration
+
         val result = SubTypeResolver().resolve(context, String::class)
 
-        assertTrue(result is Unresolved)
-        verify(context, Times(0)).resolve(any())
+        (result is Unresolved).shouldBeTrue()
+        verify(exactly = 0) { context.resolve(any()) }
     }
 }

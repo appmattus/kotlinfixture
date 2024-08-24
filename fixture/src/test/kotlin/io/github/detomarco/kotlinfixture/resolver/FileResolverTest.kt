@@ -20,11 +20,11 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.io.File
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class FileResolverTest {
     private val context = TestContext(Configuration(), FileResolver())
@@ -41,7 +41,7 @@ class FileResolverTest {
         val result = context.resolve(File::class)
 
         assertNotNull(result)
-        assertEquals(File::class, result::class)
+        assertEquals(File::class, result!!::class)
     }
 
     @Test

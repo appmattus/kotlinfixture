@@ -18,10 +18,10 @@ package io.github.detomarco.kotlinfixture.generex.config
 
 import io.github.detomarco.kotlinfixture.generex.assertIsRandom
 import io.github.detomarco.kotlinfixture.kotlinFixture
+import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Test
 import kotlin.random.Random
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class GeneratorStringKtTest {
 
@@ -37,9 +37,7 @@ class GeneratorStringKtTest {
         repeat(100) {
             val result = fixture<String>()
 
-            assertTrue {
-                result.matches(regex)
-            }
+            result.matches(regex).shouldBeTrue()
         }
     }
 
@@ -67,7 +65,7 @@ class GeneratorStringKtTest {
             random = Random(0)
         }
 
-        assertEquals(value1, value2)
+        value1 shouldBe value2
     }
 
     @Test
@@ -79,9 +77,7 @@ class GeneratorStringKtTest {
         repeat(100) {
             val result = fixture<String>()
 
-            assertTrue {
-                result.matches(regex)
-            }
+            result.matches(regex).shouldBeTrue()
         }
     }
 
@@ -108,7 +104,6 @@ class GeneratorStringKtTest {
         val value2 = fixture<String> {
             random = Random(0)
         }
-
-        assertEquals(value1, value2)
+        value1 shouldBe value2
     }
 }

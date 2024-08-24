@@ -16,7 +16,7 @@
 
 package io.github.detomarco.kotlinfixture.generex
 
-import kotlin.test.fail
+import org.junit.jupiter.api.Assertions.fail
 
 fun assertIsRandom(block: () -> Any?) {
     val initial = block()
@@ -25,5 +25,5 @@ fun assertIsRandom(block: () -> Any?) {
         if (initial != block()) return
     }
 
-    fail("Value always equal to $initial")
+    fail<String>("Value always equal to $initial")
 }

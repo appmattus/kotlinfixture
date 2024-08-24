@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
     id("maven-publish")
@@ -24,7 +22,7 @@ plugins {
 
 val kotestVersion: String by project
 val junitVersion: String by project
-val mockitoKotlinVersion: String by project
+val mockkVersion: String by project
 val kotlinxVersion: String by project
 
 dependencies {
@@ -32,10 +30,10 @@ dependencies {
     api(project(":fixture"))
     api("io.kotest:kotest-property-jvm:$kotestVersion")
 
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
-    testImplementation(kotlin("test-junit5"))
-    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 
     testImplementation(kotlin("reflect"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinxVersion")

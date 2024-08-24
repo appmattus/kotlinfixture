@@ -21,10 +21,10 @@ import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.typeOf
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class ArrayKTypeResolverTest {
     private val context = TestContext(
@@ -51,7 +51,7 @@ class ArrayKTypeResolverTest {
         val result = context.resolve(typeOf<Array<String>>())
 
         assertNotNull(result)
-        assertEquals(Array<String>::class, result::class)
+        assertEquals(Array<String>::class, result!!::class)
     }
 
     @Test
@@ -60,7 +60,7 @@ class ArrayKTypeResolverTest {
             val result = context.resolve(typeOf<Array<String?>>())
 
             assertNotNull(result)
-            assertEquals(Array<String?>::class, result::class)
+            assertEquals(Array<String?>::class, result!!::class)
 
             @Suppress("UNCHECKED_CAST")
             (result as Array<String?>)[0] == null

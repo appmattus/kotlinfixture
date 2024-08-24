@@ -18,11 +18,11 @@ package io.github.detomarco.kotlinfixture.decorator.constructor
 
 import io.github.detomarco.kotlinfixture.ContextImpl
 import io.github.detomarco.kotlinfixture.config.Configuration
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import kotlin.reflect.KClass
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class ListFavouringConstructorStrategyTest {
     @Test

@@ -20,11 +20,11 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.net.URL
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 class UrlResolverTest {
     private val context = TestContext(Configuration(), UrlResolver())
@@ -41,7 +41,7 @@ class UrlResolverTest {
         val result = context.resolve(URL::class)
 
         assertNotNull(result)
-        assertEquals(URL::class, result::class)
+        assertEquals(URL::class, result!!::class)
     }
 
     @Test

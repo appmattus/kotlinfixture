@@ -17,14 +17,14 @@
 package io.github.detomarco.kotlinfixture.decorator.recursion
 
 import io.github.detomarco.kotlinfixture.typeOf
-import kotlin.test.Test
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNull
+import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class NullRecursionStrategyTest {
     @Test
     fun `throws illegal state exception when stack is empty`() {
-        assertFailsWith<IllegalStateException> {
+        assertThrows<IllegalStateException> {
             NullRecursionStrategy.handleRecursion(typeOf<String>(), emptyList())
         }
     }

@@ -20,13 +20,13 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.config.ConfigurationBuilder
 import io.github.detomarco.kotlinfixture.resolver.Resolver
 import io.github.detomarco.kotlinfixture.typeOf
+import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Test
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class FilterDecoratorTest {
 
@@ -69,7 +69,7 @@ class FilterDecoratorTest {
         val decoratedResolver = FilterDecorator().decorate(resolver)
         val result = decoratedResolver.resolve(context, typeOf<Float>())
 
-        assertEquals(0.5f, result)
+        result shouldBe 0.5f
         verify(mockIterator).next()
         verifyNoMoreInteractions(resolver)
     }

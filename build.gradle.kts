@@ -35,6 +35,11 @@ allprojects {
         plugin("com.adarshr.test-logger")
         plugin("io.gitlab.arturbosch.detekt")
     }
+
+    group = "io.github.detomarco.kotlinfixture"
+    version = (System.getenv("LIB_VERSION") ?: System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
+        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
+
     repositories {
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
@@ -42,13 +47,9 @@ allprojects {
     dependencies {
         detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:$detektGradlePluginVersion")
     }
-    group = "io.github.detomarco.kotlinfixture"
-    version = (System.getenv("LIB_VERSION") ?: System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
-        ?.replaceFirst("refs/tags/", "") ?: "unspecified"
 
-    testlogger {
-        theme = ThemeType.MOCHA
-        showSimpleNames = true
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     detekt {
@@ -61,8 +62,9 @@ allprojects {
         useJUnitPlatform()
     }
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+    testlogger {
+        theme = ThemeType.MOCHA
+        showSimpleNames = true
     }
 }
 

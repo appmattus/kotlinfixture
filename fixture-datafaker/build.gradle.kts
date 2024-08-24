@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm")
     id("maven-publish")
 }
 
 val dataFakerVersion: String by project
-val mockitoKotlinVersion: String by project
+val mockkVersion: String by project
 val kotlinxVersion: String by project
 val junitVersion: String by project
 val kotestVersion: String by project
@@ -33,9 +31,10 @@ dependencies {
     api(project(":fixture"))
     api("net.datafaker:datafaker:$dataFakerVersion")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:$mockitoKotlinVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
 
 }

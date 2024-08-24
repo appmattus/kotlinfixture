@@ -17,12 +17,10 @@
 package io.github.detomarco.kotlinfixture
 
 import io.github.detomarco.kotlinfixture.config.TestGenerator.fixture
-import kotlinx.serialization.Serializable
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class SerializableTest {
 
-    @Serializable
     private data class ErrorCodeDto(
         val errorCode: String,
         val errorDetail: String,

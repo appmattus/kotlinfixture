@@ -22,14 +22,14 @@ import io.github.detomarco.kotlinfixture.decorator.filter.Filter
 import io.github.detomarco.kotlinfixture.resolver.Resolver
 import io.github.detomarco.kotlinfixture.resolver.StringResolver
 import io.github.detomarco.kotlinfixture.typeOf
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertNotEquals
 
 class ConfigurationBuilderTest {
 
@@ -116,7 +116,7 @@ class ConfigurationBuilderTest {
     fun `properties is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
-        assertFailsWith<UnsupportedOperationException> {
+        assertThrows<UnsupportedOperationException> {
             @Suppress("UNCHECKED_CAST")
             (configuration.properties as MutableMap<KClass<*>, Map<String, () -> Any?>>)[Properties::class] =
                 mapOf("property" to { 1 })
@@ -170,7 +170,7 @@ class ConfigurationBuilderTest {
     fun `instances is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
-        assertFailsWith<UnsupportedOperationException> {
+        assertThrows<UnsupportedOperationException> {
             @Suppress("UNCHECKED_CAST", "ReplacePutWithAssignment")
             (configuration.factories as MutableMap<KType, () -> Any?>).put(Properties::class.starProjectedType) {
                 Properties("1")
@@ -205,7 +205,7 @@ class ConfigurationBuilderTest {
     fun `filters is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
-        assertFailsWith<UnsupportedOperationException> {
+        assertThrows<UnsupportedOperationException> {
             @Suppress("ReplacePutWithAssignment")
             (configuration.filters as MutableMap<KType, Filter>).put(typeOf<Number>(), DefaultFilter(Unit))
         }
@@ -240,7 +240,7 @@ class ConfigurationBuilderTest {
     fun `subTypes is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
-        assertFailsWith<UnsupportedOperationException> {
+        assertThrows<UnsupportedOperationException> {
             @Suppress("ReplacePutWithAssignment")
             (configuration.subTypes as MutableMap<KClass<*>, KClass<*>>).put(Number::class, Double::class)
         }
@@ -276,7 +276,7 @@ class ConfigurationBuilderTest {
     fun `decorators is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
-        assertFailsWith<UnsupportedOperationException> {
+        assertThrows<UnsupportedOperationException> {
             @Suppress("UNCHECKED_CAST")
             (configuration.decorators as MutableCollection<Decorator>).add(testDecorator)
         }
@@ -310,7 +310,7 @@ class ConfigurationBuilderTest {
     fun `resolvers is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
-        assertFailsWith<UnsupportedOperationException> {
+        assertThrows<UnsupportedOperationException> {
             @Suppress("UNCHECKED_CAST")
             (configuration.resolvers as MutableCollection<Resolver>).add(testResolver)
         }

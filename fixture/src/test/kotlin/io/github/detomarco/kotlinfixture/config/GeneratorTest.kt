@@ -18,10 +18,10 @@ package io.github.detomarco.kotlinfixture.config
 
 import io.github.detomarco.kotlinfixture.Fixture
 import io.github.detomarco.kotlinfixture.assertIsRandom
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
 
 class GeneratorTest {
 
@@ -31,7 +31,7 @@ class GeneratorTest {
 
     @Test
     fun `Empty range throws exception`() {
-        assertFailsWith<NoSuchElementException> {
+        assertThrows<NoSuchElementException> {
             IntGenerator().range(emptyList())
         }
     }

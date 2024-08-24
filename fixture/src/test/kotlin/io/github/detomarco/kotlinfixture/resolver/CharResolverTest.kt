@@ -20,10 +20,10 @@ import io.github.detomarco.kotlinfixture.TestContext
 import io.github.detomarco.kotlinfixture.Unresolved
 import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class CharResolverTest {
     private val context = TestContext(Configuration(), CharResolver())
@@ -40,7 +40,7 @@ class CharResolverTest {
         val result = context.resolve(Char::class)
 
         assertNotNull(result)
-        assertEquals(Char::class, result::class)
+        assertEquals(Char::class, result!!::class)
     }
 
     @Test

@@ -21,7 +21,7 @@ import io.github.detomarco.kotlinfixture.assertIsRandom
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.resolver.CompositeResolver
 import io.github.detomarco.kotlinfixture.typeOf
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class NullabilityCheckTest {
 

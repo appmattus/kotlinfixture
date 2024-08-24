@@ -16,7 +16,7 @@
 
 package io.github.detomarco.kotlinfixture
 
-import kotlin.test.fail
+import org.junit.jupiter.api.Assertions.fail
 
 fun assertIsRandom(block: () -> Any?) {
     val initial = block()
@@ -25,11 +25,11 @@ fun assertIsRandom(block: () -> Any?) {
         if (initial != block()) return
     }
 
-    fail("Value always equal to $initial")
+    fail<String>("Value always equal to $initial")
 }
 
 fun assertNone(iterations: Int = 1000, block: () -> Boolean) {
     repeat(iterations) {
-        if (block()) fail("Value is true")
+        if (block()) fail<String>("Value is true")
     }
 }

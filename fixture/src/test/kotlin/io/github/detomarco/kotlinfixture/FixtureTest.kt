@@ -18,12 +18,13 @@ package io.github.detomarco.kotlinfixture
 
 import io.github.detomarco.kotlinfixture.config.Configuration
 import io.github.detomarco.kotlinfixture.resolver.Resolver
+import io.kotest.matchers.collections.shouldBeEmpty
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.fail
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.random.Random
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertTrue
-import kotlin.test.fail
 
 class FixtureTest {
 
@@ -42,9 +43,7 @@ class FixtureTest {
                     removeAll(actualResolvers)
                 }
 
-        assertTrue("Missing the resolvers: $missingResolvers") {
-            missingResolvers.isEmpty()
-        }
+        missingResolvers.shouldBeEmpty()
     }
 
     @Test
@@ -70,7 +69,7 @@ class FixtureTest {
             val result = fixture(listOf(10, 20, 30))
 
             if (result != 10 && result != 20 && result != 30) {
-                fail()
+                fail<String>()
             }
         }
     }
@@ -362,7 +361,7 @@ class FixtureTest {
 
     @Test
     fun `read only property cannot be set in fixture initialisation`() {
-        assertFailsWith<IllegalStateException> {
+        assertThrows<IllegalStateException> {
             kotlinFixture {
                 property(KotlinClass::alsoReadOnly) { "a" }
             }
@@ -371,7 +370,7 @@ class FixtureTest {
 
     @Test
     fun `read only property cannot be overridden in fixture creation`() {
-        assertFailsWith<IllegalStateException> {
+        assertThrows<IllegalStateException> {
             val fixture = kotlinFixture()
 
             fixture<KotlinClass> {
