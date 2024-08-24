@@ -25,8 +25,6 @@ plugins {
 
 val classgraphVersion: String by project
 val jodaTimeVersion: String by project
-val threeTenVersion: String by project
-val kTormVersion: String by project
 val junitVersion: String by project
 val mockitoKotlinVersion: String by project
 val serializationVersion: String by project
@@ -44,12 +42,6 @@ dependencies {
 
     compileOnly("joda-time:joda-time:${jodaTimeVersion}")
     testImplementation("joda-time:joda-time:${jodaTimeVersion}")
-
-    compileOnly("org.threeten:threetenbp:${threeTenVersion}")
-    testImplementation("org.threeten:threetenbp:${threeTenVersion}")
-
-    compileOnly("org.ktorm:ktorm-core:${kTormVersion}")
-    testImplementation("org.ktorm:ktorm-core:${kTormVersion}")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")

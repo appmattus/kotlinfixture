@@ -45,7 +45,6 @@ import io.github.detomarco.kotlinfixture.resolver.IterableKTypeResolver
 import io.github.detomarco.kotlinfixture.resolver.JodaTimeResolver
 import io.github.detomarco.kotlinfixture.resolver.KFunctionResolver
 import io.github.detomarco.kotlinfixture.resolver.KNamedPropertyResolver
-import io.github.detomarco.kotlinfixture.resolver.KTormResolver
 import io.github.detomarco.kotlinfixture.resolver.KTypeResolver
 import io.github.detomarco.kotlinfixture.resolver.LocaleResolver
 import io.github.detomarco.kotlinfixture.resolver.MapKTypeResolver
@@ -56,7 +55,6 @@ import io.github.detomarco.kotlinfixture.resolver.Resolver
 import io.github.detomarco.kotlinfixture.resolver.SealedClassResolver
 import io.github.detomarco.kotlinfixture.resolver.StringResolver
 import io.github.detomarco.kotlinfixture.resolver.SubTypeResolver
-import io.github.detomarco.kotlinfixture.resolver.ThreeTenResolver
 import io.github.detomarco.kotlinfixture.resolver.TimeResolver
 import io.github.detomarco.kotlinfixture.resolver.TupleKTypeResolver
 import io.github.detomarco.kotlinfixture.resolver.UriResolver
@@ -128,12 +126,10 @@ data class Configuration internal constructor(
             DateResolver(),
             TimeResolver(),
             JodaTimeResolver(),
-            ThreeTenResolver(),
             FileResolver(),
             FormatResolver(),
             CurrencyResolver(),
             LocaleResolver(),
-            KTormResolver(),
 
             ObjectResolver(),
             SealedClassResolver(),
