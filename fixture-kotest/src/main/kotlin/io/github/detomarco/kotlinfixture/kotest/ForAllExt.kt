@@ -18,7 +18,6 @@
 
 package io.github.detomarco.kotlinfixture.kotest
 
-import io.github.detomarco.kotlinfixture.Fixture
 import io.kotest.property.PropTestConfig
 import io.kotest.property.PropertyContext
 import io.kotest.property.forAll
@@ -28,14 +27,14 @@ import io.kotest.property.forAll
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A> Fixture.forAll(
+suspend inline fun <reified A> forAll(
     noinline function: suspend PropertyContext.(a: A) -> Boolean
 ) = forAll(kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A> Fixture.forAll(
+suspend inline fun <reified A> forAll(
     iterations: Int,
     noinline function: suspend PropertyContext.(a: A) -> Boolean
 ) = forAll(iterations, kotestGen(), function)
@@ -43,7 +42,7 @@ suspend inline fun <reified A> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A> Fixture.forAll(
+suspend inline fun <reified A> forAll(
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A) -> Boolean
 ) = forAll(config, kotestGen(), function)
@@ -51,7 +50,7 @@ suspend inline fun <reified A> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A> Fixture.forAll(
+suspend inline fun <reified A> forAll(
     iterations: Int,
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A) -> Boolean
@@ -62,14 +61,14 @@ suspend inline fun <reified A> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B> Fixture.forAll(
+suspend inline fun <reified A, reified B> forAll(
     noinline function: suspend PropertyContext.(a: A, b: B) -> Boolean
 ) = forAll(kotestGen(), kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B> Fixture.forAll(
+suspend inline fun <reified A, reified B> forAll(
     iterations: Int,
     noinline function: suspend PropertyContext.(a: A, b: B) -> Boolean
 ) = forAll(iterations, kotestGen(), kotestGen(), function)
@@ -77,7 +76,7 @@ suspend inline fun <reified A, reified B> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B> Fixture.forAll(
+suspend inline fun <reified A, reified B> forAll(
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B) -> Boolean
 ) = forAll(config, kotestGen(), kotestGen(), function)
@@ -85,7 +84,7 @@ suspend inline fun <reified A, reified B> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B> Fixture.forAll(
+suspend inline fun <reified A, reified B> forAll(
     iterations: Int,
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B) -> Boolean
@@ -96,14 +95,14 @@ suspend inline fun <reified A, reified B> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C> forAll(
     noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Boolean
 ) = forAll(kotestGen(), kotestGen(), kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C> forAll(
     iterations: Int,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Boolean
 ) = forAll(iterations, kotestGen(), kotestGen(), kotestGen(), function)
@@ -111,7 +110,7 @@ suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C> forAll(
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Boolean
 ) = forAll(config, kotestGen(), kotestGen(), kotestGen(), function)
@@ -119,7 +118,7 @@ suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C> forAll(
     iterations: Int,
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C) -> Boolean
@@ -130,14 +129,14 @@ suspend inline fun <reified A, reified B, reified C> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D> forAll(
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Boolean
 ) = forAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D> forAll(
     iterations: Int,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Boolean
 ) = forAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
@@ -145,7 +144,7 @@ suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D> forAll(
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Boolean
 ) = forAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
@@ -153,7 +152,7 @@ suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D> forAll(
     iterations: Int,
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D) -> Boolean
@@ -164,14 +163,14 @@ suspend inline fun <reified A, reified B, reified C, reified D> Fixture.forAll(
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E> forAll(
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Boolean
 ) = forAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E> forAll(
     iterations: Int,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Boolean
 ) = forAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
@@ -179,7 +178,7 @@ suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixtu
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E> forAll(
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Boolean
 ) = forAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
@@ -187,7 +186,7 @@ suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixtu
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E> forAll(
     iterations: Int,
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E) -> Boolean
@@ -198,14 +197,14 @@ suspend inline fun <reified A, reified B, reified C, reified D, reified E> Fixtu
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> forAll(
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Boolean
 ) = forAll(kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
 
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> forAll(
     iterations: Int,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Boolean
 ) = forAll(iterations, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
@@ -213,7 +212,7 @@ suspend inline fun <reified A, reified B, reified C, reified D, reified E, reifi
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> forAll(
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Boolean
 ) = forAll(config, kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), kotestGen(), function)
@@ -221,7 +220,7 @@ suspend inline fun <reified A, reified B, reified C, reified D, reified E, reifi
 /**
  * Use [Fixture] to generate random objects for type parameters and validate the [function] returns true `forAll`.
  */
-suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> Fixture.forAll(
+suspend inline fun <reified A, reified B, reified C, reified D, reified E, reified F> forAll(
     iterations: Int,
     config: PropTestConfig,
     noinline function: suspend PropertyContext.(a: A, b: B, c: C, d: D, e: E, f: F) -> Boolean

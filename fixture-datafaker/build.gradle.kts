@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2023 Appmattus Limited
- *           2024 Detomarco
+ * Copyright 2024 Detomarco
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,36 +20,10 @@ plugins {
 }
 
 val dataFakerVersion: String by project
-val mockkVersion: String by project
-val kotlinxVersion: String by project
-val junitVersion: String by project
-val kotestVersion: String by project
 
 dependencies {
-    api(kotlin("stdlib-jdk8"))
-    api(project(":fixture"))
+    implementation(project(":fixture"))
     api("net.datafaker:datafaker:$dataFakerVersion")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation("io.mockk:mockk:$mockkVersion")
-
-    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
-
-}
-
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks.jar {
-    enabled = true
-    // Remove `plain` postfix from jar file name
-    archiveClassifier.set("")
 }
 
 publishing {

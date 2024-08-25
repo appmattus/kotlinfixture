@@ -1,8 +1,8 @@
 = KotlinFixture
-Appmattus Limited <info@appmattus.com>
+Detomarco <idp.detomarco@gmail.com>
 :toc: preamble
 :toc-title: Contents
-:homepage: https://github.com/appmattus/kotlinfixture
+:homepage: https://github.com/detomarco/kotlinfixture
 ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
@@ -13,7 +13,7 @@ endif::[]
 :link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
 :link-kotlinfixture: https://github.com/detomarco/kotlinfixture[KotlinFixture]
 
-https://search.maven.org/search?q=g:com.appmattus.fixture[image:https://img.shields.io/maven-central/v/com.detomarco.fixture/fixture[Maven Central]]
+https://central.sonatype.com/search?q=g:io.github.detomarco.kotlinfixture&smo=true[image:https://img.shields.io/maven-central/v/io.github.detomarco.kotlinfixture/fixture[Maven Central]]
 https://github.com/detomarco/kotlinfixture/actions[image:https://github.com/detomarco/kotlinfixture/workflows/CI/badge.svg[CI status]]
 https://codecov.io/gh/detomarco/kotlinfixture[image:https://codecov.io/gh/detomarco/kotlinfixture/branch/main/graph/badge.svg[Coverage status]]
 link:LICENSE.md[image:https://img.shields.io/badge/License-Apache%202.0-blue.svg[License]]

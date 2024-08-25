@@ -42,7 +42,9 @@ class CheckAllExtTest {
         runBlocking {
             val generatedValues = mutableSetOf<Person>()
 
-            testCase.block(fixture, { generatedValues.addAll(it) }) { }
+            testCase.block(fixture, {
+                generatedValues.addAll(it)
+            }) { }
             generatedValues.size shouldBe testCase.expectedCount
         }
     }

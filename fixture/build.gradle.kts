@@ -23,50 +23,28 @@ plugins {
 
 val classgraphVersion: String by project
 val jodaTimeVersion: String by project
-val junitVersion: String by project
 val mockitoKotlinVersion: String by project
 val serializationVersion: String by project
 val marcellogalhardoVersion: String by project
 val flextradeVersion: String by project
 val easyrandomVersion: String by project
-val kotestVersion: String by project
 val kotlinxSerializatioVersion: String by project
-val mockkVersion: String by project
 
 dependencies {
 
-    implementation(kotlin("stdlib-jdk8"))
     implementation("io.github.classgraph:classgraph:${classgraphVersion}")
     implementation(kotlin("reflect"))
 
     compileOnly("joda-time:joda-time:${jodaTimeVersion}")
     testImplementation("joda-time:joda-time:${jodaTimeVersion}")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testImplementation("org.mockito.kotlin:mockito-kotlin:${mockitoKotlinVersion}")
-    testImplementation("io.mockk:mockk:$mockkVersion")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializatioVersion}")
-    testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     // Used for ComparisonTest
     testImplementation("com.github.marcellogalhardo:kotlin-fixture:${marcellogalhardoVersion}")
     testImplementation("com.flextrade.jfixture:kfixture:${flextradeVersion}")
     testImplementation("org.jeasy:easy-random-core:${easyrandomVersion}")
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-    withSourcesJar()
-    withJavadocJar()
-}
-
-tasks.jar {
-    enabled = true
-    // Remove `plain` postfix from jar file name
-    archiveClassifier.set("")
 }
 
 publishing {
