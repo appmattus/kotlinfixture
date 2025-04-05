@@ -15,6 +15,7 @@
  */
 
 import com.adarshr.gradle.testlogger.theme.ThemeType
+import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jreleaser.model.Active
 
@@ -24,7 +25,6 @@ plugins {
     id("org.jreleaser")
     id("signing")
     id("com.adarshr.test-logger")
-    id("org.owasp.dependencycheck")
 }
 
 val detektGradlePluginVersion: String by project
@@ -41,7 +41,6 @@ subprojects {
         plugin("org.jetbrains.kotlin.jvm")
         plugin("io.gitlab.arturbosch.detekt")
         plugin("com.adarshr.test-logger")
-        plugin("org.owasp.dependencycheck")
     }
 
     repositories {
@@ -78,15 +77,6 @@ subprojects {
     testlogger {
         theme = ThemeType.MOCHA
         showSimpleNames = true
-    }
-
-    dependencyCheck {
-        nvd.apiKey = System.getenv("NVD_API_KEY")
-        failBuildOnCVSS = 0f
-        suppressionFile = "cve-suppressions.xml"
-        autoUpdate = true
-        // Disable the .NET Assembly Analyzer. Requires an external tool, and this project likely won't ever have .NET DLLs.
-        analyzers.assemblyEnabled = false
     }
 }
 

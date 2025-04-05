@@ -31,23 +31,6 @@ jobs:
 
     - name: Run lint
       run: ./gradlew detekt
-  dependency-check:
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
-
-    - name: Dependency Check
-      env:
-        NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
-      run: ./gradlew dependencyCheckAnalyze --stacktrace
 
   test:
     runs-on: ubuntu-latest
