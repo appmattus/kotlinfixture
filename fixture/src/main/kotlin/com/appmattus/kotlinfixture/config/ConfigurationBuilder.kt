@@ -583,6 +583,9 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         return property(T::class, property.name, generator as GeneratorFun)
     }
 
+    @JvmName("propertyByInfixFunction")
+    inline infix fun <reified T, G> KProperty1<T, G>.property(noinline generator: Generator<G>.() -> G) = property(this, generator)
+
     /**
      * Customising generation of class properties with property
      *

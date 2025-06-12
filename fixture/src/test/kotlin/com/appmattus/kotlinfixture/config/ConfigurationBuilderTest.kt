@@ -113,6 +113,25 @@ class ConfigurationBuilderTest {
     }
 
     @Test
+    fun `can override properties using property infix function`() {
+        val original: Generator<Properties>.() -> Properties = { Properties("2") }
+
+        @Suppress("UNCHECKED_CAST")
+        val configuration = ConfigurationBuilder(
+            Configuration(properties = mapOf(Properties::class to mapOf("property" to original as GeneratorFun)))
+        ).apply {
+            Properties::property property { "1" }
+        }.build()
+
+        with(TestGenerator) {
+            assertEquals(
+                "1",
+                (configuration.properties.getValue(Properties::class).getValue("property"))()
+            )
+        }
+    }
+
+    @Test
     fun `properties is immutable`() {
         val configuration = ConfigurationBuilder(Configuration()).build()
 
