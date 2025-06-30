@@ -100,3 +100,8 @@ class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration 
  */
 fun kotlinFixture(configuration: ConfigurationBuilder.() -> Unit = {}) =
     Fixture(ConfigurationBuilder().apply(configuration).build())
+
+inline fun <reified T> fixture(
+    range: Iterable<T> = emptyList(),
+    noinline configuration: ConfigurationBuilder.() -> Unit = {}
+) = kotlinFixture().invoke(range, configuration)
