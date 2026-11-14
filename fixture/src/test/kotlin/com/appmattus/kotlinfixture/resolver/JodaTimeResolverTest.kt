@@ -74,9 +74,10 @@ class JodaTimeResolverTest {
         @Test
         fun `Can override DateTimeZone when creating DateTime`() {
             repeat(100) {
-                val dateTime = kotlinFixture {
+                val fixture = kotlinFixture {
                     factory<DateTimeZone> { DateTimeZone.forID("Europe/London") }
-                } <DateTime>()
+                }
+                val dateTime = fixture<DateTime>()
 
                 assertEquals("Europe/London", dateTime.zone.id)
             }

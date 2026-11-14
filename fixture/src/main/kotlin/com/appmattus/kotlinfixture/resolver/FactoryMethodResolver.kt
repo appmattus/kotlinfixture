@@ -32,7 +32,6 @@ internal class FactoryMethodResolver : Resolver, PopulateInstance {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
-
             val results =
                 (obj.companionObjectFactoryMethods() ?: obj.staticFactoryMethods()).shuffled().map { factoryMethod ->
 
@@ -64,8 +63,13 @@ internal class FactoryMethodResolver : Resolver, PopulateInstance {
     }
 
     private fun KClass<*>.staticFactoryMethods(): List<KFunction<*>> {
-        return staticFunctions.filter {
-            (it.returnType.classifier as KClass<*>).isSubclassOf(this)
+        return try {
+            staticFunctions.filter {
+                (it.returnType.classifier as KClass<*>).isSubclassOf(this)
+            }
+        } catch (expected: Error) {
+            // kotlin-reflect can fail to map members of some Java classes, in which case there are no usable factory methods
+            emptyList()
         }
     }
 

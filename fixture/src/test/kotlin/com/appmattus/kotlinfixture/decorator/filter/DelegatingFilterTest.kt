@@ -18,7 +18,7 @@ package com.appmattus.kotlinfixture.decorator.filter
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.resolver.Resolver
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.mock
 import java.util.concurrent.locks.Lock
 import kotlin.test.Test
 import kotlin.test.assertEquals

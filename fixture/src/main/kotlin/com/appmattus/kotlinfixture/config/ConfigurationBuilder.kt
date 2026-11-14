@@ -319,7 +319,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     @Deprecated(
         "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or " +
-                "property<Property>(Class::function) { … } functions",
+            "property<Property>(Class::function) { … } functions",
         level = DeprecationLevel.ERROR
     )
     fun repeatCount(clazz: KClass<*>, propertyName: String, generator: () -> Int) {
@@ -653,7 +653,7 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     @Deprecated(
         "Use one of the property(Class::property) { … }, property<Class, Property>(propertyName) { … } or " +
-                "property<Property>(Class::function) { … } functions",
+            "property<Property>(Class::function) { … } functions",
         level = DeprecationLevel.ERROR
     )
     fun property(clazz: KClass<*>, propertyName: String, generator: GeneratorFun) {

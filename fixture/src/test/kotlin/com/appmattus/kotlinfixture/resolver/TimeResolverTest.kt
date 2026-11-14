@@ -81,9 +81,10 @@ class TimeResolverTest {
         @Test
         fun `Can override ZoneId when creating ZonedDateTime`() {
             repeat(100) {
-                val zonedDateTime = kotlinFixture {
+                val fixture = kotlinFixture {
                     factory<ZoneId> { ZoneId.of("Europe/London") }
-                } <ZonedDateTime>()
+                }
+                val zonedDateTime = fixture<ZonedDateTime>()
 
                 assertEquals("Europe/London", zonedDateTime.zone.id)
             }

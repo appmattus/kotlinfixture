@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("jvm")
@@ -33,7 +33,7 @@ dependencies {
     testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}")
 
     testImplementation(kotlin("reflect"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
@@ -42,17 +42,20 @@ dependencies {
 lint {
     abortOnError = true
     warningsAsErrors = true
-    htmlOutput = file("$buildDir/reports/lint-results.html")
-    xmlOutput = file("$buildDir/reports/lint-results.xml")
+    htmlOutput = layout.buildDirectory.file("reports/lint-results.html").get().asFile
+    xmlOutput = layout.buildDirectory.file("reports/lint-results.xml").get().asFile
 }
 
+// Kotest requires Java 11
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
 }
 
 tasks.named("check") {

@@ -18,12 +18,12 @@ package com.appmattus.kotlinfixture.decorator.filter
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.resolver.Resolver
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.inOrder
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
+import org.mockito.kotlin.any
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.inOrder
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import java.util.concurrent.locks.Lock
 import kotlin.test.Test
 import kotlin.test.assertEquals

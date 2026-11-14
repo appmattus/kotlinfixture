@@ -34,7 +34,6 @@ internal class AtomicKTypeResolver : Resolver {
 
     @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? = with(context) {
-
         if (obj is KType && obj.classifier is KClass<*>) {
             return when (obj.classifier) {
                 AtomicBoolean::class -> generateAtomicBoolean(obj)

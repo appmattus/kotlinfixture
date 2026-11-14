@@ -65,7 +65,6 @@ internal class HashtableKTypeResolver : Resolver {
     }
 
     private fun createCollection(obj: KType) = when (obj.classifier as KClass<*>) {
-
         Dictionary::class,
         Hashtable::class -> Hashtable()
 

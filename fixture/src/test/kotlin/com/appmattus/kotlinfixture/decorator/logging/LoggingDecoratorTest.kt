@@ -21,10 +21,10 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.typeOf
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import org.mockito.internal.verification.Times
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import kotlin.reflect.KType
 import kotlin.test.Test
 import kotlin.test.assertEquals

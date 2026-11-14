@@ -72,7 +72,6 @@ internal class MapKTypeResolver : Resolver {
     }
 
     private fun createCollection(obj: KType): MutableMap<Any?, Any?>? = when (obj.classifier as KClass<*>) {
-
         Map::class,
         java.util.AbstractMap::class,
         HashMap::class -> HashMap()
