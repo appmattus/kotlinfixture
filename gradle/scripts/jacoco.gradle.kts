@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+import org.gradle.accessors.dm.LibrariesForLibs
+
+val Project.libs: LibrariesForLibs
+    get() = this.extensions.getByType()
+
 apply<JacocoPlugin>()
 
 val jacocoTask = tasks.withType<JacocoReport> {
@@ -29,5 +34,5 @@ tasks.named("check") {
 }
 
 configure<JacocoPluginExtension> {
-    toolVersion = "0.8.16"
+    toolVersion = libs.versions.jacoco.get()
 }

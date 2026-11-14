@@ -29,15 +29,15 @@ apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 dependencies {
     api(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
-    api("com.github.mifmif:generex:${Versions.generex}")
+    api(libs.generex)
 
-    testImplementation("junit:junit:${Versions.junit4}")
+    testImplementation(libs.junit4)
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation(libs.mockitoKotlin)
 
     testImplementation(kotlin("reflect"))
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Versions.coroutines}")
+    testImplementation(libs.kotlinX.coroutinesTest)
 }
 
 lint {

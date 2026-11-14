@@ -25,10 +25,10 @@ apply(from = "$rootDir/gradle/scripts/jacoco-android.gradle.kts")
 android {
     namespace = "com.appmattus.fixture.android.tests"
 
-    compileSdk = 37
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
 
     testOptions {
@@ -52,17 +52,17 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     api(project(":fixture"))
 
-    testImplementation("androidx.test:core:${Versions.AndroidX.testCore}")
-    testImplementation("androidx.test:runner:${Versions.AndroidX.testRunner}")
-    testImplementation("androidx.test.ext:junit:${Versions.AndroidX.testExtJunit}")
-    testImplementation("org.robolectric:robolectric:${Versions.robolectric}") {
+    testImplementation(libs.androidX.testCore)
+    testImplementation(libs.androidX.testRunner)
+    testImplementation(libs.androidX.testExtJunit)
+    testImplementation(libs.robolectric) {
         exclude(group = "com.google.auto.service", module = "auto-service")
     }
 
-    testImplementation("junit:junit:${Versions.junit4}")
+    testImplementation(libs.junit4)
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation(libs.mockitoKotlin)
 
     testImplementation(kotlin("reflect"))
 }

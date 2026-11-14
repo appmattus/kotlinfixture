@@ -14,6 +14,14 @@
  * limitations under the License.
  */
 
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
 include(
     "fixture",
     "fixture-javafaker",
