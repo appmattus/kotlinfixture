@@ -25,7 +25,7 @@ apply(from = "$rootDir/gradle/scripts/jacoco-android.gradle.kts")
 android {
     namespace = "com.appmattus.fixture.android.tests"
 
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 21

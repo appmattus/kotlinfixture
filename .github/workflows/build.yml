@@ -25,7 +25,7 @@ jobs:
                 uses: gradle/actions/setup-gradle@v6
 
             -   name: Install Android SDK platform
-                run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36"
+                run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-37.0"
 
             -   name: Build
                 run: ./gradlew assemble check --stacktrace
@@ -52,7 +52,7 @@ jobs:
                 uses: gradle/actions/setup-gradle@v6
 
             -   name: Install Android SDK platform
-                run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36"
+                run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-37.0"
 
             -   name: Prepare tag properties
                 run: |
