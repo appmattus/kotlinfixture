@@ -43,7 +43,7 @@ internal class KFunctionResolver : Resolver {
                         obj.containingClass.companionObjectInstance
                     }
                     else -> {
-                        throw IllegalStateException("Unsupported parameter type: $it")
+                        error("Unsupported parameter type: $it")
                     }
                 }
             }.filterKeys {

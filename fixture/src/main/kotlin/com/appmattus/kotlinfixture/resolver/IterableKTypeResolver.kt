@@ -83,7 +83,6 @@ internal class IterableKTypeResolver : Resolver {
 
     @Suppress("ComplexMethod")
     private fun createCollection(obj: KType): MutableCollection<Any?>? = when (obj.classifier as KClass<*>) {
-
         Iterable::class,
         Collection::class,
         List::class,
@@ -127,7 +126,9 @@ internal class IterableKTypeResolver : Resolver {
         CopyOnWriteArraySet::class -> CopyOnWriteArraySet()
         CopyOnWriteArrayList::class -> CopyOnWriteArrayList()
         ConcurrentLinkedQueue::class -> ConcurrentLinkedQueue()
-        DelayQueue::class -> @Suppress("UNCHECKED_CAST") (DelayQueue<Delayed>() as MutableCollection<Any?>)
+        DelayQueue::class ->
+            @Suppress("UNCHECKED_CAST")
+            (DelayQueue<Delayed>() as MutableCollection<Any?>)
         LinkedBlockingQueue::class -> LinkedBlockingQueue()
         PriorityBlockingQueue::class -> PriorityBlockingQueue()
 

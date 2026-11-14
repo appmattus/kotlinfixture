@@ -80,82 +80,120 @@ class CheckAllExtTest {
             // 1 parameter
 
             TestCase(PropertyTesting.defaultIterationCount) { save, result ->
-                checkAll<Person> { p1 -> save(listOf(p1)); result() }
+                checkAll<Person> { p1 ->
+                    save(listOf(p1))
+                    result()
+                }
             },
 
             TestCase(ITERATIONS) { save, result ->
-                checkAll<Person>(ITERATIONS) { p1 -> save(listOf(p1)); result() }
+                checkAll<Person>(ITERATIONS) { p1 ->
+                    save(listOf(p1))
+                    result()
+                }
             },
 
             TestCase(PropertyTesting.defaultIterationCount) { save, result ->
-                checkAll<Person>(PropTestConfig()) { p1 -> save(listOf(p1)); result() }
+                checkAll<Person>(PropTestConfig()) { p1 ->
+                    save(listOf(p1))
+                    result()
+                }
             },
 
             TestCase(ITERATIONS) { save, result ->
-                checkAll<Person>(ITERATIONS, PropTestConfig()) { p1 -> save(listOf(p1)); result() }
+                checkAll<Person>(ITERATIONS, PropTestConfig()) { p1 ->
+                    save(listOf(p1))
+                    result()
+                }
             },
 
             // 2 parameters
 
             TestCase(PropertyTesting.defaultIterationCount * 2) { save, result ->
-                checkAll<Person, Person> { p1, p2 -> save(listOf(p1, p2)); result() }
+                checkAll<Person, Person> { p1, p2 ->
+                    save(listOf(p1, p2))
+                    result()
+                }
             },
 
             TestCase(ITERATIONS * 2) { save, result ->
-                checkAll<Person, Person>(ITERATIONS) { p1, p2 -> save(listOf(p1, p2)); result() }
+                checkAll<Person, Person>(ITERATIONS) { p1, p2 ->
+                    save(listOf(p1, p2))
+                    result()
+                }
             },
 
             TestCase(PropertyTesting.defaultIterationCount * 2) { save, result ->
-                checkAll<Person, Person>(PropTestConfig()) { p1, p2 -> save(listOf(p1, p2)); result() }
+                checkAll<Person, Person>(PropTestConfig()) { p1, p2 ->
+                    save(listOf(p1, p2))
+                    result()
+                }
             },
 
             TestCase(ITERATIONS * 2) { save, result ->
-                checkAll<Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2 -> save(listOf(p1, p2)); result() }
+                checkAll<Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2 ->
+                    save(listOf(p1, p2))
+                    result()
+                }
             },
 
             // 3 parameters
 
             TestCase(PropertyTesting.defaultIterationCount * 3) { save, result ->
-                checkAll<Person, Person, Person> { p1, p2, p3 -> save(listOf(p1, p2, p3)); result() }
+                checkAll<Person, Person, Person> { p1, p2, p3 ->
+                    save(listOf(p1, p2, p3))
+                    result()
+                }
             },
 
             TestCase(ITERATIONS * 3) { save, result ->
-                checkAll<Person, Person, Person>(ITERATIONS) { p1, p2, p3 -> save(listOf(p1, p2, p3)); result() }
+                checkAll<Person, Person, Person>(ITERATIONS) { p1, p2, p3 ->
+                    save(listOf(p1, p2, p3))
+                    result()
+                }
             },
 
             TestCase(PropertyTesting.defaultIterationCount * 3) { save, result ->
                 checkAll<Person, Person, Person>(PropTestConfig()) { p1, p2, p3 ->
-                    save(listOf(p1, p2, p3)); result()
+                    save(listOf(p1, p2, p3))
+                    result()
                 }
             },
 
             TestCase(ITERATIONS * 3) { save, result ->
                 checkAll<Person, Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2, p3 ->
-                    save(listOf(p1, p2, p3)); result()
+                    save(listOf(p1, p2, p3))
+                    result()
                 }
             },
 
             // 4 parameters
 
             TestCase(PropertyTesting.defaultIterationCount * 4) { save, result ->
-                checkAll<Person, Person, Person, Person> { p1, p2, p3, p4 -> save(listOf(p1, p2, p3, p4)); result() }
+                checkAll<Person, Person, Person, Person> { p1, p2, p3, p4 ->
+                    save(listOf(p1, p2, p3, p4))
+                    result()
+                }
             },
 
             TestCase(ITERATIONS * 4) { save, result ->
                 checkAll<Person, Person, Person, Person>(ITERATIONS) { p1, p2, p3, p4 ->
-                    save(listOf(p1, p2, p3, p4)); result()
+                    save(listOf(p1, p2, p3, p4))
+                    result()
                 }
             },
 
             TestCase(PropertyTesting.defaultIterationCount * 4) { save, result ->
                 checkAll<Person, Person, Person, Person>(PropTestConfig()) { p1, p2, p3, p4 ->
-                    save(listOf(p1, p2, p3, p4)); result()
+                    save(listOf(p1, p2, p3, p4))
+                    result()
                 }
             },
 
             TestCase(ITERATIONS * 4) { save, result ->
                 checkAll<Person, Person, Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2, p3, p4 ->
-                    save(listOf(p1, p2, p3, p4)); result()
+                    save(listOf(p1, p2, p3, p4))
+                    result()
                 }
             },
 
@@ -163,25 +201,29 @@ class CheckAllExtTest {
 
             TestCase(PropertyTesting.defaultIterationCount * 5) { save, result ->
                 checkAll<Person, Person, Person, Person, Person> { p1, p2, p3, p4, p5 ->
-                    save(listOf(p1, p2, p3, p4, p5)); result()
+                    save(listOf(p1, p2, p3, p4, p5))
+                    result()
                 }
             },
 
             TestCase(ITERATIONS * 5) { save, result ->
                 checkAll<Person, Person, Person, Person, Person>(ITERATIONS) { p1, p2, p3, p4, p5 ->
-                    save(listOf(p1, p2, p3, p4, p5)); result()
+                    save(listOf(p1, p2, p3, p4, p5))
+                    result()
                 }
             },
 
             TestCase(PropertyTesting.defaultIterationCount * 5) { save, result ->
                 checkAll<Person, Person, Person, Person, Person>(PropTestConfig()) { p1, p2, p3, p4, p5 ->
-                    save(listOf(p1, p2, p3, p4, p5)); result()
+                    save(listOf(p1, p2, p3, p4, p5))
+                    result()
                 }
             },
 
             TestCase(ITERATIONS * 5) { save, result ->
                 checkAll<Person, Person, Person, Person, Person>(ITERATIONS, PropTestConfig()) { p1, p2, p3, p4, p5 ->
-                    save(listOf(p1, p2, p3, p4, p5)); result()
+                    save(listOf(p1, p2, p3, p4, p5))
+                    result()
                 }
             },
 
@@ -189,19 +231,22 @@ class CheckAllExtTest {
 
             TestCase(PropertyTesting.defaultIterationCount * 6) { save, result ->
                 checkAll<Person, Person, Person, Person, Person, Person> { p1, p2, p3, p4, p5, p6 ->
-                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                    save(listOf(p1, p2, p3, p4, p5, p6))
+                    result()
                 }
             },
 
             TestCase(ITERATIONS * 6) { save, result ->
                 checkAll<Person, Person, Person, Person, Person, Person>(ITERATIONS) { p1, p2, p3, p4, p5, p6 ->
-                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                    save(listOf(p1, p2, p3, p4, p5, p6))
+                    result()
                 }
             },
 
             TestCase(PropertyTesting.defaultIterationCount * 6) { save, result ->
                 checkAll<Person, Person, Person, Person, Person, Person>(PropTestConfig()) { p1, p2, p3, p4, p5, p6 ->
-                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                    save(listOf(p1, p2, p3, p4, p5, p6))
+                    result()
                 }
             },
 
@@ -210,7 +255,8 @@ class CheckAllExtTest {
                     ITERATIONS,
                     PropTestConfig()
                 ) { p1, p2, p3, p4, p5, p6 ->
-                    save(listOf(p1, p2, p3, p4, p5, p6)); result()
+                    save(listOf(p1, p2, p3, p4, p5, p6))
+                    result()
                 }
             }
         )

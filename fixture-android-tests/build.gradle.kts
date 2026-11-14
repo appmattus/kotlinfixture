@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.library")
-    kotlin("android")
 }
 
 apply(from = "$rootDir/gradle/scripts/jacoco-android.gradle.kts")
@@ -26,10 +25,10 @@ apply(from = "$rootDir/gradle/scripts/jacoco-android.gradle.kts")
 android {
     namespace = "com.appmattus.fixture.android.tests"
 
-    compileSdk = 33
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 19
+        minSdk = 21
     }
 
     testOptions {
@@ -43,9 +42,9 @@ android {
         warningsAsErrors = true
     }
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
@@ -63,13 +62,15 @@ dependencies {
     testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}")
 
     testImplementation(kotlin("reflect"))
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
 }
 
 tasks.named("check") {

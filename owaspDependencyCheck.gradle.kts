@@ -19,7 +19,7 @@ import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
 
 buildscript {
     repositories {
-        mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath("org.owasp:dependency-check-gradle:${Versions.dependencyCheckGradlePlugin}")
@@ -30,18 +30,20 @@ subprojects {
     apply<DependencyCheckPlugin>()
 
     configure<DependencyCheckExtension> {
-        failBuildOnCVSS = 0f
+        failBuildOnCVSS.set(0f)
 
-        suppressionFile = file("$rootDir/cve-suppressions.xml").toString()
+        suppressionFile.set(file("$rootDir/cve-suppressions.xml").toString())
 
-        analyzers.assemblyEnabled = false
+        analyzers.assemblyEnabled.set(false)
 
-        skipConfigurations = listOf(
-            "lintClassPath",
-            "jacocoAgent",
-            "jacocoAnt",
-            "kotlinCompilerClasspath",
-            "kotlinCompilerPluginClasspath"
+        skipConfigurations.set(
+            listOf(
+                "lintClassPath",
+                "jacocoAgent",
+                "jacocoAnt",
+                "kotlinCompilerClasspath",
+                "kotlinCompilerPluginClasspath"
+            )
         )
     }
 }

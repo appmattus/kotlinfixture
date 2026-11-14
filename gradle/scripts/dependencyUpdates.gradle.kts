@@ -37,13 +37,7 @@ fun isNonStable(version: String): Boolean {
 }
 
 tasks.named("dependencyUpdates", DependencyUpdatesTask::class.java).configure {
-    resolutionStrategy {
-        componentSelection {
-            all {
-                if (isNonStable(candidate.version)) {
-                    reject("Release candidate")
-                }
-            }
-        }
+    rejectVersionIf {
+        isNonStable(candidate.version)
     }
 }

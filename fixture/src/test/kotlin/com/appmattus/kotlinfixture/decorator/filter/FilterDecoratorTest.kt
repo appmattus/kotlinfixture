@@ -20,11 +20,11 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.config.ConfigurationBuilder
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.typeOf
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyNoMoreInteractions
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.verifyNoMoreInteractions
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

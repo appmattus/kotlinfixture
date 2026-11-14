@@ -33,7 +33,7 @@ val jacocoTask = tasks.register<JacocoReport>("jacocoTestReport") {
         "**/*Test*.*",
         "android/**/*.*"
     )
-    val debugTree = fileTree("${project.buildDir}/intermediates/javac/debug") {
+    val debugTree = fileTree(project.layout.buildDirectory.dir("intermediates/javac/debug")) {
         exclude(fileFilter)
     }
 
@@ -42,7 +42,7 @@ val jacocoTask = tasks.register<JacocoReport>("jacocoTestReport") {
     sourceDirectories.setFrom(files(listOf(mainSrc)))
     classDirectories.setFrom(files(listOf(debugTree)))
     executionData.setFrom(
-        fileTree(project.buildDir) {
+        fileTree(project.layout.buildDirectory) {
             include(listOf("jacoco/testDebugUnitTest.exec"))
         }
     )
@@ -53,5 +53,5 @@ tasks.named("check") {
 }
 
 configure<JacocoPluginExtension> {
-    toolVersion = "0.8.9"
+    toolVersion = "0.8.16"
 }

@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import org.jetbrains.dokka.gradle.DokkaPlugin
-import org.jetbrains.dokka.gradle.DokkaTask
-import java.net.URI
+import org.jetbrains.dokka.gradle.DokkaExtension
 
 plugins {
     kotlin("jvm") version Versions.kotlin apply false
@@ -48,29 +46,19 @@ allprojects {
     version = (System.getenv("GITHUB_REF") ?: System.getProperty("GITHUB_REF"))
         ?.replaceFirst("refs/tags/", "") ?: "unspecified"
 
-    plugins.withType<DokkaPlugin> {
-        tasks.withType<DokkaTask>().configureEach {
-            dokkaSourceSets {
-                configureEach {
-                    skipDeprecated.set(true)
+    pluginManager.withPlugin("org.jetbrains.dokka") {
+        extensions.configure<DokkaExtension> {
+            dokkaSourceSets.configureEach {
+                skipDeprecated.set(true)
 
-                    if (name.startsWith("ios")) {
-                        displayName.set("ios")
-                    }
-
-                    sourceLink {
-                        localDirectory.set(rootDir)
-                        remoteUrl.set(URI("https://github.com/appmattus/kotlinfixture/blob/main").toURL())
-                        remoteLineSuffix.set("#L")
-                    }
+                sourceLink {
+                    localDirectory.set(rootDir)
+                    remoteUrl("https://github.com/appmattus/kotlinfixture/blob/main")
+                    remoteLineSuffix.set("#L")
                 }
             }
         }
     }
-}
-
-tasks.register<Delete>("clean") {
-    delete(rootProject.buildDir)
 }
 
 dependencies {
@@ -78,12 +66,16 @@ dependencies {
 }
 
 detekt {
-    source = files(fileTree(projectDir).matching {
-        include("**/*.kt")
-        include("**/*.kts")
-        exclude("**/resources/**")
-        exclude("**/build/**")
-    }.files)
+    source.setFrom(
+        files(
+            fileTree(projectDir).matching {
+                include("**/*.kt")
+                include("**/*.kts")
+                exclude("**/resources/**")
+                exclude("**/build/**")
+            }.files
+        )
+    )
 
     // input = files("$projectDir")
 
@@ -91,5 +83,5 @@ detekt {
 
     autoCorrect = true
 
-    config = files("detekt-config.yml")
+    config.setFrom(files("detekt-config.yml"))
 }

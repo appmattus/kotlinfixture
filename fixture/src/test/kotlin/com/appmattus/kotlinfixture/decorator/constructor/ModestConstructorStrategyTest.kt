@@ -18,8 +18,8 @@ package com.appmattus.kotlinfixture.decorator.constructor
 
 import com.appmattus.kotlinfixture.ContextImpl
 import com.appmattus.kotlinfixture.config.Configuration
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.mock
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals

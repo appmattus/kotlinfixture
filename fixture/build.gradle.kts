@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -45,7 +46,7 @@ dependencies {
     testImplementation("junit:junit:${Versions.junit4}")
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}")
 
     testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serialization}")
 
@@ -59,8 +60,8 @@ dependencies {
 lint {
     abortOnError = true
     warningsAsErrors = true
-    htmlOutput = file("$buildDir/reports/lint-results.html")
-    xmlOutput = file("$buildDir/reports/lint-results.xml")
+    htmlOutput = layout.buildDirectory.file("reports/lint-results.html").get().asFile
+    xmlOutput = layout.buildDirectory.file("reports/lint-results.xml").get().asFile
 }
 
 java {
@@ -68,8 +69,26 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_1_8.toString()
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
+    }
+}
+
+// Test dependencies, such as mockito-kotlin, require Java 11 whereas the library itself still targets Java 8
+tasks.named<JavaCompile>("compileTestJava") {
+    sourceCompatibility = JavaVersion.VERSION_11.toString()
+    targetCompatibility = JavaVersion.VERSION_11.toString()
+}
+
+tasks.named<KotlinCompile>("compileTestKotlin") {
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
+}
+
+listOf("testCompileClasspath", "testRuntimeClasspath").forEach {
+    configurations.named(it) {
+        attributes.attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 11)
+    }
 }
 
 tasks.named("check") {

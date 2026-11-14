@@ -29,7 +29,6 @@ class FixtureTest {
 
     @Test
     fun containsAllResolvers() {
-
         val actualResolvers = Configuration().resolvers
             .map { it::class.java.simpleName }
             .sorted()

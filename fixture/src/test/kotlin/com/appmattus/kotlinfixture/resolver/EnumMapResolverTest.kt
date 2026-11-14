@@ -72,6 +72,7 @@ class EnumMapResolverTest {
     enum class MultiEnumClass {
         @Suppress("unused")
         ValueA,
+
         @Suppress("unused")
         ValueB
     }
