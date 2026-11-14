@@ -14,27 +14,34 @@
  * limitations under the License.
  */
 
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.dokka.gradle.DokkaExtension
 
 plugins {
-    kotlin("jvm") version Versions.kotlin apply false
-    id("io.gitlab.arturbosch.detekt") version Versions.detektGradlePlugin
-    id("com.appmattus.markdown") version Versions.markdownlintGradlePlugin
-    id("com.vanniktech.maven.publish") version Versions.gradleMavenPublishPlugin apply false
-    id("org.jetbrains.dokka") version Versions.dokkaPlugin
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.lint) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.detektPlugin)
+    alias(libs.plugins.markdownlintGradlePlugin)
+    alias(libs.plugins.gradleMavenPublishPlugin) apply false
+    alias(libs.plugins.dokkaPlugin)
+    alias(libs.plugins.gradleVersionsPlugin)
 }
 
-buildscript {
-    repositories {
-        google()
-    }
-    dependencies {
-        classpath("com.android.tools.build:gradle:${Versions.androidGradlePlugin}")
-    }
-}
-
-apply(from = "$rootDir/gradle/scripts/dependencyUpdates.gradle.kts")
 apply(from = "$rootDir/owaspDependencyCheck.gradle.kts")
+
+tasks.withType<DependencyUpdatesTask> {
+    fun isNonStable(version: String): Boolean {
+        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        return !stableKeyword && !regex.matches(version)
+    }
+
+    rejectVersionIf {
+        isNonStable(candidate.version)
+    }
+}
 
 allprojects {
     repositories {
@@ -62,7 +69,7 @@ allprojects {
 }
 
 dependencies {
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${Versions.detektGradlePlugin}")
+    detektPlugins(libs.detektFormatting)
 }
 
 detekt {

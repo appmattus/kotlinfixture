@@ -22,39 +22,39 @@ plugins {
     id("com.android.lint")
     id("com.vanniktech.maven.publish")
     id("org.jetbrains.dokka")
-    id("org.jetbrains.kotlin.plugin.serialization") version Versions.kotlin
+    alias(libs.plugins.kotlin.serialization)
 }
 
 apply(from = "$rootDir/gradle/scripts/jacoco.gradle.kts")
 
 dependencies {
     api(kotlin("stdlib-jdk8"))
-    api("io.github.classgraph:classgraph:${Versions.classgraph}")
+    api(libs.classgraph)
     api(kotlin("reflect"))
 
-    compileOnly("joda-time:joda-time:${Versions.jodaTime}")
-    testImplementation("joda-time:joda-time:${Versions.jodaTime}")
+    compileOnly(libs.jodaTime)
+    testImplementation(libs.jodaTime)
 
-    compileOnly("org.threeten:threetenbp:${Versions.threeTen}")
-    testImplementation("org.threeten:threetenbp:${Versions.threeTen}")
+    compileOnly(libs.threeTen)
+    testImplementation(libs.threeTen)
 
-    compileOnly("org.ktorm:ktorm-core:${Versions.kTorm}")
-    testImplementation("org.ktorm:ktorm-core:${Versions.kTorm}")
+    compileOnly(libs.kTorm.core)
+    testImplementation(libs.kTorm.core)
 
     compileOnly(files("${System.getenv("ANDROID_HOME")}/platforms/android-37.0/android.jar"))
 
-    testImplementation("junit:junit:${Versions.junit4}")
+    testImplementation(libs.junit4)
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
-    testImplementation("org.mockito.kotlin:mockito-kotlin:${Versions.mockitoKotlin}")
+    testImplementation(libs.mockitoKotlin)
 
-    testImplementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.KotlinX.serialization}")
+    testImplementation(libs.kotlinX.serializationJson)
 
     // Used for ComparisonTest
     @Suppress("GradleDependency")
-    testImplementation("com.github.marcellogalhardo:kotlin-fixture:${Versions.marcellogalhardo}")
-    testImplementation("com.flextrade.jfixture:kfixture:${Versions.flextrade}")
-    testImplementation("org.jeasy:easy-random-core:${Versions.easyrandom}")
+    testImplementation(libs.marcellogalhardo)
+    testImplementation(libs.flextrade)
+    testImplementation(libs.easyrandom)
 }
 
 lint {

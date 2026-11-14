@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
+import org.gradle.accessors.dm.LibrariesForLibs
 import org.owasp.dependencycheck.gradle.DependencyCheckPlugin
 import org.owasp.dependencycheck.gradle.extension.DependencyCheckExtension
+
+val Project.libs: LibrariesForLibs
+    get() = this.extensions.getByType()
 
 buildscript {
     repositories {
         gradlePluginPortal()
     }
     dependencies {
-        classpath("org.owasp:dependency-check-gradle:${Versions.dependencyCheckGradlePlugin}")
+        classpath(libs.buildscript.dependencyCheck)
     }
 }
 
