@@ -29,6 +29,9 @@ jobs:
         distribution: 'zulu'
         java-version: '21'
 
+    - name: Install Android SDK platform
+      run: $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-36"
+
     - name: Build with Gradle
       run: ./gradlew assemble check --stacktrace
 
