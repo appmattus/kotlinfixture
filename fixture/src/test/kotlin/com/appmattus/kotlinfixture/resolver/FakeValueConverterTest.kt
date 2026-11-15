@@ -121,6 +121,123 @@ class FakeValueConverterTest {
     }
 
     @Test
+    fun `Date converts to java sql types`() {
+        val dateTime = zonedDateTime.plusHours(13).plusMinutes(5)
+        val value = Date.from(dateTime.toInstant())
+
+        assertEquals(java.sql.Date.valueOf(localDate), FakeValueConverter.convert(value, typeOf<java.sql.Date>()))
+        assertEquals(
+            java.sql.Timestamp.from(dateTime.toInstant()),
+            FakeValueConverter.convert(value, typeOf<java.sql.Timestamp>())
+        )
+    }
+
+    @Test
+    fun `java sql Timestamp keeps nanosecond precision`() {
+        val timestamp = java.sql.Timestamp.from(Instant.ofEpochSecond(1_000_000_000L, 123_456_789L))
+
+        assertEquals(timestamp.toInstant(), FakeValueConverter.convert(timestamp, typeOf<Instant>()))
+        assertEquals(timestamp, FakeValueConverter.convert(timestamp.toInstant(), typeOf<java.sql.Timestamp>()))
+    }
+
+    @Test
+    fun `Date converts to Joda-Time types in the system default zone`() {
+        assertEquals(
+            org.joda.time.LocalDate(1990, 6, 15),
+            FakeValueConverter.convert(date, typeOf<org.joda.time.LocalDate>())
+        )
+        assertEquals(
+            org.joda.time.LocalDateTime(1990, 6, 15, 0, 0),
+            FakeValueConverter.convert(date, typeOf<org.joda.time.LocalDateTime>())
+        )
+        assertEquals(
+            org.joda.time.Instant(date.time),
+            FakeValueConverter.convert(date, typeOf<org.joda.time.Instant>())
+        )
+        assertEquals(
+            date.time,
+            (FakeValueConverter.convert(date, typeOf<org.joda.time.DateTime>()) as org.joda.time.DateTime).millis
+        )
+    }
+
+    @Test
+    fun `Joda-Time types convert to Date in the system default zone`() {
+        listOf(
+            org.joda.time.LocalDate(1990, 6, 15),
+            org.joda.time.LocalDateTime(1990, 6, 15, 0, 0),
+            org.joda.time.Instant(date.time),
+            org.joda.time.DateTime(date.time),
+            org.joda.time.MutableDateTime(date.time)
+        ).forEach { value ->
+            assertEquals(date, FakeValueConverter.convert(value, typeOf<Date>()), "Converting $value")
+        }
+    }
+
+    @Test
+    fun `Date converts to ThreeTenBP types in the system default zone`() {
+        val threeTenZone = org.threeten.bp.ZoneId.of(zone.id)
+
+        assertEquals(
+            org.threeten.bp.LocalDate.of(1990, 6, 15),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.LocalDate>())
+        )
+        assertEquals(
+            org.threeten.bp.LocalDateTime.of(1990, 6, 15, 0, 0),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.LocalDateTime>())
+        )
+        assertEquals(
+            org.threeten.bp.Instant.ofEpochMilli(date.time),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.Instant>())
+        )
+        assertEquals(
+            org.threeten.bp.LocalDate.of(1990, 6, 15).atStartOfDay(threeTenZone),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.ZonedDateTime>())
+        )
+        assertEquals(
+            org.threeten.bp.LocalDate.of(1990, 6, 15).atStartOfDay(threeTenZone).toOffsetDateTime(),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.OffsetDateTime>())
+        )
+    }
+
+    @Test
+    fun `ThreeTenBP types convert to Date in the system default zone`() {
+        val threeTenZone = org.threeten.bp.ZoneId.of(zone.id)
+
+        listOf(
+            org.threeten.bp.LocalDate.of(1990, 6, 15),
+            org.threeten.bp.LocalDateTime.of(1990, 6, 15, 0, 0),
+            org.threeten.bp.Instant.ofEpochMilli(date.time),
+            org.threeten.bp.LocalDate.of(1990, 6, 15).atStartOfDay(threeTenZone),
+            org.threeten.bp.LocalDate.of(1990, 6, 15).atStartOfDay(threeTenZone).toOffsetDateTime()
+        ).forEach { value ->
+            assertEquals(date, FakeValueConverter.convert(value, typeOf<Date>()), "Converting $value")
+        }
+    }
+
+    data class LibraryPerson(
+        val birthday: org.joda.time.LocalDate,
+        val dateOfBirth: org.threeten.bp.LocalDate,
+        val dob: java.sql.Date
+    )
+
+    @Test
+    fun `fixture converts fake values to Joda-Time, ThreeTenBP and java sql property types`() {
+        val fixture = kotlinFixture {
+            fakeStrategy(
+                object : FakeStrategy {
+                    override fun fake(context: Context, propertyName: String): Any? = localDate
+                }
+            )
+        }
+
+        val person = fixture<LibraryPerson>()
+
+        assertEquals(org.joda.time.LocalDate(1990, 6, 15), person.birthday)
+        assertEquals(org.threeten.bp.LocalDate.of(1990, 6, 15), person.dateOfBirth)
+        assertEquals(java.sql.Date.valueOf(localDate), person.dob)
+    }
+
+    @Test
     fun `LocalDate converts to GregorianCalendar`() {
         val result = FakeValueConverter.convert(localDate, typeOf<GregorianCalendar>()) as GregorianCalendar
 

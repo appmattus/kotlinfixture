@@ -27,11 +27,13 @@ interface FakeStrategy {
      * Return pretty data for a named property, [propertyName], or [Unresolved.Unhandled] if no appropriate value can be
      * generated. [context] should be used to access `random`, or to `resolve` any types through the resolver chain.
      *
-     * The value is converted to the property's type where possible: date and time values between `Date`, `Calendar`,
-     * `Instant`, `LocalDate`, `LocalDateTime`, `ZonedDateTime`, `OffsetDateTime`, `kotlin.time.Instant` and
-     * kotlinx-datetime's `LocalDate` and `LocalDateTime` using the system default time zone, and whole numbers between
-     * `Byte`, `Short`, `Int` and `Long` when they fit. A value that cannot be converted is ignored and the property is
-     * generated as normal.
+     * The value is converted to the property's type where possible: date and time values using the system default
+     * time zone, and whole numbers between `Byte`, `Short`, `Int` and `Long` when they fit. Date and time types are
+     * `java.util.Date`, `Calendar`, `java.sql.Date`, `java.sql.Timestamp`, the `java.time` types `Instant`,
+     * `LocalDate`, `LocalDateTime`, `ZonedDateTime` and `OffsetDateTime`, and `kotlin.time.Instant`, plus, when they are
+     * on the classpath, kotlinx-datetime's `LocalDate` and `LocalDateTime`, Joda-Time's `DateTime`, `Instant`,
+     * `LocalDate` and `LocalDateTime`, and ThreeTenBP's `Instant`, `LocalDate`, `LocalDateTime`, `ZonedDateTime` and
+     * `OffsetDateTime`. A value that cannot be converted is ignored and the property is generated as normal.
      */
     fun fake(context: Context, propertyName: String): Any?
 }

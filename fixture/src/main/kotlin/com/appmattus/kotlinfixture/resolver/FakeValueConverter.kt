@@ -39,11 +39,15 @@ import kotlin.reflect.KType
  * are converted between [Byte], [Short], [Int] and [Long] when they fit. Otherwise [Unresolved.Unhandled] is returned
  * so the property is generated as normal.
  *
- * Date and time types include [kotlin.time.Instant], and kotlinx-datetime's `LocalDate` and `LocalDateTime` when
- * kotlinx-datetime is on the classpath.
+ * Date and time types include `java.sql.Date`, `java.sql.Timestamp` and [kotlin.time.Instant], and the date and time
+ * types of kotlinx-datetime, Joda-Time and ThreeTenBP when they are on the classpath.
  */
 @SuppressLint("NewApi")
 internal object FakeValueConverter {
+
+    private val availableConverters: List<OptionalDateTimeConverter> by lazy {
+        listOf(KotlinxDateTimeConverter, JodaTimeConverter, ThreeTenConverter).filter { it.isAvailable }
+    }
 
     fun convert(value: Any, type: KType): Any {
         val target = type.classifier as? KClass<*> ?: return value
@@ -59,6 +63,8 @@ internal object FakeValueConverter {
 
         return when (target) {
             Date::class -> Date.from(dateTime.toInstant())
+            java.sql.Date::class -> java.sql.Date.valueOf(dateTime.toLocalDate())
+            java.sql.Timestamp::class -> java.sql.Timestamp.from(dateTime.toInstant())
             Calendar::class, GregorianCalendar::class -> GregorianCalendar.from(dateTime)
             Instant::class -> dateTime.toInstant()
             LocalDate::class -> dateTime.toLocalDate()
@@ -68,11 +74,7 @@ internal object FakeValueConverter {
             kotlin.time.Instant::class -> dateTime.toInstant().let {
                 kotlin.time.Instant.fromEpochSeconds(it.epochSecond, it.nano)
             }
-            else -> if (KotlinxDateTimeConverter.isAvailable) {
-                KotlinxDateTimeConverter.fromZonedDateTime(dateTime, target)
-            } else {
-                null
-            }
+            else -> availableConverters.firstNotNullOfOrNull { it.fromZonedDateTime(dateTime, target) }
         }
     }
 
@@ -80,6 +82,7 @@ internal object FakeValueConverter {
         val zone = ZoneId.systemDefault()
 
         return when (this) {
+            is java.sql.Timestamp -> toInstant().atZone(zone)
             // Use the epoch milliseconds as java.sql.Date does not support toInstant()
             is Date -> Instant.ofEpochMilli(time).atZone(zone)
             is Calendar -> Instant.ofEpochMilli(timeInMillis).atZone(zone)
@@ -89,11 +92,7 @@ internal object FakeValueConverter {
             is ZonedDateTime -> withZoneSameInstant(zone)
             is OffsetDateTime -> atZoneSameInstant(zone)
             is kotlin.time.Instant -> Instant.ofEpochSecond(epochSeconds, nanosecondsOfSecond.toLong()).atZone(zone)
-            else -> if (KotlinxDateTimeConverter.isAvailable) {
-                KotlinxDateTimeConverter.toZonedDateTime(this, zone)
-            } else {
-                null
-            }
+            else -> availableConverters.firstNotNullOfOrNull { it.toZonedDateTime(this, zone) }
         }
     }
 

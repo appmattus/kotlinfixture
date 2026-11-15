@@ -26,28 +26,21 @@ import java.time.ZonedDateTime
 import kotlin.reflect.KClass
 
 /**
- * Conversions for kotlinx-datetime types, kept separate from [FakeValueConverter] so kotlinx-datetime classes are only
- * loaded when the library is on the classpath.
+ * Conversions for kotlinx-datetime's `LocalDate` and `LocalDateTime`. `Instant` is [kotlin.time.Instant] in the
+ * standard library, which [FakeValueConverter] converts directly.
  */
 @SuppressLint("NewApi")
-internal object KotlinxDateTimeConverter {
+internal object KotlinxDateTimeConverter : OptionalDateTimeConverter {
 
-    val isAvailable: Boolean by lazy {
-        try {
-            Class.forName("kotlinx.datetime.LocalDate", false, KotlinxDateTimeConverter::class.java.classLoader)
-            true
-        } catch (expected: ClassNotFoundException) {
-            false
-        }
-    }
+    override val isAvailable: Boolean by lazy { isClassAvailable("kotlinx.datetime.LocalDate") }
 
-    fun toZonedDateTime(value: Any, zone: ZoneId): ZonedDateTime? = when (value) {
+    override fun toZonedDateTime(value: Any, zone: ZoneId): ZonedDateTime? = when (value) {
         is kotlinx.datetime.LocalDate -> value.toJavaLocalDate().atStartOfDay(zone)
         is kotlinx.datetime.LocalDateTime -> value.toJavaLocalDateTime().atZone(zone)
         else -> null
     }
 
-    fun fromZonedDateTime(dateTime: ZonedDateTime, target: KClass<*>): Any? = when (target) {
+    override fun fromZonedDateTime(dateTime: ZonedDateTime, target: KClass<*>): Any? = when (target) {
         kotlinx.datetime.LocalDate::class -> dateTime.toLocalDate().toKotlinLocalDate()
         kotlinx.datetime.LocalDateTime::class -> dateTime.toLocalDateTime().toKotlinLocalDateTime()
         else -> null

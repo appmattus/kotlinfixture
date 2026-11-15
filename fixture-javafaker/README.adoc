@@ -38,10 +38,11 @@ println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
 ----
 
 Fake values are converted to the type of the property where possible,
-so a `birthday` property can be a `Date`, a `java.time.LocalDate` or a
-kotlinx-datetime `LocalDate`, and an `age` property an `Int` or a
-`Long`. Date and time conversions, which also cover
-`kotlin.time.Instant`, use the system default time zone. A value that cannot be converted, such as a name for
+so a `birthday` property can be a `Date`, a `java.sql.Date`, a
+`java.time.LocalDate`, or a kotlinx-datetime, Joda-Time or ThreeTenBP
+`LocalDate`, and an `age` property an `Int` or a `Long`. Date and time
+conversions use the system default time zone. The supported types are
+listed on `FakeStrategy`. A value that cannot be converted, such as a name for
 an `Int` property, is ignored and the property is generated as normal.
 
 Additionally, the `javaFakerStrategy` function allows you to override
