@@ -26,6 +26,11 @@ interface FakeStrategy {
     /**
      * Return pretty data for a named property, [propertyName], or [Unresolved.Unhandled] if no appropriate value can be
      * generated. [context] should be used to access `random`, or to `resolve` any types through the resolver chain.
+     *
+     * The value is converted to the property's type where possible: date and time values between `Date`, `Calendar`,
+     * `Instant`, `LocalDate`, `LocalDateTime`, `ZonedDateTime` and `OffsetDateTime` using the system default time
+     * zone, and whole numbers between `Byte`, `Short`, `Int` and `Long` when they fit. A value that cannot be converted
+     * is ignored and the property is generated as normal.
      */
     fun fake(context: Context, propertyName: String): Any?
 }
