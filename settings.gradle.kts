@@ -25,6 +25,7 @@ pluginManagement {
 include(
     "fixture",
     "fixture-javafaker",
+    "fixture-kotlinfaker",
     "fixture-kotest",
     "fixture-generex",
     "fixture-android-tests"

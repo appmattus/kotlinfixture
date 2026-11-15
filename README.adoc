@@ -100,6 +100,12 @@ The library provides {link-appmattus} powered property based testing for https:/
 
 See link:fixture-kotest/README.adoc[Kotest integration] for more details.
 
+== Kotlin Faker integration: pretty data
+
+Generate values with a closer match to real data using https://serpro69.github.io/kotlin-faker/[Kotlin Faker].
+
+See link:fixture-kotlinfaker/README.adoc[Kotlin Faker integration] for more details.
+
 == Java Faker integration: pretty data
 
 Generate values with a closer match to real data using http://dius.github.io/java-faker/[Java Faker].
