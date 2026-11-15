@@ -1,0 +1,61 @@
+== Kotlin Faker integration
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[source,kotlin]
+._build.gradle.kts_
+----
+// Add for Kotlin Faker integration
+testImplementation("com.appmattus.fixture:fixture-kotlinfaker:<latest-version>")
+----
+
+The https://serpro69.github.io/kotlin-faker/[Kotlin Faker] library
+generates fake data, useful if you need to generate objects with pretty
+data.
+
+Including the `fixture-kotlinfaker` dependency in your project adds a
+`kotlinFakerStrategy` which uses
+https://serpro69.github.io/kotlin-faker/[Kotlin Faker] to populate named
+properties such as `name`, `city` and `phoneNumber`. A full list of
+supported properties and how they map to
+https://serpro69.github.io/kotlin-faker/[Kotlin Faker] can be found in
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/kotlinfaker/KotlinFakerConfiguration.kt[KotlinFakerConfiguration]`.
+
+[source,kotlin]
+----
+
+val fixture = kotlinFixture {
+    kotlinFakerStrategy()
+}
+
+data class Person(val name: String, val age: Long)
+
+println(fixture<Person>()) // Person(name=Bernardo Volkman, age=37)
+----
+
+Additionally, the `kotlinFakerStrategy` function allows you to override
+faker settings such as `locale`. The available options can be found in
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/kotlinfaker/KotlinFakerConfigurationBuilder.kt[KotlinFakerConfigurationBuilder]`.
+
+Properties not covered by default can be mapped to any
+https://serpro69.github.io/kotlin-faker/[Kotlin Faker] generator with
+`putProperty`:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    kotlinFakerStrategy {
+        putProperty("beer") { beer.name() }
+    }
+}
+----
+
+NOTE: `fixture-kotlinfaker` can be used instead of `fixture-javafaker`,
+which depends on the unmaintained Java Faker library. The two modules
+support a similar set of property names and options, although not
+identical, as each maps onto what its library provides.
