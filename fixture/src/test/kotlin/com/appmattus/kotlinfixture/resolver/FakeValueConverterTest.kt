@@ -22,6 +22,8 @@ import com.appmattus.kotlinfixture.decorator.fake.FakeStrategy
 import com.appmattus.kotlinfixture.decorator.fake.fakeStrategy
 import com.appmattus.kotlinfixture.kotlinFixture
 import com.appmattus.kotlinfixture.typeOf
+import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -83,6 +85,42 @@ class FakeValueConverterTest {
     }
 
     @Test
+    fun `Date converts to Kotlin date and time types in the system default zone`() {
+        assertEquals(
+            localDate.toKotlinLocalDate(),
+            FakeValueConverter.convert(date, typeOf<kotlinx.datetime.LocalDate>())
+        )
+        assertEquals(
+            localDate.atStartOfDay().toKotlinLocalDateTime(),
+            FakeValueConverter.convert(date, typeOf<kotlinx.datetime.LocalDateTime>())
+        )
+        assertEquals(
+            kotlin.time.Instant.fromEpochMilliseconds(date.time),
+            FakeValueConverter.convert(date, typeOf<kotlin.time.Instant>())
+        )
+    }
+
+    @Test
+    fun `Kotlin date and time types convert to Date in the system default zone`() {
+        listOf(
+            localDate.toKotlinLocalDate(),
+            localDate.atStartOfDay().toKotlinLocalDateTime(),
+            kotlin.time.Instant.fromEpochMilliseconds(date.time)
+        ).forEach { value ->
+            assertEquals(date, FakeValueConverter.convert(value, typeOf<Date>()), "Converting $value")
+        }
+    }
+
+    @Test
+    fun `kotlin time Instant keeps nanosecond precision`() {
+        val javaInstant = Instant.ofEpochSecond(1_000_000_000L, 123_456_789L)
+        val kotlinInstant = kotlin.time.Instant.fromEpochSeconds(1_000_000_000L, 123_456_789L)
+
+        assertEquals(kotlinInstant, FakeValueConverter.convert(javaInstant, typeOf<kotlin.time.Instant>()))
+        assertEquals(javaInstant, FakeValueConverter.convert(kotlinInstant, typeOf<Instant>()))
+    }
+
+    @Test
     fun `LocalDate converts to GregorianCalendar`() {
         val result = FakeValueConverter.convert(localDate, typeOf<GregorianCalendar>()) as GregorianCalendar
 
@@ -117,6 +155,28 @@ class FakeValueConverterTest {
         assertEquals(Unresolved.Unhandled, FakeValueConverter.convert("string", typeOf<LocalDate>()))
         assertEquals(Unresolved.Unhandled, FakeValueConverter.convert(1.5, typeOf<Int>()))
         assertEquals(Unresolved.Unhandled, FakeValueConverter.convert(42, typeOf<LocalDate>()))
+    }
+
+    data class KotlinPerson(
+        val birthday: kotlinx.datetime.LocalDate,
+        val dateOfBirth: kotlin.time.Instant
+    )
+
+    @Test
+    fun `fixture converts fake values to Kotlin date and time property types`() {
+        val fixture = kotlinFixture {
+            fakeStrategy(
+                object : FakeStrategy {
+                    override fun fake(context: Context, propertyName: String): Any? =
+                        if (propertyName == "birthday" || propertyName == "dateOfBirth") date else Unresolved.Unhandled
+                }
+            )
+        }
+
+        val person = fixture<KotlinPerson>()
+
+        assertEquals(localDate.toKotlinLocalDate(), person.birthday)
+        assertEquals(kotlin.time.Instant.fromEpochMilliseconds(date.time), person.dateOfBirth)
     }
 
     data class Person(

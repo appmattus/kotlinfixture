@@ -47,6 +47,9 @@ internal class TimeResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
         return when (obj) {
             Instant::class -> context.generateInstant()
+            kotlin.time.Instant::class -> context.generateInstant().let {
+                kotlin.time.Instant.fromEpochSeconds(it.epochSecond, it.nano)
+            }
             ZonedDateTime::class -> context.generateZonedDateTime()
             LocalDate::class -> context.generateZonedDateTime().toLocalDate()
             LocalTime::class -> context.generateZonedDateTime().toLocalTime()

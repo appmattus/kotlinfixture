@@ -38,6 +38,9 @@ import kotlin.reflect.KType
  * unchanged, date and time values are converted between types using the system default time zone, and whole numbers
  * are converted between [Byte], [Short], [Int] and [Long] when they fit. Otherwise [Unresolved.Unhandled] is returned
  * so the property is generated as normal.
+ *
+ * Date and time types include [kotlin.time.Instant], and kotlinx-datetime's `LocalDate` and `LocalDateTime` when
+ * kotlinx-datetime is on the classpath.
  */
 @SuppressLint("NewApi")
 internal object FakeValueConverter {
@@ -62,7 +65,14 @@ internal object FakeValueConverter {
             LocalDateTime::class -> dateTime.toLocalDateTime()
             ZonedDateTime::class -> dateTime
             OffsetDateTime::class -> dateTime.toOffsetDateTime()
-            else -> null
+            kotlin.time.Instant::class -> dateTime.toInstant().let {
+                kotlin.time.Instant.fromEpochSeconds(it.epochSecond, it.nano)
+            }
+            else -> if (KotlinxDateTimeConverter.isAvailable) {
+                KotlinxDateTimeConverter.fromZonedDateTime(dateTime, target)
+            } else {
+                null
+            }
         }
     }
 
@@ -78,7 +88,12 @@ internal object FakeValueConverter {
             is LocalDateTime -> atZone(zone)
             is ZonedDateTime -> withZoneSameInstant(zone)
             is OffsetDateTime -> atZoneSameInstant(zone)
-            else -> null
+            is kotlin.time.Instant -> Instant.ofEpochSecond(epochSeconds, nanosecondsOfSecond.toLong()).atZone(zone)
+            else -> if (KotlinxDateTimeConverter.isAvailable) {
+                KotlinxDateTimeConverter.toZonedDateTime(this, zone)
+            } else {
+                null
+            }
         }
     }
 

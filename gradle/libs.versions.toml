@@ -37,6 +37,7 @@ jodaTime = "2.15.1"
 kotest = "6.2.7"
 kotlinFaker = "1.16.2"
 kotlinX-coroutines = "1.11.0"
+kotlinX-datetime = "0.8.0"
 kotlinX-serialization = "1.13.0"
 kTorm = "4.2.1"
 # javafaker requires the older snakeyaml API
@@ -66,6 +67,7 @@ jodaTime = { module = "joda-time:joda-time", version.ref = "jodaTime" }
 kotest-propertyJvm = { module = "io.kotest:kotest-property-jvm", version.ref = "kotest" }
 kotlinFaker = { module = "io.github.serpro69:kotlin-faker", version.ref = "kotlinFaker" }
 kotlinX-coroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinX-coroutines" }
+kotlinX-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinX-datetime" }
 kotlinX-serializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinX-serialization" }
 kTorm-core = { module = "org.ktorm:ktorm-core", version.ref = "kTorm" }
 snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "snakeyaml" }

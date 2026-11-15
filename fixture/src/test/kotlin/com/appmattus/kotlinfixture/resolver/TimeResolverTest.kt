@@ -131,6 +131,7 @@ class TimeResolverTest {
                 arrayOf(OffsetDateTime::class),
                 arrayOf(OffsetTime::class),
                 arrayOf(Instant::class),
+                arrayOf(kotlin.time.Instant::class),
                 arrayOf(Period::class),
                 arrayOf(Duration::class),
                 arrayOf(TimeZone::class),

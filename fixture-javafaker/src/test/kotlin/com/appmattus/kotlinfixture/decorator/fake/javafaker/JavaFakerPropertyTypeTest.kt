@@ -17,6 +17,8 @@
 package com.appmattus.kotlinfixture.decorator.fake.javafaker
 
 import com.appmattus.kotlinfixture.kotlinFixture
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toJavaLocalDateTime
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
@@ -34,6 +36,11 @@ class JavaFakerPropertyTypeTest {
 
     data class PersonWithLongAge(val age: Long)
 
+    data class KotlinPerson(
+        val birthday: kotlinx.datetime.LocalDate,
+        val dateOfBirth: kotlinx.datetime.LocalDateTime
+    )
+
     private val fixture = kotlinFixture {
         javaFakerStrategy()
     }
@@ -46,6 +53,20 @@ class JavaFakerPropertyTypeTest {
             assertTrue("${person.birthday} is not an adult's birthday") { person.birthday.isAdultBirthday() }
             assertTrue("${person.dateOfBirth} is not an adult's birthday") {
                 person.dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isAdultBirthday()
+            }
+        }
+    }
+
+    @Test
+    fun `birthday can be a kotlinx-datetime type`() {
+        repeat(100) {
+            val person = fixture<KotlinPerson>()
+
+            assertTrue("${person.birthday} is not an adult's birthday") {
+                person.birthday.toJavaLocalDate().isAdultBirthday()
+            }
+            assertTrue("${person.dateOfBirth} is not an adult's birthday") {
+                person.dateOfBirth.toJavaLocalDateTime().toLocalDate().isAdultBirthday()
             }
         }
     }
