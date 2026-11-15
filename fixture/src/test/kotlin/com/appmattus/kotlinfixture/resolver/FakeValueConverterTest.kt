@@ -238,6 +238,71 @@ class FakeValueConverterTest {
     }
 
     @Test
+    fun `Date converts to partial dates`() {
+        assertEquals(java.time.MonthDay.of(6, 15), FakeValueConverter.convert(date, typeOf<java.time.MonthDay>()))
+        assertEquals(java.time.YearMonth.of(1990, 6), FakeValueConverter.convert(date, typeOf<java.time.YearMonth>()))
+        assertEquals(java.time.Year.of(1990), FakeValueConverter.convert(date, typeOf<java.time.Year>()))
+
+        assertEquals(
+            org.threeten.bp.MonthDay.of(6, 15),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.MonthDay>())
+        )
+        assertEquals(
+            org.threeten.bp.YearMonth.of(1990, 6),
+            FakeValueConverter.convert(date, typeOf<org.threeten.bp.YearMonth>())
+        )
+        assertEquals(org.threeten.bp.Year.of(1990), FakeValueConverter.convert(date, typeOf<org.threeten.bp.Year>()))
+
+        assertEquals(org.joda.time.MonthDay(6, 15), FakeValueConverter.convert(date, typeOf<org.joda.time.MonthDay>()))
+        assertEquals(
+            org.joda.time.YearMonth(1990, 6),
+            FakeValueConverter.convert(date, typeOf<org.joda.time.YearMonth>())
+        )
+
+        assertEquals(
+            kotlinx.datetime.YearMonth(1990, 6),
+            FakeValueConverter.convert(date, typeOf<kotlinx.datetime.YearMonth>())
+        )
+    }
+
+    @Test
+    fun `partial dates are not converted to full dates`() {
+        listOf(
+            java.time.MonthDay.of(6, 15),
+            java.time.YearMonth.of(1990, 6),
+            java.time.Year.of(1990),
+            org.threeten.bp.MonthDay.of(6, 15),
+            org.joda.time.YearMonth(1990, 6),
+            kotlinx.datetime.YearMonth(1990, 6)
+        ).forEach { value ->
+            assertEquals(Unresolved.Unhandled, FakeValueConverter.convert(value, typeOf<Date>()), "Converting $value")
+        }
+    }
+
+    data class PartialDatePerson(
+        val birthday: java.time.MonthDay,
+        val dateOfBirth: kotlinx.datetime.YearMonth,
+        val dob: java.time.Year
+    )
+
+    @Test
+    fun `fixture converts fake values to partial date property types`() {
+        val fixture = kotlinFixture {
+            fakeStrategy(
+                object : FakeStrategy {
+                    override fun fake(context: Context, propertyName: String): Any? = date
+                }
+            )
+        }
+
+        val person = fixture<PartialDatePerson>()
+
+        assertEquals(java.time.MonthDay.of(6, 15), person.birthday)
+        assertEquals(kotlinx.datetime.YearMonth(1990, 6), person.dateOfBirth)
+        assertEquals(java.time.Year.of(1990), person.dob)
+    }
+
+    @Test
     fun `LocalDate converts to GregorianCalendar`() {
         val result = FakeValueConverter.convert(localDate, typeOf<GregorianCalendar>()) as GregorianCalendar
 

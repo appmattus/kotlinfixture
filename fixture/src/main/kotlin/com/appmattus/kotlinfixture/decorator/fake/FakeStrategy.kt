@@ -33,7 +33,9 @@ interface FakeStrategy {
      * `LocalDate`, `LocalDateTime`, `ZonedDateTime` and `OffsetDateTime`, and `kotlin.time.Instant`, plus, when they are
      * on the classpath, kotlinx-datetime's `LocalDate` and `LocalDateTime`, Joda-Time's `DateTime`, `Instant`,
      * `LocalDate` and `LocalDateTime`, and ThreeTenBP's `Instant`, `LocalDate`, `LocalDateTime`, `ZonedDateTime` and
-     * `OffsetDateTime`. A value that cannot be converted is ignored and the property is generated as normal.
+     * `OffsetDateTime`. Full dates can also be converted to the partial dates `MonthDay`, `YearMonth` and `Year` of
+     * these libraries, but not the reverse. A value that cannot be converted is ignored and the property is generated
+     * as normal.
      */
     fun fake(context: Context, propertyName: String): Any?
 }

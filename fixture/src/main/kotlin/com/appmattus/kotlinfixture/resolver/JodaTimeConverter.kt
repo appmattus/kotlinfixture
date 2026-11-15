@@ -22,7 +22,9 @@ import org.joda.time.DateTimeZone
 import org.joda.time.Instant
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
+import org.joda.time.MonthDay
 import org.joda.time.ReadableInstant
+import org.joda.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.TimeZone
@@ -30,8 +32,8 @@ import java.util.concurrent.TimeUnit
 import kotlin.reflect.KClass
 
 /**
- * Conversions for Joda-Time's `DateTime`, `Instant`, `LocalDate` and `LocalDateTime`. Any `ReadableInstant`, such as
- * `MutableDateTime`, can also be converted from.
+ * Conversions for Joda-Time's `DateTime`, `Instant`, `LocalDate` and `LocalDateTime`, and to `MonthDay` and
+ * `YearMonth`. Any `ReadableInstant`, such as `MutableDateTime`, can also be converted from.
  */
 @SuppressLint("NewApi")
 internal object JodaTimeConverter : OptionalDateTimeConverter {
@@ -60,6 +62,8 @@ internal object JodaTimeConverter : OptionalDateTimeConverter {
         )
         Instant::class -> Instant(dateTime.toInstant().toEpochMilli())
         LocalDate::class -> LocalDate(dateTime.year, dateTime.monthValue, dateTime.dayOfMonth)
+        MonthDay::class -> MonthDay(dateTime.monthValue, dateTime.dayOfMonth)
+        YearMonth::class -> YearMonth(dateTime.year, dateTime.monthValue)
         LocalDateTime::class -> LocalDateTime(
             dateTime.year,
             dateTime.monthValue,

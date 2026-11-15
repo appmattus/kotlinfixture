@@ -26,7 +26,7 @@ import java.time.ZonedDateTime
 import kotlin.reflect.KClass
 
 /**
- * Conversions for kotlinx-datetime's `LocalDate` and `LocalDateTime`. `Instant` is [kotlin.time.Instant] in the
+ * Conversions for kotlinx-datetime's `LocalDate` and `LocalDateTime`, and to `YearMonth`. `Instant` is [kotlin.time.Instant] in the
  * standard library, which [FakeValueConverter] converts directly.
  */
 @SuppressLint("NewApi")
@@ -43,6 +43,7 @@ internal object KotlinxDateTimeConverter : OptionalDateTimeConverter {
     override fun fromZonedDateTime(dateTime: ZonedDateTime, target: KClass<*>): Any? = when (target) {
         kotlinx.datetime.LocalDate::class -> dateTime.toLocalDate().toKotlinLocalDate()
         kotlinx.datetime.LocalDateTime::class -> dateTime.toLocalDateTime().toKotlinLocalDateTime()
+        kotlinx.datetime.YearMonth::class -> kotlinx.datetime.YearMonth(dateTime.year, dateTime.monthValue)
         else -> null
     }
 }

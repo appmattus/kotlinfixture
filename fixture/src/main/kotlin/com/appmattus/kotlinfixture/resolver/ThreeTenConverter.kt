@@ -20,13 +20,17 @@ import android.annotation.SuppressLint
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.MonthDay
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.Year
+import org.threeten.bp.YearMonth
 import org.threeten.bp.ZonedDateTime
 import java.time.ZoneId
 import kotlin.reflect.KClass
 
 /**
- * Conversions for ThreeTenBP's `Instant`, `LocalDate`, `LocalDateTime`, `ZonedDateTime` and `OffsetDateTime`.
+ * Conversions for ThreeTenBP's `Instant`, `LocalDate`, `LocalDateTime`, `ZonedDateTime` and `OffsetDateTime`, and to
+ * `MonthDay`, `YearMonth` and `Year`.
  */
 @SuppressLint("NewApi")
 internal object ThreeTenConverter : OptionalDateTimeConverter {
@@ -68,6 +72,9 @@ internal object ThreeTenConverter : OptionalDateTimeConverter {
             )
             ZonedDateTime::class -> ZonedDateTime.ofInstant(instant, zone)
             OffsetDateTime::class -> OffsetDateTime.ofInstant(instant, zone)
+            MonthDay::class -> MonthDay.of(dateTime.monthValue, dateTime.dayOfMonth)
+            YearMonth::class -> YearMonth.of(dateTime.year, dateTime.monthValue)
+            Year::class -> Year.of(dateTime.year)
             else -> null
         }
     }

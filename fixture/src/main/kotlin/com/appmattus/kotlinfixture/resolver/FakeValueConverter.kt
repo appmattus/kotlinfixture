@@ -21,7 +21,10 @@ import com.appmattus.kotlinfixture.Unresolved
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.MonthDay
 import java.time.OffsetDateTime
+import java.time.Year
+import java.time.YearMonth
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Calendar
@@ -40,7 +43,8 @@ import kotlin.reflect.KType
  * so the property is generated as normal.
  *
  * Date and time types include `java.sql.Date`, `java.sql.Timestamp` and [kotlin.time.Instant], and the date and time
- * types of kotlinx-datetime, Joda-Time and ThreeTenBP when they are on the classpath.
+ * types of kotlinx-datetime, Joda-Time and ThreeTenBP when they are on the classpath. Partial dates, such as
+ * [MonthDay], [YearMonth] and [Year], can be converted to but not from, as they lack the fields of a full date.
  */
 @SuppressLint("NewApi")
 internal object FakeValueConverter {
@@ -61,21 +65,32 @@ internal object FakeValueConverter {
     private fun convertDateTime(value: Any, target: KClass<*>): Any? {
         val dateTime = value.toZonedDateTime() ?: return null
 
-        return when (target) {
-            Date::class -> Date.from(dateTime.toInstant())
-            java.sql.Date::class -> java.sql.Date.valueOf(dateTime.toLocalDate())
-            java.sql.Timestamp::class -> java.sql.Timestamp.from(dateTime.toInstant())
-            Calendar::class, GregorianCalendar::class -> GregorianCalendar.from(dateTime)
-            Instant::class -> dateTime.toInstant()
-            LocalDate::class -> dateTime.toLocalDate()
-            LocalDateTime::class -> dateTime.toLocalDateTime()
-            ZonedDateTime::class -> dateTime
-            OffsetDateTime::class -> dateTime.toOffsetDateTime()
-            kotlin.time.Instant::class -> dateTime.toInstant().let {
-                kotlin.time.Instant.fromEpochSeconds(it.epochSecond, it.nano)
-            }
-            else -> availableConverters.firstNotNullOfOrNull { it.fromZonedDateTime(dateTime, target) }
-        }
+        return dateTime.toStandardType(target)
+            ?: dateTime.toPartialDate(target)
+            ?: availableConverters.firstNotNullOfOrNull { it.fromZonedDateTime(dateTime, target) }
+    }
+
+    // Types from the JDK and the Kotlin standard library
+    private fun ZonedDateTime.toStandardType(target: KClass<*>): Any? = when (target) {
+        Date::class -> Date.from(toInstant())
+        java.sql.Date::class -> java.sql.Date.valueOf(toLocalDate())
+        java.sql.Timestamp::class -> java.sql.Timestamp.from(toInstant())
+        Calendar::class, GregorianCalendar::class -> GregorianCalendar.from(this)
+        Instant::class -> toInstant()
+        LocalDate::class -> toLocalDate()
+        LocalDateTime::class -> toLocalDateTime()
+        ZonedDateTime::class -> this
+        OffsetDateTime::class -> toOffsetDateTime()
+        kotlin.time.Instant::class -> toInstant().let { kotlin.time.Instant.fromEpochSeconds(it.epochSecond, it.nano) }
+        else -> null
+    }
+
+    // Partial dates are only converted to, as converting from them would need to invent the missing fields
+    private fun ZonedDateTime.toPartialDate(target: KClass<*>): Any? = when (target) {
+        MonthDay::class -> MonthDay.from(this)
+        YearMonth::class -> YearMonth.from(this)
+        Year::class -> Year.from(this)
+        else -> null
     }
 
     private fun Any.toZonedDateTime(): ZonedDateTime? {
