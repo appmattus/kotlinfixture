@@ -73,7 +73,8 @@ internal object FakeValueConverter {
     // Types from the JDK and the Kotlin standard library
     private fun ZonedDateTime.toStandardType(target: KClass<*>): Any? = when (target) {
         Date::class -> Date.from(toInstant())
-        java.sql.Date::class -> java.sql.Date.valueOf(toLocalDate())
+        // Android's java.sql.Date has no valueOf(LocalDate), so construct from the epoch milliseconds of local midnight
+        java.sql.Date::class -> java.sql.Date(toLocalDate().atStartOfDay(zone).toInstant().toEpochMilli())
         java.sql.Timestamp::class -> java.sql.Timestamp.from(toInstant())
         Calendar::class, GregorianCalendar::class -> GregorianCalendar.from(this)
         Instant::class -> toInstant()
