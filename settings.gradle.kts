@@ -24,6 +24,7 @@ pluginManagement {
 
 include(
     "fixture",
+    "fixture-datafaker",
     "fixture-javafaker",
     "fixture-kotlinfaker",
     "fixture-kotest",

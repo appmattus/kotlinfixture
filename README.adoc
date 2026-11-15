@@ -106,6 +106,12 @@ Generate values with a closer match to real data using https://serpro69.github.i
 
 See link:fixture-kotlinfaker/README.adoc[Kotlin Faker integration] for more details.
 
+== Datafaker integration: pretty data
+
+Generate values with a closer match to real data using https://www.datafaker.net/[Datafaker]. Requires Java 17.
+
+See link:fixture-datafaker/README.adoc[Datafaker integration] for more details.
+
 == Java Faker integration: pretty data
 
 Generate values with a closer match to real data using http://dius.github.io/java-faker/[Java Faker].

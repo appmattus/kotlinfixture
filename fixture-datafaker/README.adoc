@@ -1,0 +1,59 @@
+== Datafaker integration
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+[source,kotlin]
+._build.gradle.kts_
+----
+// Add for Datafaker integration
+testImplementation("com.appmattus.fixture:fixture-datafaker:<latest-version>")
+----
+
+IMPORTANT: Datafaker, and so `fixture-datafaker`, requires Java 17 or
+later. The other KotlinFixture modules continue to support Java 8.
+
+The https://www.datafaker.net/[Datafaker] library generates
+fake data, useful if you need to generate objects with pretty data.
+
+Including the `fixture-datafaker` dependency in your project adds a
+`dataFakerStrategy` which uses
+https://www.datafaker.net/[Datafaker] to populate named
+properties such as `name`, `city` and `phoneNumber`. A full list of
+supported properties and how they map to
+https://www.datafaker.net/[Datafaker] can be found in
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/datafaker/DataFakerConfiguration.kt[DataFakerConfiguration]`.
+
+[source,kotlin]
+----
+
+val fixture = kotlinFixture {
+    dataFakerStrategy()
+}
+
+data class Person(val name: String, val age: Long)
+
+println(fixture<Person>()) // Person(name=Keneth Bartoletti, age=54)
+----
+
+Additionally, the `dataFakerStrategy` function allows you to override
+faker settings such as `locale`. The available options can be found in
+`link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/datafaker/DataFakerConfigurationBuilder.kt[DataFakerConfigurationBuilder]`.
+
+The available properties and options follow `fixture-javafaker`, so
+switching is mostly a change of dependency and of `javaFakerStrategy`
+to `dataFakerStrategy`, with these differences:
+
+* `CreditCard` adds `UnionPay` and no longer offers `Solo` or `Switch`,
+  matching the card types Datafaker supports.
+* `Password` must allow at least one character for each enabled
+  character type, as Datafaker always includes one of each.
+
+NOTE: `fixture-datafaker` and `fixture-javafaker` cannot be used in the
+same project. `fixture-javafaker` pins `snakeyaml` to 1.27 for Java
+Faker whereas Datafaker requires 2.x, so Gradle fails to resolve
+`snakeyaml` when both are present.
