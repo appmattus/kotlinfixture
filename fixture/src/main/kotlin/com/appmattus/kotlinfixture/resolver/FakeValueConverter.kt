@@ -49,6 +49,8 @@ import kotlin.reflect.KType
 @SuppressLint("NewApi")
 internal object FakeValueConverter {
 
+    private const val MILLIS_PER_SECOND = 1000L
+
     private val availableConverters: List<OptionalDateTimeConverter> by lazy {
         listOf(KotlinxDateTimeConverter, JodaTimeConverter, ThreeTenConverter).filter { it.isAvailable }
     }
@@ -66,6 +68,7 @@ internal object FakeValueConverter {
         val dateTime = value.toZonedDateTime() ?: return null
 
         return dateTime.toStandardType(target)
+            ?: dateTime.toJavaSqlType(target)
             ?: dateTime.toPartialDate(target)
             ?: availableConverters.firstNotNullOfOrNull { it.fromZonedDateTime(dateTime, target) }
     }
@@ -73,9 +76,6 @@ internal object FakeValueConverter {
     // Types from the JDK and the Kotlin standard library
     private fun ZonedDateTime.toStandardType(target: KClass<*>): Any? = when (target) {
         Date::class -> Date.from(toInstant())
-        // Android's java.sql.Date has no valueOf(LocalDate), so construct from the epoch milliseconds of local midnight
-        java.sql.Date::class -> java.sql.Date(toLocalDate().atStartOfDay(zone).toInstant().toEpochMilli())
-        java.sql.Timestamp::class -> java.sql.Timestamp.from(toInstant())
         Calendar::class, GregorianCalendar::class -> GregorianCalendar.from(this)
         Instant::class -> toInstant()
         LocalDate::class -> toLocalDate()
@@ -83,6 +83,16 @@ internal object FakeValueConverter {
         ZonedDateTime::class -> this
         OffsetDateTime::class -> toOffsetDateTime()
         kotlin.time.Instant::class -> toInstant().let { kotlin.time.Instant.fromEpochSeconds(it.epochSecond, it.nano) }
+        else -> null
+    }
+
+    // Built from members Android also has, as Android lacks java.sql.Date.valueOf(LocalDate) and
+    // java.sql.Timestamp.from(Instant). Kotlin would otherwise resolve Timestamp.from to java.util.Date.from.
+    private fun ZonedDateTime.toJavaSqlType(target: KClass<*>): Any? = when (target) {
+        java.sql.Date::class -> java.sql.Date(toLocalDate().atStartOfDay(zone).toInstant().toEpochMilli())
+        java.sql.Timestamp::class -> toInstant().let { instant ->
+            java.sql.Timestamp(instant.toEpochMilli()).apply { nanos = instant.nano }
+        }
         else -> null
     }
 
@@ -98,7 +108,11 @@ internal object FakeValueConverter {
         val zone = ZoneId.systemDefault()
 
         return when (this) {
-            is java.sql.Timestamp -> toInstant().atZone(zone)
+            // Read the nanoseconds directly, as Android's java.sql.Timestamp does not override toInstant()
+            is java.sql.Timestamp -> Instant.ofEpochSecond(
+                time.floorDiv(MILLIS_PER_SECOND),
+                nanos.toLong()
+            ).atZone(zone)
             // Use the epoch milliseconds as java.sql.Date does not support toInstant()
             is Date -> Instant.ofEpochMilli(time).atZone(zone)
             is Calendar -> Instant.ofEpochMilli(timeInMillis).atZone(zone)
