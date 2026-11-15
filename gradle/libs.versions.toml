@@ -30,6 +30,7 @@ jacoco = "0.8.16"
 markdownlintGradlePlugin = "0.6.0"
 
 classgraph = "4.8.200"
+datafaker = "2.7.0"
 generex = "1.0.2"
 javafaker = "1.0.2"
 jodaTime = "2.15.1"
@@ -58,6 +59,7 @@ marcellogalhardo = "0.1.4"
 [libraries]
 
 classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker" }
 generex = { module = "com.github.mifmif:generex", version.ref = "generex" }
 javafaker = { module = "com.github.javafaker:javafaker", version.ref = "javafaker" }
 jodaTime = { module = "joda-time:joda-time", version.ref = "jodaTime" }
