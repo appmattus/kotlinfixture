@@ -27,7 +27,9 @@ import org.joda.time.Interval
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
+import org.joda.time.MonthDay
 import org.joda.time.Period
+import org.joda.time.YearMonth
 import java.util.Date
 
 internal class JodaTimeResolver : Resolver {
@@ -45,6 +47,8 @@ internal class JodaTimeResolver : Resolver {
                 Duration::class -> context.generateDuration()
                 DateTimeZone::class -> context.randomDateTimeZone()
                 Interval::class -> context.generateInterval()
+                YearMonth::class -> context.generateYearMonth()
+                MonthDay::class -> context.generateMonthDay()
                 else -> Unresolved.Unhandled
             }
         } else {
@@ -55,6 +59,16 @@ internal class JodaTimeResolver : Resolver {
     private fun Context.generateInstant(): Instant = Instant(resolve(typeOf<Date>()) as Date)
 
     private fun Context.generateDateTimeZone(): DateTimeZone = resolve(typeOf<DateTimeZone>()) as DateTimeZone
+
+    // Derived from a generated date so the year is realistic and follows the configured date range
+    private fun Context.generateYearMonth(): YearMonth =
+        LocalDate(generateInstant(), generateDateTimeZone()).let { YearMonth(it.year, it.monthOfYear) }
+
+    private fun Context.generateMonthDay(): MonthDay {
+        val month = random.nextInt(1, MONTHS_IN_YEAR + 1)
+        val daysInMonth = MonthDay(month, 1).dayOfMonth().maximumValue
+        return MonthDay(month, random.nextInt(1, daysInMonth + 1))
+    }
 
     private fun Context.randomDateTimeZone(): DateTimeZone =
         DateTimeZone.forID(DateTimeZone.getAvailableIDs().random(random))
@@ -91,6 +105,8 @@ internal class JodaTimeResolver : Resolver {
     }
 
     companion object {
+        private const val MONTHS_IN_YEAR = 12
+
         private val hasJodaTime: Boolean by lazy {
             try {
                 Class.forName("org.joda.time.DateTime", false, JodaTimeResolver::class.java.classLoader)

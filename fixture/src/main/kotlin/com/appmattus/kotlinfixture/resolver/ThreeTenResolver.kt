@@ -67,14 +67,15 @@ internal class ThreeTenResolver : Resolver {
         }
     }
 
-    private fun Context.generateYear(): Year = Year.of(random.nextInt(Year.MIN_VALUE, Year.MAX_VALUE))
+    // Derived from a generated date so the year is realistic and follows the configured date range
+    private fun Context.generateYear(): Year = Year.of(generateZonedDateTime().year)
 
     private fun Context.generateMonth(): Month = Month.values().random(random)
 
-    private fun Context.generateYearMonth(): YearMonth = YearMonth.of(generateYear().value, generateMonth())
+    private fun Context.generateYearMonth(): YearMonth = YearMonth.from(generateZonedDateTime())
 
     private fun Context.generateMonthDay(): MonthDay =
-        generateMonth().let { MonthDay.of(it, random.nextInt(1, it.maxLength())) }
+        generateMonth().let { MonthDay.of(it, random.nextInt(1, it.maxLength() + 1)) }
 
     private fun Context.generateInstant(): Instant = DateTimeUtils.toInstant(resolve(typeOf<Date>()) as Date)
 

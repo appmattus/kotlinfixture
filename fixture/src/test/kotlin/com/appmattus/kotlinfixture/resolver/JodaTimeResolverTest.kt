@@ -31,7 +31,9 @@ import org.joda.time.Interval
 import org.joda.time.LocalDate
 import org.joda.time.LocalDateTime
 import org.joda.time.LocalTime
+import org.joda.time.MonthDay
 import org.joda.time.Period
+import org.joda.time.YearMonth
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -127,7 +129,9 @@ class JodaTimeResolverTest {
                 arrayOf(Period::class),
                 arrayOf(Duration::class),
                 arrayOf(DateTimeZone::class),
-                arrayOf(Interval::class)
+                arrayOf(Interval::class),
+                arrayOf(YearMonth::class),
+                arrayOf(MonthDay::class)
             )
         }
     }
