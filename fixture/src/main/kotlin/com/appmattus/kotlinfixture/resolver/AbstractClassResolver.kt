@@ -35,8 +35,8 @@ internal class AbstractClassResolver : Resolver {
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
             val results = classes.filterNot { it.isInternal() }.shuffled(context.random).map { subclass ->
-                val result = subclass.loadVisibleClass()?.let { context.resolveOrUnresolved(it) }
-                    ?: Unresolved.NotSupported("$subclass is not visible to KotlinFixture's class loader")
+                val result = subclass.loadClassOrNull()?.let { context.resolveOrUnresolved(it) }
+                    ?: Unresolved.NotSupported("Unable to load $subclass")
 
                 if (result !is Unresolved) {
                     return result
@@ -63,14 +63,8 @@ internal class AbstractClassResolver : Resolver {
         Unresolved.NotSupported("Unable to use $clazz: $expected")
     }
 
-    /**
-     * Load the class through KotlinFixture's own class loader. ClassGraph also finds classes from other class loaders,
-     * such as the build tool running the tests, which the code under test cannot use.
-     */
-    private fun ClassInfo.loadVisibleClass(): Class<*>? = try {
-        Class.forName(name, false, AbstractClassResolver::class.java.classLoader)
-    } catch (expected: ClassNotFoundException) {
-        null
+    private fun ClassInfo.loadClassOrNull(): Class<*>? = try {
+        loadClass(true)
     } catch (expected: LinkageError) {
         null
     }
