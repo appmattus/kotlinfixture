@@ -32,29 +32,29 @@ internal class FactoryMethodResolver : Resolver, PopulateInstance {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KClass<*>) {
-            val results =
-                (obj.companionObjectFactoryMethods() ?: obj.staticFactoryMethods()).shuffled().map { factoryMethod ->
+            val factoryMethods = obj.companionObjectFactoryMethods() ?: obj.staticFactoryMethods()
 
-                    val request = KFunctionRequest(obj, factoryMethod)
-                    val result = context.resolve(request)
+            val results = factoryMethods.shuffled(context.random).map { factoryMethod ->
+                val request = KFunctionRequest(obj, factoryMethod)
+                val result = context.resolve(request)
 
-                    if (result !is Unresolved) {
-                        if (result != null) {
-                            val callContext = PopulateInstance.CallContext(
-                                context = context,
-                                obj = result::class,
-                                constructorParameterNames = emptySet(),
-                                callingClass = obj
-                            )
+                if (result !is Unresolved) {
+                    if (result != null) {
+                        val callContext = PopulateInstance.CallContext(
+                            context = context,
+                            obj = result::class,
+                            constructorParameterNames = emptySet(),
+                            callingClass = obj
+                        )
 
-                            populatePropertiesAndSetters(callContext, result)
-                        }
-
-                        return result
+                        populatePropertiesAndSetters(callContext, result)
                     }
 
-                    result
+                    return result
                 }
+
+                result
+            }
 
             return createUnresolved("Unable to instantiate $obj using factory methods", results)
         }
