@@ -35,7 +35,8 @@ internal class AbstractClassResolver : Resolver {
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
             val results = classes.filterNot { it.isInternal() }.shuffled(context.random).map { subclass ->
-                val result = subclass.loadClassOrNull()?.let { context.resolveOrUnresolved(it) }
+                // loadClass(true) returns null when the class cannot be loaded, such as when a dependency is missing
+                val result = subclass.loadClass(true)?.let { context.resolveOrUnresolved(it) }
                     ?: Unresolved.NotSupported("Unable to load $subclass")
 
                 if (result !is Unresolved) {
@@ -61,12 +62,6 @@ internal class AbstractClassResolver : Resolver {
         Unresolved.NotSupported("Unable to use $clazz: $expected")
     } catch (expected: KotlinReflectionInternalError) {
         Unresolved.NotSupported("Unable to use $clazz: $expected")
-    }
-
-    private fun ClassInfo.loadClassOrNull(): Class<*>? = try {
-        loadClass(true)
-    } catch (expected: LinkageError) {
-        null
     }
 
     private fun ClassInfo.isInternal() = INTERNAL_PACKAGES.any { name.startsWith(it) }

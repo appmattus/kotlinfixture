@@ -41,6 +41,11 @@ class AbstractClassImplementationTest {
         }
     }
 
+    // Cannot be loaded, as javax.inject is only available when compiling the tests
+    class ProviderShape : Shape, javax.inject.Provider<String> {
+        override fun get() = "provided"
+    }
+
     private val fixtureClassLoader = Fixture::class.java.classLoader
 
     @Test
