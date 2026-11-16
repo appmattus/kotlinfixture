@@ -20,5 +20,15 @@ import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 
 internal object Classes {
-    val classGraph: ScanResult by lazy { ClassGraph().enableSystemJarsAndModules().enableClassInfo().scan() }
+    /**
+     * Only KotlinFixture's own class loader is scanned. By default ClassGraph also scans other class loaders, such as
+     * the build tool's when tests run under Gradle, whose classes the code under test cannot use.
+     */
+    val classGraph: ScanResult by lazy {
+        ClassGraph()
+            .overrideClassLoaders(Classes::class.java.classLoader)
+            .enableSystemJarsAndModules()
+            .enableClassInfo()
+            .scan()
+    }
 }
