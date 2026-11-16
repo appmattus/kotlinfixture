@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.decorator.fake.FakeStrategy
 import com.github.javafaker.Faker
+import kotlin.random.Random
 import kotlin.random.asJavaRandom
 
 internal class JavaFakerStrategy(
@@ -30,8 +31,11 @@ internal class JavaFakerStrategy(
 
     override fun fake(context: Context, propertyName: String): Any? {
         val func = fakerConfiguration.properties.getOrElse(propertyName) { { Unresolved.Unhandled } }
-        return func(Faker(fakerConfiguration.locale, context.random.asJavaRandom()), fakerConfiguration)
+        return func(faker(context.random), fakerConfiguration)
     }
+
+    /** A faker using the configured locale and the given [random], so its values are reproducible when seeded */
+    fun faker(random: Random): Faker = Faker(fakerConfiguration.locale, random.asJavaRandom())
 
     fun new(configuration: JavaFakerConfigurationBuilder.() -> Unit = {}) =
         JavaFakerStrategy(

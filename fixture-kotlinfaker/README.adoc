@@ -64,6 +64,23 @@ val fixture = kotlinFixture {
 }
 ----
 
+To use the faker yourself in a `factory` or `property` generator, use
+`kotlinFaker`. It has the `locale` set with `kotlinFakerStrategy` and uses the fixture's
+random, so values are reproducible with a seeded fixture, unlike a
+faker you create yourself:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    kotlinFakerStrategy {
+        locale = Locale.GERMAN
+    }
+    factory<Person> {
+        Person(kotlinFaker.name.firstName(), kotlinFaker.name.lastName())
+    }
+}
+----
+
 NOTE: `fixture-kotlinfaker` can be used instead of `fixture-javafaker`,
 which depends on the unmaintained Java Faker library. The two modules
 support a similar set of property names and options, although not

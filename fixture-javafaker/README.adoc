@@ -49,3 +49,20 @@ an `Int` property, is ignored and the property is generated as normal.
 Additionally, the `javaFakerStrategy` function allows you to override
 faker settings such as `locale`. The available options can be found in
 `link:src/main/kotlin/com/appmattus/kotlinfixture/decorator/fake/javafaker/JavaFakerConfigurationBuilder.kt[JavaFakerConfigurationBuilder]`.
+
+To use the faker yourself in a `factory` or `property` generator, use
+`javaFaker`. It has the `locale` set with `javaFakerStrategy` and uses the fixture's
+random, so values are reproducible with a seeded fixture, unlike a
+faker you create yourself:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    javaFakerStrategy {
+        locale = Locale.GERMAN
+    }
+    factory<Person> {
+        Person(javaFaker.name().firstName(), javaFaker.name().lastName())
+    }
+}
+----
