@@ -28,6 +28,7 @@ import kotlin.reflect.KVisibility
 import kotlin.reflect.full.memberFunctions
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.valueParameters
+import kotlin.reflect.jvm.isAccessible
 
 internal interface PopulateInstance {
 
@@ -63,6 +64,9 @@ internal interface PopulateInstance {
             callContext.constructorParameterNames.contains(name)
         }.filterNot {
             ignored.isIgnored(callContext.callingClass, it.name)
+        }.filter {
+            // Restricted setters are only called when explicitly overridden with property
+            it.visibility.isAccessibleByDefault() || callContext.hasOverride(it.name)
         }.forEach {
             val propertyResult = callContext.context.resolve(
                 KNamedPropertyRequest(it.name, callContext.callingClass, it.valueParameters[0].type)
@@ -72,6 +76,7 @@ internal interface PopulateInstance {
                 return false
             }
 
+            if (callContext.hasOverride(it.name)) it.isAccessible = true
             it.safeCall(result, propertyResult)
         }
 
@@ -84,7 +89,10 @@ internal interface PopulateInstance {
     ): Boolean {
         val ignored = callContext.ignoredProperties()
 
-        callContext.obj.settableMutableProperties()
+        callContext.obj.memberProperties
+            .filterIsInstance<KMutableProperty<*>>()
+            // Restricted setters are only called when explicitly overridden with property
+            .filter { it.setter.visibility.isAccessibleByDefault() || callContext.hasOverride(it.name) }
             .filterNot { callContext.constructorParameterNames.contains(it.name) }
             .filterNot { ignored.isIgnored(callContext.callingClass, it.name) }
             .filterNot { ignored.lateinit && it.isLateinit }
@@ -100,7 +108,7 @@ internal interface PopulateInstance {
                     return false
                 }
 
-                // Property might not be visible
+                if (callContext.hasOverride(property.name)) property.setter.isAccessible = true
                 property.setter.safeCall(result, propertyResult)
             }
 
@@ -110,11 +118,12 @@ internal interface PopulateInstance {
     private fun CallContext.ignoredProperties(): IgnoredProperties =
         context.strategyOrDefault(IgnoredProperties())
 
-    private fun KClass<*>.settableMutableProperties(): List<KMutableProperty<*>> {
-        return memberProperties
-            .filterIsInstance<KMutableProperty<*>>()
-            .filter { it.setter.visibility != KVisibility.PRIVATE }
-    }
+    private fun CallContext.hasOverride(propertyName: String): Boolean =
+        context.configuration.properties[callingClass]?.containsKey(propertyName) == true
+
+    // Protected and private setters cannot be called from here without making them accessible
+    private fun KVisibility?.isAccessibleByDefault(): Boolean =
+        this != KVisibility.PRIVATE && this != KVisibility.PROTECTED
 
     fun KClass<*>.constructorParameterNames(): Set<String?> {
         return constructors.flatMap { constructor ->

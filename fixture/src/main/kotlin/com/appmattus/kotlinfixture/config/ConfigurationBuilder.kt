@@ -28,7 +28,6 @@ import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.KMutableProperty1
-import kotlin.reflect.KParameter
 import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 
@@ -234,15 +233,9 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         property: KProperty1<T, G>,
         noinline generator: () -> Int
     ) {
-        // Only allow read only properties in constructor(s)
-        if (property !is KMutableProperty1) {
-            val constructorParams = T::class.constructors.flatMap {
-                it.parameters.map(KParameter::name)
-            }
-
-            check(constructorParams.contains(property.name)) {
-                "No setter available for ${T::class.qualifiedName}.${property.name}"
-            }
+        // Only allow properties with a setter, which may be restricted, or that are set by a constructor
+        check(property is KMutableProperty1 || T::class.canSetProperty(property.name)) {
+            "No setter available for ${T::class.qualifiedName}.${property.name}"
         }
 
         @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
@@ -568,15 +561,9 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         property: KProperty1<T, G>,
         noinline generator: Generator<G>.() -> G
     ) {
-        // Only allow read only properties in constructor(s)
-        if (property !is KMutableProperty1) {
-            val constructorParams = T::class.constructors.flatMap {
-                it.parameters.map(KParameter::name)
-            }
-
-            check(constructorParams.contains(property.name)) {
-                "No setter available for ${T::class.qualifiedName}.${property.name}"
-            }
+        // Only allow properties with a setter, which may be restricted, or that are set by a constructor
+        check(property is KMutableProperty1 || T::class.canSetProperty(property.name)) {
+            "No setter available for ${T::class.qualifiedName}.${property.name}"
         }
 
         @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
