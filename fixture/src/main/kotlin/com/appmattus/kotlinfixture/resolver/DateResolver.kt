@@ -46,6 +46,8 @@ internal class DateResolver : Resolver {
     }
 
     companion object {
-        private val referenceTime = ZonedDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()).toEpochSecond()
+        // Generated dates are within ten years either side of this time, in epoch milliseconds
+        private val referenceTime =
+            ZonedDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneId.systemDefault()).toInstant().toEpochMilli()
     }
 }
