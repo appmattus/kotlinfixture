@@ -60,6 +60,16 @@ class TimeResolverTest {
             CompositeResolver(TimeResolver(), FactoryResolver(), KTypeResolver())
         )
 
+        private val unconfiguredContext = TestContext(
+            Configuration(),
+            CompositeResolver(TimeResolver(), KTypeResolver(), DateResolver())
+        )
+
+        private companion object {
+            // Enough samples for every one of the 366 month-days to be generated with near certainty
+            private const val MONTH_DAY_SAMPLES = 20_000
+        }
+
         @Test
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
@@ -76,6 +86,38 @@ class TimeResolverTest {
                     result.toInstant() <= now.toInstant()
                 }
             }
+        }
+
+        @Test
+        fun `Before specification gives Year no later than now`() {
+            repeat(100) {
+                val result = context.resolve(Year::class) as Year
+
+                assertTrue("$result is after ${Year.now()}") {
+                    result <= Year.now()
+                }
+            }
+        }
+
+        @Test
+        fun `Year is realistic`() {
+            repeat(100) {
+                val result = unconfiguredContext.resolve(Year::class) as Year
+
+                assertTrue("$result is not within ten years of 2020") {
+                    result.value in 2009..2030
+                }
+            }
+        }
+
+        @Test
+        fun `MonthDay generates every valid day of every month`() {
+            val expected = Month.entries.flatMap { month -> (1..month.maxLength()).map { MonthDay.of(month, it) } }
+
+            val generated = List(MONTH_DAY_SAMPLES) { unconfiguredContext.resolve(MonthDay::class) as MonthDay }.toSet()
+
+            assertEquals(366, expected.size)
+            assertEquals(expected.toSet() - generated, emptySet(), "Valid days never generated")
         }
 
         @Test
