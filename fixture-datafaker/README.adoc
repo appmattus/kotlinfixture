@@ -62,6 +62,24 @@ to `dataFakerStrategy`, with these differences:
 * `Password` must allow at least one character for each enabled
   character type, as Datafaker always includes one of each.
 
+To use the faker yourself in a `factory` or `property` generator, use
+`dataFaker`. It has the `locale` set with `dataFakerStrategy` and uses the fixture's
+random, so values are reproducible with a seeded fixture, unlike a
+faker you create yourself:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    dataFakerStrategy {
+        locale = Locale.GERMAN
+    }
+    factory<Person> {
+        val faker = dataFaker
+        Person(faker.name().firstName(), faker.name().lastName())
+    }
+}
+----
+
 NOTE: `fixture-datafaker` and `fixture-javafaker` cannot be used in the
 same project. `fixture-javafaker` pins `snakeyaml` to 1.27 for Java
 Faker whereas Datafaker requires 2.x, so Gradle fails to resolve
