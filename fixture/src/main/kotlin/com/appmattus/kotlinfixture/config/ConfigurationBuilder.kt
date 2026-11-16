@@ -663,6 +663,85 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
         properties[clazz] = classProperties
     }
 
+    /**
+     * Ignoring class properties with ignoreProperty
+     *
+     * Used to stop a mutable property being populated after an instance is created, leaving its initial value, or
+     * leaving a `lateinit` property uninitialised. Useful for properties that are injected, such as an
+     * `@Autowired lateinit var`, or that should keep their default value. Constructor parameters are always generated
+     * as an instance cannot be created without them.
+     *
+     * ```
+     * class KotlinClass(val id: Int) {
+     *     lateinit var repository: Repository
+     *     private var cache: String = ""
+     * }
+     *
+     * val fixture = kotlinFixture {
+     *     // Public member properties ignored by reference:
+     *     ignoreProperty(KotlinClass::repository)
+     *
+     *     // Private member properties ignored by name:
+     *     ignoreProperty<KotlinClass>("cache")
+     *
+     *     // Java setters ignored by reference:
+     *     ignoreProperty(JavaClass::setMutable)
+     * }
+     * ```
+     */
+    inline fun <reified T> ignoreProperty(property: KMutableProperty1<T, *>) {
+        @Suppress("DEPRECATION_ERROR")
+        ignoreProperty(T::class, property.name)
+    }
+
+    /**
+     * Ignoring class properties with ignoreProperty
+     *
+     * Used to stop a mutable property, identified by [propertyName], being populated after an instance of [T] is
+     * created. See [ignoreProperty] for details.
+     */
+    inline fun <reified T> ignoreProperty(propertyName: String) {
+        @Suppress("DEPRECATION_ERROR")
+        ignoreProperty(T::class, propertyName)
+    }
+
+    /**
+     * Ignoring class properties with ignoreProperty
+     *
+     * Used to stop a Java setter, [function], being called after an instance is created. See [ignoreProperty] for
+     * details.
+     */
+    fun ignoreProperty(function: KFunction<Unit>) {
+        @Suppress("DEPRECATION_ERROR")
+        ignoreProperty(function.parameters[0].type.classifier as KClass<*>, function.name)
+    }
+
+    @Deprecated(
+        "Use one of the ignoreProperty(Class::property), ignoreProperty<Class>(propertyName) or " +
+            "ignoreProperty(Class::function) functions",
+        level = DeprecationLevel.ERROR
+    )
+    fun ignoreProperty(clazz: KClass<*>, propertyName: String) {
+        val ignored = ignoredProperties
+        val classProperties = ignored.properties[clazz].orEmpty() + propertyName
+
+        strategies[IgnoredProperties::class] =
+            ignored.copy(properties = ignored.properties + (clazz to classProperties))
+    }
+
+    /**
+     * Ignoring lateinit properties with ignoreLateinitProperties
+     *
+     * Stops all `lateinit` properties being populated, leaving them uninitialised. By default `lateinit` properties
+     * are populated, and only left uninitialised when no value can be generated for them.
+     */
+    fun ignoreLateinitProperties() {
+        strategies[IgnoredProperties::class] = ignoredProperties.copy(lateinit = true)
+    }
+
+    private val ignoredProperties: IgnoredProperties
+        get() = strategies[IgnoredProperties::class] as? IgnoredProperties ?: IgnoredProperties()
+
     fun build() = Configuration(
         repeatCount = repeatCount,
         propertiesRepeatCount = propertiesRepeatCount,
