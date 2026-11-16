@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.assertIsRandom
 import com.appmattus.kotlinfixture.config.Configuration
+import com.appmattus.kotlinfixture.config.before
 import com.appmattus.kotlinfixture.kotlinFixture
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.DateTimePeriod
@@ -30,10 +31,13 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
 import kotlinx.datetime.YearMonth
+import kotlinx.datetime.toJavaYearMonth
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.time.ZoneId
+import java.time.ZoneOffset
+import java.util.Date
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.test.Test
@@ -59,7 +63,27 @@ class KotlinxDateTimeResolverTest {
             val fixture = kotlinFixture()
 
             repeat(100) {
-                assertTrue { fixture<YearMonth>().year in 1900..2100 }
+                val result = fixture<YearMonth>()
+
+                assertTrue("$result is not within ten years of 2020") { result.year in 2009..2030 }
+            }
+        }
+
+        @Test
+        fun `Before specification gives YearMonth no later than now`() {
+            val now = Date()
+            val fixture = kotlinFixture {
+                factory<Date> { before(now) }
+            }
+            // The latest current date anywhere, as values are generated in a random time zone
+            val latestNow = java.time.YearMonth.now(ZoneOffset.MAX)
+
+            repeat(100) {
+                val result = fixture<YearMonth>()
+
+                assertTrue("$result is after $latestNow") {
+                    result.toJavaYearMonth() <= latestNow
+                }
             }
         }
 

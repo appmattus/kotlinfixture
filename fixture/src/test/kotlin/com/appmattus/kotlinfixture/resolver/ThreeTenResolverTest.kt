@@ -60,6 +60,51 @@ class ThreeTenResolverTest {
             CompositeResolver(ThreeTenResolver(), FactoryResolver(), KTypeResolver())
         )
 
+        private val unconfiguredContext = TestContext(
+            Configuration(),
+            CompositeResolver(ThreeTenResolver(), KTypeResolver(), DateResolver())
+        )
+
+        @Test
+        fun `Before specification gives Year and YearMonth no later than now`() {
+            // The latest current date anywhere, as values are generated in a random time zone
+            val latestNow = LocalDate.now(ZoneOffset.MAX)
+
+            repeat(100) {
+                val year = context.resolve(Year::class) as Year
+                val yearMonth = context.resolve(YearMonth::class) as YearMonth
+
+                assertTrue("$year is after $latestNow") { year.value <= latestNow.year }
+                assertTrue("$yearMonth is after $latestNow") { yearMonth <= YearMonth.from(latestNow) }
+            }
+        }
+
+        @Test
+        fun `Year and YearMonth are realistic`() {
+            repeat(100) {
+                val year = unconfiguredContext.resolve(Year::class) as Year
+                val yearMonth = unconfiguredContext.resolve(YearMonth::class) as YearMonth
+
+                assertTrue("$year is not within ten years of 2020") { year.value in 2009..2030 }
+                assertTrue("$yearMonth is not within ten years of 2020") { yearMonth.year in 2009..2030 }
+            }
+        }
+
+        @Test
+        fun `MonthDay generates every valid day of every month`() {
+            val expected = Month.values().flatMap { month -> (1..month.maxLength()).map { MonthDay.of(month, it) } }
+
+            val generated = List(MONTH_DAY_SAMPLES) { unconfiguredContext.resolve(MonthDay::class) as MonthDay }.toSet()
+
+            assertEquals(366, expected.size)
+            assertEquals(expected.toSet() - generated, emptySet(), "Valid days never generated")
+        }
+
+        private companion object {
+            // Enough samples for every one of the 366 month-days to be generated with near certainty
+            private const val MONTH_DAY_SAMPLES = 20_000
+        }
+
         @Test
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)

@@ -90,11 +90,12 @@ class TimeResolverTest {
 
         @Test
         fun `Before specification gives Year no later than now`() {
+            // Compare with the latest current date anywhere, UTC+18, as values are generated in a random time zone
             repeat(100) {
                 val result = context.resolve(Year::class) as Year
 
-                assertTrue("$result is after ${Year.now()}") {
-                    result <= Year.now()
+                assertTrue("$result is after ${Year.now(ZoneOffset.MAX)}") {
+                    result <= Year.now(ZoneOffset.MAX)
                 }
             }
         }
@@ -106,6 +107,29 @@ class TimeResolverTest {
 
                 assertTrue("$result is not within ten years of 2020") {
                     result.value in 2009..2030
+                }
+            }
+        }
+
+        @Test
+        fun `Before specification gives YearMonth no later than now`() {
+            // Compare with the latest current date anywhere, UTC+18, as values are generated in a random time zone
+            repeat(100) {
+                val result = context.resolve(YearMonth::class) as YearMonth
+
+                assertTrue("$result is after ${YearMonth.now(ZoneOffset.MAX)}") {
+                    result <= YearMonth.now(ZoneOffset.MAX)
+                }
+            }
+        }
+
+        @Test
+        fun `YearMonth is realistic`() {
+            repeat(100) {
+                val result = unconfiguredContext.resolve(YearMonth::class) as YearMonth
+
+                assertTrue("$result is not within ten years of 2020") {
+                    result.year in 2009..2030
                 }
             }
         }
