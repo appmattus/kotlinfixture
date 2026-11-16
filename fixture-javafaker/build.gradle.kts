@@ -39,6 +39,7 @@ dependencies {
 
     testImplementation(kotlin("reflect"))
     testImplementation(libs.kotlinX.coroutinesTest)
+    testImplementation(libs.kotlinX.datetime)
 }
 
 lint {

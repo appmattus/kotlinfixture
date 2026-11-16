@@ -32,7 +32,7 @@ internal class FakeResolver : Resolver {
 
             if (obj.name != null && !overrides.containsKey(obj.name)) {
                 strategy.fake(context, obj.name)?.takeIf { it != Unresolved.Unhandled }?.let {
-                    return it
+                    return FakeValueConverter.convert(it, obj.type)
                 }
             }
         }

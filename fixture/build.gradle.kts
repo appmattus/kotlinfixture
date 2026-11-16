@@ -35,6 +35,9 @@ dependencies {
     compileOnly(libs.jodaTime)
     testImplementation(libs.jodaTime)
 
+    compileOnly(libs.kotlinX.datetime)
+    testImplementation(libs.kotlinX.datetime)
+
     compileOnly(libs.threeTen)
     testImplementation(libs.threeTen)
 
