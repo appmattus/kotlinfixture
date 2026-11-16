@@ -18,6 +18,8 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import com.appmattus.kotlinfixture.config.IgnoredProperties
+import com.appmattus.kotlinfixture.strategyOrDefault
 import java.util.Locale
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -52,11 +54,15 @@ internal interface PopulateInstance {
         callContext: CallContext,
         result: Any?
     ): Boolean {
+        val ignored = callContext.ignoredProperties()
+
         callContext.obj.memberFunctions.filter {
             it.name.startsWith("set") && it.valueParameters.size == 1
         }.filterNot {
             val name = it.name.removePrefix("set").replaceFirstChar { it.lowercase(Locale.getDefault()) }
             callContext.constructorParameterNames.contains(name)
+        }.filterNot {
+            ignored.isIgnored(callContext.callingClass, it.name)
         }.forEach {
             val propertyResult = callContext.context.resolve(
                 KNamedPropertyRequest(it.name, callContext.callingClass, it.valueParameters[0].type)
@@ -76,14 +82,21 @@ internal interface PopulateInstance {
         callContext: CallContext,
         result: Any?
     ): Boolean {
+        val ignored = callContext.ignoredProperties()
+
         callContext.obj.settableMutableProperties()
             .filterNot { callContext.constructorParameterNames.contains(it.name) }
+            .filterNot { ignored.isIgnored(callContext.callingClass, it.name) }
+            .filterNot { ignored.lateinit && it.isLateinit }
             .forEach { property ->
                 val propertyResult = callContext.context.resolve(
                     KNamedPropertyRequest(property.name, callContext.callingClass, property.returnType)
                 )
 
                 if (propertyResult is Unresolved) {
+                    // A lateinit property can be left uninitialised, such as one that is normally injected
+                    if (property.isLateinit) return@forEach
+
                     return false
                 }
 
@@ -93,6 +106,9 @@ internal interface PopulateInstance {
 
         return true
     }
+
+    private fun CallContext.ignoredProperties(): IgnoredProperties =
+        context.strategyOrDefault(IgnoredProperties())
 
     private fun KClass<*>.settableMutableProperties(): List<KMutableProperty<*>> {
         return memberProperties

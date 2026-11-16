@@ -262,6 +262,71 @@ val fixture = kotlinFixture {
 ----
 ====
 
+== Ignoring class properties with `ignoreProperty`
+
+By default, mutable properties are populated after an instance is created.
+Use `ignoreProperty` to leave a property with its initial value, or a
+`lateinit` property uninitialised. This is useful for properties that are
+injected, such as an `@Autowired lateinit var`, or that should keep their
+default value. Constructor parameters are always generated, as an instance
+cannot be created without them.
+
+._Kotlin class example_
+[%collapsible%open]
+====
+
+Given the following Kotlin class:
+
+[source,kotlin]
+----
+class KotlinClass(val id: Int) {
+    lateinit var repository: Repository
+    var notes: String = "default"
+}
+----
+
+We can stop properties of `KotlinClass` being populated as follows:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Mutable properties ignored by reference:
+    ignoreProperty(KotlinClass::repository)
+
+    // Mutable properties ignored by name:
+    ignoreProperty<KotlinClass>("notes")
+}
+----
+====
+
+._Java class example_
+[%collapsible]
+====
+Given the `JavaClass` above, we can stop a setter being called as follows:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    // Setter ignored by reference:
+    ignoreProperty(JavaClass::setMutable)
+}
+----
+====
+
+=== Ignoring all `lateinit` properties with `ignoreLateinitProperties`
+
+`lateinit` properties are populated by default, and are only left
+uninitialised when no value can be generated for them, for example an
+interface with no implementation. To leave every `lateinit` property
+uninitialised:
+
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    ignoreLateinitProperties()
+}
+----
+
 == Filtering generated values with `filter`
 
 Used to allow generated values to be filtered using standard sequence
