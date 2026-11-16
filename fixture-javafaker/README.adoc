@@ -62,8 +62,7 @@ val fixture = kotlinFixture {
         locale = Locale.GERMAN
     }
     factory<Person> {
-        val faker = javaFaker
-        Person(faker.name().firstName(), faker.name().lastName())
+        Person(javaFaker.name().firstName(), javaFaker.name().lastName())
     }
 }
 ----

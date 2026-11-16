@@ -24,15 +24,13 @@ import net.datafaker.Faker
  * A [Datafaker](https://www.datafaker.net) faker for use in `factory` and `property` generators.
  *
  * The faker uses the locale configured with `dataFakerStrategy`, or the default locale if it has not been configured, and the
- * fixture's random, so its values are reproducible when the fixture is seeded. A new faker is created each time this
- * is accessed, so store it in a variable to generate several values.
+ * fixture's random, so its values are reproducible when the fixture is seeded.
  *
  * ```
  * val fixture = kotlinFixture {
  *     dataFakerStrategy()
  *     factory<Person> {
- *         val faker = dataFaker
- *         Person(faker.name().firstName(), faker.name().lastName())
+ *         Person(dataFaker.name().firstName(), dataFaker.name().lastName())
  *     }
  * }
  * ```

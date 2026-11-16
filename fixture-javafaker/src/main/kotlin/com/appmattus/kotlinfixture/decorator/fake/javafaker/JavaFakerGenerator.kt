@@ -24,15 +24,13 @@ import com.github.javafaker.Faker
  * A [Java Faker](https://github.com/DiUS/java-faker) faker for use in `factory` and `property` generators.
  *
  * The faker uses the locale configured with `javaFakerStrategy`, or the default locale if it has not been configured, and the
- * fixture's random, so its values are reproducible when the fixture is seeded. A new faker is created each time this
- * is accessed, so store it in a variable to generate several values.
+ * fixture's random, so its values are reproducible when the fixture is seeded.
  *
  * ```
  * val fixture = kotlinFixture {
  *     javaFakerStrategy()
  *     factory<Person> {
- *         val faker = javaFaker
- *         Person(faker.name().firstName(), faker.name().lastName())
+ *         Person(javaFaker.name().firstName(), javaFaker.name().lastName())
  *     }
  * }
  * ```
