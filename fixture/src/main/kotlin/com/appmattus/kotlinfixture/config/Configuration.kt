@@ -48,6 +48,7 @@ import com.appmattus.kotlinfixture.resolver.KFunctionResolver
 import com.appmattus.kotlinfixture.resolver.KNamedPropertyResolver
 import com.appmattus.kotlinfixture.resolver.KTormResolver
 import com.appmattus.kotlinfixture.resolver.KTypeResolver
+import com.appmattus.kotlinfixture.resolver.KotlinxDateTimeResolver
 import com.appmattus.kotlinfixture.resolver.LocaleResolver
 import com.appmattus.kotlinfixture.resolver.MapKTypeResolver
 import com.appmattus.kotlinfixture.resolver.ObjectResolver
@@ -129,6 +130,7 @@ data class Configuration internal constructor(
             TimeResolver(),
             JodaTimeResolver(),
             ThreeTenResolver(),
+            KotlinxDateTimeResolver(),
             FileResolver(),
             FormatResolver(),
             CurrencyResolver(),
