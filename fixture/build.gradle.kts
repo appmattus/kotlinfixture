@@ -58,6 +58,7 @@ dependencies {
     testImplementation(libs.marcellogalhardo)
     testImplementation(libs.flextrade)
     testImplementation(libs.easyrandom)
+    testImplementation(libs.fixtureMonkey.kotlin)
 
     // Available when compiling tests but not when running them, to test classes whose dependencies are missing
     testCompileOnly(libs.javaxInject)

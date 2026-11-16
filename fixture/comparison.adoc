@@ -11,6 +11,7 @@ endif::[]
 :link-flextrade: FlexTrade's https://github.com/FlexTradeUKLtd/kfixture[KFixture]
 :link-appmattus: https://github.com/appmattus/kotlinfixture[KotlinFixture]
 :link-marcellogalhardo: Marcello Galhardo's https://github.com/marcellogalhardo/kotlin-fixture[Kotlin.Fixture]
+:link-fixturemonkey: Naver's https://github.com/naver/fixture-monkey[Fixture Monkey]
 
 Before writing {link-appmattus}, we originally looked to extend
 {link-flextrade}, however, as the core project is Java based we struggled with
@@ -20,14 +21,17 @@ Being Java based means {link-easyrandom} and {link-flextrade} will never be
 able to understand Kotlin's https://kotlinlang.org/docs/reference/null-safety.html#nullable-types-and-non-null-types[nullable types].
 Currently {link-marcellogalhardo}, which is Kotlin based, doesn't support
 nullable types either, although this functionality could be added.
+{link-fixturemonkey} is Java based with a Kotlin plugin, and generates `null` for
+nullable properties, but never when the requested type itself is nullable, such
+as `String?`.
 
 Unlike {link-appmattus}, the other libraries have no understanding of Kotlin's
 https://kotlinlang.org/docs/reference/functions.html#default-arguments[default values]
 which can mean missing an important test scenario.
 
 Only {link-appmattus} has built-in support for abstract classes. Kotlin's https://kotlinlang.org/docs/reference/sealed-classes.html[sealed classes]
-are abstract so not supported, with only {link-marcellogalhardo} supporting
-sealed classes but not abstract classes.
+are abstract so not supported, with only {link-marcellogalhardo} and
+{link-fixturemonkey} supporting sealed classes but not abstract classes.
 
 For ease of use, a fixture library needs good support for built-in types to
 reduce the amount of customisation required, whether that is types such as
@@ -41,10 +45,13 @@ However, when comparing our library to our competitors we did find
 various unsupported types, not random, or generated invalid types. For example:
 
 - {link-flextrade} does not support `Pair`, `Triple`, `Currency` or `Locale`.
-- `HashMap` is not random in any of the competitors.
+- `HashMap` is only random in {link-fixturemonkey}, and not in the other competitors.
 - `SortedSet` and `SortedMap` generate invalid objects in {link-flextrade}.
 - Various `List` types either generate invalid objects or aren't random in {link-easyrandom}.
 - {link-marcellogalhardo} doesn't support primitive arrays such as `ByteArray` and `IntArray`.
+- {link-fixturemonkey} generates `null` for `Currency`, `Locale`, `URL`, the `java.sql` date types and all ThreeTenBP types except `Month`, and fails for most Joda-Time types.
+- Many concrete collection types generate the wrong type in {link-fixturemonkey}, such as a `LinkedList` for a `PriorityQueue` and a `HashMap` for a `TreeMap`.
+- `Calendar` and `ZoneId` are sometimes `null` in {link-fixturemonkey}.
 
 Our comprehensive link:src/test/kotlin/com/appmattus/kotlinfixture/ComparisonTest.kt[ComparisonTest]
 contains more details.
