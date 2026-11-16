@@ -32,6 +32,10 @@ which can mean missing an important test scenario.
 Only {link-appmattus} has built-in support for abstract classes. Kotlin's https://kotlinlang.org/docs/reference/sealed-classes.html[sealed classes]
 are abstract so not supported, with only {link-marcellogalhardo} and
 {link-fixturemonkey} supporting sealed classes but not abstract classes.
+{link-fixturemonkey} can generate abstract classes and interfaces when you list
+their implementations yourself with its `InterfacePlugin`, for example
+`abstractClassExtends(Shape::class.java, listOf(Square::class.java, Circle::class.java))`,
+whereas {link-appmattus} finds them automatically.
 
 For ease of use, a fixture library needs good support for built-in types to
 reduce the amount of customisation required, whether that is types such as
