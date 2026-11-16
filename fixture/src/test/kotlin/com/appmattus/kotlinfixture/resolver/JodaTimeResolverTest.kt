@@ -55,6 +55,52 @@ class JodaTimeResolverTest {
             CompositeResolver(JodaTimeResolver(), FactoryResolver(), KTypeResolver())
         )
 
+        private val unconfiguredContext = TestContext(
+            Configuration(),
+            CompositeResolver(JodaTimeResolver(), KTypeResolver(), DateResolver())
+        )
+
+        @Test
+        fun `Before specification gives YearMonth no later than now`() {
+            // The latest current date anywhere, as values are generated in a random time zone
+            val latestNow = YearMonth.now(DateTimeZone.forOffsetHours(MAX_OFFSET_HOURS))
+
+            repeat(100) {
+                val result = context.resolve(YearMonth::class) as YearMonth
+
+                assertTrue("$result is after $latestNow") { !result.isAfter(latestNow) }
+            }
+        }
+
+        @Test
+        fun `YearMonth is realistic`() {
+            repeat(100) {
+                val result = unconfiguredContext.resolve(YearMonth::class) as YearMonth
+
+                assertTrue("$result is not within ten years of 2020") { result.year in 2009..2030 }
+            }
+        }
+
+        @Test
+        fun `MonthDay generates every valid day of every month`() {
+            val expected = (1..MONTHS_IN_YEAR).flatMap { month ->
+                (1..MonthDay(month, 1).dayOfMonth().maximumValue).map { MonthDay(month, it) }
+            }
+
+            val generated = List(MONTH_DAY_SAMPLES) { unconfiguredContext.resolve(MonthDay::class) as MonthDay }.toSet()
+
+            assertEquals(366, expected.size)
+            assertEquals(expected.toSet() - generated, emptySet(), "Valid days never generated")
+        }
+
+        private companion object {
+            private const val MAX_OFFSET_HOURS = 18
+            private const val MONTHS_IN_YEAR = 12
+
+            // Enough samples for every one of the 366 month-days to be generated with near certainty
+            private const val MONTH_DAY_SAMPLES = 20_000
+        }
+
         @Test
         fun `Unknown class returns Unresolved`() {
             val result = context.resolve(Number::class)
