@@ -200,6 +200,22 @@ val betweenTwoDates = fixture<Date>()
 Used to override constructor parameters or mutable properties when generating
 instances of generic classes.
 
+Mutable properties with a `protected` or `private` setter keep their initial
+value by default, but are set when overridden with `property`. Overriding a
+property by reference only needs the property to be mutable inside its class:
+
+[source,kotlin]
+----
+class KotlinClass {
+    var name: String = "initial value"
+        protected set
+}
+
+val fixture = kotlinFixture {
+    property(KotlinClass::name) { "a" }
+}
+----
+
 ._Kotlin class example_
 [%collapsible%open]
 ====
