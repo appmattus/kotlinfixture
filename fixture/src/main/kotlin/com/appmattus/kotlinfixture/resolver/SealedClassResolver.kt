@@ -26,7 +26,7 @@ internal class SealedClassResolver : Resolver {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.isSealed == true) {
-            obj.sealedSubclasses.shuffled().forEach { subclass ->
+            obj.sealedSubclasses.shuffled(context.random).forEach { subclass ->
                 val result = context.resolve(subclass)
                 if (result is Unresolved) {
                     return createUnresolved("Unable to resolve sealed class $obj subclass $subclass", listOf(result))

@@ -31,7 +31,7 @@ internal class AbstractClassResolver : Resolver {
 
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
-            val results = classes.shuffled().map { subclass ->
+            val results = classes.shuffled(context.random).map { subclass ->
                 val result = context.resolve(subclass.loadClass().kotlin)
                 if (result !is Unresolved) {
                     return result

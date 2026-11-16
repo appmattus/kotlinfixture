@@ -37,12 +37,13 @@ class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration 
         range: Iterable<T> = emptyList(),
         noinline configuration: ConfigurationBuilder.() -> Unit = {}
     ): T {
-        val rangeShuffled = range.shuffled()
-        return if (rangeShuffled.isNotEmpty()) {
-            rangeShuffled.first()
+        val builtConfiguration = ConfigurationBuilder(fixtureConfiguration).apply(configuration).build()
+        val values = range.toList()
+        return if (values.isNotEmpty()) {
+            values.random(builtConfiguration.random)
         } else {
             @Suppress("DEPRECATION_ERROR")
-            create(typeOf<T>(), ConfigurationBuilder(fixtureConfiguration).apply(configuration).build()) as T
+            create(typeOf<T>(), builtConfiguration) as T
         }
     }
 
