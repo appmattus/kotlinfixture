@@ -56,6 +56,28 @@ val randomStringFromTheList = fixture(listOf("Cat", "Dog", "Horse"))
 val anotherRandomIntFromAList = fixture(1..5)
 ----
 
+For a one-off value you don't need to create a fixture first. The
+top-level `fixture` function generates a value with the default
+configuration, and accepts a range or configuration for just that value:
+
+[source,kotlin]
+----
+// Useful in place of hand-written factory functions, as new properties
+// are generated automatically
+val foo = fixture<Foo>().copy(bar = -1)
+
+val aRandomString = fixture<String>()
+val aRandomAnimal = fixture(listOf("Cat", "Dog", "Horse"))
+val aShortList = fixture<List<String>> {
+    repeatCount { 2 }
+}
+----
+
+Create a fixture with `kotlinFixture` instead when several values share
+configuration, such as a seeded `random` or fake data. A local variable
+or property called `fixture`, such as `val fixture = kotlinFixture()`,
+takes precedence over the top-level function.
+
 You can also generate an infinite sequence of a type, which you can then
 filter:
 

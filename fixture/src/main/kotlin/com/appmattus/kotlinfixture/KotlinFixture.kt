@@ -101,3 +101,28 @@ class Fixture @JvmOverloads constructor(val fixtureConfiguration: Configuration 
  */
 fun kotlinFixture(configuration: ConfigurationBuilder.() -> Unit = {}) =
     Fixture(ConfigurationBuilder().apply(configuration).build())
+
+/**
+ * Create an instance of [T] with the default configuration, without creating a [Fixture] first. Any [configuration]
+ * applies to this instance only. If a [range] is provided then a value from that is chosen.
+ *
+ * Useful for one-off values, for example replacing a hand-written factory function:
+ *
+ * ```
+ * val foo = fixture<Foo>().copy(bar = -1)
+ * ```
+ *
+ * Use [kotlinFixture] instead to share configuration between values. A local variable or property called `fixture`
+ * takes precedence over this function, so existing code using `val fixture = kotlinFixture()` is unaffected.
+ */
+inline fun <reified T : Any?> fixture(
+    range: Iterable<T> = emptyList(),
+    noinline configuration: ConfigurationBuilder.() -> Unit = {}
+): T = defaultFixture(range, configuration)
+
+/**
+ * The [Fixture] used by the top-level [fixture] function. A fixture holds only its configuration, so one instance can
+ * be shared.
+ */
+@PublishedApi
+internal val defaultFixture: Fixture by lazy { kotlinFixture() }
