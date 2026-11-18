@@ -28,9 +28,9 @@ internal class TupleKTypeResolver : Resolver {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            return when (obj.classifier as KClass<*>) {
-                Pair::class -> generatePair(context, obj)
-                Triple::class -> generateTriple(context, obj)
+            return when ((obj.classifier as KClass<*>).javaObjectType) {
+                Pair::class.java -> generatePair(context, obj)
+                Triple::class.java -> generateTriple(context, obj)
                 else -> Unresolved.Unhandled
             }
         }

@@ -35,13 +35,13 @@ internal class AtomicKTypeResolver : Resolver {
     @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? = with(context) {
         if (obj is KType && obj.classifier is KClass<*>) {
-            return when (obj.classifier) {
-                AtomicBoolean::class -> generateAtomicBoolean(obj)
-                AtomicInteger::class -> generateAtomicInteger(obj)
-                AtomicLong::class -> generateAtomicLong(obj)
-                AtomicIntegerArray::class -> generateAtomicIntegerArray(obj)
-                AtomicLongArray::class -> generateAtomicLongArray(obj)
-                AtomicReference::class -> generateAtomicReference(obj)
+            return when ((obj.classifier as KClass<*>).javaObjectType) {
+                AtomicBoolean::class.java -> generateAtomicBoolean(obj)
+                AtomicInteger::class.java -> generateAtomicInteger(obj)
+                AtomicLong::class.java -> generateAtomicLong(obj)
+                AtomicIntegerArray::class.java -> generateAtomicIntegerArray(obj)
+                AtomicLongArray::class.java -> generateAtomicLongArray(obj)
+                AtomicReference::class.java -> generateAtomicReference(obj)
                 else -> Unresolved.Unhandled
             }
         }
