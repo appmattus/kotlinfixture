@@ -20,10 +20,11 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.nextUuid
 import java.io.File
+import kotlin.reflect.KClass
 
 internal class FileResolver : Resolver {
     override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == File::class) {
+        return if ((obj as? KClass<*>)?.javaObjectType == File::class.java) {
             return File(context.random.nextUuid().toString())
         } else {
             Unresolved.Unhandled

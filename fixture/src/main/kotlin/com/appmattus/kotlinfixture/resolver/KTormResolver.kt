@@ -22,13 +22,12 @@ import org.ktorm.entity.Entity
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 import kotlin.reflect.full.declaredMembers
-import kotlin.reflect.full.isSubclassOf
 
 internal class KTormResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any {
         if (hasKTorm && obj is KClass<*>) {
-            if (obj.isSubclassOf(Entity::class) && obj != Entity::class) {
+            if (obj.java != Entity::class.java && Entity::class.java.isAssignableFrom(obj.java)) {
                 val entity = Entity.create(obj)
 
                 obj.declaredMembers.filterIsInstance<KProperty<*>>().forEach {

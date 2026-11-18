@@ -20,11 +20,16 @@ import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.math.BigInteger
 import kotlin.random.asJavaRandom
+import kotlin.reflect.KClass
 
 internal class BigIntegerResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == BigInteger::class) BigInteger(NUM_BITS, context.random.asJavaRandom()) else Unresolved.Unhandled
+        if ((obj as? KClass<*>)?.javaObjectType == BigInteger::class.java) {
+            BigInteger(NUM_BITS, context.random.asJavaRandom())
+        } else {
+            Unresolved.Unhandled
+        }
 
     companion object {
         private const val NUM_BITS = 64

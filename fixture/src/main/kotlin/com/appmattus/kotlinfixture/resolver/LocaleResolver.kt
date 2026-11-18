@@ -19,11 +19,12 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.util.Locale
+import kotlin.reflect.KClass
 
 internal class LocaleResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == Locale::class) {
+        return if ((obj as? KClass<*>)?.javaObjectType == Locale::class.java) {
             Locale.getAvailableLocales().random(context.random)
         } else {
             Unresolved.Unhandled

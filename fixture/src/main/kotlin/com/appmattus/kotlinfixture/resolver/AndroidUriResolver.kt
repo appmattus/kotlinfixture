@@ -22,13 +22,14 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.Unresolved.Companion.createUnresolved
 import com.appmattus.kotlinfixture.typeOf
 import java.net.URI
+import kotlin.reflect.KClass
 
 internal class AndroidUriResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         return if (hasAndroid) {
-            when (obj) {
-                Uri::class -> context.generateUri()
+            when ((obj as? KClass<*>)?.javaObjectType) {
+                Uri::class.java -> context.generateUri()
                 else -> Unresolved.Unhandled
             }
         } else {

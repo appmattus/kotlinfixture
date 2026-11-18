@@ -22,13 +22,14 @@ import com.appmattus.kotlinfixture.typeOf
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
+import kotlin.reflect.KClass
 
 internal class CalendarResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
-        return when (obj) {
-            Calendar::class,
-            GregorianCalendar::class -> {
+        return when ((obj as? KClass<*>)?.javaObjectType) {
+            Calendar::class.java,
+            GregorianCalendar::class.java -> {
                 GregorianCalendar().apply {
                     time = context.resolve(typeOf<Date>()) as Date
                 }

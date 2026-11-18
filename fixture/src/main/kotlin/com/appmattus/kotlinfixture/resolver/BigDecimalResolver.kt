@@ -21,11 +21,12 @@ import com.appmattus.kotlinfixture.Unresolved
 import java.math.BigDecimal
 import java.math.BigInteger
 import kotlin.random.asJavaRandom
+import kotlin.reflect.KClass
 
 internal class BigDecimalResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == BigDecimal::class) {
+        return if ((obj as? KClass<*>)?.javaObjectType == BigDecimal::class.java) {
             BigDecimal(BigInteger(NUM_BITS, context.random.asJavaRandom())).divide(BigDecimal.TEN)
         } else {
             Unresolved.Unhandled
