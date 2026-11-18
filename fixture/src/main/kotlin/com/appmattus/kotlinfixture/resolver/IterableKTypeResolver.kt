@@ -82,55 +82,57 @@ internal class IterableKTypeResolver : Resolver {
     }
 
     @Suppress("ComplexMethod")
-    private fun createCollection(obj: KType): MutableCollection<Any?>? = when (obj.classifier as KClass<*>) {
-        Iterable::class,
-        Collection::class,
-        List::class,
-        ArrayList::class -> ArrayList()
+    private fun createCollection(
+        obj: KType
+    ): MutableCollection<Any?>? = when ((obj.classifier as KClass<*>).javaObjectType) {
+        Iterable::class.java,
+        Collection::class.java,
+        List::class.java,
+        ArrayList::class.java -> ArrayList()
 
-        java.util.AbstractCollection::class,
-        java.util.AbstractList::class,
-        AbstractList::class,
-        AbstractSequentialList::class,
-        LinkedList::class -> LinkedList()
+        java.util.AbstractCollection::class.java,
+        java.util.AbstractList::class.java,
+        AbstractList::class.java,
+        AbstractSequentialList::class.java,
+        LinkedList::class.java -> LinkedList()
 
-        Vector::class -> Vector()
+        Vector::class.java -> Vector()
 
-        Stack::class -> Stack()
+        Stack::class.java -> Stack()
 
-        Queue::class,
-        Deque::class,
-        ArrayDeque::class -> ArrayDeque()
+        Queue::class.java,
+        Deque::class.java,
+        ArrayDeque::class.java -> ArrayDeque()
 
-        AbstractQueue::class,
-        PriorityQueue::class -> PriorityQueue()
+        AbstractQueue::class.java,
+        PriorityQueue::class.java -> PriorityQueue()
 
-        SortedSet::class,
-        NavigableSet::class,
-        TreeSet::class -> TreeSet()
+        SortedSet::class.java,
+        NavigableSet::class.java,
+        TreeSet::class.java -> TreeSet()
 
-        java.util.AbstractSet::class,
-        Set::class,
-        HashSet::class,
-        LinkedHashSet::class -> LinkedHashSet()
+        java.util.AbstractSet::class.java,
+        Set::class.java,
+        HashSet::class.java,
+        LinkedHashSet::class.java -> LinkedHashSet()
 
-        BlockingQueue::class,
-        TransferQueue::class,
-        LinkedTransferQueue::class -> LinkedTransferQueue()
+        BlockingQueue::class.java,
+        TransferQueue::class.java,
+        LinkedTransferQueue::class.java -> LinkedTransferQueue()
 
-        BlockingDeque::class,
-        LinkedBlockingDeque::class -> LinkedBlockingDeque()
+        BlockingDeque::class.java,
+        LinkedBlockingDeque::class.java -> LinkedBlockingDeque()
 
-        ConcurrentLinkedDeque::class -> ConcurrentLinkedDeque()
-        ConcurrentSkipListSet::class -> ConcurrentSkipListSet()
-        CopyOnWriteArraySet::class -> CopyOnWriteArraySet()
-        CopyOnWriteArrayList::class -> CopyOnWriteArrayList()
-        ConcurrentLinkedQueue::class -> ConcurrentLinkedQueue()
-        DelayQueue::class ->
+        ConcurrentLinkedDeque::class.java -> ConcurrentLinkedDeque()
+        ConcurrentSkipListSet::class.java -> ConcurrentSkipListSet()
+        CopyOnWriteArraySet::class.java -> CopyOnWriteArraySet()
+        CopyOnWriteArrayList::class.java -> CopyOnWriteArrayList()
+        ConcurrentLinkedQueue::class.java -> ConcurrentLinkedQueue()
+        DelayQueue::class.java ->
             @Suppress("UNCHECKED_CAST")
             (DelayQueue<Delayed>() as MutableCollection<Any?>)
-        LinkedBlockingQueue::class -> LinkedBlockingQueue()
-        PriorityBlockingQueue::class -> PriorityBlockingQueue()
+        LinkedBlockingQueue::class.java -> LinkedBlockingQueue()
+        PriorityBlockingQueue::class.java -> PriorityBlockingQueue()
 
         else -> null
     }

@@ -71,28 +71,29 @@ internal class MapKTypeResolver : Resolver {
         return collection
     }
 
-    private fun createCollection(obj: KType): MutableMap<Any?, Any?>? = when (obj.classifier as KClass<*>) {
-        Map::class,
-        java.util.AbstractMap::class,
-        HashMap::class -> HashMap()
+    private fun createCollection(obj: KType): MutableMap<Any?, Any?>? =
+        when ((obj.classifier as KClass<*>).javaObjectType) {
+            Map::class.java,
+            java.util.AbstractMap::class.java,
+            HashMap::class.java -> HashMap()
 
-        SortedMap::class,
-        NavigableMap::class,
-        TreeMap::class -> TreeMap()
+            SortedMap::class.java,
+            NavigableMap::class.java,
+            TreeMap::class.java -> TreeMap()
 
-        ConcurrentMap::class,
-        ConcurrentHashMap::class -> ConcurrentHashMap()
+            ConcurrentMap::class.java,
+            ConcurrentHashMap::class.java -> ConcurrentHashMap()
 
-        ConcurrentNavigableMap::class,
-        ConcurrentSkipListMap::class -> ConcurrentSkipListMap()
+            ConcurrentNavigableMap::class.java,
+            ConcurrentSkipListMap::class.java -> ConcurrentSkipListMap()
 
-        LinkedHashMap::class -> LinkedHashMap()
-        IdentityHashMap::class -> IdentityHashMap()
-        WeakHashMap::class -> WeakHashMap()
+            LinkedHashMap::class.java -> LinkedHashMap()
+            IdentityHashMap::class.java -> IdentityHashMap()
+            WeakHashMap::class.java -> WeakHashMap()
 
-        else -> {
-            @Suppress("USELESS_CAST")
-            null
+            else -> {
+                @Suppress("USELESS_CAST")
+                null
+            }
         }
-    }
 }

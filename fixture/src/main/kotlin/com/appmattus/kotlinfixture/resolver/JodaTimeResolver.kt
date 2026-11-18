@@ -31,24 +31,25 @@ import org.joda.time.MonthDay
 import org.joda.time.Period
 import org.joda.time.YearMonth
 import java.util.Date
+import kotlin.reflect.KClass
 
 internal class JodaTimeResolver : Resolver {
 
     @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         return if (hasJodaTime) {
-            when (obj) {
-                Instant::class -> context.generateInstant()
-                LocalDate::class -> LocalDate(context.generateInstant(), context.generateDateTimeZone())
-                LocalTime::class -> LocalTime(context.generateInstant(), context.generateDateTimeZone())
-                LocalDateTime::class -> LocalDateTime(context.generateInstant(), context.generateDateTimeZone())
-                DateTime::class -> DateTime(context.generateInstant(), context.generateDateTimeZone())
-                Period::class -> context.generatePeriod()
-                Duration::class -> context.generateDuration()
-                DateTimeZone::class -> context.randomDateTimeZone()
-                Interval::class -> context.generateInterval()
-                YearMonth::class -> context.generateYearMonth()
-                MonthDay::class -> context.generateMonthDay()
+            when ((obj as? KClass<*>)?.javaObjectType) {
+                Instant::class.java -> context.generateInstant()
+                LocalDate::class.java -> LocalDate(context.generateInstant(), context.generateDateTimeZone())
+                LocalTime::class.java -> LocalTime(context.generateInstant(), context.generateDateTimeZone())
+                LocalDateTime::class.java -> LocalDateTime(context.generateInstant(), context.generateDateTimeZone())
+                DateTime::class.java -> DateTime(context.generateInstant(), context.generateDateTimeZone())
+                Period::class.java -> context.generatePeriod()
+                Duration::class.java -> context.generateDuration()
+                DateTimeZone::class.java -> context.randomDateTimeZone()
+                Interval::class.java -> context.generateInterval()
+                YearMonth::class.java -> context.generateYearMonth()
+                MonthDay::class.java -> context.generateMonthDay()
                 else -> Unresolved.Unhandled
             }
         } else {

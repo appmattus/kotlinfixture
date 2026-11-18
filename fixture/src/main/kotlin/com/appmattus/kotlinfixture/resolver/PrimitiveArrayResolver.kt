@@ -18,26 +18,27 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import kotlin.reflect.KClass
 
 internal class PrimitiveArrayResolver : Resolver {
 
     @OptIn(ExperimentalUnsignedTypes::class)
     @Suppress("ComplexMethod")
-    override fun resolve(context: Context, obj: Any): Any? = when (obj) {
-        BooleanArray::class -> context.resolveConstructor(::BooleanArray)
+    override fun resolve(context: Context, obj: Any): Any? = when ((obj as? KClass<*>)?.javaObjectType) {
+        BooleanArray::class.java -> context.resolveConstructor(::BooleanArray)
 
-        ByteArray::class -> context.resolveConstructor(::ByteArray)
-        DoubleArray::class -> context.resolveConstructor(::DoubleArray)
-        FloatArray::class -> context.resolveConstructor(::FloatArray)
-        IntArray::class -> context.resolveConstructor(::IntArray)
-        LongArray::class -> context.resolveConstructor(::LongArray)
-        ShortArray::class -> context.resolveConstructor(::ShortArray)
-        CharArray::class -> context.resolveConstructor(::CharArray)
+        ByteArray::class.java -> context.resolveConstructor(::ByteArray)
+        DoubleArray::class.java -> context.resolveConstructor(::DoubleArray)
+        FloatArray::class.java -> context.resolveConstructor(::FloatArray)
+        IntArray::class.java -> context.resolveConstructor(::IntArray)
+        LongArray::class.java -> context.resolveConstructor(::LongArray)
+        ShortArray::class.java -> context.resolveConstructor(::ShortArray)
+        CharArray::class.java -> context.resolveConstructor(::CharArray)
 
-        UByteArray::class -> context.resolveConstructor(::UByteArray)
-        UIntArray::class -> context.resolveConstructor(::UIntArray)
-        ULongArray::class -> context.resolveConstructor(::ULongArray)
-        UShortArray::class -> context.resolveConstructor(::UShortArray)
+        UByteArray::class.java -> context.resolveConstructor(::UByteArray)
+        UIntArray::class.java -> context.resolveConstructor(::UIntArray)
+        ULongArray::class.java -> context.resolveConstructor(::ULongArray)
+        UShortArray::class.java -> context.resolveConstructor(::UShortArray)
 
         else -> Unresolved.Unhandled
     }
