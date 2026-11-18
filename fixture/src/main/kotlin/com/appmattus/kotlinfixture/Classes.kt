@@ -27,8 +27,8 @@ internal object Classes {
      * that are not meaningful values to generate, and skipping them roughly halves the time taken to scan.
      *
      * Only packages that are wholly internal are listed, as other `com.sun` and `jdk` packages include supported APIs,
-     * such as `com.sun.net.httpserver` and `jdk.jfr`. On Java 9 and later, the JDK's other non-exported packages are
-     * skipped too, see [JdkPackages].
+     * such as `com.sun.net.httpserver` and `jdk.jfr`. The JDK's other internal packages are skipped too: on Java 9 and
+     * later the packages its modules do not export, see [JdkPackages], and before that [java8InternalPackages].
      */
     val internalPackages = listOf(
         "sun",
@@ -77,12 +77,13 @@ internal object Classes {
     }
 
     /**
-     * Rejects [internalPackages] and the JDK's non-exported packages. ClassGraph rejects a package with its
-     * subpackages, so a non-exported package is only rejected when none of its subpackages are exported.
+     * Rejects [internalPackages] and the JDK's other internal packages: its non-exported packages when [jdkPackages]
+     * is available, otherwise [java8InternalPackages]. ClassGraph rejects a package with its subpackages, so a
+     * non-exported package is only rejected when none of its subpackages are exported.
      */
     fun ClassGraph.rejectInternalPackages(jdkPackages: JdkPackages?): ClassGraph = apply {
         internalPackages.forEach { rejectPackages(it) }
-        jdkPackages?.rejectable?.forEach { rejectPackages(it) }
+        (jdkPackages?.rejectable ?: java8InternalPackages).forEach { rejectPackages(it) }
     }
 
     /**
