@@ -21,6 +21,21 @@ import io.github.classgraph.ScanResult
 
 internal object Classes {
     /**
+     * Packages internal to the JDK and kotlin-reflect, with their subpackages. Their classes are implementation details
+     * that are not meaningful values to generate, and skipping them roughly halves the time taken to scan.
+     *
+     * Only packages that are wholly internal are listed, as other `com.sun` and `jdk` packages include supported APIs,
+     * such as `com.sun.net.httpserver` and `jdk.jfr`.
+     */
+    val internalPackages = listOf(
+        "sun",
+        "jdk.internal",
+        // The JDK's internal copy of Apache Xerces and Xalan
+        "com.sun.org.apache",
+        "kotlin.reflect.jvm.internal"
+    )
+
+    /**
      * Only KotlinFixture's own class loader is scanned. By default ClassGraph also scans other class loaders, such as
      * the build tool's when tests run under Gradle, whose classes the code under test cannot use.
      */
@@ -28,6 +43,7 @@ internal object Classes {
         ClassGraph()
             .overrideClassLoaders(Classes::class.java.classLoader)
             .enableSystemJarsAndModules()
+            .apply { internalPackages.forEach { rejectPackages(it) } }
             .enableClassInfo()
             .scan()
     }
