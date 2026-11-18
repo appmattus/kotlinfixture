@@ -38,6 +38,7 @@ import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import java.util.Date
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -94,6 +95,7 @@ class JodaTimeResolverTest {
         }
 
         private companion object {
+            private const val SEED = 7
             private const val MAX_OFFSET_HOURS = 18
             private const val MONTHS_IN_YEAR = 12
 
@@ -129,6 +131,16 @@ class JodaTimeResolverTest {
 
                 assertEquals("Europe/London", dateTime.zone.id)
             }
+        }
+
+        @Test
+        fun `seeded DateTimeZone is picked from the zones in sorted order`() {
+            val fixture = kotlinFixture { random = Random(SEED) }
+
+            assertEquals(
+                DateTimeZone.forID(DateTimeZone.getAvailableIDs().sorted().random(Random(SEED))),
+                fixture<DateTimeZone>()
+            )
         }
     }
 

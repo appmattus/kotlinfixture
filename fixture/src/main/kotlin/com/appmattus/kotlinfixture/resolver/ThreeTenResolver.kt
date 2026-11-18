@@ -82,7 +82,7 @@ internal class ThreeTenResolver : Resolver {
     private fun Context.generateZonedDateTime(): ZonedDateTime =
         generateInstant().atZone(resolve(typeOf<ZoneId>()) as ZoneId)
 
-    private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
+    private fun Context.randomZoneId(): ZoneId = ZoneId.of(zoneIds.random(random))
 
     private fun Context.generateZoneOffset(): ZoneOffset =
         ZoneOffset.ofTotalSeconds(random.nextInt(ZoneOffset.MIN.totalSeconds, ZoneOffset.MAX.totalSeconds))
@@ -113,6 +113,10 @@ internal class ThreeTenResolver : Resolver {
     ).random(random)
 
     companion object {
+        // Listed once, as getting the available zone IDs copies them and picking from a set walks it. Sorted so
+        // a seeded fixture picks the same zone whatever order the library returns them in.
+        private val zoneIds: List<String> by lazy { ZoneId.getAvailableZoneIds().sorted() }
+
         private val hasThreeTen: Boolean by lazy {
             try {
                 @Suppress("SpellCheckingInspection")

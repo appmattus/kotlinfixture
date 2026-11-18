@@ -71,7 +71,7 @@ internal class JodaTimeResolver : Resolver {
     }
 
     private fun Context.randomDateTimeZone(): DateTimeZone =
-        DateTimeZone.forID(DateTimeZone.getAvailableIDs().random(random))
+        DateTimeZone.forID(zoneIds.random(random))
 
     @Suppress("MagicNumber")
     private fun Context.generatePeriod(): Period {
@@ -106,6 +106,10 @@ internal class JodaTimeResolver : Resolver {
 
     companion object {
         private const val MONTHS_IN_YEAR = 12
+
+        // Listed once, as getting the available zone IDs copies them and picking from a set walks it. Sorted so
+        // a seeded fixture picks the same zone whatever order the library returns them in.
+        private val zoneIds: List<String> by lazy { DateTimeZone.getAvailableIDs().sorted() }
 
         private val hasJodaTime: Boolean by lazy {
             try {
