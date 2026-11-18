@@ -37,6 +37,7 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.ChronoUnit
 import java.util.Date
+import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 internal class ThreeTenResolver : Resolver {
@@ -44,22 +45,22 @@ internal class ThreeTenResolver : Resolver {
     @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         return if (hasThreeTen) {
-            when (obj) {
-                Instant::class -> context.generateInstant()
-                ZonedDateTime::class -> context.generateZonedDateTime()
-                LocalDate::class -> context.generateZonedDateTime().toLocalDate()
-                LocalTime::class -> context.generateZonedDateTime().toLocalTime()
-                LocalDateTime::class -> context.generateZonedDateTime().toLocalDateTime()
-                OffsetDateTime::class -> context.generateZonedDateTime().toOffsetDateTime()
-                OffsetTime::class -> context.generateZonedDateTime().toOffsetDateTime().toOffsetTime()
-                Period::class -> context.generatePeriod()
-                Duration::class -> context.generateDuration()
-                ZoneId::class -> context.randomZoneId()
-                ZoneOffset::class -> context.generateZoneOffset()
-                Year::class -> context.generateYear()
-                Month::class -> context.generateMonth()
-                YearMonth::class -> context.generateYearMonth()
-                MonthDay::class -> context.generateMonthDay()
+            when ((obj as? KClass<*>)?.javaObjectType) {
+                Instant::class.java -> context.generateInstant()
+                ZonedDateTime::class.java -> context.generateZonedDateTime()
+                LocalDate::class.java -> context.generateZonedDateTime().toLocalDate()
+                LocalTime::class.java -> context.generateZonedDateTime().toLocalTime()
+                LocalDateTime::class.java -> context.generateZonedDateTime().toLocalDateTime()
+                OffsetDateTime::class.java -> context.generateZonedDateTime().toOffsetDateTime()
+                OffsetTime::class.java -> context.generateZonedDateTime().toOffsetDateTime().toOffsetTime()
+                Period::class.java -> context.generatePeriod()
+                Duration::class.java -> context.generateDuration()
+                ZoneId::class.java -> context.randomZoneId()
+                ZoneOffset::class.java -> context.generateZoneOffset()
+                Year::class.java -> context.generateYear()
+                Month::class.java -> context.generateMonth()
+                YearMonth::class.java -> context.generateYearMonth()
+                MonthDay::class.java -> context.generateMonthDay()
                 else -> Unresolved.Unhandled
             }
         } else {

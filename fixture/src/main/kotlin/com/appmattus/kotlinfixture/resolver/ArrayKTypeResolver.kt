@@ -26,8 +26,16 @@ import kotlin.reflect.full.starProjectedType
 
 internal class ArrayKTypeResolver : Resolver {
 
+    // Only array types are handled, so return early for any other type before the slower checks in resolveArray
+    override fun resolve(context: Context, obj: Any): Any =
+        if (((obj as? KType)?.classifier as? KClass<*>)?.java?.isArray == true) {
+            resolveArray(context, obj)
+        } else {
+            Unresolved.Unhandled
+        }
+
     @Suppress("ReturnCount")
-    override fun resolve(context: Context, obj: Any): Any {
+    private fun resolveArray(context: Context, obj: Any): Any {
         // Special handling for primitive arrays as Kotlin's KType seems to see Array<Int> as IntArray etc when looking at the classifier
         // See https://youtrack.jetbrains.com/issue/KT-52170/Reflection-typeOfArrayLong-gives-classifier-LongArray
         when (obj) {

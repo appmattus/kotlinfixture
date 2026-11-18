@@ -40,7 +40,7 @@ internal class EnumMapResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
         if (obj is KType && obj.classifier is KClass<*>) {
-            if (obj.classifier == EnumMap::class) {
+            if ((obj.classifier as KClass<*>).javaObjectType == EnumMap::class.java) {
                 return context.wrapNullability(obj) {
                     generateEnumMap(obj)
                 }

@@ -40,6 +40,7 @@ import java.time.Duration
 import java.time.Period
 import java.time.ZoneId
 import java.time.ZoneOffset
+import kotlin.reflect.KClass
 
 /**
  * Generates kotlinx-datetime types when kotlinx-datetime is on the classpath. Values are converted from the
@@ -52,16 +53,16 @@ internal class KotlinxDateTimeResolver : Resolver {
     @Suppress("ComplexMethod")
     override fun resolve(context: Context, obj: Any): Any? {
         return if (KotlinxDateTimeConverter.isAvailable) {
-            when (obj) {
-                LocalDate::class -> context.generateLocalDate()
-                LocalDateTime::class -> context.resolveJava<java.time.LocalDateTime>().toKotlinLocalDateTime()
-                LocalTime::class -> context.resolveJava<java.time.LocalTime>().toKotlinLocalTime()
-                YearMonth::class -> context.generateLocalDate().let { YearMonth(it.year, it.month) }
-                TimeZone::class -> context.resolveJava<ZoneId>().toKotlinTimeZone()
-                FixedOffsetTimeZone::class -> context.resolveJava<ZoneOffset>().toKotlinFixedOffsetTimeZone()
-                UtcOffset::class -> context.resolveJava<ZoneOffset>().toKotlinUtcOffset()
-                DatePeriod::class -> context.resolveJava<Period>().toKotlinDatePeriod()
-                DateTimePeriod::class -> context.generateDateTimePeriod()
+            when ((obj as? KClass<*>)?.javaObjectType) {
+                LocalDate::class.java -> context.generateLocalDate()
+                LocalDateTime::class.java -> context.resolveJava<java.time.LocalDateTime>().toKotlinLocalDateTime()
+                LocalTime::class.java -> context.resolveJava<java.time.LocalTime>().toKotlinLocalTime()
+                YearMonth::class.java -> context.generateLocalDate().let { YearMonth(it.year, it.month) }
+                TimeZone::class.java -> context.resolveJava<ZoneId>().toKotlinTimeZone()
+                FixedOffsetTimeZone::class.java -> context.resolveJava<ZoneOffset>().toKotlinFixedOffsetTimeZone()
+                UtcOffset::class.java -> context.resolveJava<ZoneOffset>().toKotlinUtcOffset()
+                DatePeriod::class.java -> context.resolveJava<Period>().toKotlinDatePeriod()
+                DateTimePeriod::class.java -> context.generateDateTimePeriod()
                 else -> Unresolved.Unhandled
             }
         } else {
