@@ -16,9 +16,14 @@
 
 package com.appmattus.kotlinfixture
 
+import com.appmattus.kotlinfixture.Classes.rejectInternalPackages
+import io.github.classgraph.ClassGraph
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 
 class ClassesTest {
 
@@ -49,4 +54,83 @@ class ClassesTest {
 
         assertEquals(true, "java.math.BigDecimal" in numbers && "java.util.concurrent.atomic.AtomicLong" in numbers)
     }
+
+    @Test
+    fun `non-exported JDK packages are read from the JDK's modules`() {
+        val packages = assertNotNull(Classes.jdkPackages).nonExported
+
+        assertTrue("com.sun.tools.javac.code" in packages)
+        assertTrue("jdk.internal.misc" in packages)
+        assertFalse("java.lang" in packages)
+        assertFalse("com.sun.net.httpserver" in packages)
+    }
+
+    @Test
+    fun `classes in non-exported JDK packages are not scanned`() {
+        val packages = assertNotNull(Classes.jdkPackages).rejectable
+
+        val scanned = Classes.classGraph.allClasses.map { it.name }.filter { it.substringBeforeLast('.') in packages }
+
+        assertEquals(emptyList(), scanned)
+    }
+
+    @Test
+    fun `exported package is scanned when its subpackages are not exported`() {
+        assertNotNull(Classes.classGraph.getClassInfo("com.sun.tools.javac.Main"))
+        assertNull(Classes.classGraph.getClassInfo("com.sun.tools.javac.code.Symbol"))
+    }
+
+    @Test
+    fun `without modules the Java 8 internal packages are rejected`() {
+        // As on Java 8, where there are no modules to read the exported packages from
+        val withoutModules = scanJavac(jdkPackages = null)
+
+        assertFalse("com.sun.tools.javac.code.Symbol" in withoutModules)
+        assertTrue("com.sun.tools.javac.Main" in withoutModules)
+    }
+
+    @Test
+    fun `with modules the non-exported packages are rejected`() {
+        val withModules = scanJavac(Classes.jdkPackages)
+
+        assertFalse("com.sun.tools.javac.code.Symbol" in withModules)
+        assertTrue("com.sun.tools.javac.Main" in withModules)
+    }
+
+    @Test
+    fun `Java 8 internal packages contain no exported package`() {
+        val exported = assertNotNull(Classes.jdkPackages).exported
+
+        val rejected = exported.filter { name ->
+            java8InternalPackages.any { name == it || name.startsWith("$it.") }
+        }
+
+        assertEquals(emptyList(), rejected)
+    }
+
+    @Test
+    fun `Java 8 internal packages that still exist are not exported`() {
+        val packages = assertNotNull(Classes.jdkPackages)
+
+        val stillExisting = java8InternalPackages.filter { it in packages.exported || it in packages.nonExported }
+
+        assertTrue(stillExisting.isNotEmpty())
+        assertTrue(stillExisting.all { it in packages.nonExported })
+    }
+
+    @Test
+    fun `non-exported package with an exported subpackage is not rejected`() {
+        val packages = Classes.JdkPackages(exported = setOf("a.b.c"), nonExported = setOf("a", "a.b", "a.x"))
+
+        assertEquals(listOf("a.x"), packages.rejectable)
+    }
+
+    private fun scanJavac(jdkPackages: Classes.JdkPackages?): Set<String> =
+        ClassGraph()
+            .enableSystemJarsAndModules()
+            .acceptPackages("com.sun.tools.javac")
+            .rejectInternalPackages(jdkPackages)
+            .enableClassInfo()
+            .scan()
+            .use { result -> result.allClasses.map { it.name }.toSet() }
 }
