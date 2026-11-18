@@ -18,11 +18,16 @@ package com.appmattus.kotlinfixture.resolver
 
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
+import kotlin.reflect.KClass
 
 internal class CharResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any =
-        if (obj == Char::class) (context.random.nextInt(LETTERS) + 'a'.code).toChar() else Unresolved.Unhandled
+        if ((obj as? KClass<*>)?.javaObjectType == Char::class.javaObjectType) {
+            (context.random.nextInt(LETTERS) + 'a'.code).toChar()
+        } else {
+            Unresolved.Unhandled
+        }
 
     companion object {
         private const val LETTERS = 26

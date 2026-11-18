@@ -22,15 +22,16 @@ import java.text.DateFormat
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
+import kotlin.reflect.KClass
 
 internal class FormatResolver : Resolver {
 
-    override fun resolve(context: Context, obj: Any): Any? = when (obj) {
-        DateFormat::class,
-        SimpleDateFormat::class -> generateSimpleDate(context)
+    override fun resolve(context: Context, obj: Any): Any? = when ((obj as? KClass<*>)?.javaObjectType) {
+        DateFormat::class.java,
+        SimpleDateFormat::class.java -> generateSimpleDate(context)
 
-        DecimalFormat::class,
-        NumberFormat::class -> generateDecimalFormat(context)
+        DecimalFormat::class.java,
+        NumberFormat::class.java -> generateDecimalFormat(context)
 
         else -> Unresolved.Unhandled
     }

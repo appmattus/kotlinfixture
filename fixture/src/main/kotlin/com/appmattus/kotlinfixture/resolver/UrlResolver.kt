@@ -19,11 +19,16 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.net.URL
+import kotlin.reflect.KClass
 
 internal class UrlResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == URL::class) URL(values.random(context.random)) else Unresolved.Unhandled
+        if ((obj as? KClass<*>)?.javaObjectType == URL::class.java) {
+            URL(values.random(context.random))
+        } else {
+            Unresolved.Unhandled
+        }
 
     companion object {
         private val values = listOf(

@@ -19,11 +19,12 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import java.util.Currency
+import kotlin.reflect.KClass
 
 internal class CurrencyResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? {
-        return if (obj == Currency::class) {
+        return if ((obj as? KClass<*>)?.javaObjectType == Currency::class.java) {
             Currency.getAvailableCurrencies().random(context.random)
         } else {
             Unresolved.Unhandled

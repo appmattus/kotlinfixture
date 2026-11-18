@@ -22,15 +22,16 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Date
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KClass
 
 internal class DateResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any {
-        return when (obj) {
-            Date::class -> context.generateJavaUtilDate()
-            java.sql.Date::class -> java.sql.Date(context.generateJavaUtilDate().time)
-            java.sql.Time::class -> java.sql.Time(context.generateJavaUtilDate().time)
-            java.sql.Timestamp::class -> java.sql.Timestamp(context.generateJavaUtilDate().time)
+        return when ((obj as? KClass<*>)?.javaObjectType) {
+            Date::class.java -> context.generateJavaUtilDate()
+            java.sql.Date::class.java -> java.sql.Date(context.generateJavaUtilDate().time)
+            java.sql.Time::class.java -> java.sql.Time(context.generateJavaUtilDate().time)
+            java.sql.Timestamp::class.java -> java.sql.Timestamp(context.generateJavaUtilDate().time)
             else -> Unresolved.Unhandled
         }
     }

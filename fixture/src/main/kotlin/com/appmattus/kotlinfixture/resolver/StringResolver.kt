@@ -19,9 +19,14 @@ package com.appmattus.kotlinfixture.resolver
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.nextUuid
+import kotlin.reflect.KClass
 
 internal class StringResolver : Resolver {
 
     override fun resolve(context: Context, obj: Any): Any? =
-        if (obj == String::class) context.random.nextUuid().toString() else Unresolved.Unhandled
+        if ((obj as? KClass<*>)?.javaObjectType == String::class.java) {
+            context.random.nextUuid().toString()
+        } else {
+            Unresolved.Unhandled
+        }
 }
