@@ -22,6 +22,7 @@ import com.appmattus.kotlinfixture.decorator.filter.Filter
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.resolver.StringResolver
 import com.appmattus.kotlinfixture.typeOf
+import java.util.Collections
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
@@ -30,6 +31,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertNotEquals
+import kotlin.test.assertSame
 
 class ConfigurationBuilderTest {
 
@@ -314,5 +316,32 @@ class ConfigurationBuilderTest {
             @Suppress("UNCHECKED_CAST")
             (configuration.resolvers as MutableCollection<Resolver>).add(testResolver)
         }
+    }
+
+    @Test
+    fun `empty maps are Java's empty map, which does not hash keys on lookup`() {
+        val configuration = ConfigurationBuilder(Configuration()).build()
+
+        listOf<Map<*, *>>(
+            configuration.properties,
+            configuration.propertiesRepeatCount,
+            configuration.factories,
+            configuration.subTypes,
+            configuration.strategies,
+            configuration.filters
+        ).forEach {
+            assertSame(Collections.emptyMap<Any, Any>(), it)
+        }
+    }
+
+    @Test
+    fun `non-empty maps are kept`() {
+        val configuration = ConfigurationBuilder(Configuration()).apply {
+            factory<String> { "factory" }
+            subType<Number, Int>()
+        }.build()
+
+        assertEquals(1, configuration.factories.size)
+        assertEquals(Int::class, configuration.subTypes[Number::class])
     }
 }

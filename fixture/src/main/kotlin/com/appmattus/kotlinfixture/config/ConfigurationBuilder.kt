@@ -24,6 +24,7 @@ import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
 import com.appmattus.kotlinfixture.typeOf
+import java.util.Collections
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
@@ -731,14 +732,19 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
 
     fun build() = Configuration(
         repeatCount = repeatCount,
-        propertiesRepeatCount = propertiesRepeatCount,
-        properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap(),
-        factories = factories.toUnmodifiableMap(),
-        subTypes = subTypes.toUnmodifiableMap(),
+        propertiesRepeatCount = propertiesRepeatCount.orEmptyMap(),
+        properties = properties.mapValues { it.value.toUnmodifiableMap() }.toUnmodifiableMap().orEmptyMap(),
+        factories = factories.toUnmodifiableMap().orEmptyMap(),
+        subTypes = subTypes.toUnmodifiableMap().orEmptyMap(),
         random = random,
         decorators = decorators.toUnmodifiableList(),
         resolvers = resolvers.toUnmodifiableList(),
-        strategies = strategies.toUnmodifiableMap(),
-        filters = filters.toUnmodifiableMap()
+        strategies = strategies.toUnmodifiableMap().orEmptyMap(),
+        filters = filters.toUnmodifiableMap().orEmptyMap()
     )
+
+    // These maps are looked up for every value generated and are usually empty. Java's empty map answers a lookup
+    // without hashing the key, whereas a HashMap hashes it first, which is slow for a KType or KClass key. It is
+    // still unmodifiable, as the maps of a configuration should be.
+    private fun <K, V> Map<K, V>.orEmptyMap(): Map<K, V> = if (isEmpty()) Collections.emptyMap() else this
 }

@@ -41,4 +41,9 @@ interface Context {
  * Return the configuration for a given strategy or [default] if none is found
  * @suppress
  */
-inline fun <reified T> Context.strategyOrDefault(default: T): T = configuration.strategies[T::class] as? T ?: default
+inline fun <reified T> Context.strategyOrDefault(default: T): T {
+    val strategies = configuration.strategies
+
+    // Most configurations have no strategies, so skip creating and hashing the KClass key
+    return if (strategies.isEmpty()) default else strategies[T::class] as? T ?: default
+}
