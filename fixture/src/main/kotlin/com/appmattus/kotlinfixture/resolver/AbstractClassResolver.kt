@@ -20,7 +20,6 @@ import com.appmattus.kotlinfixture.Classes
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.Unresolved.Companion.createUnresolved
-import io.github.classgraph.ClassInfo
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.internal.KotlinReflectionInternalError
 
@@ -34,7 +33,7 @@ internal class AbstractClassResolver : Resolver {
 
             val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
-            val results = classes.filterNot { it.isInternal() }.shuffled(context.random).map { subclass ->
+            val results = classes.shuffled(context.random).map { subclass ->
                 // loadClass(true) returns null when the class cannot be loaded, such as when a dependency is missing
                 val result = subclass.loadClass(true)?.let { context.resolveOrUnresolved(it) }
                     ?: Unresolved.NotSupported("Unable to load $subclass")
@@ -62,12 +61,5 @@ internal class AbstractClassResolver : Resolver {
         Unresolved.NotSupported("Unable to use $clazz: $expected")
     } catch (expected: KotlinReflectionInternalError) {
         Unresolved.NotSupported("Unable to use $clazz: $expected")
-    }
-
-    private fun ClassInfo.isInternal() = INTERNAL_PACKAGES.any { name.startsWith(it) }
-
-    private companion object {
-        // Implementation details of the JDK and kotlin-reflect, which are not meaningful values to generate
-        private val INTERNAL_PACKAGES = listOf("sun.", "jdk.internal.", "kotlin.reflect.jvm.internal.")
     }
 }
