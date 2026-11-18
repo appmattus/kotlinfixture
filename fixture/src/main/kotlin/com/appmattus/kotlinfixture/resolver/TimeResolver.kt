@@ -79,14 +79,14 @@ internal class TimeResolver : Resolver {
     private fun Context.generateMonthDay(): MonthDay =
         generateMonth().let { MonthDay.of(it, random.nextInt(1, it.maxLength() + 1)) }
 
-    private fun Context.generateTimeZone(): TimeZone = TimeZone.getTimeZone(TimeZone.getAvailableIDs().random(random))
+    private fun Context.generateTimeZone(): TimeZone = TimeZone.getTimeZone(timeZoneIds.random(random))
 
     private fun Context.generateInstant(): Instant = (resolve(typeOf<Date>()) as Date).toInstant()
 
     private fun Context.generateZonedDateTime(): ZonedDateTime =
         generateInstant().atZone(resolve(typeOf<ZoneId>()) as ZoneId)
 
-    private fun Context.randomZoneId(): ZoneId = ZoneId.of(ZoneId.getAvailableZoneIds().random(random))
+    private fun Context.randomZoneId(): ZoneId = ZoneId.of(zoneIds.random(random))
 
     private fun Context.generateZoneOffset(): ZoneOffset =
         ZoneOffset.ofTotalSeconds(random.nextInt(ZoneOffset.MIN.totalSeconds, ZoneOffset.MAX.totalSeconds))
@@ -115,4 +115,11 @@ internal class TimeResolver : Resolver {
         ChronoUnit.HALF_DAYS,
         ChronoUnit.DAYS
     ).random(random)
+
+    private companion object {
+        // Listed once, as getting the available zone IDs copies them and picking from a set walks it. Sorted so
+        // a seeded fixture picks the same zone whatever order the library returns them in.
+        private val zoneIds: List<String> by lazy { ZoneId.getAvailableZoneIds().sorted() }
+        private val timeZoneIds: List<String> by lazy { TimeZone.getAvailableIDs().sorted() }
+    }
 }

@@ -43,6 +43,7 @@ import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.util.Date
 import java.util.TimeZone
+import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -66,6 +67,8 @@ class TimeResolverTest {
         )
 
         private companion object {
+            private const val SEED = 7
+
             // Enough samples for every one of the 366 month-days to be generated with near certainty
             private const val MONTH_DAY_SAMPLES = 20_000
         }
@@ -154,6 +157,23 @@ class TimeResolverTest {
 
                 assertEquals("Europe/London", zonedDateTime.zone.id)
             }
+        }
+
+        @Test
+        fun `seeded ZoneId is picked from the zones in sorted order`() {
+            val fixture = kotlinFixture { random = Random(SEED) }
+
+            assertEquals(ZoneId.of(ZoneId.getAvailableZoneIds().sorted().random(Random(SEED))), fixture<ZoneId>())
+        }
+
+        @Test
+        fun `seeded TimeZone is picked from the zones in sorted order`() {
+            val fixture = kotlinFixture { random = Random(SEED) }
+
+            assertEquals(
+                TimeZone.getTimeZone(TimeZone.getAvailableIDs().sorted().random(Random(SEED))),
+                fixture<TimeZone>()
+            )
         }
     }
 
