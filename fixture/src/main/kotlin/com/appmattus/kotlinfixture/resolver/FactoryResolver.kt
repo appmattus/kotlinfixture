@@ -27,7 +27,8 @@ internal class FactoryResolver : Resolver {
 
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
-        if (obj is KType) {
+        // Most configurations have no factories, so skip hashing the type, and creating its non-nullable form
+        if (obj is KType && context.configuration.factories.isNotEmpty()) {
             context.configuration.factories[obj]?.let {
                 return with(DefaultGenerator(context)) { it() }
             }
