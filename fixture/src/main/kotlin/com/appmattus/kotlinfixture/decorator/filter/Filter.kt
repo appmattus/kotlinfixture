@@ -30,10 +30,24 @@ internal interface Filter {
     val iterator: Iterator<Any?>
 
     fun next(resolver: Resolver, context: Context): Any? = lock.withLock {
-        this.resolver = resolver
+        val limit = (context.configuration.strategies[FilterAttempts::class] as? FilterAttempts)?.limit
+            ?: FilterAttempts.DEFAULT_LIMIT
+        this.resolver = AttemptLimitedResolver(resolver, limit)
         this.context = context
         iterator.next()
     }
 
     fun map(mapping: Sequence<Any?>.() -> Sequence<Any?>): Filter = DelegatingFilter(this, mapping)
+}
+
+private class AttemptLimitedResolver(private val delegate: Resolver, private val limit: Int) : Resolver {
+    private var attempts = 0
+
+    override fun resolve(context: Context, obj: Any): Any? {
+        check(attempts < limit) {
+            "Filter for $obj exhausted maxFilterAttempts=$limit without producing the requested value"
+        }
+        attempts++
+        return delegate.resolve(context, obj)
+    }
 }

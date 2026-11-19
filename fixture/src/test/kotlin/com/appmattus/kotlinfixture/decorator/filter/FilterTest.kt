@@ -17,6 +17,7 @@
 package com.appmattus.kotlinfixture.decorator.filter
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.resolver.Resolver
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
@@ -31,7 +32,9 @@ import kotlin.test.assertEquals
 class FilterTest {
     private val mockLock = mock<Lock>()
     private val mockResolver = mock<Resolver>()
-    private val mockContext = mock<Context>()
+    private val mockContext = mock<Context> {
+        on { configuration } doReturn Configuration()
+    }
     private val mockIterator = mock<Iterator<Int>> {
         on { hasNext() } doReturn true
         onGeneric { next() }.doReturn(1, 2, 3, 4, 5)
@@ -53,7 +56,7 @@ class FilterTest {
 
     @Test
     fun `next locks and sets resolver and context before calling the iterator and unlocking`() {
-        mockFilter.next(mock(), mock())
+        mockFilter.next(mock(), mockContext)
 
         inOrder(mockLock, mockFilter, mockIterator) {
             verify(mockLock).lock()

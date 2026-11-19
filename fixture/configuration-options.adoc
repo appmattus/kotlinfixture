@@ -371,13 +371,28 @@ val evenNumberLessThan100 = fixture<Int> {
 }
 ----
 
-[WARNING]
-====
-The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
+Configured filters consume at most 1,000 source values per requested value. If a predicate
+cannot be satisfied, or `distinct()` has exhausted the available values, generation fails
+with a message identifying the filtered type and attempt limit.
 
-* `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
-* `filter` that can never be fulfilled e.g. `filter { false }`
-====
+[source,kotlin]
+----
+val fixture = kotlinFixture {
+    maxFilterAttempts = 10_000
+    filter<Int> { filter { it % 100 == 0 } }
+}
+----
+
+`maxFilterAttempts` must be positive, is inherited by derived configurations, and can
+be overridden per call. Chained filters share the budget for the requested value;
+each subsequent request starts with a fresh budget. Recreate the fixture after
+exhaustion before using its filters again.
+
+This limits source consumption, not elapsed time: it cannot interrupt a blocking
+predicate or mapping. It also does not cover operators applied externally to
+`fixture.asSequence<T>()`. For those, bound the source before filtering, for example
+`fixture.asSequence<T>().take(100).distinct()`. Putting `take(count)` after `distinct()`
+does not prevent a hang while waiting for another distinct value.
 
 [#_providing_a_seeded_random]
 == Providing a seeded `random`
