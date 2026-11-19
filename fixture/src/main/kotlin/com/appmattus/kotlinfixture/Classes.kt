@@ -18,8 +18,10 @@ package com.appmattus.kotlinfixture
 
 import android.annotation.SuppressLint
 import io.github.classgraph.ClassGraph
+import io.github.classgraph.ClassInfo
 import io.github.classgraph.ScanResult
 import java.lang.module.ModuleFinder
+import java.util.concurrent.ConcurrentHashMap
 
 internal object Classes {
     /**
@@ -50,6 +52,27 @@ internal object Classes {
             .enableClassInfo()
             .scan()
     }
+
+    /**
+     * The implementations of each abstract class or interface already asked for, as building the list from the scan
+     * takes from microseconds to tens of milliseconds, for an interface such as `Serializable`, and the scan never
+     * changes.
+     */
+    private val implementations = ConcurrentHashMap<Class<*>, List<ClassInfo>>()
+
+    /**
+     * The subclasses of an abstract class, or the classes implementing an interface, found by the scan, or null if
+     * the scan did not find [clazz].
+     */
+    fun implementationsOf(clazz: Class<*>): List<ClassInfo>? =
+        implementations[clazz] ?: classGraph.getClassInfo(clazz.name)?.let { classInfo ->
+            // getOrPut on a ConcurrentMap uses putIfAbsent, which unlike computeIfAbsent all Android versions have.
+            // Two threads may both build the list, but only the first is kept.
+            implementations.getOrPut(clazz) {
+                // A copy, as ClassGraph's lists are mutable
+                (if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses).toList()
+            }
+        }
 
     /**
      * The packages of the JDK's modules, or null before Java 9, and on Android, where there are no modules.

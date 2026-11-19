@@ -18,11 +18,14 @@ package com.appmattus.kotlinfixture
 
 import com.appmattus.kotlinfixture.Classes.rejectInternalPackages
 import io.github.classgraph.ClassGraph
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class ClassesTest {
@@ -125,6 +128,54 @@ class ClassesTest {
         assertEquals(listOf("a.x"), packages.rejectable)
     }
 
+    @Test
+    fun `implementations of an abstract class are its subclasses`() {
+        val implementations = assertNotNull(Classes.implementationsOf(Number::class.java)).map { it.name }
+
+        assertTrue("java.math.BigDecimal" in implementations)
+        assertTrue("java.util.concurrent.atomic.AtomicLong" in implementations)
+    }
+
+    @Test
+    fun `implementations of an interface are the classes implementing it`() {
+        val implementations = assertNotNull(Classes.implementationsOf(CharSequence::class.java)).map { it.name }
+
+        assertTrue("java.lang.String" in implementations)
+        assertTrue("java.lang.StringBuilder" in implementations)
+    }
+
+    @Test
+    fun `implementations are cached`() {
+        assertSame(Classes.implementationsOf(Number::class.java), Classes.implementationsOf(Number::class.java))
+    }
+
+    @Test
+    fun `implementations are cached once across threads`() {
+        // Not asked for by any other test, so the cache starts empty for it
+        val executor = Executors.newFixedThreadPool(THREADS)
+        try {
+            val start = CountDownLatch(1)
+            val results = List(THREADS) {
+                executor.submit<List<*>> {
+                    start.await()
+                    Classes.implementationsOf(java.util.EventListener::class.java)
+                }
+            }
+            start.countDown()
+
+            val lists = results.map { assertNotNull(it.get()) }
+            lists.forEach { assertSame(lists.first(), it) }
+        } finally {
+            executor.shutdown()
+        }
+    }
+
+    @Test
+    fun `class the scan did not find has no implementations`() {
+        // sun is an internal package, so it is not scanned
+        assertNull(Classes.implementationsOf(Class.forName("sun.misc.Unsafe")))
+    }
+
     private fun scanJavac(jdkPackages: Classes.JdkPackages?): Set<String> =
         ClassGraph()
             .enableSystemJarsAndModules()
@@ -133,4 +184,8 @@ class ClassesTest {
             .enableClassInfo()
             .scan()
             .use { result -> result.allClasses.map { it.name }.toSet() }
+
+    private companion object {
+        private const val THREADS = 16
+    }
 }

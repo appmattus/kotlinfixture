@@ -28,10 +28,8 @@ internal class AbstractClassResolver : Resolver {
     @Suppress("ReturnCount")
     override fun resolve(context: Context, obj: Any): Any? {
         if ((obj as? KClass<*>)?.isAbstract == true) {
-            val classInfo = Classes.classGraph.getClassInfo(obj.java.name)
+            val classes = Classes.implementationsOf(obj.java)
                 ?: return createUnresolved("Unable to find subclasses of abstract class $obj")
-
-            val classes = if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses
 
             val results = classes.shuffled(context.random).map { subclass ->
                 // loadClass(true) returns null when the class cannot be loaded, such as when a dependency is missing
