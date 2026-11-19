@@ -16,6 +16,7 @@
 
 package com.appmattus.kotlinfixture.resolver
 
+import com.appmattus.kotlinfixture.Classes
 import com.appmattus.kotlinfixture.Context
 import com.appmattus.kotlinfixture.TestContext
 import com.appmattus.kotlinfixture.Unresolved
@@ -26,6 +27,7 @@ import java.io.DataOutputStream
 import kotlin.reflect.jvm.internal.KotlinReflectionInternalError
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class AbstractClassResolverTest {
@@ -138,37 +140,53 @@ class AbstractClassResolverTest {
         assertTrue(result is Unresolved)
     }
 
+    // Each test has its own abstract class, as unusable implementations are removed for the rest of the JVM
+
     @Suppress("unused", "UnnecessaryAbstractClass")
-    abstract class PartlyUnusableAbstractClass {
-        object Unusable : PartlyUnusableAbstractClass()
-        object Usable : PartlyUnusableAbstractClass()
+    abstract class KotlinReflectFailure {
+        object Unusable : KotlinReflectFailure()
+        object Usable : KotlinReflectFailure()
     }
 
     @Test
-    fun `Subclass that kotlin-reflect cannot use is skipped`() {
-        val context = contextThrowingFor(PartlyUnusableAbstractClass.Unusable::class.java) {
+    fun `Subclass that kotlin-reflect cannot use is skipped and removed`() {
+        val context = contextThrowingFor(KotlinReflectFailure.Unusable::class.java) {
             KotlinReflectionInternalError("Unable to reflect")
         }
 
         repeat(SAMPLES) {
-            assertEquals(PartlyUnusableAbstractClass.Usable::class, context.resolve(PartlyUnusableAbstractClass::class))
+            assertEquals(KotlinReflectFailure.Usable::class, context.resolve(KotlinReflectFailure::class))
         }
+        assertEquals(listOf(KotlinReflectFailure.Usable::class.java.name), implementationNames<KotlinReflectFailure>())
+    }
+
+    @Suppress("unused", "UnnecessaryAbstractClass")
+    abstract class MissingDependency {
+        object Unusable : MissingDependency()
+        object Usable : MissingDependency()
     }
 
     @Test
-    fun `Subclass with a missing dependency is skipped`() {
-        val context = contextThrowingFor(PartlyUnusableAbstractClass.Unusable::class.java) {
+    fun `Subclass with a missing dependency is skipped and removed`() {
+        val context = contextThrowingFor(MissingDependency.Unusable::class.java) {
             NoClassDefFoundError("Missing dependency")
         }
 
         repeat(SAMPLES) {
-            assertEquals(PartlyUnusableAbstractClass.Usable::class, context.resolve(PartlyUnusableAbstractClass::class))
+            assertEquals(MissingDependency.Usable::class, context.resolve(MissingDependency::class))
         }
+        assertEquals(listOf(MissingDependency.Usable::class.java.name), implementationNames<MissingDependency>())
+    }
+
+    @Suppress("unused", "UnnecessaryAbstractClass")
+    abstract class AllUnusable {
+        object First : AllUnusable()
+        object Second : AllUnusable()
     }
 
     @Test
     fun `Abstract class whose subclasses are all unusable returns Unresolved`() {
-        val subclasses = setOf(PartlyUnusableAbstractClass.Unusable::class, PartlyUnusableAbstractClass.Usable::class)
+        val subclasses = setOf(AllUnusable.First::class, AllUnusable.Second::class)
         val context = context.copy(
             resolver = CompositeResolver(
                 context.resolver,
@@ -176,10 +194,40 @@ class AbstractClassResolverTest {
             )
         )
 
-        val result = context.resolve(PartlyUnusableAbstractClass::class)
+        assertTrue(context.resolve(AllUnusable::class) is Unresolved)
 
-        assertTrue(result is Unresolved)
+        // Both were removed, and the empty list is a valid result
+        assertEquals(emptyList(), implementationNames<AllUnusable>())
+        assertTrue(context.resolve(AllUnusable::class) is Unresolved)
     }
+
+    @Suppress("unused", "UnnecessaryAbstractClass")
+    abstract class OrdinarilyUnresolved {
+        object Unresolvable : OrdinarilyUnresolved()
+        object Usable : OrdinarilyUnresolved()
+    }
+
+    @Test
+    fun `Subclass that is only unresolved is not removed`() {
+        // Unresolved can depend on the configuration, so unlike an unusable subclass it is tried again next time
+        val context = context.copy(resolver = CompositeResolver(context.resolver, UnresolvableTestResolver()))
+
+        repeat(SAMPLES) {
+            assertEquals(OrdinarilyUnresolved.Usable::class, context.resolve(OrdinarilyUnresolved::class))
+        }
+        assertEquals(2, implementationNames<OrdinarilyUnresolved>().size)
+    }
+
+    /** Leaves OrdinarilyUnresolved.Unresolvable unresolved, and returns any other class it is asked for */
+    private class UnresolvableTestResolver : Resolver {
+        override fun resolve(context: Context, obj: Any): Any? = when (obj) {
+            OrdinarilyUnresolved.Unresolvable::class -> Unresolved.NotSupported("Not this time")
+            else -> obj
+        }
+    }
+
+    private inline fun <reified T> implementationNames(): List<String> =
+        assertNotNull(Classes.implementationsOf(T::class.java)).map { it.name }
 
     private fun contextThrowingFor(clazz: Class<*>, error: () -> Throwable) = context.copy(
         resolver = CompositeResolver(

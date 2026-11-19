@@ -46,6 +46,16 @@ class AbstractClassImplementationTest {
         override fun get() = "provided"
     }
 
+    interface OnlyBroken
+
+    // The only implementation of OnlyBroken, and initialising it always fails
+    class BrokenOnly : OnlyBroken {
+        companion object {
+            @Suppress("unused")
+            private val broken: Int = error("Unable to initialise")
+        }
+    }
+
     private val fixtureClassLoader = Fixture::class.java.classLoader
 
     @Test
@@ -55,6 +65,32 @@ class AbstractClassImplementationTest {
         repeat(SAMPLES) {
             assertEquals(WorkingShape::class, fixture<Shape>()::class)
         }
+    }
+
+    @Test
+    fun `implementations that cannot be loaded are removed after they fail`() {
+        val fixture = kotlinFixture()
+
+        // Each one is tried before WorkingShape in half of the shuffles, so all are tried with near certainty
+        repeat(SAMPLES) { fixture<Shape>() }
+
+        assertEquals(
+            listOf(WorkingShape::class.java.name),
+            Classes.implementationsOf(Shape::class.java)?.map { it.name }
+        )
+    }
+
+    @Test
+    fun `abstract type whose only implementation cannot be loaded gives a normal error every time`() {
+        val fixture = kotlinFixture()
+
+        repeat(2) {
+            assertFailsWith<UnsupportedOperationException> {
+                fixture<OnlyBroken>()
+            }
+        }
+
+        assertEquals(emptyList(), Classes.implementationsOf(OnlyBroken::class.java))
     }
 
     @Test

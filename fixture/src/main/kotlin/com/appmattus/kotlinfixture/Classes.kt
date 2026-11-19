@@ -18,6 +18,7 @@ package com.appmattus.kotlinfixture
 
 import android.annotation.SuppressLint
 import io.github.classgraph.ClassGraph
+import io.github.classgraph.ClassInfo
 import io.github.classgraph.ScanResult
 import java.lang.module.ModuleFinder
 
@@ -50,6 +51,22 @@ internal object Classes {
             .enableClassInfo()
             .scan()
     }
+
+    private val implementations = ImplementationCache { clazz ->
+        classGraph.getClassInfo(clazz.name)?.let { if (it.isInterface) it.classesImplementing else it.subclasses }
+    }
+
+    /**
+     * The subclasses of an abstract class, or the classes implementing an interface, found by the scan, less any found
+     * to be unusable, or null if the scan did not find [clazz]. Cached, see [ImplementationCache].
+     */
+    fun implementationsOf(clazz: Class<*>): List<ClassInfo>? = implementations.implementationsOf(clazz)
+
+    /**
+     * Stops [implementation] being returned as an implementation of [clazz], or of abstract types not yet asked for
+     */
+    fun removeUnusableImplementation(clazz: Class<*>, implementation: ClassInfo) =
+        implementations.removeUnusable(clazz, implementation)
 
     /**
      * The packages of the JDK's modules, or null before Java 9, and on Android, where there are no modules.
