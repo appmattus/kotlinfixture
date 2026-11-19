@@ -21,7 +21,6 @@ import io.github.classgraph.ClassGraph
 import io.github.classgraph.ClassInfo
 import io.github.classgraph.ScanResult
 import java.lang.module.ModuleFinder
-import java.util.concurrent.ConcurrentHashMap
 
 internal object Classes {
     /**
@@ -53,26 +52,21 @@ internal object Classes {
             .scan()
     }
 
-    /**
-     * The implementations of each abstract class or interface already asked for, as building the list from the scan
-     * takes from microseconds to tens of milliseconds, for an interface such as `Serializable`, and the scan never
-     * changes.
-     */
-    private val implementations = ConcurrentHashMap<Class<*>, List<ClassInfo>>()
+    private val implementations = ImplementationCache { clazz ->
+        classGraph.getClassInfo(clazz.name)?.let { if (it.isInterface) it.classesImplementing else it.subclasses }
+    }
 
     /**
-     * The subclasses of an abstract class, or the classes implementing an interface, found by the scan, or null if
-     * the scan did not find [clazz].
+     * The subclasses of an abstract class, or the classes implementing an interface, found by the scan, less any found
+     * to be unusable, or null if the scan did not find [clazz]. Cached, see [ImplementationCache].
      */
-    fun implementationsOf(clazz: Class<*>): List<ClassInfo>? =
-        implementations[clazz] ?: classGraph.getClassInfo(clazz.name)?.let { classInfo ->
-            // getOrPut on a ConcurrentMap uses putIfAbsent, which unlike computeIfAbsent all Android versions have.
-            // Two threads may both build the list, but only the first is kept.
-            implementations.getOrPut(clazz) {
-                // A copy, as ClassGraph's lists are mutable
-                (if (classInfo.isInterface) classInfo.classesImplementing else classInfo.subclasses).toList()
-            }
-        }
+    fun implementationsOf(clazz: Class<*>): List<ClassInfo>? = implementations.implementationsOf(clazz)
+
+    /**
+     * Stops [implementation] being returned as an implementation of [clazz], or of abstract types not yet asked for
+     */
+    fun removeUnusableImplementation(clazz: Class<*>, implementation: ClassInfo) =
+        implementations.removeUnusable(clazz, implementation)
 
     /**
      * The packages of the JDK's modules, or null before Java 9, and on Android, where there are no modules.
