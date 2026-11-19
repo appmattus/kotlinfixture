@@ -20,6 +20,7 @@ import com.appmattus.kotlinfixture.Unresolved
 import com.appmattus.kotlinfixture.decorator.Decorator
 import com.appmattus.kotlinfixture.decorator.filter.DefaultFilter
 import com.appmattus.kotlinfixture.decorator.filter.Filter
+import com.appmattus.kotlinfixture.decorator.filter.FilterAttempts
 import com.appmattus.kotlinfixture.resolver.Resolver
 import com.appmattus.kotlinfixture.toUnmodifiableList
 import com.appmattus.kotlinfixture.toUnmodifiableMap
@@ -81,6 +82,18 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
     private val subTypes: MutableMap<KClass<*>, KClass<*>> = configuration.subTypes.toMutableMap()
 
     internal val strategies: MutableMap<KClass<*>, Any> = configuration.strategies.toMutableMap()
+
+    /**
+     * Maximum source values consumed by configured filters for each requested value. Defaults to 1,000.
+     * Must be positive. Exhaustion fails generation with the filtered type and attempt limit.
+     * This does not limit operators applied externally to [com.appmattus.kotlinfixture.Fixture.asSequence].
+     */
+    var maxFilterAttempts: Int
+        get() = (strategies[FilterAttempts::class] as? FilterAttempts)?.limit ?: FilterAttempts.DEFAULT_LIMIT
+        set(value) {
+            require(value > 0) { "maxFilterAttempts must be positive" }
+            strategies[FilterAttempts::class] = FilterAttempts(value)
+        }
 
     /**
      * Setting list and map length with `repeatCount`
@@ -398,9 +411,9 @@ class ConfigurationBuilder(configuration: Configuration = Configuration()) {
      * }
      * ```
      *
-     * WARNING: The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
-     * - `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
-     * - `filter` that can never be fulfilled e.g. `filter { false }`
+     * Configured filters consume at most [maxFilterAttempts] source values per requested value. An impossible
+     * predicate or exhausted `distinct()` fails generation when that budget is exceeded. Recreate the fixture
+     * after exhaustion before using its filters again. This budget cannot interrupt a blocking predicate.
      */
     @Suppress("UNCHECKED_CAST", "DEPRECATION_ERROR")
     inline fun <reified T> filter(noinline mapping: Sequence<T>.() -> Sequence<T>) =

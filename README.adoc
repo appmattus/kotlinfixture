@@ -106,9 +106,13 @@ val anotherDistinctValue = enumIterator.next()
 ====
 The sequence can hang indefinitely if the applied operators prevent the generation of new values. For example:
 
-* `distinct` will hang if we exhaust all available values. A good practice is to add a `take(count)` which will throw a `NoSuchElementException` if we try to generate more values.
+* `distinct` will hang if we exhaust all available values. Bound the source first, for example `asSequence<XYZ>().take(100).distinct()`. Adding `take(count)` after `distinct()` does not prevent it from waiting indefinitely for a missing distinct value.
 * `filter` that can never be fulfilled e.g. `filter { false }`
 ====
+
+Filters configured through `kotlinFixture { filter<T> { ... } }` have a configurable
+`maxFilterAttempts` budget (1,000 by default) per requested value. External sequence
+operators shown above are not covered by that budget.
 
 == Configuration options
 

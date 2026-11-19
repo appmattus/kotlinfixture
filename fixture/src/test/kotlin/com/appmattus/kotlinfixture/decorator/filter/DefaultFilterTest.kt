@@ -17,6 +17,7 @@
 package com.appmattus.kotlinfixture.decorator.filter
 
 import com.appmattus.kotlinfixture.Context
+import com.appmattus.kotlinfixture.config.Configuration
 import com.appmattus.kotlinfixture.resolver.Resolver
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
@@ -29,7 +30,9 @@ import kotlin.test.assertEquals
 class DefaultFilterTest {
     private val mockObj = mock<Any>()
     private val mockResolver = mock<Resolver>()
-    private val mockContext = mock<Context>()
+    private val mockContext = mock<Context> {
+        on { configuration } doReturn Configuration()
+    }
 
     private val filter = DefaultFilter(mockObj)
 
