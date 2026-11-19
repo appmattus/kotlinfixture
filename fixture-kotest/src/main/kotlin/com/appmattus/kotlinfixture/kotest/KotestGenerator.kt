@@ -18,10 +18,19 @@ package com.appmattus.kotlinfixture.kotest
 
 import com.appmattus.kotlinfixture.Fixture
 import io.kotest.property.Arb
+import io.kotest.property.Shrinker
 import io.kotest.property.arbitrary.arbitrary
 
 /**
- * Creates a new [Arb] that performs no shrinking, and generates values for the given type, [T].
- * @suppress
+ * Creates an [Arb] using Kotest's random source so its seed can replay generated inputs.
+ * The fixture's other configuration is retained. No shrinking is performed by default.
  */
-inline fun <reified T> Fixture.kotestGen(): Arb<T> = arbitrary { this@kotestGen.invoke<T>() }
+inline fun <reified T> Fixture.kotestGen(): Arb<T> = kotestGen(Shrinker { emptyList() })
+
+/**
+ * Creates an [Arb] using Kotest's random source and the supplied [shrinker].
+ * Shrink candidates should preserve any constraints required by the property.
+ */
+inline fun <reified T> Fixture.kotestGen(shrinker: Shrinker<T>): Arb<T> = arbitrary(shrinker) { source ->
+    this@kotestGen.invoke<T> { random = source.random }
+}
