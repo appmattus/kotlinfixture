@@ -22,9 +22,49 @@ For example:
 
 [source,kotlin]
 ----
-data class Person(name: String, age: Int)
+data class Person(val name: String, val age: Int)
 
 fixture.checkAll { person1: Person, person2: Person ->
    person1 shouldNotBeSameInstanceAs person2
 }
 ----
+
+=== Replaying a failure
+
+`checkAll`, `forAll`, and `kotestGen` use Kotest's random source. Replay a failure
+with the seed reported by Kotest:
+
+[source,kotlin]
+----
+fixture.checkAll<Person>(PropTestConfig(seed = 123456L)) { person ->
+    // The same seed and configuration reproduce the generated inputs.
+}
+----
+
+Kotest's seed takes precedence over `random` configured on the fixture for these
+calls. Other fixture settings, including factories, properties and collection
+sizes, are retained; the fixture's original random source is not consumed.
+Factories must use their supplied `random` or `fixture` for replayable generation.
+External randomness, time-dependent values, and mutable user state are not controlled
+by the seed. Recreate fixtures with stateful filters such as `distinct()` before
+replaying, so the filter history is also reset.
+
+=== Shrinking failing examples
+
+By default, fixture generators do not shrink. Supply a domain-specific `Shrinker`
+to `kotestGen` and use the resulting `Arb` with Kotest's `checkAll`:
+
+[source,kotlin]
+----
+import io.kotest.property.Shrinker
+import io.kotest.property.checkAll
+
+val people = fixture.kotestGen(Shrinker<Person> { person ->
+    if (person.age == 0) emptyList() else listOf(person.copy(age = 0))
+})
+checkAll(people) { person ->
+    // Assert the property here.
+}
+----
+
+Shrink candidates should preserve the constraints required by your property.
